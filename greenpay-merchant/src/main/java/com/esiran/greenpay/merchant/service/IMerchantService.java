@@ -1,9 +1,9 @@
 package com.esiran.greenpay.merchant.service;
 
-import com.esiran.greenpay.merchant.entity.Merchant;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.merchant.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.esiran.greenpay.merchant.entity.MerchantProduct;
-import com.esiran.greenpay.merchant.entity.MerchantProductDTO;
 
 import java.util.List;
 
@@ -16,6 +16,9 @@ import java.util.List;
  * @since 2020-04-13
  */
 public interface IMerchantService extends IService<Merchant> {
-    List<MerchantProductDTO> selectMchProductById(Integer mchId);
+    MerchantDetailDTO findMerchantById(Integer id);
+    void addMerchant(MerchantInputDTO merchantInputDTO) throws Exception;
+    List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException;
     MerchantProductDTO selectMchProductByIdAndPayTypeCode(Integer mchId,String payTypeCode) throws Exception;
+    IPage<MerchantDTO> selectMerchantByPage(IPage<Void> page);
 }

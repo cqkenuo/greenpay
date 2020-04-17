@@ -81,7 +81,7 @@
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
                                                                id="payAvailBalance" readonly
-                                                               th:value="${merchant.payAccount.availBalance}">
+                                                               th:value="${#numbers.formatDecimal(merchant.payAccount.availBalance/100.00,1,2)}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -91,22 +91,44 @@
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
                                                                id="payFreezeBalance" readonly
-                                                               th:value="${merchant.payAccount.freezeBalance}">
+                                                               th:value="${#numbers.formatDecimal(merchant.payAccount.freezeBalance/100.00,1,2)}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
-                                                    <label for="bgje" class="layui-form-label" style="width: 120px">变更金额（元）：</label>
+                                                    <label  style="width: 120px"
+                                                            for="payAccount-action_up"
+                                                            class="layui-form-label">
+                                                        变更方式：
+                                                    </label>
+                                                    <div class="layui-input-block" style="margin-left: 150px;">
+                                                        <input id="payAccount-action_up" type="radio" name="action" value="0" title="增加" checked>
+                                                        <input type="radio" name="action" value="1" title="扣减">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label  style="width: 120px"
+                                                            for="payAccount-type_avail"
+                                                            class="layui-form-label">
+                                                        变更类型：
+                                                    </label>
+                                                    <div class="layui-input-block"  style="margin-left: 150px;">
+                                                        <input id="payAccount-type_avail" type="radio" name="type" value="0" title="可用余额" checked>
+                                                        <input type="radio" name="type" value="1" title="冻结金额">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label for="changePayAmount" class="layui-form-label" style="width: 120px">变更金额（元）：</label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
-                                                               name="bgje" id="bgje"
+                                                               name="amount" id="changePayAmount"
                                                                autocomplete="off"
-                                                               placeholder="请输入变更金额（元）">
+                                                               placeholder="请输入变更金额（元）。保留两位小数，精确到分">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <button class="layui-btn">增加余额</button>
-                                                        <button type="reset" class="layui-btn layui-btn-primary">扣减余额</button>
+                                                        <input type="hidden" name="method" value="upPayBalance">
+                                                        <button type="submit" class="layui-btn">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -126,7 +148,8 @@
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
-                                                               id="prepaidAvailBalance" readonly th:value="123">
+                                                               id="prepaidAvailBalance" readonly
+                                                               th:value="${#numbers.formatDecimal(merchant.prepaidAccount.availBalance/100.00,1,2)}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -135,22 +158,45 @@
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
-                                                               id="prepaidFreezeBalance" readonly th:value="123">
+                                                               id="prepaidFreezeBalance" readonly
+                                                               th:value="${#numbers.formatDecimal(merchant.prepaidAccount.freezeBalance/100.00,1,2)}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
-                                                    <label for="changePrepaidBalance" class="layui-form-label" style="width: 120px">变更金额（元）：</label>
+                                                    <label  style="width: 120px"
+                                                            for="prepaidAccout-action_up"
+                                                            class="layui-form-label">
+                                                        变更方式：
+                                                    </label>
+                                                    <div class="layui-input-block" style="margin-left: 150px;">
+                                                        <input id="prepaidAccout-action_up" type="radio" name="action" value="0" title="增加" checked>
+                                                        <input type="radio" name="action" value="1" title="扣减">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label  style="width: 120px"
+                                                            for="prepaidAccout-type_avail"
+                                                            class="layui-form-label">
+                                                        变更类型：
+                                                    </label>
+                                                    <div class="layui-input-block" style="margin-left: 150px;">
+                                                        <input id="prepaidAccout-type_avail" type="radio" name="type" value="0" title="可用余额" checked>
+                                                        <input type="radio" name="type" value="1" title="冻结金额">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label for="changePrepaidAmount" class="layui-form-label" style="width: 120px">变更金额（元）：</label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
-                                                               name="changePrepaidBalance" id="changePrepaidBalance"
+                                                               name="amount" id="changePrepaidAmount"
                                                                autocomplete="off"
-                                                               placeholder="请输入变更金额（元）">
+                                                               placeholder="请输入变更金额（元）。保留两位小数，精确到分">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <button class="layui-btn" lay-submit="" lay-filter="formDemo">增加余额</button>
-                                                        <button type="reset" class="layui-btn layui-btn-primary">扣减余额</button>
+                                                        <input type="hidden" name="method" value="upPrepaidBalance">
+                                                        <button type="submit" class="layui-btn">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -176,7 +222,7 @@
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
                                                                name="mbsxf" id="mbsxf"
-                                                               lay-verify="title" autocomplete="off"
+                                                               autocomplete="off"
                                                                placeholder="请输入每笔手续费">
                                                     </div>
                                                 </div>
@@ -185,13 +231,13 @@
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
                                                                name="sxfbl" id="sxfbl"
-                                                               lay-verify="title" autocomplete="off"
+                                                               autocomplete="off"
                                                                placeholder="请再次输入登录密码">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item" style="width: 120px">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                                                        <button type="submit" class="layui-btn">立即提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -314,36 +360,16 @@
 <script th:inline="javascript">
     !function(){
         let layer = layui.layer
-            ,table = layui.table;
-        //第一个实例
-        table.render({
-            elem: '#demo'
-            ,url: '/admin/api/v1/merchants' //数据接口
-            ,page: true //开启分页
-            ,parseData: function(res){ //res 即为原始返回的数据
-                return {
-                    "code": 0,
-                    "msg": res.message,
-                    "count": res.total,
-                    "data": res.records
-                };
-            }
-            ,request: {
-                pageName: 'current'
-                ,limitName: 'size'
-            }
-            ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'id', title: 'ID',width:100, unresize:true}
-                ,{field: 'username', title: '用户名', width:150, unresize:true}
-                ,{field: 'name', title: '商户名称', width:150, unresize:true}
-                ,{field: 'email', title: '电子邮箱', width:250, unresize:true}
-                ,{field: 'balance', title: '可用余额', width:100, unresize:true}
-                ,{field: 'status', title: '状态', width:100, unresize:true}
-                ,{field: 'createdAt', title: '创建时间', width:180, unresize:true}
-                ,{field: 'updatedAt', title: '更新时间', width:180, unresize:true}
-                ,{fixed:'right',align: 'center', toolbar: '#barDemo'}
-            ]]
+            ,form = layui.form;
+        form.on('submit(upPrepaidBalance)', function(data){
+            console.log('增加支付账户余额');
+            console.log(data);
+            return false;
+        });
+        form.on('submit(upPrepaidBalance)', function(data){
+            console.log('增加预充值账户余额');
+            console.log(data);
+            return false;
         });
     }();
 </script>

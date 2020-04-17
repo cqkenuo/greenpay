@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div class="layui-side layui-side-menu" th:fragment="menu">
+    <div class="layui-side-scroll">
+        <div class="layui-logo" lay-href="">
+            <span>GreenPay 商户后台</span>
+        </div>
+        <ul class="layui-nav layui-nav-tree" lay-shrink="all">
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">
+                    <i class="layui-icon layui-icon-home"></i>
+                    <cite>首页</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd th:replace="merchant/side::layui_nav_item('/merchant/home','数据概览')"></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">
+                    <i class="layui-icon layui-icon-user"></i>
+                    <cite>交易管理</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd th:replace="merchant/side::layui_nav_item('/merchant/order/list','订单列表')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/merchant/order/extract','提现记录')"></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">
+                    <i class="layui-icon layui-icon-form"></i>
+                    <cite>代付管理</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd th:replace="merchant/side::layui_nav_item('/admin/order/list','代付列表')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/admin/order/list','充值记录')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/admin/order/list','单笔代付')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/admin/order/list','批量代付')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/admin/order/list','充值记录')"></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">
+                    <i class="layui-icon layui-icon-username"></i>
+                    <cite>个人中心</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd th:replace="merchant/side::layui_nav_item('/admin/user/profile','基础资料')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/admin/user/security','安全设置')"></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+    <script>
+        !function () {
+            let items = document.querySelectorAll('.layui-side .layui-nav .layui-nav-item');
+            items.forEach(function (item) {
+                let activated = item.querySelector('.layui-this');
+                if (!activated) return;
+                item.className = item.className + ' layui-nav-itemed';
+            })
+        }();
+    </script>
+</div>
+<dd th:class="${#strings.startsWith(#httpServletRequest.requestURI,action)?'layui-this':''}" th:fragment="layui_nav_item(action,title)">
+    <a th:href="${action}" th:text="${title}"></a>
+</dd>
+</html>

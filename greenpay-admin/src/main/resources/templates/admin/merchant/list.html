@@ -49,17 +49,17 @@
             elem: '#demo'
             ,url: '/admin/api/v1/merchants' //数据接口
             ,page: true //开启分页
-            ,parseData: function(res){ //res 即为原始返回的数据
-                return {
-                    "code": 0,
-                    "msg": res.message,
-                    "count": res.total,
-                    "data": res.records
-                };
-            }
             ,request: {
-                pageName: 'current'
-                ,limitName: 'size'
+                pageName:'current',
+                limitName:'size'
+            }
+            ,parseData: function(res){ //res 即为原始返回的数据
+                    return {
+                        "code": 0,
+                        "msg": res.message,
+                        "count": res.total,
+                        "data": res.records
+                    };
             }
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}

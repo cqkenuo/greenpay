@@ -14,9 +14,8 @@ import lombok.experimental.Accessors;
  * @author Militch
  * @since 2020-04-13
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class PayAccountDTO extends BaseMapperEntity {
+public class PayAccountDTO {
     /**
      * 可用余额（分）
      */

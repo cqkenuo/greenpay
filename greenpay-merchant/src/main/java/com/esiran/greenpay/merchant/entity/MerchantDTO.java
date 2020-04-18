@@ -26,5 +26,6 @@ public class MerchantDTO {
 
     @ApiModelProperty("商户状态")
     private Boolean status;
-
+    private PayAccountDTO payAccount;
+    private PrepaidAccountDTO prepaidAccount;
 }

@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -65,7 +66,12 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
                 RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
                 apiConfigDTO.getPubKey(),
                 RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
+        String privateKeyVal = String.format("%s\r\n%s\r\n%s",
+                RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN,
+                apiConfigDTO.getPrivateKey(),
+                RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN);
         apiConfigDTO.setPubKeyVal(publicKeyVal);
+        apiConfigDTO.setPrivateKeyVal(privateKeyVal);
         PayAccountDTO payAccountDTO = payAccountService.findByMerchantId(merchant.getId());
         PrepaidAccountDTO prepaidAccountDTO = prepaidAccountService.findByMerchantId(merchant.getId());
         dto.setApiConfig(apiConfigDTO);
@@ -180,6 +186,17 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     @Override
     public IPage<MerchantDTO> selectMerchantByPage(IPage<Void> page) {
         IPage<Merchant> merchantPage = this.page(new Page<>(page.getCurrent(),page.getSize()));
-        return merchantPage.convert(item-> modelMapper.map(item,MerchantDTO.class));
+        List<Merchant> merchants = merchantPage.getRecords();
+        IPage<MerchantDTO> merchantDTOIPage = merchantPage.convert(item-> modelMapper.map(item,MerchantDTO.class));
+        List<MerchantDTO> merchantDTOList = merchants.stream().map(item->{
+            MerchantDTO dto = modelMapper.map(item,MerchantDTO.class);
+            PayAccountDTO payAccount = payAccountService.findByMerchantId(dto.getId());
+            PrepaidAccountDTO prepaidAccountDTO = prepaidAccountService.findByMerchantId(dto.getId());
+            dto.setPayAccount(payAccount);
+            dto.setPrepaidAccount(prepaidAccountDTO);
+            return dto;
+        }).collect(Collectors.toList());
+        merchantDTOIPage.setRecords(merchantDTOList);
+        return merchantDTOIPage;
     }
 }

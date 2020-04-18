@@ -278,6 +278,14 @@
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <fieldset class="layui-elem-field">
+                                                        <legend>平台私钥</legend>
+                                                        <div class="layui-field-box">
+                                                            <textarea style="height: 130px" readonly class="layui-textarea" th:text="${merchant.apiConfig.privateKeyVal}"></textarea>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <fieldset class="layui-elem-field">
                                                         <legend>平台公钥</legend>
                                                         <div class="layui-field-box">
                                                             <textarea style="height: 130px" readonly class="layui-textarea" th:text="${merchant.apiConfig.pubKeyVal}"></textarea>

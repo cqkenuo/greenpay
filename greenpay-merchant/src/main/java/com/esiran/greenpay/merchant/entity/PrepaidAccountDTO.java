@@ -15,8 +15,7 @@ import lombok.experimental.Accessors;
  * @since 2020-04-13
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class PrepaidAccountDTO extends BaseMapperEntity {
+public class PrepaidAccountDTO {
     /**
      * 可用余额（分）
      */

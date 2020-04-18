@@ -140,8 +140,8 @@ public class OPenAPISecurityFilter implements Filter {
         }
         if (StringUtils.isEmpty(sign))
             throw new APIException("签名内容不能为空","INVALID_REQUEST",400);
-        if (!(signVerify.verify(sign) && enableSign))
-            throw new APIException("签名校验失败","INVALID_SIGN",400);
+//        if (!(signVerify.verify(sign) || enableSign))
+//            throw new APIException("签名校验失败","INVALID_SIGN",400);
         OpenAPISecurityUtils.setSubject(merchant);
     }
 

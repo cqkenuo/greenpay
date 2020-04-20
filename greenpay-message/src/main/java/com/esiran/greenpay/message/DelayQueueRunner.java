@@ -26,7 +26,7 @@ public class DelayQueueRunner implements ApplicationRunner {
     private final DelayQueueConsumer delayQueueConsumer;
     private final DelayQueueTaskRegister delayQueueTaskRegister;
     private static final ExecutorService es;
-    private static final int THREAD_CHOKE_TIME_SECOND = 10;
+    private static final float THREAD_CHOKE_TIME_SECOND = 2.0f;
     private static final int POOL_SIZE;
     static {
         long poolSize = Runtime.getRuntime().availableProcessors();

@@ -16,6 +16,9 @@ import java.util.List;
  * @since 2020-04-13
  */
 public interface IMerchantService extends IService<Merchant> {
+    void updateMerchantInfoById(MerchantUpdateDTO dto, Integer id) throws Exception;
+    void updatePasswordById(String password, Integer id) throws Exception;
+    void updateSettleById(SettleAccountDTO settleAccountDTO, Integer id) throws Exception;
     MerchantDetailDTO findMerchantById(Integer id);
     void addMerchant(MerchantInputDTO merchantInputDTO) throws Exception;
     List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException;

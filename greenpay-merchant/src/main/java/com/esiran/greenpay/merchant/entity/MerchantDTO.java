@@ -7,10 +7,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 
 @Data
-@ApiModel("Merchant")
+@ApiModel(value = "Merchant",description = "商户")
 public class MerchantDTO {
     @ApiModelProperty("商户ID")
     private Integer id;
@@ -20,12 +22,15 @@ public class MerchantDTO {
     private String name;
     @ApiModelProperty("电子邮箱")
     private String email;
-
     @ApiModelProperty("联系手机")
     private String phone;
-
-    @ApiModelProperty("商户状态")
+    @ApiModelProperty("状态（0：关闭，1：开启）")
     private Boolean status;
     private PayAccountDTO payAccount;
     private PrepaidAccountDTO prepaidAccount;
+    private SettleAccountDTO settleAccountDTO;
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createdAt;
+    @ApiModelProperty("更新时间")
+    private LocalDateTime updatedAt;
 }

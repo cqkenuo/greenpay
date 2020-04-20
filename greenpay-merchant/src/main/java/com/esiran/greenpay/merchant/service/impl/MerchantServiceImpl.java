@@ -2,8 +2,8 @@ package com.esiran.greenpay.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.util.EncryptUtil;
@@ -19,8 +19,11 @@ import com.esiran.greenpay.pay.service.ITypeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.security.KeyPair;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +44,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     private final IApiConfigService apiConfigService;
     private final IPayAccountService payAccountService;
     private final IPrepaidAccountService prepaidAccountService;
+    private final ISettleAccountService settleAccountService;
     private static final ModelMapper modelMapper = new ModelMapper();
     public MerchantServiceImpl(
             ITypeService iTypeService,
@@ -48,13 +52,61 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             IMerchantProductService merchantProductService,
             IApiConfigService apiConfigService,
             IPayAccountService payAccountService,
-            IPrepaidAccountService prepaidAccountService) {
+            IPrepaidAccountService prepaidAccountService, ISettleAccountService settleAccountService) {
         this.iTypeService = iTypeService;
         this.productService = productService;
         this.merchantProductService = merchantProductService;
         this.apiConfigService = apiConfigService;
         this.payAccountService = payAccountService;
         this.prepaidAccountService = prepaidAccountService;
+        this.settleAccountService = settleAccountService;
+    }
+
+    @Override
+    public void updateMerchantInfoById(MerchantUpdateDTO dto, Integer id) throws Exception {
+        Merchant target = this.getById(id);
+        if (target == null) throw new Exception("商户不存在");
+        LambdaUpdateWrapper<Merchant> updateWrapper = new LambdaUpdateWrapper<>();
+        if (dto == null) return;
+        if (dto.getName() != null){
+            updateWrapper.set(Merchant::getName,dto.getName());
+        }
+        if (dto.getEmail() != null){
+            updateWrapper.set(Merchant::getName,dto.getEmail());
+        }
+        if (dto.getStatus() != null){
+            updateWrapper.set(Merchant::getStatus,dto.getStatus());
+        }
+        updateWrapper.set(Merchant::getUpdatedAt, LocalDateTime.now());
+        updateWrapper.eq(Merchant::getId,target.getId());
+        update(updateWrapper);
+    }
+
+    @Override
+    public void updatePasswordById(String password, Integer id) throws Exception {
+        Merchant target = this.getById(id);
+        if (target == null) throw new Exception("商户不存在");
+        if (StringUtils.isEmpty(password)) throw new Exception("密码不能为空");
+        LambdaUpdateWrapper<Merchant> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(Merchant::getPassword, password);
+        updateWrapper.set(Merchant::getUpdatedAt, LocalDateTime.now());
+        updateWrapper.eq(Merchant::getId,target.getId());
+        update(updateWrapper);
+    }
+
+    @Override
+    public void updateSettleById(SettleAccountDTO settleAccountDTO, Integer id) throws Exception {
+        Merchant merchant = this.getById(id);
+        if (merchant == null) throw new Exception("商户不存在");
+        SettleAccount target = modelMapper.map(settleAccountDTO,SettleAccount.class);
+        target.setMerchantId(merchant.getId());
+        LambdaQueryWrapper<SettleAccount> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SettleAccount::getMerchantId, target.getMerchantId());
+        SettleAccount src = settleAccountService.getOne(queryWrapper);
+        if (src == null) throw new Exception("结算账户不存在");
+        target.setId(src.getId());
+        target.setUpdatedAt(LocalDateTime.now());
+        settleAccountService.updateById(target);
     }
 
     @Override
@@ -114,6 +166,14 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         prepaidAccount.setAvailBalance(0);
         prepaidAccount.setFreezeBalance(0);
         prepaidAccountService.save(prepaidAccount);
+        SettleAccount settleAccount = new SettleAccount();
+        settleAccount.setMerchantId(merchant.getId());
+        settleAccount.setSettleFeeType(1);
+        settleAccount.setSettleFeeRate(new BigDecimal("0.0"));
+        settleAccount.setSettleFeeAmount(0);
+        settleAccount.setStatus(false);
+        settleAccount.setCreatedAt(LocalDateTime.now());
+        settleAccountService.save(settleAccount);
     }
 
     @Override
@@ -192,8 +252,10 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             MerchantDTO dto = modelMapper.map(item,MerchantDTO.class);
             PayAccountDTO payAccount = payAccountService.findByMerchantId(dto.getId());
             PrepaidAccountDTO prepaidAccountDTO = prepaidAccountService.findByMerchantId(dto.getId());
+            SettleAccountDTO settleAccountDTO = settleAccountService.findByMerchantId(dto.getId());
             dto.setPayAccount(payAccount);
             dto.setPrepaidAccount(prepaidAccountDTO);
+            dto.setSettleAccountDTO(settleAccountDTO);
             return dto;
         }).collect(Collectors.toList());
         merchantDTOIPage.setRecords(merchantDTOList);

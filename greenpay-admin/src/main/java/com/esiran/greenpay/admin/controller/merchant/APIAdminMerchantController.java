@@ -50,23 +50,48 @@ public class APIAdminMerchantController {
         return merchantService.selectMchProductById(mchId);
     }
 
-
-
-    @PostMapping("/add")
-    public String add(){
-        return "admin/merchant/add";
+    @ApiOperation("修改商户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+    })
+    @PostMapping(value = "/{mchId}")
+    public void updateUserInfo(@PathVariable String mchId, MerchantUpdateDTO merchantDTO) throws Exception {
+        merchantService.updateMerchantInfoById(merchantDTO,Integer.valueOf(mchId));
     }
 
-    @PostMapping(value = "/{merchantId}/mch_pub_key",produces = "text/plain")
-    public void publicKey(@PathVariable String merchantId, @RequestBody String content) throws Exception {
+    @ApiOperation("修改商户安全信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+            @ApiImplicitParam(name="password",value="重置密码",required = true),
+    })
+    @PostMapping(value = "/{mchId}/security")
+    public void updateSecurity(@PathVariable String mchId, @RequestParam String password) throws Exception {
+        merchantService.updatePasswordById(password,Integer.valueOf(mchId));
+    }
+
+    @ApiOperation("商户结算信息设置")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+    })
+    @PostMapping(value = "/{mchId}/settle")
+    public void updateSettleInfo(@PathVariable String mchId, SettleAccountDTO settleAccountDTO) throws Exception {
+        merchantService.updateSettleById(settleAccountDTO,Integer.valueOf(mchId));
+    }
+
+    @PostMapping(value = "/{mchId}/mch_pub_key",produces = "text/plain")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+    })
+    @ApiOperation("上传商户公钥")
+    public void publicKey(@PathVariable String mchId, @RequestBody String content) throws Exception {
         LambdaQueryWrapper<ApiConfig> queryWrapper = new QueryWrapper<ApiConfig>()
-                .lambda().eq(ApiConfig::getMchId,merchantId);
+                .lambda().eq(ApiConfig::getMchId,mchId);
         ApiConfig apiConfig = apiConfigService.getOne(queryWrapper);
         if (apiConfig == null) throw new Exception("商户不存在");
         String publicKey = RSAUtil.resolvePublicKey(content);
         LambdaUpdateWrapper<ApiConfig> updateWrapper = new UpdateWrapper<ApiConfig>().lambda();
         updateWrapper.set(ApiConfig::getMchPubKey,publicKey)
-                .eq(ApiConfig::getMchId,merchantId);
+                .eq(ApiConfig::getMchId,mchId);
         apiConfigService.update(updateWrapper);
     }
 

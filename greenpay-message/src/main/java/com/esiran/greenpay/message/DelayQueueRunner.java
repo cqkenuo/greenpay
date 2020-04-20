@@ -7,20 +7,33 @@ import com.esiran.greenpay.message.delayqueue.entity.DelayMessage;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class DelayQueueRunner implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(DelayQueueRunner.class);
-    private static final Gson gson = new Gson();
     private final DelayQueueConsumer delayQueueConsumer;
     private final DelayQueueTaskRegister delayQueueTaskRegister;
+    private static final ExecutorService es;
+    private static final int THREAD_CHOKE_TIME_SECOND = 10;
+    private static final int POOL_SIZE;
+    static {
+        long poolSize = Runtime.getRuntime().availableProcessors();
+        poolSize =  ((Math.round((THREAD_CHOKE_TIME_SECOND / 0.15))+1) * poolSize);
+        POOL_SIZE = (int) poolSize;
+        es = Executors.newFixedThreadPool(POOL_SIZE);
+    }
     public DelayQueueRunner(DelayQueueConsumer delayQueueConsumer,
                             DelayQueueTaskRegister delayQueueTaskRegister) {
         this.delayQueueConsumer = delayQueueConsumer;
@@ -28,34 +41,21 @@ public class DelayQueueRunner implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        logger.info("Delay queue running");
+        logger.info("Delay queue running, pool_size: {}", POOL_SIZE);
         AtomicBoolean exit = new AtomicBoolean(false);
         Runtime.getRuntime().addShutdownHook(new Thread(()->{
             exit.set(true);
+            delayQueueConsumer.close();
         }));
-        List<String> keys = delayQueueTaskRegister.keys();
-        for (String key : keys){
-            Thread t = new Thread(()->{
-                while (!exit.get()){
-                    DelayQueueTaskRunner task = delayQueueTaskRegister.get(key);
-                    String val = delayQueueConsumer.poll(key,1000);
-                    if (val == null) continue;
-                    task.exec(val);
-                }
-            });
-            t.start();
-        }
-    }
-
-    /**
-     * 执行通知任务
-     * @param message 消息
-     */
-    private void execNotifyTask(DelayMessage message){
-        logger.info("Delay queue exec notify task: {}",gson.toJson(message));
-
-    }
-    private static String nextTraceId(){
-        return UUID.randomUUID().toString().replaceAll("-","");
+        Thread t = new Thread(()->{
+            while (!exit.get()){
+                DelayMessage message = delayQueueConsumer.poll(500);
+                if (message == null) continue;
+                DelayQueueTaskRunner task = delayQueueTaskRegister.get(message.getKey());
+                if (task == null) continue;
+                es.execute(()->task.exec(message.getContent()));
+            }
+        });
+        t.start();
     }
 }

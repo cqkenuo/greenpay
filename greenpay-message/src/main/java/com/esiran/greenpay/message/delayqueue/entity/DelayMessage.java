@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class DelayMessage {
-    private String messageId;
+    private String id;
+    private String key;
     private String content;
     private Long delayTime;
 }

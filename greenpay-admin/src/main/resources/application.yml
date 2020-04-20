@@ -12,6 +12,10 @@ spring:
   mvc:
     static-path-pattern: /**
 
+delay_queue:
+  redis:
+    default_key: 'green_pay:delay_queue'
+
 wechat:
   app_id: wx2aeda339f56138bf
   app_secret: 731787f51247a33c4ff210cd613dd780

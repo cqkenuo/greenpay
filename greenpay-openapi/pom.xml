@@ -37,10 +37,6 @@
             <artifactId>greenpay-actuator</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-message</artifactId>
         </dependency>

@@ -54,8 +54,8 @@
                                                 <div class="layui-form-item">
                                                     <label for="status" class="layui-form-label">状态：</label>
                                                     <div class="layui-input-block">
-                                                        <input id="status" type="radio" name="status" value="0" title="关闭" checked>
-                                                        <input type="radio" name="status" value="1" title="开启">
+                                                        <input id="status" type="radio" name="status" value="0" title="关闭" th:checked="${merchant.status == false}">
+                                                        <input type="radio" name="status" value="1" title="开启" th:checked="${merchant.status == true}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -212,30 +212,39 @@
                                         <div class="layui-card-body">
                                             <form class="layui-form" action="">
                                                 <div class="layui-form-item">
-                                                    <label for="settle" class="layui-form-label" style="width: 120px">结算手续费类型：</label>
+                                                    <label for="settleFeeType_1" class="layui-form-label" style="width: 120px">结算手续费类型：</label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="settle" type="radio" name="settle" value="1" title="百分比收费" checked>
-                                                        <input type="radio" name="settle" value="2" title="固定收费">
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="layui-form-item">
-                                                    <label for="sxfbl" class="layui-form-label" style="width: 120px">结算手续费比例：</label>
-                                                    <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input type="number" class="layui-input"
-                                                               name="sxfbl" id="sxfbl"
-                                                               autocomplete="off"
-                                                               placeholder="请再次输入登录密码">
+                                                        <input id="settleFeeType_1"
+                                                               type="radio"
+                                                               name="settleFeeType"
+                                                               value="1"
+                                                               title="百分比收费"
+                                                               th:checked="${merchant.settleAccount.settleFeeType == 1}">
+                                                        <input type="radio"
+                                                               name="settleFeeType"
+                                                               value="2"
+                                                               title="固定收费"
+                                                               th:checked="${merchant.settleAccount.settleFeeType == 2}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
-                                                    <label for="mbsxf" class="layui-form-label" style="width: 120px">每笔手续费：</label>
+                                                    <label for="settleFeeRate" class="layui-form-label" style="width: 120px">结算手续费比例：</label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
-                                                               name="mbsxf" id="mbsxf"
+                                                               name="settleFeeRate" id="settleFeeRate"
                                                                autocomplete="off"
-                                                               placeholder="请输入每笔手续费">
+                                                               th:value="${merchant.settleAccount.settleFeeRate}"
+                                                               placeholder="请输入结算手续费比例，百分比换小数。百分比收费模式">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label for="settleFeeAmount" class="layui-form-label" style="width: 120px">每笔手续费：</label>
+                                                    <div class="layui-input-block" style="margin-left: 150px;">
+                                                        <input type="number" class="layui-input"
+                                                               name="settleFeeAmount" id="settleFeeAmount"
+                                                               autocomplete="off"
+                                                               th:value="${merchant.settleAccount.settleFeeAmount}"
+                                                               placeholder="请输入结算手续费（元），保留两位小数。固定收费模式">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -245,8 +254,17 @@
                                                         结算状态：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="settle-status_enable" type="radio" name="settleStatus" value="0" title="关闭" checked>
-                                                        <input type="radio" name="settleStatus" value="1" title="开启">
+                                                        <input id="settle-status_enable"
+                                                               type="radio"
+                                                               name="settleStatus"
+                                                               value="0"
+                                                               title="关闭"
+                                                               th:checked="${merchant.settleAccount.status == false}">
+                                                        <input type="radio"
+                                                               name="settleStatus"
+                                                               value="1"
+                                                               title="开启"
+                                                               th:checked="${merchant.settleAccount.status == true}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item" style="width: 120px">
@@ -294,7 +312,7 @@
                                                     <fieldset class="layui-elem-field">
                                                         <legend>平台私钥</legend>
                                                         <div class="layui-field-box">
-                                                            <textarea style="height: 130px" readonly class="layui-textarea" th:text="${merchant.apiConfig.privateKeyVal}"></textarea>
+                                                            <textarea style="height: 254px" readonly class="layui-textarea" th:text="${merchant.apiConfig.privateKeyVal}"></textarea>
                                                         </div>
                                                     </fieldset>
                                                 </div>

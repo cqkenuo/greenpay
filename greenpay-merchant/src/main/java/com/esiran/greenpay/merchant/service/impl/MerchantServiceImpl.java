@@ -126,9 +126,11 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         apiConfigDTO.setPrivateKeyVal(privateKeyVal);
         PayAccountDTO payAccountDTO = payAccountService.findByMerchantId(merchant.getId());
         PrepaidAccountDTO prepaidAccountDTO = prepaidAccountService.findByMerchantId(merchant.getId());
+        SettleAccountDTO settleAccountDTO = settleAccountService.findByMerchantId(merchant.getId());
         dto.setApiConfig(apiConfigDTO);
         dto.setPayAccount(payAccountDTO);
         dto.setPrepaidAccount(prepaidAccountDTO);
+        dto.setSettleAccount(settleAccountDTO);
         return dto;
     }
 

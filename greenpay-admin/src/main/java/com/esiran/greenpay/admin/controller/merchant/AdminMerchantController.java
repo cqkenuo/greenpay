@@ -27,7 +27,7 @@ public class AdminMerchantController {
         return "admin/merchant/list";
     }
     @GetMapping("/list/{mchId}/edit")
-    public String add(@PathVariable Integer mchId, ModelMap modelMap){
+    public String edit(@PathVariable Integer mchId, ModelMap modelMap){
         MerchantDetailDTO merchantDTO = merchantService.findMerchantById(mchId);
         modelMap.addAttribute("merchant",merchantDTO);
         return "admin/merchant/edit";

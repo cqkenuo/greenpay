@@ -15,4 +15,5 @@ public class MerchantDetailDTO extends BaseMapperEntity {
     private ApiConfigDTO apiConfig;
     private PayAccountDTO payAccount;
     private PrepaidAccountDTO prepaidAccount;
+    private SettleAccountDTO settleAccount;
 }

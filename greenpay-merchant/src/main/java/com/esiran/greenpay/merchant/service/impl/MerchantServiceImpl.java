@@ -191,6 +191,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             dto.setMerchantId(mchId);
             dto.setPayTypeName(type.getTypeName());
             dto.setPayTypeCode(type.getTypeCode());
+            dto.setRateDisplay("--");
             dto.setStatus(false);
             LambdaQueryWrapper<MerchantProduct> merchantProductQueryWrapper =
                     new QueryWrapper<MerchantProduct>().lambda().eq(MerchantProduct::getMerchantId,mchId)
@@ -209,6 +210,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             dto.setProductName(product.getProductName());
             dto.setStatus(merchantProduct.getStatus());
             dto.setRate(merchantProduct.getRate());
+            dto.setRateDisplay(String.format("%.2f",dto.getRate().floatValue()*100.00f));
             merchantProductDTOS.add(dto);
         }
         return merchantProductDTOS;

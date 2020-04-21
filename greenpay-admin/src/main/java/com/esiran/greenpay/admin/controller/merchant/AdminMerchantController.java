@@ -4,6 +4,10 @@ import com.esiran.greenpay.common.entity.APIError;
 import com.esiran.greenpay.merchant.entity.MerchantDetailDTO;
 import com.esiran.greenpay.merchant.entity.MerchantInputDTO;
 import com.esiran.greenpay.merchant.service.IMerchantService;
+import com.esiran.greenpay.pay.entity.ProductDTO;
+import com.esiran.greenpay.pay.entity.Type;
+import com.esiran.greenpay.pay.service.IProductService;
+import com.esiran.greenpay.pay.service.ITypeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +21,12 @@ import java.util.List;
 public class AdminMerchantController {
 
     private final IMerchantService merchantService;
-
-    public AdminMerchantController(IMerchantService merchantService) {
+    private final IProductService productService;
+    private final ITypeService typeService;
+    public AdminMerchantController(IMerchantService merchantService, IProductService productService, ITypeService typeService) {
         this.merchantService = merchantService;
+        this.productService = productService;
+        this.typeService = typeService;
     }
 
     @GetMapping("/list")
@@ -39,7 +46,12 @@ public class AdminMerchantController {
 
 
     @GetMapping("/list/{mchId}/product/edit")
-    public String product(@PathVariable String mchId, @RequestParam String payTypeCode){
+    public String product(@PathVariable String mchId, @RequestParam String payTypeCode, ModelMap modelMap) throws Exception {
+        Type type = typeService.findTypeByCode(payTypeCode);
+        if (type == null) throw new Exception("支付类型不存在");
+        List<ProductDTO> productList = productService.findAllProductByPayTypeCode(type.getTypeCode());
+        modelMap.addAttribute("payType",type);
+        modelMap.addAttribute("productList",productList);
         return "admin/merchant/product/edit";
     }
     @GetMapping("/add")

@@ -41,6 +41,8 @@ public class MerchantProductDTO {
 
     @ApiModelProperty("通道费率")
     private BigDecimal rate;
+    @ApiModelProperty("通道费率，格式化")
+    private String rateDisplay;
     @ApiModelProperty("状态")
     private Boolean status;
 

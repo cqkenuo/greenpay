@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>编辑商户 - GreenPay</title>
+    <title>支付产品配置 - GreenPay</title>
     <th:block th:replace="admin/header::stylesheet" />
 </head>
 <body class="layui-layout-body">
@@ -11,7 +11,7 @@
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('商户管理','编辑商户')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('商户管理','支付产品配置')"></div>
                 <div class="layui-fluid">
                     <div class="layui-row layui-col-space10">
                         <div class="layui-col-md12">
@@ -20,11 +20,13 @@
                                 <div class="layui-card-body">
                                     <form class="layui-form" action="">
                                         <div class="layui-row layui-form-item">
-                                            <label for="payTypeName" class="layui-form-label">支付方式：</label>
+                                            <label for="payTypeCode" class="layui-form-label">支付类型：</label>
                                             <div class="layui-input-block">
                                                 <input type="text" class="layui-input"
-                                                       id="payTypeName" autocomplete="off"
-                                                       placeholder="请输入支付方式">
+                                                       id="payTypeCode" autocomplete="off"
+                                                       th:value="${payType.typeName}"
+                                                       readonly
+                                                       placeholder="请选择支付类型">
                                             </div>
                                         </div>
                                         <div class="layui-form-item">
@@ -32,8 +34,8 @@
                                             <div class="layui-input-block">
                                                 <input type="text" class="layui-input"
                                                        name="merchantName" id="merchantName"
-                                                       lay-verify="title" autocomplete="off"
-                                                       placeholder="请输入商户名称">
+                                                       autocomplete="off"
+                                                       placeholder="请选择支付类型">
                                             </div>
                                         </div>
                                         <div class="layui-form-item">

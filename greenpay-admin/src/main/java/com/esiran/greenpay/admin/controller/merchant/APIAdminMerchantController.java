@@ -99,6 +99,7 @@ public class APIAdminMerchantController {
                            @RequestParam Integer action,
                            @RequestParam Integer type,
                            @RequestParam Integer amount) {
+        // TODO: 修改支付账户
 
     }
     @ApiOperation("修改预付款账户")
@@ -113,6 +114,7 @@ public class APIAdminMerchantController {
                            @RequestParam Integer action,
                            @RequestParam Integer type,
                            @RequestParam Integer amount) {
+        // TODO: 修改预付款账户
     }
 
 

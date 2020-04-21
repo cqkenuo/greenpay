@@ -27,6 +27,9 @@ public class SettleAccountServiceImpl extends ServiceImpl<SettleAccountMapper, S
         LambdaQueryWrapper<SettleAccount> settleAccountLambdaQueryWrapper = new LambdaQueryWrapper<>();
         settleAccountLambdaQueryWrapper.eq(SettleAccount::getMerchantId,mchId);
         SettleAccount settleAccount = this.getOne(settleAccountLambdaQueryWrapper);
+        SettleAccountDTO dto = modelMapper.map(settleAccount,SettleAccountDTO.class);
+        dto.setSettleFeeAmountDisplay(String.format("%.2f",(dto.getSettleFeeAmount()/100.00f)));
+        dto.setSettleFeeRateDisplay(String.format("%.4f",(dto.getSettleFeeRate().floatValue()/100.00f)));
         return modelMapper.map(settleAccount,SettleAccountDTO.class);
     }
 }

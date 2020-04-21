@@ -21,7 +21,6 @@ public interface IMerchantService extends IService<Merchant> {
     void updateSettleById(SettleAccountDTO settleAccountDTO, Integer id) throws Exception;
     MerchantDetailDTO findMerchantById(Integer id);
     void addMerchant(MerchantInputDTO merchantInputDTO) throws Exception;
-
     List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException;
     MerchantProductDTO selectMchProductByIdAndPayTypeCode(Integer mchId,String payTypeCode) throws Exception;
     IPage<MerchantDTO> selectMerchantByPage(IPage<Void> page);

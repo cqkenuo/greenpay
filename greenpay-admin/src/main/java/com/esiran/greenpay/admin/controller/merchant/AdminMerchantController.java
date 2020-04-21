@@ -3,6 +3,7 @@ package com.esiran.greenpay.admin.controller.merchant;
 import com.esiran.greenpay.common.entity.APIError;
 import com.esiran.greenpay.merchant.entity.MerchantDetailDTO;
 import com.esiran.greenpay.merchant.entity.MerchantInputDTO;
+import com.esiran.greenpay.merchant.entity.MerchantProductDTO;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.pay.entity.ProductDTO;
 import com.esiran.greenpay.pay.entity.Type;
@@ -47,11 +48,8 @@ public class AdminMerchantController {
 
     @GetMapping("/list/{mchId}/product/edit")
     public String product(@PathVariable String mchId, @RequestParam String payTypeCode, ModelMap modelMap) throws Exception {
-        Type type = typeService.findTypeByCode(payTypeCode);
-        if (type == null) throw new Exception("支付类型不存在");
-        List<ProductDTO> productList = productService.findAllProductByPayTypeCode(type.getTypeCode());
-        modelMap.addAttribute("payType",type);
-        modelMap.addAttribute("productList",productList);
+        MerchantProductDTO merchantProduct = merchantService.selectMchProductByIdAndPayTypeCode(Integer.valueOf(mchId),payTypeCode);
+        modelMap.addAttribute("merchantProduct",merchantProduct);
         return "admin/merchant/product/edit";
     }
     @GetMapping("/add")

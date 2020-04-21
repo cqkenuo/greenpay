@@ -13,6 +13,7 @@ import com.esiran.greenpay.merchant.mapper.MerchantMapper;
 import com.esiran.greenpay.merchant.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esiran.greenpay.pay.entity.Product;
+import com.esiran.greenpay.pay.entity.ProductDTO;
 import com.esiran.greenpay.pay.entity.Type;
 import com.esiran.greenpay.pay.service.IProductService;
 import com.esiran.greenpay.pay.service.ITypeService;
@@ -187,10 +188,12 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         List<Type> types = iTypeService.list();
         List<MerchantProductDTO> merchantProductDTOS = new ArrayList<>();
         for (Type type : types){
+            List<ProductDTO> availableProducts = productService.findAllProductByPayTypeCode(type.getTypeCode());
             MerchantProductDTO dto = new MerchantProductDTO();
             dto.setMerchantId(mchId);
             dto.setPayTypeName(type.getTypeName());
             dto.setPayTypeCode(type.getTypeCode());
+            dto.setAvailableProducts(availableProducts);
             dto.setRateDisplay("--");
             dto.setStatus(false);
             LambdaQueryWrapper<MerchantProduct> merchantProductQueryWrapper =
@@ -228,11 +231,14 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
                 new QueryWrapper<MerchantProduct>().lambda().eq(MerchantProduct::getMerchantId,mchId)
                         .eq(MerchantProduct::getPayTypeCode,type.getTypeCode());
         MerchantProduct merchantProduct = merchantProductService.getOne(merchantProductQueryWrapper);
+        List<ProductDTO> availableProducts = productService.findAllProductByPayTypeCode(payTypeCode);
         MerchantProductDTO dto = new MerchantProductDTO();
         dto.setMerchantId(mchId);
         dto.setPayTypeName(type.getTypeName());
         dto.setPayTypeCode(type.getTypeCode());
         dto.setStatus(false);
+        dto.setRateDisplay("--");
+        dto.setAvailableProducts(availableProducts);
         if (merchantProduct == null){
             return dto;
         }
@@ -244,6 +250,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         dto.setProductName(product.getProductName());
         dto.setStatus(merchantProduct.getStatus());
         dto.setRate(merchantProduct.getRate());
+        dto.setRateDisplay(String.format("%.2f",dto.getRate().floatValue()*100.00f));
         return dto;
     }
 

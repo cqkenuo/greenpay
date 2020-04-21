@@ -24,33 +24,41 @@
                                             <div class="layui-input-block">
                                                 <input type="text" class="layui-input"
                                                        id="payTypeCode" autocomplete="off"
-                                                       th:value="${payType.typeName}"
+                                                       th:value="${merchantProduct.payTypeName}"
                                                        readonly
                                                        placeholder="请选择支付类型">
                                             </div>
                                         </div>
-                                        <div class="layui-form-item">
-                                            <label for="merchantName" class="layui-form-label">支付产品：</label>
+                                        <div class="layui-row layui-form-item">
+                                            <label for="productId" class="layui-form-label">支付产品：</label>
                                             <div class="layui-input-block">
-                                                <input type="text" class="layui-input"
-                                                       name="merchantName" id="merchantName"
-                                                       autocomplete="off"
-                                                       placeholder="请选择支付类型">
+                                                <select id="productId" name="productId" lay-filter="aihao">
+                                                    <option value=""></option>
+                                                    <option th:each="product:${merchantProduct.availableProducts}"
+                                                            th:text="${product.productName}"
+                                                            th:value="${product.id}"
+                                                            th:selected="${merchantProduct.productId == product.id}"></option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="layui-form-item">
-                                            <label for="mbsxf" class="layui-form-label">产品费率：</label>
+                                            <label for="rate" class="layui-form-label">产品费率：</label>
                                             <div class="layui-input-block">
                                                 <input type="number" class="layui-input"
-                                                       name="mbsxf" id="mbsxf" autocomplete="off"
+                                                       name="rate" id="rate" autocomplete="off"
+                                                       th:value="${merchantProduct.rate}"
                                                        placeholder="请输入每笔手续费">
                                             </div>
                                         </div>
                                         <div class="layui-form-item">
                                             <label for="status" class="layui-form-label">状态：</label>
                                             <div class="layui-input-block">
-                                                <input id="status" type="radio" name="status" value="0" title="关闭" checked>
-                                                <input type="radio" name="status" value="1" title="开启">
+                                                <input id="status" type="radio" name="status"
+                                                       value="0"
+                                                       title="关闭"
+                                                       th:checked="${merchantProduct.status == false}">
+                                                <input type="radio" name="status" value="1" title="开启"
+                                                       th:checked="${merchantProduct.status == true}">
                                             </div>
                                         </div>
                                         <div class="layui-form-item">

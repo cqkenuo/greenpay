@@ -3,18 +3,22 @@
 <mapper namespace="com.esiran.greenpay.merchant.mapper.PayAccountMapper">
     <update id="updateAvailBalance">
         UPDATE `merchant_pay_account`
-        SET `avail_balance` = `avail_balance` + ${amount}
+        SET `avail_balance` = `avail_balance` - ${amount}
         WHERE `merchant_id` = ${mchId}
+        AND `avail_balance` >= ${amount}
     </update>
     <update id="updateFreezeBalance">
         UPDATE `merchant_pay_account`
-        SET `freeze_balance` = `freeze_balance` + ${amount}
+        SET `freeze_balance` = `freeze_balance` - ${amount}
         WHERE `merchant_id` = ${mchId}
+        AND `freeze_balance` >= ${amount}
     </update>
     <update id="updateBalance">
         UPDATE `merchant_pay_account`
-        SET `freeze_balance` = `freeze_balance` + ${availAmount},
-            `freeze_balance` = `freeze_balance` + ${freezeAmount}
+        SET `avail_balance` = `avail_balance` - ${availAmount},
+            `freeze_balance` = `freeze_balance` - ${freezeAmount}
         WHERE `merchant_id` = ${mchId}
+          AND `avail_balance` >= ${availAmount}
+          AND `freeze_balance` >= ${freezeAmount}
     </update>
 </mapper>

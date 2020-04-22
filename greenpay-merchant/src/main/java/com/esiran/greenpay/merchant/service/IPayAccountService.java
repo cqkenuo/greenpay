@@ -16,5 +16,5 @@ public interface IPayAccountService extends IService<PayAccount> {
     PayAccountDTO findByMerchantId(Integer mchId);
     void updateAvailBalance(Integer mchId, Integer amount);
     void updateFreezeBalance(Integer mchId, Integer amount);
-    void updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount);
+    int updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount);
 }

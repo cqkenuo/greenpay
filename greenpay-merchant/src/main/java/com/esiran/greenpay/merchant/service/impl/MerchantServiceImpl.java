@@ -122,14 +122,20 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     }
 
     @Override
-    public void updatePayAccountBalance(Integer mchId, Double amount, Integer type, Integer action) throws Exception {
+    public void updateAccountBalance(Integer accType, Integer mchId, Double amount, Integer type, Integer action) throws Exception {
         if (amount == null || amount.floatValue() < 0.00f) throw new Exception("金额格式不正确");
         if (type == null)  throw new Exception("类型不能为空");
         long amountFen = Math.round(amount * 100);
         int availAmount = type == 1?(int) amountFen:0;
         int freezeAmount = type == 2?(int) amountFen:0;
-        payAccountService.updateBalance(mchId,availAmount,freezeAmount);
+        availAmount = action == 1 ? -availAmount:availAmount;
+        freezeAmount = action == 1 ? -freezeAmount:freezeAmount;
+        int i = accType == 1 ?  payAccountService.updateBalance(mchId,availAmount,freezeAmount):
+                accType == 2 ? prepaidAccountService.updateBalance(mchId,availAmount,freezeAmount)
+                :0;
+        if (i == 0) throw new Exception("账户余额不足");
     }
+
 
     @Override
     public MerchantDetailDTO findMerchantById(Integer id) {

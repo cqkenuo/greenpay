@@ -101,7 +101,7 @@ public class APIAdminMerchantController {
                            @RequestParam Integer action,
                            @RequestParam Integer type,
                            @RequestParam Double amount) throws Exception {
-        merchantService.updateAccountBalance(2,Integer.valueOf(mchId),amount,type,action);
+        merchantService.updateAccountBalance(1,Integer.valueOf(mchId),amount,type,action);
     }
     @ApiOperation("修改预付款账户")
     @ApiImplicitParams({
@@ -115,7 +115,7 @@ public class APIAdminMerchantController {
                            @RequestParam Integer action,
                            @RequestParam Integer type,
                            @RequestParam Double amount) throws Exception {
-        merchantService.updateAccountBalance(1,Integer.valueOf(mchId),amount,type,action);
+        merchantService.updateAccountBalance(2,Integer.valueOf(mchId),amount,type,action);
     }
 
 

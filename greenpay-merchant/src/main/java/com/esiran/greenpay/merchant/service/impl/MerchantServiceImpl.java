@@ -130,9 +130,12 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         int freezeAmount = type == 2?(int) amountFen:0;
         availAmount = action == 1 ? -availAmount:availAmount;
         freezeAmount = action == 1 ? -freezeAmount:freezeAmount;
-        int i = accType == 1 ?  payAccountService.updateBalance(mchId,availAmount,freezeAmount):
-                accType == 2 ? prepaidAccountService.updateBalance(mchId,availAmount,freezeAmount)
-                :0;
+        int i = accType == 1 ?
+                    payAccountService.updateBalance(mchId,availAmount,freezeAmount):
+                accType == 2 ?
+                    prepaidAccountService.updateBalance(mchId,availAmount,freezeAmount)
+                : -1;
+        if (i == -1) throw new Exception("账户类型不正确");
         if (i == 0) throw new Exception("账户余额不足");
     }
 

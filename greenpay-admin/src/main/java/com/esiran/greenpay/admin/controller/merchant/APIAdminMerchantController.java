@@ -100,9 +100,10 @@ public class APIAdminMerchantController {
     public void payAccount(@PathVariable String mchId,
                            @RequestParam Integer action,
                            @RequestParam Integer type,
-                           @RequestParam Integer amount) throws Exception {
+                           @RequestParam Double amount) throws Exception {
+
         // TODO: 修改支付账户
-        merchantService.updatePayAccountBalance(Integer.valueOf(mchId),new BigDecimal("0"),type,amount);
+        merchantService.updatePayAccountBalance(Integer.valueOf(mchId),amount,type,action);
 
     }
     @ApiOperation("修改预付款账户")

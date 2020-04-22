@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.merchant.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.swagger.models.auth.In;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -17,8 +19,10 @@ import java.util.List;
  */
 public interface IMerchantService extends IService<Merchant> {
     void updateMerchantInfoById(MerchantUpdateDTO dto, Integer id) throws Exception;
+    void updateMerchantProduct(MerchantProductInputDTO dto, Integer id) throws Exception;
     void updatePasswordById(String password, Integer id) throws Exception;
     void updateSettleById(SettleAccountDTO settleAccountDTO, Integer id) throws Exception;
+    void updatePayAccountBalance(Integer mchId, BigDecimal amount, Integer type, Integer action) throws Exception;
     MerchantDetailDTO findMerchantById(Integer id);
     void addMerchant(MerchantInputDTO merchantInputDTO) throws Exception;
     List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException;

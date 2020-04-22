@@ -102,8 +102,8 @@
                                                         变更方式：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="payAccount-action_up" type="radio" name="action" value="0" title="增加" checked>
-                                                        <input type="radio" name="action" value="1" title="扣减">
+                                                        <input id="payAccount-action_up" type="radio" name="action" value="1" title="增加" checked>
+                                                        <input type="radio" name="action" value="2" title="扣减">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -113,8 +113,8 @@
                                                         变更类型：
                                                     </label>
                                                     <div class="layui-input-block"  style="margin-left: 150px;">
-                                                        <input id="payAccount-type_avail" type="radio" name="type" value="0" title="可用余额" checked>
-                                                        <input type="radio" name="type" value="1" title="冻结金额">
+                                                        <input id="payAccount-type_avail" type="radio" name="type" value="1" title="可用余额" checked>
+                                                        <input type="radio" name="type" value="2" title="冻结金额">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -435,6 +435,7 @@
                 },
                 success: function (response) {
                     layer.alert('修改成功', {icon: 1});
+                    location.reload();
                 }
             })
             return false;

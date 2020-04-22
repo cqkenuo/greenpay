@@ -4,17 +4,17 @@
     <update id="updateAvailBalance">
         UPDATE `merchant_pay_account`
         SET `avail_balance` = `avail_balance` + ${amount}
-        WHERE WHERE `merchant_id` = ${mchId};
+        WHERE `merchant_id` = ${mchId}
     </update>
     <update id="updateFreezeBalance">
         UPDATE `merchant_pay_account`
         SET `freeze_balance` = `freeze_balance` + ${amount}
-        WHERE WHERE `merchant_id` = ${mchId};
+        WHERE `merchant_id` = ${mchId}
     </update>
     <update id="updateBalance">
         UPDATE `merchant_pay_account`
         SET `freeze_balance` = `freeze_balance` + ${availAmount},
             `freeze_balance` = `freeze_balance` + ${freezeAmount}
-        WHERE WHERE `merchant_id` = ${mchId};
+        WHERE `merchant_id` = ${mchId}
     </update>
 </mapper>

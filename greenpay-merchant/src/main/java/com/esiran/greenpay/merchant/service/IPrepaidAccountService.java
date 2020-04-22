@@ -14,4 +14,5 @@ import com.esiran.greenpay.merchant.entity.PrepaidAccountDTO;
  */
 public interface IPrepaidAccountService extends IService<PrepaidAccount> {
     PrepaidAccountDTO findByMerchantId(Integer mchId);
+    int updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount);
 }

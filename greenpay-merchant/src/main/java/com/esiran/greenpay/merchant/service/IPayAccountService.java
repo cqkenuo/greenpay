@@ -14,4 +14,7 @@ import com.esiran.greenpay.merchant.entity.PayAccountDTO;
  */
 public interface IPayAccountService extends IService<PayAccount> {
     PayAccountDTO findByMerchantId(Integer mchId);
+    void updateAvailBalance(Integer mchId, Integer amount);
+    void updateFreezeBalance(Integer mchId, Integer amount);
+    int updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount);
 }

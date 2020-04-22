@@ -19,6 +19,7 @@ import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -56,7 +57,8 @@ public class APIAdminMerchantController {
     @ApiOperation("修改商户的支付产品")
     @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
     @PostMapping(value = "/{mchId}/products")
-    public void updateProduct(@PathVariable String mchId, @Valid MerchantProductInputDTO dto) {
+    public void updateProduct(@PathVariable String mchId, @Valid MerchantProductInputDTO dto) throws Exception {
+        merchantService.updateMerchantProduct(dto,Integer.valueOf(mchId));
     }
 
     @ApiOperation("修改商户信息")
@@ -64,7 +66,7 @@ public class APIAdminMerchantController {
             @ApiImplicitParam(name="mchId",value="商户ID",required = true),
     })
     @PostMapping(value = "/{mchId}")
-    public void updateUserInfo(@PathVariable String mchId, MerchantUpdateDTO merchantDTO) throws Exception {
+    public void updateUserInfo(@PathVariable String mchId, @Valid MerchantUpdateDTO merchantDTO) throws Exception {
         merchantService.updateMerchantInfoById(merchantDTO,Integer.valueOf(mchId));
     }
 
@@ -98,9 +100,8 @@ public class APIAdminMerchantController {
     public void payAccount(@PathVariable String mchId,
                            @RequestParam Integer action,
                            @RequestParam Integer type,
-                           @RequestParam Integer amount) {
-        // TODO: 修改支付账户
-
+                           @RequestParam Double amount) throws Exception {
+        merchantService.updateAccountBalance(1,Integer.valueOf(mchId),amount,type,action);
     }
     @ApiOperation("修改预付款账户")
     @ApiImplicitParams({
@@ -113,8 +114,8 @@ public class APIAdminMerchantController {
     public void prepaidAccount(@PathVariable String mchId,
                            @RequestParam Integer action,
                            @RequestParam Integer type,
-                           @RequestParam Integer amount) {
-        // TODO: 修改预付款账户
+                           @RequestParam Double amount) throws Exception {
+        merchantService.updateAccountBalance(2,Integer.valueOf(mchId),amount,type,action);
     }
 
 

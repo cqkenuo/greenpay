@@ -69,18 +69,29 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         if (target == null) throw new Exception("商户不存在");
         LambdaUpdateWrapper<Merchant> updateWrapper = new LambdaUpdateWrapper<>();
         if (dto == null) return;
-        if (dto.getName() != null){
-            updateWrapper.set(Merchant::getName,dto.getName());
-        }
-        if (dto.getEmail() != null){
-            updateWrapper.set(Merchant::getName,dto.getEmail());
-        }
-        if (dto.getStatus() != null){
-            updateWrapper.set(Merchant::getStatus,dto.getStatus());
-        }
+        updateWrapper.set(Merchant::getName,dto.getName());
+        updateWrapper.set(Merchant::getName,dto.getEmail());
+        updateWrapper.set(Merchant::getStatus,dto.getStatus());
         updateWrapper.set(Merchant::getUpdatedAt, LocalDateTime.now());
         updateWrapper.eq(Merchant::getId,target.getId());
         update(updateWrapper);
+    }
+
+    @Override
+    @Transactional
+    public void updateMerchantProduct(MerchantProductInputDTO dto, Integer id) throws Exception {
+        MerchantProduct mp = modelMapper.map(dto,MerchantProduct.class);
+        mp.setMerchantId(id);
+        Type type = iTypeService.findTypeByCode(mp.getPayTypeCode());
+        if (type == null) throw new Exception("未知支付类型");
+        Product product = productService.getById(mp.getProductId());
+        if (product == null )  throw new Exception("支付产品不存在");
+        if (!product.getPayTypeCode().equals(type.getTypeCode()))
+            throw new Exception("支付产品不属于该支付类型");
+        LambdaUpdateWrapper<MerchantProduct> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper.eq(MerchantProduct::getPayTypeCode,mp.getPayTypeCode());
+        merchantProductService.remove(lambdaUpdateWrapper);
+        merchantProductService.save(mp);
     }
 
     @Override
@@ -109,6 +120,25 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         target.setUpdatedAt(LocalDateTime.now());
         settleAccountService.updateById(target);
     }
+
+    @Override
+    public void updateAccountBalance(Integer accType, Integer mchId, Double amount, Integer type, Integer action) throws Exception {
+        if (amount == null || amount.floatValue() < 0.00f) throw new Exception("金额格式不正确");
+        if (type == null)  throw new Exception("类型不能为空");
+        long amountFen = Math.round(amount * 100);
+        int availAmount = type == 1?(int) amountFen:0;
+        int freezeAmount = type == 2?(int) amountFen:0;
+        availAmount = action == 1 ? -availAmount:availAmount;
+        freezeAmount = action == 1 ? -freezeAmount:freezeAmount;
+        int i = accType == 1 ?
+                    payAccountService.updateBalance(mchId,availAmount,freezeAmount):
+                accType == 2 ?
+                    prepaidAccountService.updateBalance(mchId,availAmount,freezeAmount)
+                : -1;
+        if (i == -1) throw new Exception("账户类型不正确");
+        if (i == 0) throw new Exception("账户余额不足");
+    }
+
 
     @Override
     public MerchantDetailDTO findMerchantById(Integer id) {

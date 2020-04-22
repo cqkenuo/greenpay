@@ -32,4 +32,10 @@ public class PrepaidAccountServiceImpl extends ServiceImpl<PrepaidAccountMapper,
         dto.setFreezeBalanceDisplay(String.format("%.2f",(dto.getFreezeBalance()/100.00f)));
         return dto;
     }
+
+    @Override
+    public int updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount) {
+        if (mchId == null || availAmount == null || freezeAmount== null) return 0;
+        return this.baseMapper.updateBalance(mchId,availAmount,freezeAmount);
+    }
 }

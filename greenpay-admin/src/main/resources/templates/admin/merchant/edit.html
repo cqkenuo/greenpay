@@ -102,8 +102,8 @@
                                                         变更方式：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="payAccount-action_up" type="radio" name="action" value="0" title="增加" checked>
-                                                        <input type="radio" name="action" value="1" title="扣减">
+                                                        <input id="payAccount-action_up" type="radio" name="action" value="1" title="增加" checked>
+                                                        <input type="radio" name="action" value="2" title="扣减">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -113,8 +113,8 @@
                                                         变更类型：
                                                     </label>
                                                     <div class="layui-input-block"  style="margin-left: 150px;">
-                                                        <input id="payAccount-type_avail" type="radio" name="type" value="0" title="可用余额" checked>
-                                                        <input type="radio" name="type" value="1" title="冻结金额">
+                                                        <input id="payAccount-type_avail" type="radio" name="type" value="1" title="可用余额" checked>
+                                                        <input type="radio" name="type" value="2" title="冻结金额">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -129,7 +129,7 @@
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="hidden" name="method" value="upPayBalance">
-                                                        <button type="submit" class="layui-btn">确认提交</button>
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="upPayBalance">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -170,8 +170,8 @@
                                                         变更方式：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="prepaidAccout-action_up" type="radio" name="action" value="0" title="增加" checked>
-                                                        <input type="radio" name="action" value="1" title="扣减">
+                                                        <input id="prepaidAccout-action_up" type="radio" name="action" value="1" title="增加" checked>
+                                                        <input type="radio" name="action" value="2" title="扣减">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -181,8 +181,8 @@
                                                         变更类型：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="prepaidAccount-type_avail" type="radio" name="type" value="0" title="可用余额" checked>
-                                                        <input type="radio" name="type" value="1" title="冻结金额">
+                                                        <input id="prepaidAccount-type_avail" type="radio" name="type" value="1" title="可用余额" checked>
+                                                        <input type="radio" name="type" value="2" title="冻结金额">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -197,7 +197,7 @@
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="hidden" name="method" value="upPrepaidBalance">
-                                                        <button type="submit" class="layui-btn">确认提交</button>
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="upPrepaidBalance">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -269,7 +269,9 @@
                                                 </div>
                                                 <div class="layui-form-item" style="width: 120px">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <button type="submit" class="layui-btn">立即提交</button>
+                                                        <input type="hidden" name="method" value="settleMent">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="settleMent">立即提交</button>
+<!--                                                        <button type="submit" class="layui-btn">立即提交</button>-->
                                                     </div>
                                                 </div>
                                             </form>
@@ -341,10 +343,12 @@
                                                         <div class="layui-form-item">
                                                             <textarea name="desc"
                                                                       placeholder="请输入内容"
-                                                                      class="layui-textarea"></textarea>
+                                                                      class="layui-textarea" value="publicKey"></textarea>
                                                         </div>
                                                         <div>
-                                                            <button style="width: 100%" type="submit" class="layui-btn">重置公钥</button>
+                                                            <input type="hidden" name="method" value="publicKey">
+                                                            <button style="width: 100%" type="submit" class="layui-btn" lay-submit lay-filter="publicKey">重置公钥</button>
+<!--                                                            <button style="width: 100%" type="submit" class="layui-btn" lay-submit	lay-verify="publicKey">重置公钥</button>-->
                                                         </div>
                                                     </form>
                                                 </div>
@@ -380,7 +384,8 @@
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block">
-                                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">重置密码</button>
+                                                        <input type="hidden" name="method" value="resetPassword">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="resetPassword">重置密码</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -400,23 +405,190 @@
 <script th:inline="javascript">
     !function(){
         let layer = layui.layer
-            ,form = layui.form;
-
-        form.on('submit(upPrepaidBalance)', function(data){
-            console.log('增加支付账户余额');
-            console.log(data);
+            ,form = layui.form
+            ,$ = layui.jquery;
+        let mchId = parseInt(location.pathname.split('/')[4])
+        // 支付账户
+        form.on('submit(upPayBalance)', function(data){
+            console.log('修改支付账户');
+            // console.log(data);
+            let params = {
+                action:data.field.action,
+                type:data.field.type,
+                amount:data.field.amount,
+                mchId:mchId
+            }
+            // console.log(params)
+            // console.log('mchId',mchId)
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/pay/account',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
             return false;
         });
+
+        // 修改用户资料
         form.on('submit(updateUserInfo)', function(data){
             console.log('修改用户资料');
-            console.log(data);
+            // console.log(data);
+            let params = {
+                email:data.field.email,
+                mchId:mchId,
+                name:data.field.merchantName,
+                status:parseInt(data.field.status),
+                username:data.form[0].value
+            }
+            console.log(params)
+            $.ajax({
+                type: "post",
+                url: "/admin/api/v1/merchants/"+mchId,
+                data: params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            });
             return false;
         });
+
+        // 重置公钥
+        form.on('submit(publicKey)', function(data){
+            console.log('重置公钥');
+            // console.log(data);
+            let params = {
+                content:data.field.desc,
+                mchId:mchId
+            };
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/mch_pub_key',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+
+
+            return false;
+        });
+
+        form.on('submit(settleMent)',function (data) {
+            console.log('结算设置');
+            // console.log(data);
+            let params = {
+                mchId:mchId,
+                settleFeeAmount:data.field.settleFeeAmount,//结算费用
+                settleFeeType:data.field.settleFeeType,//结算手续费类型
+                status:data.field.settleStatus,//结算状态
+                settleFeeRate:data.field.settleFeeRate
+            }
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/settle',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+            return false;
+        })
+
+        // 预充值账户
         form.on('submit(upPrepaidBalance)', function(data){
             console.log('增加预充值账户余额');
-            console.log(data);
+            // console.log(data);
+            let params = {
+                action:data.field.action,
+                amount:data.field.amount,
+                type:data.field.type,
+                mchId:mchId
+            };
+            console.log(params)
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/prepaid/account',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
             return false;
         });
+        // 重置密码
+        form.on('submit(resetPassword)',function (data) {
+            console.log('重置密码');
+            // console.log(data)
+            let params = {
+                mchId:mchId,
+                password:data.field.password
+            }
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/security',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+            return false;
+        })
     }();
 </script>
 

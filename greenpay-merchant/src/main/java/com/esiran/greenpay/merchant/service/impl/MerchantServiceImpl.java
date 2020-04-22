@@ -13,6 +13,7 @@ import com.esiran.greenpay.merchant.mapper.MerchantMapper;
 import com.esiran.greenpay.merchant.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esiran.greenpay.pay.entity.Product;
+import com.esiran.greenpay.pay.entity.ProductDTO;
 import com.esiran.greenpay.pay.entity.Type;
 import com.esiran.greenpay.pay.service.IProductService;
 import com.esiran.greenpay.pay.service.ITypeService;
@@ -68,18 +69,29 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         if (target == null) throw new Exception("商户不存在");
         LambdaUpdateWrapper<Merchant> updateWrapper = new LambdaUpdateWrapper<>();
         if (dto == null) return;
-        if (dto.getName() != null){
-            updateWrapper.set(Merchant::getName,dto.getName());
-        }
-        if (dto.getEmail() != null){
-            updateWrapper.set(Merchant::getName,dto.getEmail());
-        }
-        if (dto.getStatus() != null){
-            updateWrapper.set(Merchant::getStatus,dto.getStatus());
-        }
+        updateWrapper.set(Merchant::getName,dto.getName());
+        updateWrapper.set(Merchant::getName,dto.getEmail());
+        updateWrapper.set(Merchant::getStatus,dto.getStatus());
         updateWrapper.set(Merchant::getUpdatedAt, LocalDateTime.now());
         updateWrapper.eq(Merchant::getId,target.getId());
         update(updateWrapper);
+    }
+
+    @Override
+    @Transactional
+    public void updateMerchantProduct(MerchantProductInputDTO dto, Integer id) throws Exception {
+        MerchantProduct mp = modelMapper.map(dto,MerchantProduct.class);
+        mp.setMerchantId(id);
+        Type type = iTypeService.findTypeByCode(mp.getPayTypeCode());
+        if (type == null) throw new Exception("未知支付类型");
+        Product product = productService.getById(mp.getProductId());
+        if (product == null )  throw new Exception("支付产品不存在");
+        if (!product.getPayTypeCode().equals(type.getTypeCode()))
+            throw new Exception("支付产品不属于该支付类型");
+        LambdaUpdateWrapper<MerchantProduct> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper.eq(MerchantProduct::getPayTypeCode,mp.getPayTypeCode());
+        merchantProductService.remove(lambdaUpdateWrapper);
+        merchantProductService.save(mp);
     }
 
     @Override
@@ -107,6 +119,14 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         target.setId(src.getId());
         target.setUpdatedAt(LocalDateTime.now());
         settleAccountService.updateById(target);
+    }
+
+    @Override
+    public void updatePayAccountBalance(Integer mchId, BigDecimal amount, Integer type, Integer action) throws Exception {
+        if (amount == null || amount.floatValue() < 0.00f) throw new Exception("金额格式不正确");
+        if (type == 1){
+            payAccountService.updateBalance(mchId,0,0);
+        }
     }
 
     @Override
@@ -187,10 +207,13 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         List<Type> types = iTypeService.list();
         List<MerchantProductDTO> merchantProductDTOS = new ArrayList<>();
         for (Type type : types){
+            List<ProductDTO> availableProducts = productService.findAllProductByPayTypeCode(type.getTypeCode());
             MerchantProductDTO dto = new MerchantProductDTO();
             dto.setMerchantId(mchId);
             dto.setPayTypeName(type.getTypeName());
             dto.setPayTypeCode(type.getTypeCode());
+            dto.setAvailableProducts(availableProducts);
+            dto.setRateDisplay("--");
             dto.setStatus(false);
             LambdaQueryWrapper<MerchantProduct> merchantProductQueryWrapper =
                     new QueryWrapper<MerchantProduct>().lambda().eq(MerchantProduct::getMerchantId,mchId)
@@ -209,6 +232,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             dto.setProductName(product.getProductName());
             dto.setStatus(merchantProduct.getStatus());
             dto.setRate(merchantProduct.getRate());
+            dto.setRateDisplay(String.format("%.2f",dto.getRate().floatValue()*100.00f));
             merchantProductDTOS.add(dto);
         }
         return merchantProductDTOS;
@@ -226,11 +250,14 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
                 new QueryWrapper<MerchantProduct>().lambda().eq(MerchantProduct::getMerchantId,mchId)
                         .eq(MerchantProduct::getPayTypeCode,type.getTypeCode());
         MerchantProduct merchantProduct = merchantProductService.getOne(merchantProductQueryWrapper);
+        List<ProductDTO> availableProducts = productService.findAllProductByPayTypeCode(payTypeCode);
         MerchantProductDTO dto = new MerchantProductDTO();
         dto.setMerchantId(mchId);
         dto.setPayTypeName(type.getTypeName());
         dto.setPayTypeCode(type.getTypeCode());
         dto.setStatus(false);
+        dto.setRateDisplay("--");
+        dto.setAvailableProducts(availableProducts);
         if (merchantProduct == null){
             return dto;
         }
@@ -242,6 +269,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         dto.setProductName(product.getProductName());
         dto.setStatus(merchantProduct.getStatus());
         dto.setRate(merchantProduct.getRate());
+        dto.setRateDisplay(String.format("%.2f",dto.getRate().floatValue()*100.00f));
         return dto;
     }
 

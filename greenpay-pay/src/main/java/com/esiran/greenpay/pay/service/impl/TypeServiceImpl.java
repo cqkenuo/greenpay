@@ -1,5 +1,6 @@
 package com.esiran.greenpay.pay.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.esiran.greenpay.pay.entity.Type;
 import com.esiran.greenpay.pay.mapper.TypeMapper;
 import com.esiran.greenpay.pay.service.ITypeService;
@@ -17,4 +18,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements ITypeService {
 
+    @Override
+    public Type findTypeByCode(String code) {
+        LambdaQueryWrapper<Type> typeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        typeLambdaQueryWrapper.eq(Type::getTypeCode,code);
+        return getOne(typeLambdaQueryWrapper);
+    }
 }

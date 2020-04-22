@@ -15,8 +15,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -50,12 +53,20 @@ public class APIAdminMerchantController {
         return merchantService.selectMchProductById(mchId);
     }
 
+
+    @ApiOperation("修改商户的支付产品")
+    @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
+    @PostMapping(value = "/{mchId}/products")
+    public void updateProduct(@PathVariable String mchId, @Valid MerchantProductInputDTO dto) throws Exception {
+        merchantService.updateMerchantProduct(dto,Integer.valueOf(mchId));
+    }
+
     @ApiOperation("修改商户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name="mchId",value="商户ID",required = true),
     })
     @PostMapping(value = "/{mchId}")
-    public void updateUserInfo(@PathVariable String mchId, MerchantUpdateDTO merchantDTO) throws Exception {
+    public void updateUserInfo(@PathVariable String mchId, @Valid MerchantUpdateDTO merchantDTO) throws Exception {
         merchantService.updateMerchantInfoById(merchantDTO,Integer.valueOf(mchId));
     }
 
@@ -78,7 +89,36 @@ public class APIAdminMerchantController {
         merchantService.updateSettleById(settleAccountDTO,Integer.valueOf(mchId));
     }
 
+    @ApiOperation("修改支付账户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+            @ApiImplicitParam(name="action",value="变更方式",required = true),
+            @ApiImplicitParam(name="type",value="变更类型",required = true),
+            @ApiImplicitParam(name="amount",value="变更金额",required = true),
+    })
+    @PostMapping(value = "/{mchId}/pay/account")
+    public void payAccount(@PathVariable String mchId,
+                           @RequestParam Integer action,
+                           @RequestParam Integer type,
+                           @RequestParam Integer amount) throws Exception {
+        // TODO: 修改支付账户
+        merchantService.updatePayAccountBalance(Integer.valueOf(mchId),new BigDecimal("0"),type,amount);
 
+    }
+    @ApiOperation("修改预付款账户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+            @ApiImplicitParam(name="action",value="变更方式",required = true),
+            @ApiImplicitParam(name="type",value="变更类型",required = true),
+            @ApiImplicitParam(name="amount",value="变更金额",required = true),
+    })
+    @PostMapping(value = "/{mchId}/prepaid/account")
+    public void prepaidAccount(@PathVariable String mchId,
+                           @RequestParam Integer action,
+                           @RequestParam Integer type,
+                           @RequestParam Integer amount) {
+        // TODO: 修改预付款账户
+    }
 
 
     @PostMapping(value = "/{mchId}/mch_pub_key",produces = "text/plain")

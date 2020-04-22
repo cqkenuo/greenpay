@@ -27,6 +27,28 @@ public class PayAccountServiceImpl extends ServiceImpl<PayAccountMapper, PayAcco
         LambdaQueryWrapper<PayAccount> payAccountLambdaQueryWrapper = new LambdaQueryWrapper<>();
         payAccountLambdaQueryWrapper.eq(PayAccount::getMerchantId,mchId);
         PayAccount payAccount = this.getOne(payAccountLambdaQueryWrapper);
-        return modelMapper.map(payAccount,PayAccountDTO.class);
+        PayAccountDTO dto = modelMapper.map(payAccount,PayAccountDTO.class);
+        dto.setAvailBalanceDisplay(String.format("%.2f",(dto.getAvailBalance()/100.00f)));
+        dto.setFreezeBalanceDisplay(String.format("%.2f",(dto.getFreezeBalance()/100.00f)));
+        return dto;
     }
+
+    @Override
+    public void updateAvailBalance(Integer mchId, Integer amount) {
+        if (mchId == null || amount == null) return;
+        this.baseMapper.updateAvailBalance(mchId,amount);
+    }
+
+    @Override
+    public void updateFreezeBalance(Integer mchId, Integer amount) {
+        if (mchId == null || amount == null) return;
+        this.baseMapper.updateFreezeBalance(mchId,amount);
+    }
+
+    @Override
+    public void updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount) {
+        if (mchId == null || availAmount == null || freezeAmount== null) return;
+        this.baseMapper.updateBalance(mchId,availAmount,freezeAmount);
+    }
+
 }

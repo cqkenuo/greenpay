@@ -17,6 +17,17 @@
                         <div class="layui-card-header">商户产品配置</div>
                         <div class="layui-card-body" style="padding: 0">
                             <table id="demo" lay-filter="test"></table>
+                            <script type="text/html" id="rateTemplate">
+                                {{ d.rateDisplay }}
+                            </script>
+                            <script type="text/html" id="statusTemplate">
+                                {{# if(d.status) { }}
+                                <span class="layui-badge layui-bg-green">开启</span>
+                                {{# } else { }}
+                                <span class="layui-badge layui-bg-orange">关闭</span>
+                                {{# } }}
+                            </script>
+
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/admin/merchant/list/{{d.merchantId}}/product/edit?payTypeCode={{d.payTypeCode}}'}"
                                    class="layui-btn layui-btn-xs">
@@ -52,8 +63,8 @@
             ,cols: [[
                 {field: 'payTypeName', title: '支付类型', width:'30%', unresize:true}
                 ,{field: 'productName', title: '支付产品', width:'45%', unresize:true}
-                ,{field: 'rate', title: '费率', width:'10%', unresize:true}
-                ,{field: 'status', title: '状态', width:'10%', unresize:true}
+                ,{field: 'rateDisplay', align:'right', title: '费率（%）', width:'10%', unresize:true, templet:'#rateTemplate'}
+                ,{field: 'status', title: '状态', width:'10%', unresize:true, templet:'#statusTemplate'}
                 ,{title: '操作', width:'5%', align: 'left', toolbar: '#barDemo',unresize:true}
             ]]
         });

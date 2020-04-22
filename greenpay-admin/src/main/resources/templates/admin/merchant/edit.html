@@ -129,7 +129,7 @@
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="hidden" name="method" value="upPayBalance">
-                                                        <button type="submit" class="layui-btn">确认提交</button>
+                                                        <button type="submit" class="layui-btn" lay-submit lay-verify="upPayBalance">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -197,7 +197,7 @@
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="hidden" name="method" value="upPrepaidBalance">
-                                                        <button type="submit" class="layui-btn">确认提交</button>
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="upPrepaidBalance">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -400,21 +400,71 @@
 <script th:inline="javascript">
     !function(){
         let layer = layui.layer
-            ,form = layui.form;
+            ,form = layui.form
+            ,$ = layui.jquery;
 
         form.on('submit(upPrepaidBalance)', function(data){
             console.log('增加支付账户余额');
             console.log(data);
             return false;
         });
+        form.on('submit(upPayBalance)', function(data){
+            console.log('修改支付账户');
+            console.log(data);
+            let params = {
+
+            }
+            return false;
+        });
         form.on('submit(updateUserInfo)', function(data){
             console.log('修改用户资料');
             console.log(data);
+            let params = {
+                email:data.field.email,
+                mchId:2,
+                name:data.field.merchantName,
+                status:parseInt(data.field.status)
+            }
+            console.log(params)
+            $.ajax({
+                type: "post",
+                url: "/admin/api/v1/merchants/2",
+                data: params,
+                dataType: "json",
+                success: function (response) {
+                    console.log(response)
+                    if(response.code===200){
+                        //  修改成功
+                    }else{
+                        //  修改失败
+                    }
+                }
+            });
             return false;
         });
         form.on('submit(upPrepaidBalance)', function(data){
             console.log('增加预充值账户余额');
             console.log(data);
+            let params = {
+                action:data.field.action,
+                amount:data.field.amount,
+                type:data.field.method,
+                mchId:2
+            };
+            console.log(params)
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/2/prepaid/account',
+                data:params,
+                dataType:'json',
+                success:function (response) {
+                    if(response.data===200){
+                        // 成功
+                    }else{
+                        // 失败
+                    }
+                }
+            })
             return false;
         });
     }();

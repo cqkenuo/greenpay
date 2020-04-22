@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-04-13
  */
 public interface ITypeService extends IService<Type> {
-
+    Type findTypeByCode(String code);
 }

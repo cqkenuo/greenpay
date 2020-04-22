@@ -27,6 +27,9 @@ public class PayAccountServiceImpl extends ServiceImpl<PayAccountMapper, PayAcco
         LambdaQueryWrapper<PayAccount> payAccountLambdaQueryWrapper = new LambdaQueryWrapper<>();
         payAccountLambdaQueryWrapper.eq(PayAccount::getMerchantId,mchId);
         PayAccount payAccount = this.getOne(payAccountLambdaQueryWrapper);
-        return modelMapper.map(payAccount,PayAccountDTO.class);
+        PayAccountDTO dto = modelMapper.map(payAccount,PayAccountDTO.class);
+        dto.setAvailBalanceDisplay(String.format("%.2f",(dto.getAvailBalance()/100.00f)));
+        dto.setFreezeBalanceDisplay(String.format("%.2f",(dto.getFreezeBalance()/100.00f)));
+        return dto;
     }
 }

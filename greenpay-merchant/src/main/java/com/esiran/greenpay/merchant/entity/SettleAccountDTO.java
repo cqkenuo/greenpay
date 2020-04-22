@@ -32,6 +32,12 @@ public class SettleAccountDTO {
     @ApiModelProperty("结算费用（单位，分）")
     private Integer settleFeeAmount;
 
+    @ApiModelProperty("结算费率（百分比）")
+    private String settleFeeRateDisplay;
+
+    @ApiModelProperty("结算费用（单位，元）")
+    private String settleFeeAmountDisplay;
+
     @ApiModelProperty("状态（0：关闭，1：开启）")
     private Boolean status;
 

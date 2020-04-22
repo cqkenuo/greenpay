@@ -129,7 +129,7 @@
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="hidden" name="method" value="upPayBalance">
-                                                        <button type="submit" class="layui-btn" lay-submit lay-verify="upPayBalance">确认提交</button>
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="upPayBalance">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -269,7 +269,9 @@
                                                 </div>
                                                 <div class="layui-form-item" style="width: 120px">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <button type="submit" class="layui-btn">立即提交</button>
+                                                        <input type="hidden" name="method" value="settleMent">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="settleMent">立即提交</button>
+<!--                                                        <button type="submit" class="layui-btn">立即提交</button>-->
                                                     </div>
                                                 </div>
                                             </form>
@@ -341,10 +343,12 @@
                                                         <div class="layui-form-item">
                                                             <textarea name="desc"
                                                                       placeholder="请输入内容"
-                                                                      class="layui-textarea"></textarea>
+                                                                      class="layui-textarea" value="publicKey"></textarea>
                                                         </div>
                                                         <div>
-                                                            <button style="width: 100%" type="submit" class="layui-btn">重置公钥</button>
+                                                            <input type="hidden" name="method" value="publicKey">
+                                                            <button style="width: 100%" type="submit" class="layui-btn" lay-submit lay-filter="publicKey">重置公钥</button>
+<!--                                                            <button style="width: 100%" type="submit" class="layui-btn" lay-submit	lay-verify="publicKey">重置公钥</button>-->
                                                         </div>
                                                     </form>
                                                 </div>
@@ -380,7 +384,8 @@
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block">
-                                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">重置密码</button>
+                                                        <input type="hidden" name="method" value="resetPassword">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="resetPassword">重置密码</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -402,71 +407,163 @@
         let layer = layui.layer
             ,form = layui.form
             ,$ = layui.jquery;
-
-        form.on('submit(upPrepaidBalance)', function(data){
-            console.log('增加支付账户余额');
-            console.log(data);
-            return false;
-        });
+        let mchId = parseInt(location.pathname.split('/')[4])
+        // 支付账户
         form.on('submit(upPayBalance)', function(data){
             console.log('修改支付账户');
             console.log(data);
             let params = {
-
+                action:data.field.action,
+                type:data.field.type,
+                amount:data.field.amount,
+                mchId:mchId
             }
+            console.log(params)
+            console.log('mchId',mchId)
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/pay/account',
+                data:params,
+                dataType:'form',
+                success: function (response) {
+                    layer.alert('修改成功', {icon: 1});
+                },
+                error:function (response) {
+                    layer.msg('修改失败', {icon: 5});
+                }
+            })
             return false;
         });
+
+        // 修改用户资料
         form.on('submit(updateUserInfo)', function(data){
             console.log('修改用户资料');
             console.log(data);
             let params = {
                 email:data.field.email,
-                mchId:2,
+                mchId:mchId,
                 name:data.field.merchantName,
                 status:parseInt(data.field.status)
             }
             console.log(params)
             $.ajax({
                 type: "post",
-                url: "/admin/api/v1/merchants/2",
+                url: "/admin/api/v1/merchants/"+mchId,
                 data: params,
-                dataType: "json",
+                statusCode: {
+                    404: function() {
+                        alert('page not found');
+                    },400: function() {
+                        alert('page not found');
+                    },500: function() {
+                        alert('page not found');
+                    },
+                },
                 success: function (response) {
-                    console.log(response)
-                    if(response.code===200){
-                        //  修改成功
-                    }else{
-                        //  修改失败
-                    }
+                    console.log(response);
+                    layer.alert('修改成功', {icon: 1});
                 }
             });
             return false;
         });
+
+        // 重置公钥
+        form.on('submit(publicKey)', function(data){
+            console.log('重置公钥');
+            console.log(data);
+            let params = {
+                content:data.field.desc,
+                mchId:mchId
+            };
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/mch_pub_key',
+                data:params,
+                dataType:'from',
+                success: function (response) {
+                    layer.alert('修改成功', {icon: 1});
+                },
+                error:function (response) {
+                    layer.msg('修改失败', {icon: 5});
+                }
+            })
+
+
+            return false;
+        });
+
+        form.on('submit(settleMent)',function (data) {
+            console.log('结算设置');
+            console.log(data);
+            let params = {
+                mchId:mchId,
+                settleFeeAmount:data.field.settleFeeAmount,//结算费用
+                settleFeeType:data.field.settleFeeType,//结算手续费类型
+                status:data.field.settleStatus,//结算状态
+                settleFeeRate:data.field.settleFeeRate
+            }
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/settle',
+                data:params,
+                dataType:'form',
+                success: function (response) {
+                    layer.alert('修改成功', {icon: 1});
+                },
+                error:function (response) {
+                    layer.msg('修改失败', {icon: 5});
+                }
+            })
+            return false;
+        })
+
+        // 预充值账户
         form.on('submit(upPrepaidBalance)', function(data){
             console.log('增加预充值账户余额');
             console.log(data);
             let params = {
                 action:data.field.action,
                 amount:data.field.amount,
-                type:data.field.method,
-                mchId:2
+                type:data.field.type,
+                mchId:mchId
             };
             console.log(params)
             $.ajax({
                 type:'post',
-                url:'/admin/api/v1/merchants/2/prepaid/account',
+                url:'/admin/api/v1/merchants/'+mchId+'/prepaid/account',
                 data:params,
-                dataType:'json',
-                success:function (response) {
-                    if(response.data===200){
-                        // 成功
-                    }else{
-                        // 失败
-                    }
+                dataType:'form',
+                success: function (response) {
+                    layer.alert('修改成功', {icon: 1});
+                },
+                error:function (response) {
+                    layer.msg('修改失败', {icon: 5});
                 }
             })
             return false;
         });
+        // 重置密码
+        form.on('submit(resetPassword)',function (data) {
+            console.log('重置密码')
+            console.log(data)
+            let params = {
+                mchId:mchId,
+                password:data.field.password
+            }
+            $.ajax({
+                type:'post',
+                url:'/admin/api/v1/merchants/'+mchId+'/security',
+                data:params,
+                dataType:'form',
+                success: function (response) {
+                    layer.alert('修改成功', {icon: 1});
+                },
+                error:function (response) {
+                    layer.msg('修改失败', {icon: 5});
+                }
+            })
+            return false;
+        })
     }();
 </script>
 

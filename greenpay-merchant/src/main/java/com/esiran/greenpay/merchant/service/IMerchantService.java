@@ -22,7 +22,7 @@ public interface IMerchantService extends IService<Merchant> {
     void updateMerchantProduct(MerchantProductInputDTO dto, Integer id) throws Exception;
     void updatePasswordById(String password, Integer id) throws Exception;
     void updateSettleById(SettleAccountDTO settleAccountDTO, Integer id) throws Exception;
-    void updatePayAccountBalance(Integer mchId, BigDecimal amount, Integer type, Integer action) throws Exception;
+    void updatePayAccountBalance(Integer mchId, Double amount, Integer type, Integer action) throws Exception;
     MerchantDetailDTO findMerchantById(Integer id);
     void addMerchant(MerchantInputDTO merchantInputDTO) throws Exception;
     List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException;

@@ -69,7 +69,6 @@ public class APIExceptionHandler {
         if (isView == null || isView){
             session.setAttribute("errors",errors);
             String s = request.getRequestURI();
-            System.out.println(s);
             response.sendRedirect(s);
             return null;
         }
@@ -88,6 +87,28 @@ public class APIExceptionHandler {
         Boolean isView = (Boolean) request.getAttribute("isView");
         if (isView == null || isView){
             response.setStatus(404);
+            return null;
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("code","RESOURCE_NOT_FOUND");
+        map.put("message", "资源不存在");
+        response.setStatus(404);
+        return map;
+    }
+
+
+    @ExceptionHandler(PostResourceException.class)
+    public Map<String,Object> handlePostResourceException(
+            PostResourceException e, HttpServletResponse response,
+            HttpServletRequest request, HttpSession session) throws IOException {
+        Boolean isView = (Boolean) request.getAttribute("isView");
+        if (isView == null || isView){
+            response.setStatus(400);
+            List<APIError> errors = new ArrayList<>();
+            errors.add(new APIError("POST_RESOURCE_FAIL",e.getMessage()));
+            session.setAttribute("errors",errors);
+            String s = request.getRequestURI();
+            response.sendRedirect(s);
             return null;
         }
         Map<String,Object> map = new HashMap<>();

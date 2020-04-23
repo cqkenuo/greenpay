@@ -2,6 +2,7 @@ package com.esiran.greenpay.pay.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.Type;
 import com.esiran.greenpay.pay.entity.TypeDTO;
@@ -38,8 +39,10 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements IT
     }
 
     @Override
-    public void saveType(TypeInputDTO dto) {
+    public void saveType(TypeInputDTO dto) throws PostResourceException {
         Type type = modelMapper.map(dto,Type.class);
+        Type query = findTypeByCode(type.getTypeCode());
+        if (query != null) throw new PostResourceException("支付类型编码已存在");
         save(type);
     }
 

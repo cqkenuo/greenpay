@@ -1,6 +1,7 @@
 package com.esiran.greenpay.admin.controller.pay;
 
 import com.esiran.greenpay.admin.controller.CURDBaseController;
+import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.TypeDTO;
 import com.esiran.greenpay.pay.entity.TypeInputDTO;
@@ -43,7 +44,7 @@ public class AdminPayTypeController extends CURDBaseController {
         return renderViewAndError("pay/type/edit",httpSession,modelMap);
     }
     @PostMapping("/list/add")
-    public String addFrom(@Valid TypeInputDTO inputDTO){
+    public String addFrom(@Valid TypeInputDTO inputDTO) throws PostResourceException {
         typeService.saveType(inputDTO);
         return "redirect:/admin/pay/type/list";
     }

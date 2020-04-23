@@ -40,6 +40,7 @@ public class AdminMerchantController {
         modelMap.addAttribute("merchant",merchantDTO);
         return "admin/merchant/edit";
     }
+
     @GetMapping("/list/{mchId}/product/list")
     public String password(@PathVariable String mchId){
         return "admin/merchant/product/list";

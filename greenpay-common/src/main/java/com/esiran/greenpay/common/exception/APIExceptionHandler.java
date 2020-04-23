@@ -80,6 +80,23 @@ public class APIExceptionHandler {
         response.setStatus(400);
         return map;
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public Map<String,Object> handleResourceNotFoundException(
+            ResourceNotFoundException e, HttpServletResponse response,
+            HttpServletRequest request, HttpSession session) throws IOException {
+        Boolean isView = (Boolean) request.getAttribute("isView");
+        if (isView == null || isView){
+            response.setStatus(404);
+            return null;
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("code","RESOURCE_NOT_FOUND");
+        map.put("message", "资源不存在");
+        response.setStatus(404);
+        return map;
+    }
+
     @ExceptionHandler(APIException.class)
     public  Map<String,Object> handleAPIException(APIException e,HttpServletResponse response){
         Map<String,Object> map = new HashMap<>();

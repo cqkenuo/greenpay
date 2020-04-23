@@ -1,13 +1,12 @@
 package com.esiran.greenpay.pay.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.esiran.greenpay.common.entity.BaseMapperEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -18,13 +17,11 @@ import lombok.experimental.Accessors;
  * @since 2020-04-13
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("pay_type")
-public class Type  extends BaseMapperEntity {
+public class TypeDTO {
 
     private static final long serialVersionUID = 1L;
 
+    protected Integer id;
     /**
      * 支付类型编码
      */
@@ -44,4 +41,14 @@ public class Type  extends BaseMapperEntity {
      * 状态（0：关闭，1：开启）
      */
     private Boolean status;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createdAt;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updatedAt;
 }

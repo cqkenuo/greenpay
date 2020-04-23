@@ -1,7 +1,10 @@
 package com.esiran.greenpay.pay.service;
 
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.Type;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.esiran.greenpay.pay.entity.TypeDTO;
+import com.esiran.greenpay.pay.entity.TypeInputDTO;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITypeService extends IService<Type> {
     Type findTypeByCode(String code);
+    TypeDTO getTypeByCode(String code);
+    void saveType(TypeInputDTO dto);
+    void updateType(TypeInputDTO dto) throws ResourceNotFoundException;
 }

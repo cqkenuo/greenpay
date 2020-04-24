@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>支付类型 - GreenPay</title>
+    <title>支付产品 - GreenPay</title>
     <th:block th:replace="admin/header::stylesheet" />
 </head>
 <body class="layui-layout-body">
@@ -11,7 +11,7 @@
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付类型')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付产品')"></div>
                 <div class="layui-card error-card" th:style="${errors==null}?'display:none;':''">
                     <div class="layui-card-body">
                         <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
@@ -19,32 +19,35 @@
                 </div>
                 <div class="layui-fluid">
                     <div class="layui-card">
-                        <div class="layui-card-header">添加支付类型</div>
+                        <div class="layui-card-header">添加支付产品</div>
                         <div class="layui-card-body">
                             <form class="layui-form" action="" method="post">
                                 <div class="layui-row layui-form-item">
-                                    <label for="typeCode" class="layui-form-label">类型编码：</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" class="layui-input"
-                                               name="typeCode" id="typeCode"
-                                               autocomplete="off"
-                                               placeholder="请输入类型编码">
+                                    <div class="layui-form-item">
+                                        <label for="payTypeCode" class="layui-form-label">支付类型：</label>
+                                        <div class="layui-input-block">
+                                            <select name="payTypeCode" id="payTypeCode">
+                                                <option value="" selected>无</option>
+                                                <option th:each="type:${availableTypes}"
+                                                        th:text="${type.typeName}"
+                                                        th:value="${type.typeCode}">
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="layui-row layui-form-item">
-                                    <label for="typeName" class="layui-form-label">类型名称：</label>
+                                    <label for="productName" class="layui-form-label">产品名称：</label>
                                     <div class="layui-input-block">
                                         <input type="text" class="layui-input"
-                                               name="typeName" id="typeName"
+                                               name="productName" id="productName"
                                                autocomplete="off"
-                                               placeholder="请输入类型名称">
+                                               placeholder="请输入产品名称">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <label for="type_pay" class="layui-form-label">类别：</label>
+                                    <label for="productType_1" class="layui-form-label">产品类型：</label>
                                     <div class="layui-input-block">
-                                        <input id="type_pay" type="radio" name="type" value="1" title="支付" checked>
-                                        <input type="radio" name="type" value="2" title="代付">
+                                        <input id="productType_1" type="radio" name="productType" value="1" title="收款" checked>
+                                        <input type="radio" name="productType" value="2" title="充值">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">

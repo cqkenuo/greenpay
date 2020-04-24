@@ -18,7 +18,7 @@
                         <div class="layui-card-body" style="padding: 0">
                             <div class="admin-table_header">
                                 <div class="admin-table_header_left">
-                                    <a th:href="@{'/admin/pay/passage/list/1/acc/add'}" class="layui-btn">新增</a>
+                                    <a th:href="@{'/admin/pay/passage/list/'+${passageId}+'/acc/add'}" class="layui-btn">新增</a>
                                     <button type="button" class="layui-btn">删除选中</button>
                                 </div>
                                 <div th:replace="admin/compose::admin-table_header_right('请输入子账户名称')">
@@ -26,8 +26,17 @@
                                 <div style="clear:both;"></div>
                             </div>
                             <table id="demo" lay-filter="test"></table>
+                            <script type="text/html" id="statusTemplate">
+                                {{# if(d.status) { }}
+                                <span class="layui-badge-dot layui-bg-green"></span>
+                                <span>正常</span>
+                                {{# } else { }}
+                                <span class="layui-badge-dot layui-bg-orange"></span>
+                                <span>禁用</span>
+                                {{# } }}
+                            </script>
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/pay/passage/list/{{d.id}}/acc/1/edit'}" class="layui-btn layui-btn-xs">编辑</a>
+                                <a th:href="@{'/admin/pay/passage/list/'+${passageId}+'/acc/{{d.id}}/edit'}" class="layui-btn layui-btn-xs">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                             </script>
                         </div>
@@ -39,6 +48,9 @@
     </div>
 </div>
 <th:block th:replace="admin/footer::script"/>
+<script th:inline="javascript">
+    let passageId = [[${passageId}]];
+</script>
 <script th:inline="none">
     !function(){
         let layer = layui.layer
@@ -46,7 +58,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            ,url: '/admin/api/v1/pay/types' //数据接口
+            ,url: `/admin/api/v1/pay/passages/${passageId}/accounts` //数据接口
             ,page: true //开启分页
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {
@@ -64,8 +76,8 @@
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'id', title: 'ID',width:'5%', unresize:true}
                 ,{field: 'passageName', title: '通道名称', width:'25%', unresize:true}
-                ,{field: 'passageAccName', title: '子账户名称', width:'25%', unresize:true}
-                ,{field: 'status', title: '状态', width:'5%', unresize:true}
+                ,{field: 'accountName', title: '子账户名称', width:'25%', unresize:true}
+                ,{field: 'status', title: '状态', width:'5%', unresize:true, templet:'#statusTemplate'}
                 ,{field: 'createdAt', title: '创建时间', width:'10%', unresize:true}
                 ,{field: 'updatedAt', title: '更新时间', width:'10%', unresize:true}
                 ,{title: '操作', align: 'left', width:'15%', toolbar: '#barDemo', unresize:true}

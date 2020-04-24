@@ -4,7 +4,7 @@
     <title>支付产品 - GreenPay</title>
     <th:block th:replace="admin/header::stylesheet" />
 </head>
-<body class="layui-layout-body">
+<body class="layui-layout-body" id="app">
 <div class="layadmin-tabspage-none">
     <div class="layui-layout layui-layout-admin">
         <div th:replace="admin/header::nav"></div>
@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
 
-                                <div class="layui-form-item">
+                                <div v-show="interfaceMode === 1" class="layui-form-item">
                                     <label for="defaultPassageId" class="layui-form-label">支付通道：</label>
                                     <div class="layui-input-block">
                                         <select name="defaultPassageId" id="defaultPassageId">
@@ -80,7 +80,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="layui-form-item">
+                                <div v-show="interfaceMode == 1"  class="layui-form-item">
                                     <label for="defaultPassageAccId" class="layui-form-label">通道账户：</label>
                                     <div class="layui-input-block">
                                         <select name="defaultPassageAccId" id="defaultPassageAccId">
@@ -117,7 +117,16 @@
     </div>
 </div>
 <th:block th:replace="admin/footer::script"/>
-<script th:inline="none">
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            interfaceMode: 2
+        }
+    });
+</script>
+<script th:inline="javascript">
     !function(){
         let layer = layui.layer
             ,table = layui.table;

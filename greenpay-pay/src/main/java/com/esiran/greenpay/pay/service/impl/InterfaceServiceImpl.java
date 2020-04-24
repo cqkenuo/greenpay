@@ -16,6 +16,8 @@ import com.esiran.greenpay.pay.service.ITypeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 支付接口 服务实现类
@@ -38,6 +40,13 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceMapper, Interface
         LambdaQueryWrapper<Interface> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Interface::getInterfaceCode,code);
         return this.getOne(lambdaQueryWrapper);
+    }
+
+    @Override
+    public List<Interface> listByPayTypeCode(String payTypeCode) {
+        LambdaQueryWrapper<Interface> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Interface::getPayTypeCode,payTypeCode);
+        return this.list(lambdaQueryWrapper);
     }
 
     @Override

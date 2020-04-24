@@ -60,11 +60,11 @@ public class AdminPayPassageController extends CURDBaseController {
     public String edit(@PathVariable String passageId,ModelMap modelMap, HttpSession httpSession){
         Passage data = passageService.getById(passageId);
         List<Type> availableTypes = typeService.list();
-        List<Interface> availableInters = interfaceService.list();
-        modelMap.addAttribute("data",data);
-        modelMap.addAttribute("availableTypes",availableTypes);
-        modelMap.addAttribute("availableInters",availableInters);
-        return renderViewAndError("pay/passage/edit",httpSession,modelMap);
+        List<Interface> availableInters = interfaceService.listByPayTypeCode(data.getPayTypeCode());
+        modelMap.addAttribute("data", data);
+        modelMap.addAttribute("availableTypes", availableTypes);
+        modelMap.addAttribute("availableInters", availableInters);
+        return renderViewAndError("pay/passage/edit", httpSession, modelMap);
 //        return "admin/pay/passage/edit";
     }
 

@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.esiran.greenpay.pay.entity.InterfaceDTO;
 import com.esiran.greenpay.pay.entity.InterfaceInputDTO;
 
+import java.util.List;
+
 /**
  * <p>
  * 支付接口 服务类
@@ -18,6 +20,7 @@ import com.esiran.greenpay.pay.entity.InterfaceInputDTO;
  */
 public interface IInterfaceService extends IService<Interface> {
     Interface getByCode(String code);
+    List<Interface> listByPayTypeCode(String payTypeCode);
     InterfaceDTO getDTOByCode(String code);
     IPage<InterfaceDTO> selectPage(IPage<InterfaceDTO> iPage,InterfaceDTO interfaceDTO);
     int addInterface(InterfaceInputDTO interfaceInputDTO) throws PostResourceException;

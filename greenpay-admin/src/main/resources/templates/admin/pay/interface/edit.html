@@ -22,10 +22,11 @@
                         <div class="layui-card-header">添加支付接口</div>
                         <div class="layui-card-body">
                             <form class="layui-form" action="" method="post">
+                                <input type="hidden" name="payTypeCode" th:value="${data.payTypeCode}">
                                 <div class="layui-form-item">
                                     <label for="payTypeCode" class="layui-form-label">支付类型：</label>
                                     <div class="layui-input-block">
-                                        <select name="payTypeCode" id="payTypeCode">
+                                        <select disabled id="payTypeCode">
                                             <option value="" selected>无</option>
                                             <option th:each="type:${availableTypes}"
                                                     th:text="${type.typeName}"

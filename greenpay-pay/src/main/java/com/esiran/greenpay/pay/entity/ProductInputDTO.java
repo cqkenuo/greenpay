@@ -2,19 +2,21 @@ package com.esiran.greenpay.pay.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-public class ProductDTO {
-    private Integer id;
+public class ProductInputDTO {
+    @NotBlank(message = "产品名称不能为空")
     private String productName;
+    @NotNull(message = "产品类型不能为空")
     private Integer productType;
+    @NotBlank(message = "支付类型不能为空")
     private String payTypeCode;
-    private String payTypeName;
     private Integer interfaceMode;
     private Integer defaultPassageId;
     private Integer defaultPassageAccId;
+    @NotNull(message = "状态不能为空")
     private Boolean status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

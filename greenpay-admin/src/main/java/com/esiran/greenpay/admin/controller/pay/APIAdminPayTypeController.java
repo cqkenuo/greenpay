@@ -34,9 +34,4 @@ public class APIAdminPayTypeController {
                 new QueryWrapper<Product>().lambda().eq(Product::getPayTypeCode,typeCode);
         return productService.list(queryWrapper);
     }
-
-    @PostMapping("/add")
-    public String add(){
-        return "admin/merchant/add";
-    }
 }

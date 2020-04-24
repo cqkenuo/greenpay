@@ -26,8 +26,26 @@
                                 <div style="clear:both;"></div>
                             </div>
                             <table id="demo" lay-filter="test"></table>
+                            <script type="text/html" id="typeTemplate">
+                                {{# if(d.type === 1) { }}
+                                <span>支付</span>
+                                {{# } else if(d.type === 2) { }}
+                                <span>代付</span>
+                                {{# } else { }}
+                                <span>未知</span>
+                                {{# } }}
+                            </script>
+                            <script type="text/html" id="statusTemplate">
+                                {{# if(d.status) { }}
+                                <span class="layui-badge-dot layui-bg-green"></span>
+                                <span>正常</span>
+                                {{# } else { }}
+                                <span class="layui-badge-dot layui-bg-orange"></span>
+                                <span>禁用</span>
+                                {{# } }}
+                            </script>
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/pay/type/list/{{d.id}}/edit'}" class="layui-btn layui-btn-xs">编辑</a>
+                                <a th:href="@{'/admin/pay/type/list/{{d.typeCode}}/edit'}" class="layui-btn layui-btn-xs">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                             </script>
                         </div>
@@ -41,8 +59,10 @@
 <th:block th:replace="admin/footer::script"/>
 <script th:inline="none">
     !function(){
-        let layer = layui.layer
-            ,table = layui.table;
+        let layer = layui.layer,
+            element = layui.element,
+            $ = layui.jquery,
+            table = layui.table;
         //第一个实例
         table.render({
             elem: '#demo'
@@ -64,14 +84,15 @@
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'id', title: 'ID',width:'5%', unresize:true}
                 ,{field: 'typeCode', title: '支付类型编码', width:'10%', unresize:true}
-                ,{field: 'typeName', title: '支付类型名称', width:'25%', unresize:true}
-                ,{field: 'type', title: '支付类别', width:'15%', unresize:true}
-                ,{field: 'status', title: '状态', width:'5%', unresize:true}
+                ,{field: 'typeName', title: '支付类型名称', width:'35%', unresize:true}
+                ,{field: 'type', title: '类别', width:'5%', unresize:true, templet: '#typeTemplate'}
+                ,{field: 'status', title: '状态', width:'5%', unresize:true, templet:'#statusTemplate'}
                 ,{field: 'createdAt', title: '创建时间', width:'10%', unresize:true}
                 ,{field: 'updatedAt', title: '更新时间', width:'10%', unresize:true}
                 ,{title: '操作', align: 'left', width:'15%', toolbar: '#barDemo', unresize:true}
             ]]
         });
+        element.on('tab()');
     }();
 </script>
 

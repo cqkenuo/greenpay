@@ -1,47 +1,54 @@
 package com.esiran.greenpay.pay.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.esiran.greenpay.common.entity.BaseMapperEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 支付类型
+ * 支付通道
  * </p>
  *
  * @author Militch
  * @since 2020-04-13
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("pay_type")
-public class Type  extends BaseMapperEntity {
+public class PassageDTO {
 
-    private static final long serialVersionUID = 1L;
+    private Integer id;
+
+    /**
+     * 支付通道名称
+     */
+    private String passageName;
 
     /**
      * 支付类型编码
      */
-    private String typeCode;
+    private String payTypeCode;
 
     /**
-     * 支付类型名称
+     * 支付接口编码
      */
-    private String typeName;
-
-    /**
-     * 类别(1：支付，2，代付)
-     */
-    private Integer type;
+    private String interfaceCode;
 
     /**
      * 状态（0：关闭，1：开启）
      */
     private Boolean status;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createdAt;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updatedAt;
+
 }

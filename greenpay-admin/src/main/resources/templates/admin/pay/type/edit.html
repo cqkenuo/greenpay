@@ -12,46 +12,75 @@
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
                 <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付类型')"></div>
+                <div class="layui-card error-card" th:style="${errors==null}?'display:none;':''">
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
+                    </div>
+                </div>
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">编辑支付类型</div>
                         <div class="layui-card-body">
-                            <form class="layui-form" action="">
+                            <form class="layui-form" action="" method="post">
                                 <div class="layui-row layui-form-item">
-                                    <label for="payTypeCode" class="layui-form-label">类型编码：</label>
+                                    <label for="typeCode" class="layui-form-label">类型编码：</label>
                                     <div class="layui-input-block">
                                         <input type="text" class="layui-input"
-                                               id="payTypeCode"
-                                               autocomplete="off"
+                                               id="typeCode" name="typeCode"
+                                               th:value="${type.typeCode}"
+                                               autocomplete="off" readonly
                                                placeholder="请输入类型编码">
                                     </div>
                                 </div>
                                 <div class="layui-row layui-form-item">
-                                    <label for="payTypeName" class="layui-form-label">类型名称：</label>
+                                    <label for="typeName" class="layui-form-label">类型名称：</label>
                                     <div class="layui-input-block">
                                         <input type="text" class="layui-input"
-                                               name="payTypeName" id="payTypeName"
-                                               autocomplete="off"
+                                               name="typeName" id="typeName"
+                                               autocomplete="off" th:value="${type.typeName}"
                                                placeholder="请输入类型名称">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <label for="type" class="layui-form-label">类别：</label>
+                                    <label for="type_pay"
+                                           class="layui-form-label">
+                                        类别：
+                                    </label>
                                     <div class="layui-input-block">
-                                        <input id="type" type="radio" name="type" value="1" title="支付" checked>
-                                        <input type="radio" name="type" value="2" title="代付">
+                                        <input id="type_pay"
+                                               type="radio"
+                                               name="type"
+                                               value="1"
+                                               title="支付"
+                                               th:checked="${type.type == 1}">
+                                        <input type="radio"
+                                               name="type"
+                                               value="2"
+                                               title="代付"
+                                               th:checked="${type.type == 2}">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <label for="status" class="layui-form-label">状态：</label>
+                                    <label for="status" class="layui-form-label">
+                                        状态：
+                                    </label>
                                     <div class="layui-input-block">
-                                        <input id="status" type="radio" name="status" value="0" title="关闭" checked>
-                                        <input type="radio" name="status" value="1" title="开启">
+                                        <input id="status"
+                                               type="radio"
+                                               name="status"
+                                               value="0"
+                                               title="关闭"
+                                               th:checked="${type.status == false}">
+                                        <input type="radio"
+                                               name="status"
+                                               value="1"
+                                               title="开启"
+                                               th:checked="${type.status == true}">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                                        <button type="submit" class="layui-btn">提交</button>
                                     </div>
                                 </div>
                             </form>
@@ -69,35 +98,6 @@
         let layer = layui.layer
             ,table = layui.table;
         //第一个实例
-        table.render({
-            elem: '#demo'
-            ,url: '/admin/api/products' //数据接口
-            ,page: true //开启分页
-            ,parseData: function(res){ //res 即为原始返回的数据
-                return {
-                    "code": 0,
-                    "msg": res.message,
-                    "count": res.total,
-                    "data": res.records
-                };
-            }
-            ,request: {
-                pageName: 'current'
-                ,limitName: 'size'
-            }
-            ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'id', title: 'ID',width:100, unresize:true}
-                ,{field: 'productTitle', title: '产品标题', width:250, unresize:true}
-                ,{align: 'right', field: 'costPriceVal', title: '成本价/美元', width:150, unresize:true}
-                ,{align: 'right', field: 'priceVal', title: '售价/美元', width:150, unresize:true}
-                ,{field: 'countryName', title: '国家', width:250, unresize:true}
-                ,{field: 'providerName', title: '提供商', width:250, unresize:true}
-                ,{field: 'createdAt', title: '创建时间', width:180, unresize:true}
-                ,{field: 'updatedAt', title: '更新时间', width:180, unresize:true}
-                ,{fixed:'right',align: 'center', toolbar: '#barDemo', width:120}
-            ]]
-        });
     }();
 </script>
 

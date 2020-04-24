@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>支付产品 - GreenPay</title>
+    <th:block th:replace="admin/header::stylesheet" />
+</head>
+<body class="layui-layout-body" id="app">
+<div class="layadmin-tabspage-none">
+    <div class="layui-layout layui-layout-admin">
+        <div th:replace="admin/header::nav"></div>
+        <div th:replace="admin/side::menu"></div>
+        <div class="layui-body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付产品')"></div>
+                <div class="layui-card error-card" th:style="${errors==null}?'display:none;':''">
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
+                    </div>
+                </div>
+                <div class="layui-fluid">
+                    <div class="layui-card">
+                        <div class="layui-card-header">编辑支付产品</div>
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="" method="post">
+                                <input type="hidden" name="payTypeCode" th:value="${data.payTypeCode}">
+                                <div class="layui-row layui-form-item">
+                                    <div class="layui-form-item">
+                                        <label for="payTypeCode" class="layui-form-label">支付类型：</label>
+                                        <div class="layui-input-block">
+                                            <select disabled id="payTypeCode">
+                                                <option value="" selected>无</option>
+                                                <option th:each="type:${availTypes}"
+                                                        th:text="${type.typeName}"
+                                                        th:value="${type.typeCode}"
+                                                        th:selected="${data.payTypeCode == type.typeCode}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <label for="productName" class="layui-form-label">产品名称：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input"
+                                               name="productName" id="productName"
+                                               autocomplete="off" th:value="${data.productName}"
+                                               placeholder="请输入产品名称">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="productType_1" class="layui-form-label">产品类型：</label>
+                                    <div class="layui-input-block">
+                                        <input id="productType_1"
+                                               type="radio" name="productType"
+                                               value="1" title="收款"
+                                               th:checked="${data.productType == 1}">
+                                        <input type="radio" name="productType" value="2" title="充值"
+                                               th:checked="${data.productType == 2}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label for="interfaceMode_1" class="layui-form-label">接口模式：</label>
+                                    <div class="layui-input-block">
+                                        <input id="interfaceMode_1" type="radio" name="interfaceMode" value="1" title="单独"
+                                               th:checked="${data.interfaceMode == 1}">
+                                        <input type="radio" name="interfaceMode" value="2" title="轮训"
+                                               th:checked="${data.interfaceMode == 2}">
+                                    </div>
+                                </div>
+
+                                <div v-show="interfaceMode === 1" class="layui-form-item">
+                                    <label for="defaultPassageId" class="layui-form-label">支付通道：</label>
+                                    <div class="layui-input-block">
+                                        <select name="defaultPassageId" id="defaultPassageId">
+                                            <option value="" selected>无</option>
+                                            <option th:each="item:${availPassages}"
+                                                    th:text="${item.passageName}"
+                                                    th:value="${item.id}"
+                                                    th:selected="${data.defaultPassageId == item.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div v-show="interfaceMode == 1"  class="layui-form-item">
+                                    <label for="defaultPassageAccId" class="layui-form-label">通道账户：</label>
+                                    <div class="layui-input-block">
+                                        <select name="defaultPassageAccId" id="defaultPassageAccId">
+                                            <option value="" selected>无</option>
+                                            <option th:each="item:${availPassagesAcc}"
+                                                    th:text="${item.accountName}"
+                                                    th:value="${item.id}"
+                                                    th:selected="${data.defaultPassageAccId == item.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="status" class="layui-form-label">状态：</label>
+                                    <div class="layui-input-block">
+                                        <input id="status" type="radio" name="status" value="0" title="关闭"
+                                               th:checked="${data.status == false}">
+                                        <input type="radio" name="status" value="1" title="开启"
+                                               th:checked="${data.status == true}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button type="submit" class="layui-btn">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layadmin-body-shade" layadmin-event="shade"></div>
+    </div>
+</div>
+<th:block th:replace="admin/footer::script"/>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            interfaceMode: 2
+        }
+    });
+</script>
+<script th:inline="javascript">
+    !function(){
+        let layer = layui.layer
+            ,table = layui.table;
+        //第一个实例
+    }();
+</script>
+
+</body>
+</html>

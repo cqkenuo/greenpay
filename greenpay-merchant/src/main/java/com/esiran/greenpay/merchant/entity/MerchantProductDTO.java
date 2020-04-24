@@ -2,13 +2,17 @@ package com.esiran.greenpay.merchant.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.esiran.greenpay.common.entity.BaseMapperEntity;
+import com.esiran.greenpay.pay.entity.ProductDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -39,7 +43,12 @@ public class MerchantProductDTO {
 
     @ApiModelProperty("通道费率")
     private BigDecimal rate;
+    @ApiModelProperty("通道费率，格式化")
+    private String rateDisplay;
+
     @ApiModelProperty("状态")
     private Boolean status;
 
+    @ApiModelProperty("可用的产品列表")
+    private List<ProductDTO> availableProducts;
 }

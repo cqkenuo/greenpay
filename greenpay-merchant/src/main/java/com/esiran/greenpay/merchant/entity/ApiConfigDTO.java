@@ -14,9 +14,8 @@ import lombok.experimental.Accessors;
  * @author Militch
  * @since 2020-04-15
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ApiConfigDTO extends BaseMapperEntity {
+public class ApiConfigDTO {
 
     /**
      * 商户APIKEY
@@ -32,8 +31,10 @@ public class ApiConfigDTO extends BaseMapperEntity {
      * 平台公钥
      */
     private String pubKey;
+    private String privateKey;
 
     private String pubKeyVal;
+    private String privateKeyVal;
 
     /**
      * 商户公钥

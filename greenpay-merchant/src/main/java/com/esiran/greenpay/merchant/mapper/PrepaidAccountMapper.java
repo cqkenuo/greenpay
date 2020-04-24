@@ -2,6 +2,7 @@ package com.esiran.greenpay.merchant.mapper;
 
 import com.esiran.greenpay.merchant.entity.PrepaidAccount;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface PrepaidAccountMapper extends BaseMapper<PrepaidAccount> {
 
+    int updateBalance(@Param("mchId") Integer mchId,
+                      @Param("availAmount") Integer availAmount,
+                      @Param("freezeAmount") Integer freezeAmount);
 }

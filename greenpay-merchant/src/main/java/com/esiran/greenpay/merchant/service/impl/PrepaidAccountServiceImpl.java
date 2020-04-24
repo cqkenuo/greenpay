@@ -27,6 +27,15 @@ public class PrepaidAccountServiceImpl extends ServiceImpl<PrepaidAccountMapper,
         LambdaQueryWrapper<PrepaidAccount> payAccountLambdaQueryWrapper = new LambdaQueryWrapper<>();
         payAccountLambdaQueryWrapper.eq(PrepaidAccount::getMerchantId,mchId);
         PrepaidAccount prepaidAccount = this.getOne(payAccountLambdaQueryWrapper);
-        return modelMapper.map(prepaidAccount,PrepaidAccountDTO.class);
+        PrepaidAccountDTO dto = modelMapper.map(prepaidAccount,PrepaidAccountDTO.class);
+        dto.setAvailBalanceDisplay(String.format("%.2f",(dto.getAvailBalance()/100.00f)));
+        dto.setFreezeBalanceDisplay(String.format("%.2f",(dto.getFreezeBalance()/100.00f)));
+        return dto;
+    }
+
+    @Override
+    public int updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount) {
+        if (mchId == null || availAmount == null || freezeAmount== null) return 0;
+        return this.baseMapper.updateBalance(mchId,availAmount,freezeAmount);
     }
 }

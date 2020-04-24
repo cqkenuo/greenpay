@@ -10,11 +10,12 @@ import com.esiran.greenpay.common.util.IdWorker;
 import com.esiran.greenpay.merchant.entity.Merchant;
 import com.esiran.greenpay.merchant.entity.MerchantProductDTO;
 import com.esiran.greenpay.merchant.service.IMerchantService;
+import com.esiran.greenpay.message.delayqueue.DelayQueueSender;
+import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.openapi.entity.Invoice;
 import com.esiran.greenpay.openapi.entity.InvoiceInputDTO;
 import com.esiran.greenpay.openapi.entity.PayOrder;
 import com.esiran.greenpay.openapi.plugins.PayOrderFlow;
-import com.esiran.greenpay.openapi.plugins.WxJsapiPlugin;
 import com.esiran.greenpay.openapi.service.IInvoiceService;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
@@ -35,13 +36,15 @@ public class InvoiceService implements IInvoiceService {
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;
     private final IdWorker idWorker;
+    private final RedisDelayQueueClient redisDelayQueueClient;
     public InvoiceService(
             IMerchantService merchantService,
             IProductService productService,
             IPassageAccountService passageAccountService,
             IPassageService passageService,
             IInterfaceService interfaceService, IOrderService orderService,
-            IOrderDetailService orderDetailService, IdWorker idWorker) {
+            IOrderDetailService orderDetailService, IdWorker idWorker,
+            RedisDelayQueueClient redisDelayQueueClient) {
         this.merchantService = merchantService;
         this.productService = productService;
         this.passageAccountService = passageAccountService;
@@ -50,6 +53,7 @@ public class InvoiceService implements IInvoiceService {
         this.orderService = orderService;
         this.orderDetailService = orderDetailService;
         this.idWorker = idWorker;
+        this.redisDelayQueueClient = redisDelayQueueClient;
     }
 
     @Override
@@ -121,11 +125,13 @@ public class InvoiceService implements IInvoiceService {
         orderDetail.setCreatedAt(LocalDateTime.now());
         orderDetail.setUpdatedAt(LocalDateTime.now());
         orderDetailService.save(orderDetail);
+
         Plugin<PayOrder> plugin = PluginLoader.loadForClassPath("com.esiran.greenpay.openapi.plugins.WxJsapiPlugin");
         PayOrder payOrder = new PayOrder();
         PayOrderFlow payOrderFlow = new PayOrderFlow(payOrder);
         plugin.apply(payOrderFlow);
         payOrderFlow.execDependent("create");
+        redisDelayQueueClient.sendDelayMessage("greenpay:queue:order_task",order.getOrderNo(),2000);
         return invoice;
     }
 }

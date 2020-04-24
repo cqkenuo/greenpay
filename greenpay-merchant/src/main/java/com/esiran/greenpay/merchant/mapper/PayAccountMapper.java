@@ -2,6 +2,9 @@ package com.esiran.greenpay.merchant.mapper;
 
 import com.esiran.greenpay.merchant.entity.PayAccount;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * <p>
@@ -12,5 +15,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-04-13
  */
 public interface PayAccountMapper extends BaseMapper<PayAccount> {
+    void updateAvailBalance(@Param("mchId") Integer mchId, @Param("amount") Integer amount);
+    void updateFreezeBalance(@Param("mchId") Integer mchId, @Param("amount") Integer amount);
+    int updateBalance(@Param("mchId") Integer mchId, @Param("availAmount") Integer availAmount,
+                       @Param("freezeAmount") Integer freezeAmount);
 
 }

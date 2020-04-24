@@ -1,4 +1,4 @@
-package com.esiran.greenpay.pay.controller;
+package com.esiran.greenpay.merchant.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 订单详情 前端控制器
+ * 商户结算账户 前端控制器
  * </p>
  *
  * @author Militch
- * @since 2020-04-14
+ * @since 2020-04-21
  */
 @RestController
-@RequestMapping("/pay/order-detail")
-public class OrderDetailController {
+@RequestMapping("/merchant/settle-account")
+public class SettleAccountController {
 
 }

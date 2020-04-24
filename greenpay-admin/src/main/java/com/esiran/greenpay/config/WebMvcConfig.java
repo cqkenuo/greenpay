@@ -1,7 +1,9 @@
 package com.esiran.greenpay.config;
 
 import com.esiran.greenpay.common.util.IdWorker;
+import com.esiran.greenpay.message.delayqueue.DelayQueueTaskRegister;
 import com.esiran.greenpay.openapi.filter.OPenAPISecurityFilter;
+import com.esiran.greenpay.runner.OrderDelayQueueTaskRunner;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -26,9 +28,13 @@ import java.time.format.DateTimeFormatter;
 public class WebMvcConfig implements WebMvcConfigurer {
     private final OPenAPISecurityFilter oPenAPISecurityFilter;
     private final BaseInterceptor baseInterceptor;
-    public WebMvcConfig(OPenAPISecurityFilter oPenAPISecurityFilter, BaseInterceptor baseInterceptor) {
+    private final OrderDelayQueueTaskRunner orderDelayQueueTaskRunner;
+    public WebMvcConfig(OPenAPISecurityFilter oPenAPISecurityFilter,
+                        BaseInterceptor baseInterceptor,
+                        OrderDelayQueueTaskRunner orderDelayQueueTaskRunner) {
         this.oPenAPISecurityFilter = oPenAPISecurityFilter;
         this.baseInterceptor = baseInterceptor;
+        this.orderDelayQueueTaskRunner = orderDelayQueueTaskRunner;
     }
 
     @Bean
@@ -71,6 +77,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registration.setName("OPenAPISecurityFilter");
         registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registration;
+    }
+
+    @Bean
+    public DelayQueueTaskRegister delayQueueTaskRegister(){
+        DelayQueueTaskRegister delayQueueTaskRegister = new DelayQueueTaskRegister();
+        delayQueueTaskRegister.register("greenpay:queue:order_task",orderDelayQueueTaskRunner);
+        return delayQueueTaskRegister;
     }
 
     @Override

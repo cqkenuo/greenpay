@@ -33,7 +33,7 @@ CREATE TABLE `merchant` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `merchant` (
 
 LOCK TABLES `merchant` WRITE;
 /*!40000 ALTER TABLE `merchant` DISABLE KEYS */;
-INSERT INTO `merchant` (`id`, `username`, `name`, `email`, `phone`, `password`, `status`, `created_at`, `updated_at`) VALUES (2,'user1','user1','','','abc',1,'2020-04-14 00:44:57','2020-04-14 00:44:57');
+INSERT INTO `merchant` (`id`, `username`, `name`, `email`, `phone`, `password`, `status`, `created_at`, `updated_at`) VALUES (2,'militch','admin','litch.me@gmail.com','','123456',1,'2020-04-17 00:54:21','2020-04-21 01:05:09'),(3,'abc','militch','abc@abc.com','','abc',0,'2020-04-17 21:55:40','2020-04-17 21:55:40'),(4,'uniabc','abc','abc@abc','','abc',0,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,12 +58,13 @@ CREATE TABLE `merchant_api_config` (
   `mch_id` int NOT NULL COMMENT '商户ID',
   `api_key` varchar(32) NOT NULL COMMENT '商户APIKEY',
   `api_security` varchar(32) NOT NULL COMMENT '商户API_SECURITY',
+  `private_key` varchar(1024) DEFAULT NULL COMMENT '平台私钥',
   `pub_key` varchar(512) DEFAULT NULL COMMENT '平台公钥',
   `mch_pub_key` varchar(512) DEFAULT NULL COMMENT '商户公钥',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户密钥';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户密钥';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +73,7 @@ CREATE TABLE `merchant_api_config` (
 
 LOCK TABLES `merchant_api_config` WRITE;
 /*!40000 ALTER TABLE `merchant_api_config` DISABLE KEYS */;
-INSERT INTO `merchant_api_config` (`id`, `mch_id`, `api_key`, `api_security`, `pub_key`, `mch_pub_key`, `created_at`, `updated_at`) VALUES (1,2,'abc','abc',NULL,'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwNmE+3KTqhGn2WLz0GGhZajXE1ot2yli8yHbtAQBNRZMQB8mpEk7oDp4F08lklCkF18X5weCMMSKgDiiPAwLE98fSuORoYSwtCDFkt8ojFAQfkZVyZF9f0ffNaZacFodU1NTJC6OY2/SdyKa6E8IzljLZGotU1bMa75kwjJGG92MjBlLgn6FcGstmzYS/0ezHUyv53BmOvmH2mCoY1dAvmqAlK5LVUWeYAh8QW0OxOib1BZAXUxQqOa0fL9Ubzvi0eCZvaGrmqSdfQixQ6EdTgP8AqfT0eX00Nlp6vt4S6wUEmy/a7Xxezh8JJAzacMHFa27JYtBOtDe3/DNR0BD8QIDAQAB','2020-04-15 22:07:22','2020-04-15 22:07:22');
+INSERT INTO `merchant_api_config` (`id`, `mch_id`, `api_key`, `api_security`, `private_key`, `pub_key`, `mch_pub_key`, `created_at`, `updated_at`) VALUES (1,2,'ec3136bbf7fd326277a7f675e500265f','06590e4980b76c53f952ea7fbcd6e78c','MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIIVl7aJVGduveuwxUATC2AJRy0fE5H6tiA2hNtlZE7HDhEg73n1RnMwcBYbCk0xEuunp1Fbw/dBcMrI6GYriba7ffi37gfoCxEt3la5qxx7i4839iFq1I7Jur2PWxipVdEBeo9letpsTmLg52t4oZHA5KWZK1FJnhgfgGPLnCoPAgMBAAECgYA+NfFePIL/DDkLtHhA0lrITOebLpd/YrUi5q/W9MBp5ExX6LZeTuyoPev8xmXA0M1Jod4kzIwFfWhhsn9iDURITHjM1T4K36IdLKQimtwnp3DChMJtRwqev0g8ZIkHdQqourYscq1VxOIwR97xGsH54WFQOJlopUizs+NosmzOcQJBANiZ2NSXMZEmP5mBijwL11UAuvTXSMEyr2HvrruPtz5w2FfJwH0yHwLVjE8DtMDaVFsib1dJTVc0VGZujw4708MCQQCZvww4IbpwuqpZ0ft/UJvIfjwII+CjjmK7CG9Ae2I3qgAmW+J8tsRg7b6nVBz3fu6Qz3KBQLy3eoAzqVus+qfFAkEAuUkyAPmtPxtXAHudwqvmciKDy3p2FD7FZKPh9zSDbniduMsvTGmZuZTvx4/GCcs6qhMU57ge3uA26sDcwzJOfQJAc8SLquiavq+P/jpDKcbExt9mzKpXSFC6vyLGwsMlXczAeCHQFSB6FpJucQjBFwuZD6llCzZ346B2UHBB+6pyEQJBAJJ3NlIAUQl9JgKdwjiBWiQIdV1TGP/jDw2E9Xv7yAbrrj0NLdL9bYcv2dFnl8J0yIObNvhrWdP1S2FPB3nEb0I=','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCCFZe2iVRnbr3rsMVAEwtgCUctHxOR+rYgNoTbZWROxw4RIO959UZzMHAWGwpNMRLrp6dRW8P3QXDKyOhmK4m2u334t+4H6AsRLd5Wuasce4uPN/YhatSOybq9j1sYqVXRAXqPZXrabE5i4OdreKGRwOSlmStRSZ4YH4Bjy5wqDwIDAQAB',NULL,'2020-04-17 00:54:21','2020-04-17 00:54:21'),(2,3,'da8d3f4f24b8a8fab3ae804b8e29e377','37a6a3fe23eac4a01337b13b6903edb9','MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIeHTpKLbuPGX+b1vmI86IzdmyhjtGWmVfmKtM83cjT7DKFjC8cgp23n/f2PyRfCLkUqZBzcLCawmSaeDHvfke+d0oIOYG9cL2ZFKgAUokz+kvxDmBNU1JmwlZkxQsxV2/STuvEPBJSH6hBzs8DRBO2tTRMeGs2Kn7PVLp3h3g9LAgMBAAECgYBoMuR7EQ7ButwzA09L0k5tN1g6dmXVHUzOnhEjnBqHl1j/n9oHUBjKDGqgD3Npe9b9QHlWIwUi/fXR1gP9HUfiUwa028gmMFJpuqRbGTf+14maFvY/174UPPk1E2YOqP7w9KetMdbhZSkLNiX0DabW5WoHHFDtDPQWPoV45QDdOQJBANwZbn4PkD3nGbZ4fBQYxKcsCOVtakKL523+cfPQlQjFIb0MbUVE5AVe3Rtiaa/+1vc4EIn0qhQ9UfWYbE3QHycCQQCdon+cqr+1CH2XOTOTwSFOxJBiHNOlxCbZ5+un5p/I8qjanGXa7mZod63AswpsR3/nxX6tc1e1J8VIq/eiyiU9AkEAhsaf7VuUZQOVsDG5MQk1qnSBghPtBJDtB2LO3pD0IemszjnE06zqwAsl8/XgZ9/yPHI9VmzWlQwzmuNaNo/h8wJAOdAzRV5KWTb3+NJ93B7k/GKTIai45v790MWCZF3tFGILE8JwiM8OuBnMm/QOSpAelP6V6z92V3ZyoKiRdh71cQJBAKYse+8ICTGgBl/G6AhbO9wY230dcAAHrYQnVbCY6shFmDk3reUSGzd1/A8rwk4qkzZHKUOS4WPEQYmo7TT93Bo=','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCHh06Si27jxl/m9b5iPOiM3ZsoY7RlplX5irTPN3I0+wyhYwvHIKdt5/39j8kXwi5FKmQc3CwmsJkmngx735HvndKCDmBvXC9mRSoAFKJM/pL8Q5gTVNSZsJWZMULMVdv0k7rxDwSUh+oQc7PA0QTtrU0THhrNip+z1S6d4d4PSwIDAQAB',NULL,'2020-04-17 21:55:41','2020-04-17 21:55:41'),(3,4,'cc48cbb82c24c7a9816b51778de66540','fe7da3f982b9a4313dbc5f4ecfe5bec2','MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALp5mT8AuRiAaT+GyF3OKcLSOnw525FVQTqnyF2jkokmY3ru5AJy4MdgBryyBlS4Xx+dLjP8Zz8ByDLMhs+jUeWAk8UyCeLZTUc+NHa5vdXg8jZeeW831B+s73wJEbhqIif7+BcnsXWmcBvXk3Fi8HqlBuiZUUu3jSRn//6q2SKXAgMBAAECgYEAknGklAHxWvidrzIecOzThxiqrZySftRBYdsaU8996Q+o2IZ7siCdvnX/VHlK14XjzmQWQOVb//NaUeqlhLNyQD3+PXCNPg1QwI8i85hlxZfi7wkcSbPAibWy1L0mtf0VvmHsoCLMGKoVHay9ANTb0VgWVpBOShOLHizD2gPk5kECQQDuRtdMMp+4VcfdbVzX7qsiD9F4aB3kXjKudatnsxY9qLRXtDOPJyDhLCNABdO2QOeSNzPLzxxlv8P9rTZABR7/AkEAyFhfSlJOHlObJzixX1NOLAKwwuo/hN7tx1yTaS++RIej3vFpFH2KcFI801jI2/SFyJTcbBMDzFW7+gVk4SyUaQJANaCgCDhEllpIF1/ry3Wd8paY0H6ua51/zqARKc+2q73yiOK3z/pAfi1O6bPmCFjnRZNDBxXgEE5usANx+EquxQJAI36cq1M3qeHQHDvMGQJuWBfF71KHHGhOokKBj2I5CHUrkEUfA9VWIJ5BToRtWaLRzP6qqq8Xviz2V8561/YI+QJAYOdpdkZZoBH0syCsFXKl2UAcMEgKur4qbXy1PsL6RxoIUjNBpTiV99EFP4vXRcsX0sCJTh+GbVt4bbZH7hZfGA==','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6eZk/ALkYgGk/hshdzinC0jp8OduRVUE6p8hdo5KJJmN67uQCcuDHYAa8sgZUuF8fnS4z/Gc/AcgyzIbPo1HlgJPFMgni2U1HPjR2ub3V4PI2XnlvN9QfrO98CRG4aiIn+/gXJ7F1pnAb15NxYvB6pQbomVFLt40kZ//+qtkilwIDAQAB',NULL,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant_api_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +92,7 @@ CREATE TABLE `merchant_pay_account` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户支付账户';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户支付账户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,6 +101,7 @@ CREATE TABLE `merchant_pay_account` (
 
 LOCK TABLES `merchant_pay_account` WRITE;
 /*!40000 ALTER TABLE `merchant_pay_account` DISABLE KEYS */;
+INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (1,2,0,0,'2020-04-17 00:54:21','2020-04-17 00:54:21'),(2,3,0,0,'2020-04-17 21:55:41','2020-04-17 21:55:41'),(3,4,0,0,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant_pay_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +120,7 @@ CREATE TABLE `merchant_prepaid_account` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户预充值账户';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户预充值账户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +129,7 @@ CREATE TABLE `merchant_prepaid_account` (
 
 LOCK TABLES `merchant_prepaid_account` WRITE;
 /*!40000 ALTER TABLE `merchant_prepaid_account` DISABLE KEYS */;
+INSERT INTO `merchant_prepaid_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (1,2,0,0,'2020-04-17 00:54:21','2020-04-17 00:54:21'),(2,3,0,0,'2020-04-17 21:55:41','2020-04-17 21:55:41'),(3,4,0,0,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant_prepaid_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +150,7 @@ CREATE TABLE `merchant_product` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,8 +159,38 @@ CREATE TABLE `merchant_product` (
 
 LOCK TABLES `merchant_product` WRITE;
 /*!40000 ALTER TABLE `merchant_product` DISABLE KEYS */;
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `rate`, `status`, `created_at`, `updated_at`) VALUES (2,2,'wx_jsapi',2,0.024,1,'2020-04-14 02:09:44','2020-04-14 02:09:44');
+INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `rate`, `status`, `created_at`, `updated_at`) VALUES (1,2,'wx_jsapi',2,0.000,1,'2020-04-20 23:23:55','2020-04-20 23:23:55');
 /*!40000 ALTER TABLE `merchant_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `merchant_settle_account`
+--
+
+DROP TABLE IF EXISTS `merchant_settle_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `merchant_settle_account` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `merchant_id` int NOT NULL COMMENT '商户ID',
+  `settle_fee_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算收费类型（1：百分比收费，2：固定收费）',
+  `settle_fee_rate` decimal(10,4) NOT NULL DEFAULT '0.0000' COMMENT '结算费率（百分比）',
+  `settle_fee_amount` int NOT NULL DEFAULT '0' COMMENT '结算费用（单位，分）',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户结算账户';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `merchant_settle_account`
+--
+
+LOCK TABLES `merchant_settle_account` WRITE;
+/*!40000 ALTER TABLE `merchant_settle_account` DISABLE KEYS */;
+INSERT INTO `merchant_settle_account` (`id`, `merchant_id`, `settle_fee_type`, `settle_fee_rate`, `settle_fee_amount`, `status`, `created_at`, `updated_at`) VALUES (1,2,1,0.0000,0,1,'2020-04-21 01:25:24','2020-04-21 01:50:07'),(2,3,1,0.0000,0,0,'2020-04-21 01:25:29','2020-04-21 01:25:29'),(3,4,1,0.0000,0,0,'2020-04-21 01:57:45','2020-04-21 01:57:44');
+/*!40000 ALTER TABLE `merchant_settle_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -219,7 +252,7 @@ CREATE TABLE `pay_order` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付订单';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付订单';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +261,7 @@ CREATE TABLE `pay_order` (
 
 LOCK TABLES `pay_order` WRITE;
 /*!40000 ALTER TABLE `pay_order` DISABLE KEYS */;
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (2,'1249942871872770048','202004140209381280292',2,123456,'abc','123456',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38'),(3,'1249943048562020352','202004140210202537008',2,1234567,'abc','123456',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20'),(4,'1249943081101430784','202004140210280110581',2,1234567,'abc','1234576',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28'),(5,'1249965518975275008','202004140339376183456',2,1234567,'abc','12345776',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38'),(6,'1249966907960987648','202004140345087778932',2,1234567,'abc','123457786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09'),(7,'1249967549395898368','202004140347417071605',2,1234567,'abc','1234757786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42'),(8,'1249968387975680000','202004140351016404322',2,1234567,'abc','12347572786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02'),(11,'1249973459761631232','202004140411108494707',2,1234567,'abc','123475727186',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11'),(13,'1250458836519751680','202004161219536850645',2,123456,'123484','12346546',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54');
+INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (2,'1249942871872770048','202004140209381280292',2,123456,'abc','123456',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38'),(3,'1249943048562020352','202004140210202537008',2,1234567,'abc','123456',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20'),(4,'1249943081101430784','202004140210280110581',2,1234567,'abc','1234576',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28'),(5,'1249965518975275008','202004140339376183456',2,1234567,'abc','12345776',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38'),(6,'1249966907960987648','202004140345087778932',2,1234567,'abc','123457786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09'),(7,'1249967549395898368','202004140347417071605',2,1234567,'abc','1234757786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42'),(8,'1249968387975680000','202004140351016404322',2,1234567,'abc','12347572786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02'),(11,'1249973459761631232','202004140411108494707',2,1234567,'abc','123475727186',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11'),(13,'1250458836519751680','202004161219536850645',2,123456,'123484','12346546',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54'),(14,'1252256726720319488','202004201124041122618',2,123456,'123484','1587396162157',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-20 23:24:04','2020-04-20 23:24:04'),(15,'1252257359594655744','202004201126350011901',2,123456,'123484','15873961621573',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-20 23:26:35','2020-04-20 23:26:35'),(16,'1252258238792077312','202004201130046184519',2,123456,'123484','1587396593921',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-20 23:30:05','2020-04-20 23:30:05');
 /*!40000 ALTER TABLE `pay_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,7 +286,7 @@ CREATE TABLE `pay_order_detail` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单详情';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单详情';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +295,7 @@ CREATE TABLE `pay_order_detail` (
 
 LOCK TABLES `pay_order_detail` WRITE;
 /*!40000 ALTER TABLE `pay_order_detail` DISABLE KEYS */;
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_params`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (1,'1249942871872770048','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38'),(2,'1249943048562020352','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20'),(3,'1249943081101430784','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28'),(4,'1249965518975275008','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38'),(5,'1249966907960987648','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09'),(6,'1249967549395898368','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42'),(7,'1249968387975680000','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02'),(10,'1249973459761631232','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11'),(12,'1250458836519751680','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54');
+INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_params`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (1,'1249942871872770048','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38'),(2,'1249943048562020352','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20'),(3,'1249943081101430784','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28'),(4,'1249965518975275008','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38'),(5,'1249966907960987648','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09'),(6,'1249967549395898368','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42'),(7,'1249968387975680000','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02'),(10,'1249973459761631232','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11'),(12,'1250458836519751680','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54'),(13,'1252256726720319488','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-20 23:24:04','2020-04-20 23:24:04'),(14,'1252257359594655744','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-20 23:26:35','2020-04-20 23:26:35'),(15,'1252258238792077312','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-20 23:30:05','2020-04-20 23:30:05');
 /*!40000 ALTER TABLE `pay_order_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -559,4 +592,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-16  5:54:28
+-- Dump completed on 2020-04-21  2:53:21

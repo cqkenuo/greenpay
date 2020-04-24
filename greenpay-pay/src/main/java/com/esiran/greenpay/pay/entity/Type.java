@@ -38,12 +38,10 @@ public class Type  extends BaseMapperEntity {
     /**
      * 类别(1：支付，2，代付)
      */
-    private Boolean type;
+    private Integer type;
 
     /**
      * 状态（0：关闭，1：开启）
      */
     private Boolean status;
-
-
 }

@@ -33,10 +33,6 @@
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-openapi</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.esiran</groupId>
-            <artifactId>greenpay-order</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

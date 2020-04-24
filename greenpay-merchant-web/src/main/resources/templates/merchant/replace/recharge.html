@@ -2,7 +2,7 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>提现记录 - GreenPay</title>
+    <title>代付列表 - GreenPay</title>
     <th:block th:replace="merchant/header::stylesheet"/>
 </head>
 <body class="layui-layout-body">
@@ -16,7 +16,7 @@
                     <div class="layui-card">
                         <div class="layui-tab layui-tab-brief">
                             <ul class="layui-tab-title">
-                                <li class="layui-this">提现记录</li>
+                                <li class="layui-this">代付列表</li>
                             </ul>
                             <div class="layui-tab-content">
                                 <div class="layui-tab-item layui-show">
@@ -34,16 +34,16 @@
                                                            lay-key="10">
                                                 </div>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" name="mchOrderNo" id="mchOrderNo"
-                                                           placeholder="商户单号" autocomplete="off" class="layui-input">
+                                                    <input type="text" name="replaceId" id="replaceId"
+                                                           placeholder="代付单号" autocomplete="off" class="layui-input">
                                                 </div>
                                                 <div class="layui-input-inline">
                                                     <div class="layui-input-block">
                                                         <select name="status" id="status" lay-verify="required">
                                                             <option value="-99">状态</option>
-                                                            <option value="1">提现成功</option>
-                                                            <option value="0">待下发</option>
-                                                            <option value="-1">提现失败</option>
+                                                            <option value="1">审核通过</option>
+                                                            <option value="0">待审核</option>
+                                                            <option value="-1">审核失败</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <table id="extractlist" lay-filter="extract"></table>
+                                        <table id="rechargeList" lay-filter="recharge"></table>
                                     </div>
 
                                 </div>
@@ -73,8 +73,8 @@
             ,laydate = layui.laydate;
         //第一个实例
         table.render({
-            elem: '#extractlist',
-            url: '/merchant/api/v1/extracts', //数据接口
+            elem: '#rechargeList',
+            url: '/merchant/api/v1/recharge', //数据接口
             page: true,//开启分页
             parseData: function (res) { //res 即为原始返回的数据
                 return {
@@ -90,8 +90,8 @@
             }
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
-                , {field: 'extractNo', title: '订单编号', width: "15%",align:'center'}
-                , {field: 'amount', title: '提现金额', width: "15%",align:'center'}
+                , {field: 'rechargeId', title: '充值单号', width: "15%",align:'center'}
+                , {field: 'rechargeMoney', title: '充值金额', width: "15%",align:'center'}
                 , {field: 'status', title: '状态', width: "15%" ,align:'center'}
                 , {field: 'createdAt', title: '创建时间', width: "15%",align:'center'}
                 ,{title: '操作', align: 'left', width:'15%'}

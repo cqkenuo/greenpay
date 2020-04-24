@@ -16,4 +16,6 @@ public class MerchantOrderController {
     public String extracts(){
         return "merchant/order/extract";
     }
+
+
 }

@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
  * @since 2020-04-13
  */
 @Data
-public class ProductPassageAccDTO {
+public class ProductPassageDTO {
     private Integer id;
     private Integer productId;
     private Integer passageId;
-    private Integer accId;
+    private Integer widget;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

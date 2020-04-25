@@ -19,8 +19,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("pay_product_passage_acc")
-public class ProductPassageAcc  extends BaseMapperEntity {
+@TableName("pay_product_passage")
+public class ProductPassage extends BaseMapperEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,9 +34,6 @@ public class ProductPassageAcc  extends BaseMapperEntity {
      */
     private Integer passageId;
 
-    /**
-     * 子账户ID
-     */
-    private Integer accId;
+    private Integer widget;
 
 }

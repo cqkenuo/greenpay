@@ -4,10 +4,9 @@ import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.*;
-import com.esiran.greenpay.pay.service.IPassageAccountService;
-import com.esiran.greenpay.pay.service.IPassageService;
-import com.esiran.greenpay.pay.service.IProductService;
-import com.esiran.greenpay.pay.service.ITypeService;
+import com.esiran.greenpay.pay.service.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,15 +25,18 @@ public class AdminPayProductController extends CURDBaseController {
     private final IProductService productService;
     private final IPassageService passageService;
     private final IPassageAccountService passageAccountService;
+    private final IProductPassageService productPassageService;
+    private static final Gson gson = new GsonBuilder().create();
     public AdminPayProductController(
             ITypeService typeService,
             IProductService productService,
             IPassageService passageService,
-            IPassageAccountService passageAccountService) {
+            IPassageAccountService passageAccountService, IProductPassageService productPassageService) {
         this.typeService = typeService;
         this.productService = productService;
         this.passageService = passageService;
         this.passageAccountService = passageAccountService;
+        this.productPassageService = productPassageService;
     }
 
     @GetMapping("/list")
@@ -60,11 +62,17 @@ public class AdminPayProductController extends CURDBaseController {
         Product product = productService.getById(id);
         List<Type> availTypes = typeService.list();
         List<Passage> availPassages = passageService.listByPayTypeCode(product.getPayTypeCode());
+        String availPassagesJson = gson.toJson(availPassages);
         List<PassageAccount> availPassagesAcc = passageAccountService.listByPayTypeCode(product.getPayTypeCode());
+        List<ProductPassage> usagePassages = productPassageService.listByProductId(product.getId());
+        String usagePassagesJson = gson.toJson(usagePassages);
         modelMap.addAttribute("availTypes",availTypes);
         modelMap.addAttribute("availPassages",availPassages);
+        modelMap.addAttribute("availPassagesJson",availPassagesJson);
         modelMap.addAttribute("availPassagesAcc",availPassagesAcc);
+        modelMap.addAttribute("usagePassagesJson",usagePassagesJson);
         modelMap.addAttribute("data",product);
+
 //        return "admin/pay/product/edit";
         return renderViewAndError("pay/product/edit",httpSession,modelMap);
     }

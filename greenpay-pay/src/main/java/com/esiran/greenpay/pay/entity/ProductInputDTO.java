@@ -16,6 +16,7 @@ public class ProductInputDTO {
     private String payTypeCode;
     private Integer interfaceMode;
     private Integer defaultPassageId;
+    private String loopPassages;
     private Integer defaultPassageAccId;
     @NotNull(message = "状态不能为空")
     private Boolean status;

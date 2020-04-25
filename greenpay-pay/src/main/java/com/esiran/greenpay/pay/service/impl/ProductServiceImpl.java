@@ -7,13 +7,14 @@ import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.mapper.ProductMapper;
-import com.esiran.greenpay.pay.service.IPassageAccountService;
-import com.esiran.greenpay.pay.service.IPassageService;
-import com.esiran.greenpay.pay.service.IProductService;
+import com.esiran.greenpay.pay.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.esiran.greenpay.pay.service.ITypeService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,14 +30,22 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements IProductService {
-    private final ModelMapper modelMapper = new ModelMapper();
+    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final Gson gson = new GsonBuilder().create();
     private final ITypeService typeService;
     private final IPassageService passageService;
     private final IPassageAccountService passageAccountService;
-    public ProductServiceImpl(ITypeService typeService, IPassageService passageService, IPassageAccountService passageAccountService) {
+    private final IProductPassageService productPassageService;
+
+    public ProductServiceImpl(
+            ITypeService typeService,
+            IPassageService passageService,
+            IPassageAccountService passageAccountService,
+            IProductPassageService productPassageService) {
         this.typeService = typeService;
         this.passageService = passageService;
         this.passageAccountService = passageAccountService;
+        this.productPassageService = productPassageService;
     }
 
     @Override
@@ -82,6 +91,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public boolean updateById(Integer id, ProductInputDTO productInputDTO) throws PostResourceException, ResourceNotFoundException {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Product src = this.getById(id);
         if (src == null) throw new ResourceNotFoundException("支付产品不存在");
         Product target = modelMapper.map(productInputDTO,Product.class);
@@ -99,6 +109,19 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             if (!passage.getId().equals(passageAcc.getPassageId())){
                 throw new PostResourceException("支付通道与子账户不匹配");
             }
+        }
+        String loopPassages = productInputDTO.getLoopPassages();
+        if (!StringUtils.isEmpty(loopPassages)){
+            List<ProductPassageInputDTO> passageInputDTOS = gson.fromJson(loopPassages,
+                    new TypeToken<List<ProductPassageInputDTO>>(){}.getType());
+            List<ProductPassageInputDTO> passagesDTOs = passageInputDTOS.stream()
+                    .filter(ProductPassageInputDTO::getUsage)
+                    .collect(Collectors.toList());
+            List<ProductPassage> passages = passagesDTOs.stream()
+                    .map(item->modelMapper.map(item,ProductPassage.class))
+                    .collect(Collectors.toList());
+            productPassageService.removeByProductId(target.getId());
+            passages.forEach(productPassageService::save);
         }
         target.setUpdatedAt(LocalDateTime.now());
         return updateById(target);

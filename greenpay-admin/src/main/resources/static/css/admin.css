@@ -37,3 +37,10 @@
 .admin-footer .admin-footer_content {
     margin: 48px 0 24px;
 }
+.admin-descriptions-item .layui-form-label{
+    text-align: left;
+    width: unset;
+}
+.admin-descriptions-item .layui-input-block{
+    margin-left:0;
+}

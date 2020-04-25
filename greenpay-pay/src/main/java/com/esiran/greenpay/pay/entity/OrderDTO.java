@@ -2,6 +2,7 @@ package com.esiran.greenpay.pay.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.esiran.greenpay.common.entity.BaseMapperEntity;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -56,6 +57,8 @@ public class OrderDTO  {
      */
     private Integer amount;
 
+    private String amountDisplay;
+
     /**
      * 商品描述
      */
@@ -79,7 +82,7 @@ public class OrderDTO  {
     /**
      * 订单状态（0：待付款，2：已支付，3：订单完成，-1：交易取消，-2：交易失败）
      */
-    private Boolean status;
+    private Integer status;
 
     /**
      * 支付时间
@@ -125,6 +128,8 @@ public class OrderDTO  {
      * 上游扩展参数
      */
     private String upstreamExtra;
+
+    private String payTypeName;
 
     /**
      * 创建时间

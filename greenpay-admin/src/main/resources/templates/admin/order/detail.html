@@ -14,45 +14,317 @@
                 <div th:replace="admin/compose::layui-breadcrumb('订单管理','订单详情')"></div>
                 <div class="layui-fluid">
                     <div class="layui-card">
-                        <div class="layui-card-header">订单信息</div>
                         <div class="layui-card-body">
-                            <div class="layui-form">
-                                <div class="layui-row">
-                                    <div class="layui-col-md4 admin-descriptions-item">
-                                        <div class="layui-form-item layui-row">
-                                            <div class="layui-col-md4">
-                                                <label for="orderNo" class="layui-form-label layui-col-md4">
-                                                    交易订单号：
-                                                </label>
-                                            </div>
-                                            <div class="layui-col-md8">
-                                                <div class="layui-input-block">
-                                                    <input type="text" class="layui-input" id="orderNo"
-                                                           readonly autocomplete="off"
-                                                           th:value="${order.orderNo}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-md4 admin-descriptions-item">
-                                        <div class="layui-form-item layui-row">
-                                            <div class="layui-col-md4">
-                                                <label for="orderNo" class="layui-form-label layui-col-md4">
-                                                    交易订单号：
-                                                </label>
-                                            </div>
-                                            <div class="layui-col-md8">
-                                                <div class="layui-input-block">
-                                                    <input type="text" class="layui-input" id="orderNo"
-                                                           readonly autocomplete="off"
-                                                           th:value="${order.orderNo}">
-                                                </div>
-                                            </div>
+                            <fieldset class="layui-elem-field layui-field-title">
+                                <legend>基础信息</legend>
+                                <div class="layui-field-box">
+                                    <div class="admin-detail">
+                                        <div class="admin-detail-view">
+                                            <table>
+                                                <tbody>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="orderNo" class="layui-form-label">
+                                                                交易订单号
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="orderNo" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="orderSn" class="layui-form-label">
+                                                                交易流水号
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="orderSn" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="outOrderNo" class="layui-form-label">
+                                                                商户订单号
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="outOrderNo" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="3">
+                                                        <div class="layui-form-item">
+                                                            <label for="status" class="layui-form-label">
+                                                                订单状态
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="status" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="createdAt" class="layui-form-label">
+                                                                创建时间
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="createdAt" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="layui-form layui-form-pane" colspan="2">
+                                                        <div class="layui-form-item">
+                                                            <label for="expiredAt" class="layui-form-label">
+                                                                过期时间
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="expiredAt" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="appId" class="layui-form-label">
+                                                                应用ID
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="appId" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="layui-form layui-form-pane" colspan="2">
+                                                        <div class="layui-form-item">
+                                                            <label for="mchId" class="layui-form-label">
+                                                                商户ID
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="mchId" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="subject" class="layui-form-label">
+                                                                商品标题
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="subject" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="layui-form layui-form-pane" colspan="2">
+                                                        <div class="layui-form-item">
+                                                            <label for="body" class="layui-form-label">
+                                                                商品描述
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="body" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="amount" class="layui-form-label">
+                                                                订单金额
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="amount" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="layui-form layui-form-pane" colspan="2">
+                                                        <div class="layui-form-item">
+                                                            <label for="payAmount" class="layui-form-label">
+                                                                支付金额
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="payAmount" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="3">
+                                                        <div class="layui-form-item">
+                                                            <label for="notifyUrl" class="layui-form-label">
+                                                                回调地址
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="notifyUrl" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="3">
+                                                        <div class="layui-form-item" style="margin-bottom: 0" >
+                                                            <label for="returnUrl" class="layui-form-label">
+                                                                跳转链接
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="returnUrl" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </fieldset>
+                            <fieldset class="layui-elem-field layui-field-title">
+                                <legend>支付信息</legend>
+                                <div class="layui-field-box">
+                                    <div class="admin-detail">
+                                        <div class="admin-detail-view">
+                                            <table>
+                                                <tbody>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="status" class="layui-form-label">
+                                                                支付时间
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="status" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="createdAt" class="layui-form-label">
+                                                                支付类型
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="createdAt" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="createdAt" class="layui-form-label">
+                                                                支付产品
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="createdAt" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="appId" class="layui-form-label">
+                                                                支付通道
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="appId" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="subject" class="layui-form-label">
+                                                                通道子账户
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="subject" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="amount" class="layui-form-label">
+                                                                支付接口
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="amount" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
+                                                            <label for="notifyUrl" class="layui-form-label">
+                                                                支付接口
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="notifyUrl" th:value="123">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

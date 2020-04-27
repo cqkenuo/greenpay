@@ -27,7 +27,7 @@
             </li>
             <li class="layui-nav-item">
                 <a class="" href="javascript:;">
-                    <i class="layui-icon layui-icon-form"></i>
+                    <i class="layui-icon layui-icon-file"></i>
                     <cite>订单管理</cite>
                 </a>
                 <dl class="layui-nav-child">
@@ -36,7 +36,7 @@
             </li>
             <li class="layui-nav-item">
                 <a class="" href="javascript:;">
-                    <i class="layui-icon layui-icon-cart-simple"></i>
+                    <i class="layui-icon layui-icon-component"></i>
                     <cite>支付配置</cite>
                 </a>
                 <dl class="layui-nav-child">
@@ -44,6 +44,26 @@
                     <dd th:replace="admin/side::layui_nav_item('/admin/pay/interface/list','支付接口')"></dd>
                     <dd th:replace="admin/side::layui_nav_item('/admin/pay/passage/list','支付通道')"></dd>
                     <dd th:replace="admin/side::layui_nav_item('/admin/pay/product/list','支付产品')"></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">
+                    <i class="layui-icon layui-icon-star"></i>
+                    <cite>结算管理</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd th:replace="admin/side::layui_nav_item('/admin/settle/audit', '结算审核')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/admin/settle/list', '应付结算')"></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">
+                    <i class="layui-icon layui-icon-release"></i>
+                    <cite>代付管理</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd th:replace="admin/side::layui_nav_item('/admin/agentpay/list', '代付订单')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/admin/agentpay/passage', '代付通道')"></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">

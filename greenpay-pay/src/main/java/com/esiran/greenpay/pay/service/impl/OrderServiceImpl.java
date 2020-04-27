@@ -28,12 +28,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public IPage<OrderDTO> selectPage(IPage<OrderDTO> page, OrderDTO orderDTO) {
         IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()));
-        return orderPage.convert(item->{
-            OrderDTO dto = modelMapper.map(item,OrderDTO.class);
-            dto.setAmountDisplay(NumberUtil.amountFen2Yuan(item.getAmount()));
-            return dto;
-        });
+        return orderPage.convert(OrderDTO::convertOrderEntity);
     }
+
 
     @Override
     public OrderDTO getByOrderNo(String orderNo) {
@@ -41,8 +38,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         lambdaQueryWrapper.eq(Order::getOrderNo, orderNo);
         Order order = this.getOne(lambdaQueryWrapper);
         if (order == null) return null;
-        OrderDTO dto = modelMapper.map(order,OrderDTO.class);
-        dto.setAmountDisplay(NumberUtil.amountFen2Yuan(order.getAmount()));
-        return dto;
+        return OrderDTO.convertOrderEntity(order);
     }
 }

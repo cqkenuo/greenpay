@@ -18,6 +18,8 @@
         <module>greenpay-openapi</module>
         <module>greenpay-actuator</module>
         <module>greenpay-message</module>
+        <module>greenpay-settle</module>
+        <module>greenpay-agentpay</module>
 
     </modules>
     <parent>
@@ -101,6 +103,17 @@
             <dependency>
                 <groupId>com.esiran</groupId>
                 <artifactId>greenpay-actuator</artifactId>
+                <version>${greenpay.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.esiran</groupId>
+                <artifactId>greenpay-settle</artifactId>
+                <version>${greenpay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.esiran</groupId>
+                <artifactId>greenpay-agentpay</artifactId>
                 <version>${greenpay.version}</version>
             </dependency>
             <dependency>

@@ -60,6 +60,7 @@ public class Order extends BaseMapperEntity {
      */
     private Integer amount;
 
+    private Integer fee;
     /**
      * 商品描述
      */
@@ -87,6 +88,7 @@ public class Order extends BaseMapperEntity {
 
     private String payTypeCode;
     private String payTypeName;
+    private LocalDateTime expiredAt;
     /**
      * 支付时间
      */

@@ -53,7 +53,7 @@ public class Generator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/greenpay?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/greenpay?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8");
 //        dsc.setUrl("jdbc:mysql://192.168.3.158:3306/greenpay?useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
@@ -123,9 +123,7 @@ public class Generator {
         // 公共父类
 //        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("id");
-        strategy.setSuperEntityColumns("created_at");
-        strategy.setSuperEntityColumns("updated_at");
+        strategy.setSuperEntityColumns("id","created_at","updated_at");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");

@@ -387,7 +387,7 @@ CREATE TABLE `pay_interface` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -400,6 +400,7 @@ INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type
 INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (3,'jk_wx_jsapi','微信公众号支付-金控','wx_jsapi',1,'123',NULL,NULL,1,'2020-04-24 16:28:35','2020-04-24 16:28:35');
 INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (4,'jk_ali_qr','支付宝二维码支付-金控','ali_scan',1,'',NULL,NULL,1,'2020-04-24 17:12:40','2020-04-24 17:12:40');
 INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (5,'wx_scan','微信扫码支付_官方','wx_scan',1,'',NULL,NULL,1,'2020-04-24 17:26:12','2020-04-24 17:26:12');
+INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (6,'pay_wx_qiye','微信支付-企业付款-官方','wx_pay_biz',1,'',NULL,NULL,1,'2020-04-27 09:01:35','2020-04-27 09:01:35');
 /*!40000 ALTER TABLE `pay_interface` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -648,7 +649,7 @@ CREATE TABLE `pay_type` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -659,10 +660,11 @@ LOCK TABLES `pay_type` WRITE;
 /*!40000 ALTER TABLE `pay_type` DISABLE KEYS */;
 INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (2,'wx_jsapi','微信公众号支付',1,1,'2020-04-14 01:54:17','2020-04-14 01:54:17');
 INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (3,'ali_jsapi','支付宝服务窗支付',1,1,'2020-04-21 20:05:34','2020-04-21 20:05:34');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (4,'ali_scan','支付宝二维码',2,1,'2020-04-23 17:44:43','2020-04-23 17:44:43');
+INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (4,'ali_scan','支付宝二维码',1,1,'2020-04-23 17:44:43','2020-04-23 17:44:43');
 INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (5,'wx_scan','微信扫码支付',1,1,'2020-04-24 17:25:25','2020-04-24 17:25:25');
 INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (6,'ali_wap','支付宝手机网页支付',1,1,'2020-04-24 22:10:59','2020-04-24 22:10:59');
 INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (7,'wx_wap','微信手机网页支付',1,1,'2020-04-24 22:11:34','2020-04-24 22:11:34');
+INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (8,'wx_pay_biz','微信支付-企业付款',2,1,'2020-04-27 09:00:58','2020-04-27 09:00:58');
 /*!40000 ALTER TABLE `pay_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1042,4 +1044,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-27  8:31:40
+-- Dump completed on 2020-04-27  9:45:16

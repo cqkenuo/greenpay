@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 支付类型 服务实现类
@@ -36,6 +38,23 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements IT
         Type type = findTypeByCode(code);
         if (type == null) return null;
         return modelMapper.map(type,TypeDTO.class);
+    }
+
+    @Override
+    public List<Type> listByType(Integer type) {
+        LambdaQueryWrapper<Type> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Type::getType,type);
+        return this.list(queryWrapper);
+    }
+
+    @Override
+    public List<Type> listByPayType() {
+        return this.listByType(1);
+    }
+
+    @Override
+    public List<Type> listByAgentPayType() {
+        return this.listByType(2);
     }
 
     @Override

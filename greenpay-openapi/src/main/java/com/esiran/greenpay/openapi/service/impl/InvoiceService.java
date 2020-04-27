@@ -121,7 +121,7 @@ public class InvoiceService implements IInvoiceService {
         orderDetail.setPayPassageId(passage.getId());
         orderDetail.setPayPassageAccId(passageAccount.getId());
         orderDetail.setPayInterfaceId(ints.getId());
-        orderDetail.setPayInterfaceParams(passageAccount.getInterfaceAttr());
+        orderDetail.setPayInterfaceAttr(passageAccount.getInterfaceAttr());
         orderDetail.setCreatedAt(LocalDateTime.now());
         orderDetail.setUpdatedAt(LocalDateTime.now());
         orderDetailService.save(orderDetail);

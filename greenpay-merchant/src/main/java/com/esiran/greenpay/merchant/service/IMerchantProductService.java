@@ -2,6 +2,7 @@ package com.esiran.greenpay.merchant.service;
 
 import com.esiran.greenpay.merchant.entity.MerchantProduct;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.esiran.greenpay.merchant.entity.MerchantProductDTO;
 
 /**
  * <p>
@@ -12,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-04-13
  */
 public interface IMerchantProductService extends IService<MerchantProduct> {
-
+    MerchantProductDTO getByProductId(Integer mchId, Integer productId);
 }

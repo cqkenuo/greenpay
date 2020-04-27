@@ -19,51 +19,93 @@
                                 <div class="layui-card-header">支付产品配置</div>
                                 <div class="layui-card-body">
                                     <form class="layui-form" action="">
-                                        <div class="layui-row layui-form-item">
-                                            <label for="payTypeCode" class="layui-form-label">支付类型：</label>
+                                        <div class="layui-form-item">
+                                            <label for="productName" class="layui-form-label">产品类型：</label>
                                             <div class="layui-input-block">
                                                 <input type="text" class="layui-input"
-                                                       id="payTypeCode" autocomplete="off"
-                                                       th:value="${merchantProduct.payTypeName}"
                                                        readonly
-                                                       placeholder="请选择支付类型">
-                                            </div>
-                                        </div>
-                                        <div class="layui-row layui-form-item">
-                                            <label for="productId" class="layui-form-label">支付产品：</label>
-                                            <div class="layui-input-block">
-                                                <select id="productId" name="productId" lay-filter="aihao">
-                                                    <option value=""></option>
-                                                    <option th:each="product:${merchantProduct.availableProducts}"
-                                                            th:text="${product.productName}"
-                                                            th:value="${product.id}"
-                                                            th:selected="${merchantProduct.productId == product.id}"></option>
-                                                </select>
+                                                       name="productName" id="productName" autocomplete="off"
+                                                       th:value="${merchantProduct.productName}">
                                             </div>
                                         </div>
                                         <div class="layui-form-item">
-                                            <label for="rate" class="layui-form-label">产品费率：</label>
+                                            <label for="productType" class="layui-form-label">产品类型：</label>
+                                            <div class="layui-input-block">
+                                                <input type="hidden" name="productType" th:value="${merchantProduct.productType}">
+                                                <input id="productType" type="radio"
+                                                       value="0" title="收款" disabled
+                                                       th:field="*{merchantProduct.productType}">
+                                                <input type="radio" value="1" title="充值"
+                                                       disabled
+                                                       th:field="*{merchantProduct.productType}">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label for="rate" class="layui-form-label">商户费率：</label>
                                             <div class="layui-input-block">
                                                 <input type="number" class="layui-input"
                                                        name="rate" id="rate" autocomplete="off"
-                                                       th:value="${merchantProduct.rate}"
-                                                       placeholder="请输入每笔手续费">
+                                                       th:value="${merchantProduct.rate}">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label for="interfaceMode_1" class="layui-form-label">接口模式：</label>
+                                            <div class="layui-input-block">
+                                                <input id="interfaceMode_1" type="radio" name="interfaceMode" value="1"
+                                                       title="单独"
+                                                       lay-filter="interfaceMode"
+                                                       th:field="*{merchantProduct.interfaceMode}">
+                                                <input type="radio" name="interfaceMode" value="2" title="轮训"
+                                                       lay-filter="interfaceMode"
+                                                       th:field="*{merchantProduct.interfaceMode}">
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item" id="defaultPassage">
+                                            <label for="defaultPassageId" class="layui-form-label">支付通道：</label>
+                                            <div class="layui-input-block">
+                                                <select name="defaultPassageId" id="defaultPassageId">
+                                                    <option value="" selected>无</option>
+                                                    <option th:each="item:${availPassages}"
+                                                            th:text="${item.passageName}"
+                                                            th:value="${item.id}"
+                                                            th:field="*{merchantProduct.defaultPassageId}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item" id="defaultPassageAcc">
+                                            <label for="defaultPassageAccId" class="layui-form-label">通道账户：</label>
+                                            <div class="layui-input-block">
+                                                <select name="defaultPassageAccId" id="defaultPassageAccId">
+                                                    <option value="" selected>无</option>
+                                                    <option th:each="item:${availPassagesAcc}"
+                                                            th:text="${item.accountName}"
+                                                            th:value="${item.id}"
+                                                            th:field="*{merchantProduct.defaultPassageAccId}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item" id="loopPassage" style="display: none">
+                                            <label for="defaultPassageAccId" class="layui-form-label">轮询通道：</label>
+                                            <div class="layui-input-block">
+                                                <table id="loopPassageTable" lay-filter="loopPassageTable"></table>
                                             </div>
                                         </div>
                                         <div class="layui-form-item">
                                             <label for="status" class="layui-form-label">状态：</label>
                                             <div class="layui-input-block">
                                                 <input id="status" type="radio" name="status"
-                                                       value="0"
-                                                       title="关闭"
-                                                       th:checked="${merchantProduct.status == false}">
+                                                       value="0" title="关闭"
+                                                       th:field="*{merchantProduct.status}">
                                                 <input type="radio" name="status" value="1" title="开启"
-                                                       th:checked="${merchantProduct.status == true}">
+                                                       th:field="*{merchantProduct.status}">
                                             </div>
                                         </div>
                                         <div class="layui-form-item">
                                             <div class="layui-input-block">
-                                                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">保存修改</button>
+                                                <button type="submit" class="layui-btn">保存修改</button>
                                             </div>
                                         </div>
                                     </form>
@@ -78,40 +120,17 @@
     </div>
 </div>
 <th:block th:replace="admin/footer::script"/>
+<script th:inline="javascript">
+    let availPassagesJson = [[${availPassagesJson}]];
+    let productId = [[${data.id}]];
+    let interfaceMode = [[${data.interfaceMode}]];
+    let usagePassagesJson = [[${usagePassagesJson}]];
+</script>
 <script th:inline="none">
     !function(){
         let layer = layui.layer
             ,table = layui.table;
         //第一个实例
-        table.render({
-            elem: '#demo'
-            ,url: '/admin/api/v1/merchants' //数据接口
-            ,page: true //开启分页
-            ,parseData: function(res){ //res 即为原始返回的数据
-                return {
-                    "code": 0,
-                    "msg": res.message,
-                    "count": res.total,
-                    "data": res.records
-                };
-            }
-            ,request: {
-                pageName: 'current'
-                ,limitName: 'size'
-            }
-            ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'id', title: 'ID',width:100, unresize:true}
-                ,{field: 'username', title: '用户名', width:150, unresize:true}
-                ,{field: 'name', title: '商户名称', width:150, unresize:true}
-                ,{field: 'email', title: '电子邮箱', width:250, unresize:true}
-                ,{field: 'balance', title: '可用余额', width:100, unresize:true}
-                ,{field: 'status', title: '状态', width:100, unresize:true}
-                ,{field: 'createdAt', title: '创建时间', width:180, unresize:true}
-                ,{field: 'updatedAt', title: '更新时间', width:180, unresize:true}
-                ,{fixed:'right',align: 'center', toolbar: '#barDemo'}
-            ]]
-        });
     }();
 </script>
 

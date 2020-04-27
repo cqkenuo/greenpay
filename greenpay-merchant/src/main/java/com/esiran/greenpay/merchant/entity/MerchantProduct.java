@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
 import com.esiran.greenpay.common.entity.BaseMapperEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -26,21 +27,24 @@ public class MerchantProduct extends BaseMapperEntity {
      * 商户ID
      */
     private Integer merchantId;
-
-    /**
-     * 支付类型编码
-     */
     private String payTypeCode;
-
     /**
      * 产品ID
      */
     private Integer productId;
-
+    private String productName;
+    private Integer productType;
+    /**
+     * 接口模式
+     */
+    private String interfaceMode;
     /**
      * 通道费率
      */
     private BigDecimal rate;
+
+    private String defaultPassageId;
+    private String defaultPassageAccId;
 
     /**
      * 状态（0：关闭，1：开启）

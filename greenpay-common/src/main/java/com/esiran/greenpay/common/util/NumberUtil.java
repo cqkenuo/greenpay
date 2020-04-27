@@ -10,4 +10,10 @@ public class NumberUtil {
         BigDecimal amountDisplay = amount.divide(amountUnit,2,BigDecimal.ROUND_HALF_UP);
         return String.format("%.2f",amountDisplay.floatValue());
     }
+    public static String tenThousandPercent(BigDecimal percent){
+        if (percent == null) return null;
+        BigDecimal unit = new BigDecimal(100);
+        BigDecimal amountDisplay = percent.multiply(unit);
+        return String.format("%.2f",amountDisplay.floatValue());
+    }
 }

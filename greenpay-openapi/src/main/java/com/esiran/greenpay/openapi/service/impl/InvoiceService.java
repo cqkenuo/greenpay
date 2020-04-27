@@ -69,7 +69,7 @@ public class InvoiceService implements IInvoiceService {
         MerchantProductDTO merchantProductDTO;
         try {
             merchantProductDTO = merchantService
-                    .selectMchProductByIdAndPayTypeCode(merchant.getId(),invoice.getChannel());
+                    .selectMchProductById(merchant.getId(),invoice.getChannel());
         }catch (Exception e){
             throw new APIException("商户支付渠道未开通","PAY_TYPE_NOT_FOUND");
         }
@@ -116,7 +116,6 @@ public class InvoiceService implements IInvoiceService {
         orderService.save(order);
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrderNo(invoice.getOrderNo());
-        orderDetail.setPayTypeCode(invoice.getChannel());
         orderDetail.setPayProductId(product.getId());
         orderDetail.setPayPassageId(passage.getId());
         orderDetail.setPayPassageAccId(passageAccount.getId());

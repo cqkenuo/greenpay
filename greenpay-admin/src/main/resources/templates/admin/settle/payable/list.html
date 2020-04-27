@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>结算审核 - GreenPay</title>
+    <title>应付结算 - GreenPay</title>
     <th:block th:replace="admin/header::stylesheet" />
 </head>
 <body class="layui-layout-body">
@@ -11,13 +11,13 @@
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('结算管理','结算审核')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('结算管理','应付结算')"></div>
                 <div class="layui-fluid">
                     <div class="layui-card">
-                        <div class="layui-card-header">结算审核</div>
+                        <div class="layui-card-header">应付结算</div>
                         <div class="layui-card-body" style="padding: 0">
                             <div class="admin-table_header">
-                                <div th:replace="admin/compose::admin-table_header_right('请输入结算审核')">
+                                <div th:replace="admin/compose::admin-table_header_right('请输入结算订单号')">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>

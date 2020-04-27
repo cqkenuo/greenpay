@@ -12,18 +12,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/admin/api/v1/settle/orders")
+@RequestMapping("/admin/api/v1/settle")
 public class APIAdminSettleOrderController {
     private ISettleOrderService orderService;
     public APIAdminSettleOrderController(ISettleOrderService orderService) {
         this.orderService = orderService;
     }
 
-    @GetMapping
-    public IPage<SettleOrderDTO> list(
+    @GetMapping("/audits")
+    public IPage<SettleOrderDTO> audit(
             @RequestParam(required = false,defaultValue = "1") Integer current,
             @RequestParam(required = false, defaultValue = "10") Integer size){
-        return orderService.selectPage(new Page<>(current,size),null);
+        return orderService.selectPageByAudit(new Page<>(current,size));
     }
-
+    @GetMapping("/payable")
+    public IPage<SettleOrderDTO> payable(
+            @RequestParam(required = false,defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "10") Integer size){
+        return orderService.selectPageByPayable(new Page<>(current,size));
+    }
 }

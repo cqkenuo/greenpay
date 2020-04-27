@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>应付结算 - GreenPay</title>
+    <title>结算审核 - GreenPay</title>
     <th:block th:replace="admin/header::stylesheet" />
 </head>
 <body class="layui-layout-body">
@@ -11,46 +11,34 @@
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('结算管理','应付结算')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('结算管理','结算审核')"></div>
                 <div class="layui-fluid">
                     <div class="layui-card">
-                        <div class="layui-card-header">应付结算</div>
+                        <div class="layui-card-header">结算审核</div>
                         <div class="layui-card-body" style="padding: 0">
                             <div class="admin-table_header">
-                                <div th:replace="admin/compose::admin-table_header_right('请输入支付接口编码')">
+                                <div th:replace="admin/compose::admin-table_header_right('请输入结算审核')">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
                             <table id="demo" lay-filter="test"></table>
-                            <script type="text/html" id="statusTemplate">
-                                {{# if(d.status == 1) { }}
-                                <span class="layui-badge-dot layui-bg-orange"></span>
-                                <span>待支付</span>
-                                {{# } else if(d.status == 2) { }}
-                                <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>已支付</span>
-                                {{# } else if(d.status == 3) { }}
-                                <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>已完成</span>
-                                {{# } else if(d.status == -1) { }}
-                                <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>交易取消</span>
-                                {{# } else if(d.status == -2) { }}
-                                <span class="layui-badge-dot"></span>
-                                <span>交易失败</span>
-                                {{# } else { }}
-                                <span class="layui-badge-dot"></span>
-                                <span>未知</span>
-                                {{# } }}
-                            </script>
                             <script type="text/html" id="amountTemplate">
                                 ￥ {{ d.amountDisplay }}
+                            </script>
+                            <script type="text/html" id="feeTemplate">
+                                ￥ {{ d.feeDisplay }}
+                            </script>
+                            <script type="text/html" id="settleAmountTemplate">
+                                ￥ {{ d.settleAmountDisplay }}
                             </script>
                             <script type="text/html" id="subjectTemplate">
                                 <span>{{ d.subject }}</span>
                             </script>
+                            <script type="text/html" id="statusTemplate">
+                                <span>{{ d.statusDisplay }}</span>
+                            </script>
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/settle/audit/{{d.orderNo}}/detail'}"
+                                <a th:href="@{'/admin/settle/payable/{{d.orderNo}}/detail'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
                                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">结算</a>
                                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">标记结算</a>
@@ -71,7 +59,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            ,url: '/admin/api/v1/orders' //数据接口
+            ,url: '/admin/api/v1/settle/payable' //数据接口
             ,page: true //开启分页
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {
@@ -89,12 +77,13 @@
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
                 ,{field: 'orderNo', title: '交易订单号', width:'12%', unresize:true}
-                ,{field: 'outOrderNo', title: '商户订单号', width:'15%', unresize:true}
-                ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
-                ,{title: '金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
-                ,{field: 'payTypeName', title: '支付类型', width:'10%', unresize:true}
+                ,{field: 'mchId', title: '商户ID', width:'10%', unresize:true}
+                ,{field: 'accountName', title: '结算账户名', width:'18%', unresize:true}
+                ,{title: '订单金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
+                ,{title: '手续费（元）',align:'right', width:'8%', unresize:true,templet: '#feeTemplate'}
+                ,{title: '结算金额（元）',align:'right', width:'8%', unresize:true,templet: '#settleAmountTemplate'}
                 ,{field: 'status', title: '状态', width:'10%', unresize: true, templet:'#statusTemplate'}
-                ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true , templet:'#statusTemplate'}
+                ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true}
             ]]
         });
     }();

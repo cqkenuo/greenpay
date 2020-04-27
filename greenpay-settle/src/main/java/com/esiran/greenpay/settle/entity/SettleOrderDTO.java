@@ -110,7 +110,7 @@ public class SettleOrderDTO {
     /**
      * 状态（1：待审核，2：处理中，3：已结算，-1：已驳回，-2：结算失败）
      */
-    private Boolean status;
+    private Integer status;
 
     private String statusDisplay;
     /**

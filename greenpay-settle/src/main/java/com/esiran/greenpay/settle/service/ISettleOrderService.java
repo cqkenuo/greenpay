@@ -15,5 +15,7 @@ import com.esiran.greenpay.settle.entity.SettleOrderDTO;
  */
 public interface ISettleOrderService extends IService<SettleOrder> {
     IPage<SettleOrderDTO> selectPage(IPage<SettleOrderDTO> page, SettleOrderDTO orderDTO);
+    IPage<SettleOrderDTO> selectPageByAudit(IPage<SettleOrderDTO> page);
+    IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page);
     SettleOrderDTO getByOrderNo(String orderNo);
 }

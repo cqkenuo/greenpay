@@ -17,9 +17,9 @@ public class AdminSettleOrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/payable")
     public String list(){
-        return "admin/settle/list/list";
+        return "admin/settle/payable/list";
     }
     @GetMapping("/audit")
     public String audit(){
@@ -33,10 +33,10 @@ public class AdminSettleOrderController {
         return "admin/settle/audit/detail";
     }
 
-    @GetMapping("/list/{orderNo}/detail")
+    @GetMapping("/payable/{orderNo}/detail")
     public String detail(@PathVariable String orderNo, ModelMap modelMap){
         SettleOrderDTO order = orderService.getByOrderNo(orderNo);
         modelMap.addAttribute("order", order);
-        return "admin/settle/list/detail";
+        return "admin/settle/payable/detail";
     }
 }

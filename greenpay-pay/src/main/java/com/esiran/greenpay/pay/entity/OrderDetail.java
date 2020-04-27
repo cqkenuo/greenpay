@@ -59,7 +59,7 @@ public class OrderDetail extends BaseMapperEntity {
     /**
      * 支付接口请求参数
      */
-    private String payInterfaceParams;
+    private String payInterfaceAttr;
 
     /**
      * 上游订单编号

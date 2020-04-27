@@ -15,7 +15,11 @@ spring:
   redis:
     port: 6379
     host: localhost
-
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
 greenpay:
   openapi:
     enable_sign: true

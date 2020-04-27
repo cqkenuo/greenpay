@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>支付类型 - GreenPay</title>
+    <title>支付产品 - GreenPay</title>
     <th:block th:replace="admin/header::stylesheet" />
 </head>
 <body class="layui-layout-body">
-<div class="layadmin-tabspage-none">
+<div class="layadmin-tabspage-none" id="app">
     <div class="layui-layout layui-layout-admin">
         <div th:replace="admin/header::nav"></div>
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付类型')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付产品')"></div>
                 <div class="layui-card error-card" th:style="${errors==null}?'display:none;':''">
                     <div class="layui-card-body">
                         <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
@@ -19,68 +19,102 @@
                 </div>
                 <div class="layui-fluid">
                     <div class="layui-card">
-                        <div class="layui-card-header">编辑支付类型</div>
+                        <div class="layui-card-header">编辑支付产品</div>
                         <div class="layui-card-body">
                             <form class="layui-form" action="" method="post">
+                                <input type="hidden" name="loopPassages">
+                                <input type="hidden" name="payTypeCode" th:value="${data.payTypeCode}">
                                 <div class="layui-row layui-form-item">
-                                    <label for="typeCode" class="layui-form-label">类型编码：</label>
+                                    <div class="layui-form-item">
+                                        <label for="payTypeCode" class="layui-form-label">支付类型：</label>
+                                        <div class="layui-input-block">
+                                            <select disabled id="payTypeCode">
+                                                <option value="" selected>无</option>
+                                                <option th:each="type:${availTypes}"
+                                                        th:text="${type.typeName}"
+                                                        th:value="${type.typeCode}"
+                                                        th:selected="${data.payTypeCode == type.typeCode}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <label for="productName" class="layui-form-label">产品名称：</label>
                                     <div class="layui-input-block">
                                         <input type="text" class="layui-input"
-                                               id="typeCode" name="typeCode"
-                                               th:value="${type.typeCode}"
-                                               autocomplete="off" readonly
-                                               placeholder="请输入类型编码">
-                                    </div>
-                                </div>
-                                <div class="layui-row layui-form-item">
-                                    <label for="typeName" class="layui-form-label">类型名称：</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" class="layui-input"
-                                               name="typeName" id="typeName"
-                                               autocomplete="off" th:value="${type.typeName}"
-                                               placeholder="请输入类型名称">
+                                               name="productName" id="productName"
+                                               autocomplete="off" th:value="${data.productName}"
+                                               placeholder="请输入产品名称">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <label for="type_pay"
-                                           class="layui-form-label">
-                                        类别：
-                                    </label>
+                                    <label for="productType_1" class="layui-form-label">产品类型：</label>
                                     <div class="layui-input-block">
-                                        <input id="type_pay"
-                                               type="radio"
-                                               name="type"
-                                               value="1"
-                                               title="支付"
-                                               th:checked="${type.type == 1}">
-                                        <input type="radio"
-                                               name="type"
-                                               value="2"
-                                               title="代付"
-                                               th:checked="${type.type == 2}">
+                                        <input id="productType_1"
+                                               type="radio" name="productType"
+                                               value="1" title="收款"
+                                               th:field="*{data.productType}">
+                                        <input type="radio" name="productType" value="2" title="充值"
+                                               th:field="*{data.productType}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label for="interfaceMode_1" class="layui-form-label">接口模式：</label>
+                                    <div class="layui-input-block">
+                                        <input id="interfaceMode_1" type="radio" name="interfaceMode" value="1"
+                                               title="单独"
+                                               lay-filter="interfaceMode"
+                                               th:field="*{data.interfaceMode}">
+                                        <input type="radio" name="interfaceMode" value="2" title="轮训"
+                                               lay-filter="interfaceMode"
+                                               th:field="*{data.interfaceMode}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item" id="defaultPassage">
+                                    <label for="defaultPassageId" class="layui-form-label">支付通道：</label>
+                                    <div class="layui-input-block">
+                                        <select name="defaultPassageId" id="defaultPassageId">
+                                            <option value="" selected>无</option>
+                                            <option th:each="item:${availPassages}"
+                                                    th:text="${item.passageName}"
+                                                    th:value="${item.id}"
+                                                    th:field="*{data.defaultPassageId}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="defaultPassageAcc">
+                                    <label for="defaultPassageAccId" class="layui-form-label">通道账户：</label>
+                                    <div class="layui-input-block">
+                                        <select name="defaultPassageAccId" id="defaultPassageAccId">
+                                            <option value="" selected>无</option>
+                                            <option th:each="item:${availPassagesAcc}"
+                                                    th:text="${item.accountName}"
+                                                    th:value="${item.id}"
+                                                    th:field="*{data.defaultPassageAccId}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" id="loopPassage" style="display: none">
+                                    <label for="defaultPassageAccId" class="layui-form-label">轮询通道：</label>
+                                    <div class="layui-input-block">
+                                        <table id="loopPassageTable" lay-filter="loopPassageTable"></table>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <label for="status" class="layui-form-label">
-                                        状态：
-                                    </label>
+                                    <label for="status" class="layui-form-label">状态：</label>
                                     <div class="layui-input-block">
-                                        <input id="status"
-                                               type="radio"
-                                               name="status"
-                                               value="0"
-                                               title="关闭"
-                                               th:checked="${type.status == false}">
-                                        <input type="radio"
-                                               name="status"
-                                               value="1"
-                                               title="开启"
-                                               th:checked="${type.status == true}">
+                                        <input id="status" type="radio" name="status" value="0" title="关闭"
+                                               th:field="*{data.status}">
+                                        <input type="radio" name="status" value="1" title="开启"
+                                               th:field="*{data.status}">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button type="submit" class="layui-btn">提交</button>
+                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="save">提交</button>
                                     </div>
                                 </div>
                             </form>
@@ -93,11 +127,124 @@
     </div>
 </div>
 <th:block th:replace="admin/footer::script"/>
+<script th:inline="javascript">
+    let availPassagesJson = [[${availPassagesJson}]];
+    let productId = [[${data.id}]];
+    let interfaceMode = [[${data.interfaceMode}]];
+    let usagePassagesJson = [[${usagePassagesJson}]];
+</script>
 <script th:inline="none">
     !function(){
+        let availPassagesData = JSON.parse(availPassagesJson);
+        let usagePassagesData = JSON.parse(usagePassagesJson);
         let layer = layui.layer
-            ,table = layui.table;
-        //第一个实例
+            ,$ = layui.jquery
+            ,table = layui.table
+            ,form = layui.form;
+
+        console.log('可用通道Init',availPassagesData);
+        console.log('已使用通道Init',usagePassagesData);
+        function resetLoopPassages(){
+            let data = availPassagesData.map(item=>{
+                return {
+                    productId: productId,
+                    passageId:item.id,
+                    usage: item.usage,
+                    widget: item.widget
+                };
+            });
+            $("input[name='loopPassages']").val(JSON.stringify(data));
+        }
+        function initPassageData() {
+            for (let i = 0; i < availPassagesData.length; i++){
+                if (usagePassagesData.length === 0){
+                    availPassagesData[i].LAY_CHECKED = false;
+                    availPassagesData[i].usage = false;
+                    availPassagesData[i].widget = 0;
+                    continue;
+                }
+                for (let j = 0; j < usagePassagesData.length; j++){
+                    const item = availPassagesData[i];
+                    const usageItem = usagePassagesData[j];
+                    if (item.id === usageItem.passageId){
+                        availPassagesData[i].LAY_CHECKED = true;
+                        availPassagesData[i].usage = true;
+                        availPassagesData[i].widget = usageItem.widget;
+                        break;
+                    }else {
+                        availPassagesData[i].LAY_CHECKED = false;
+                        availPassagesData[i].usage = false;
+                        availPassagesData[i].widget = 0;
+                    }
+                }
+            }
+
+            availPassagesData.forEach(item=>{
+                console.log('可用通道',item);
+
+                usagePassagesData.every(usageItem=>{
+                    console.log('已选中通道',usageItem);
+
+                })
+            });
+            console.log(availPassagesData);
+        }
+        function resetInterfaceMode(){
+            if (interfaceMode === 1){
+                $('#defaultPassage').show();
+                $('#defaultPassageAcc').show();
+                $('#loopPassage').hide();
+            }else if(interfaceMode === 2){
+                $('#defaultPassage').hide();
+                $('#defaultPassageAcc').hide();
+                $('#loopPassage').show();
+            }
+        }
+        resetInterfaceMode();
+        initPassageData();
+        resetLoopPassages();
+        table.render({
+            elem: '#loopPassageTable'
+            ,width:430
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field: 'id', title: '通道ID',width:'20%', unresize:true}
+                ,{field: 'passageName', title: '通道名称', width:'48%', unresize:true}
+                ,{field: 'widget', title: '权重', width:'20%', unresize:true, edit:'text'}
+            ]]
+            ,data: availPassagesData
+        });
+        table.on('edit(loopPassageTable)', function(obj){
+            availPassagesData.forEach(item=>{
+                if (item.id === obj.data.id){
+                    item.widget = obj.value;
+                }
+            });
+            resetLoopPassages();
+        });
+        table.on('checkbox(loopPassageTable)', function(obj){
+            console.log('abc');
+            if (obj.type === 'all'){
+                availPassagesData.forEach(item=>{
+                    item.usage = obj.checked;
+                });
+            }else if (obj.type === 'one') {
+                availPassagesData.forEach(item=>{
+                    if (item.id === obj.data.id){
+                        item.usage = obj.checked;
+                    }
+                });
+            }
+            resetLoopPassages();
+        });
+        form.on('radio(interfaceMode)', function(data){
+            console.log(data);
+            interfaceMode = parseInt(data.value);
+            resetInterfaceMode();
+        });
+        form.on('submit(save)', function (data) {
+            return true;
+        });
     }();
 </script>
 

@@ -31,3 +31,31 @@
 .error-card .layui-elem-quote{
     border-left: 5px solid #b30000;
 }
+.admin-footer {
+    text-align: center;
+}
+.admin-footer .admin-footer_content {
+    margin: 48px 0 24px;
+}
+
+.admin-detail-title {
+    margin-bottom: 20px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5715;
+}
+
+.admin-detail .admin-detail-view table{
+    width: 100%;
+}
+.admin-detail .admin-detail-view .admin-detail-row .layui-form-pane .layui-form-label {
+    text-align: left;
+}
+.admin-descriptions-item .layui-form-label{
+    text-align: left;
+    width: unset;
+}
+.admin-descriptions-item .layui-input-block{
+    margin-left:0;
+}

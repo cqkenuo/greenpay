@@ -21,11 +21,20 @@
                                     <a th:href="@{'/admin/pay/passage/list/add'}" class="layui-btn">新增</a>
                                     <button type="button" class="layui-btn">删除选中</button>
                                 </div>
-                                <div th:replace="admin/compose::admin-table_header_right('请输入支付通道名称')">
+                                <div th:replace="admin/compose::admin-table_header_right('请输入支付通道ID或名称')">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
                             <table id="demo" lay-filter="test"></table>
+                            <script type="text/html" id="statusTemplate">
+                                {{# if(d.status) { }}
+                                <span class="layui-badge-dot layui-bg-green"></span>
+                                <span>正常</span>
+                                {{# } else { }}
+                                <span class="layui-badge-dot layui-bg-orange"></span>
+                                <span>禁用</span>
+                                {{# } }}
+                            </script>
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/admin/pay/passage/list/{{d.id}}/edit'}" class="layui-btn layui-btn-xs">编辑</a>
                                 <a th:href="@{'/admin/pay/passage/list/{{d.id}}/acc'}" class="layui-btn layui-btn-xs">通道子账户配置</a>
@@ -47,7 +56,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            ,url: '/admin/api/v1/pay/types' //数据接口
+            ,url: '/admin/api/v1/pay/passages' //数据接口
             ,page: true //开启分页
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {
@@ -64,10 +73,10 @@
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'id', title: 'ID',width:'5%', unresize:true}
-                ,{field: 'typeCode', title: '支付类型编码', width:'10%', unresize:true}
+                ,{field: 'payTypeCode', title: '支付类型编码', width:'10%', unresize:true}
                 ,{field: 'interfaceCode', title: '接口编码', width:'15%', unresize:true}
                 ,{field: 'passageName', title: '通道名称', width:'25%', unresize:true}
-                ,{field: 'status', title: '状态', width:'5%', unresize:true}
+                ,{field: 'status', title: '状态', width:'5%', unresize:true, templet:'#statusTemplate'}
                 ,{field: 'createdAt', title: '创建时间', width:'10%', unresize:true}
                 ,{field: 'updatedAt', title: '更新时间', width:'10%', unresize:true}
                 ,{title: '操作', align: 'left', width:'15%', toolbar: '#barDemo', unresize:true}

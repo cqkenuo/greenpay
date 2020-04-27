@@ -24,7 +24,7 @@ import lombok.experimental.Accessors;
 public class PassageAccount  extends BaseMapperEntity {
 
     private static final long serialVersionUID = 1L;
-
+    private String payTypeCode;
     /**
      * 支付通道ID
      */

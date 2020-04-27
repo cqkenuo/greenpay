@@ -33,7 +33,7 @@ public class Product extends BaseMapperEntity {
     /**
      * 支付产品类型（1：收款，2：充值）
      */
-    private Boolean productType;
+    private Integer productType;
 
     /**
      * 支付类型编码

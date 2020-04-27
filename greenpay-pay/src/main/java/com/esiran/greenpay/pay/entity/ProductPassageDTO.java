@@ -1,12 +1,12 @@
 package com.esiran.greenpay.pay.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-
 import com.esiran.greenpay.common.entity.BaseMapperEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -17,26 +17,11 @@ import lombok.experimental.Accessors;
  * @since 2020-04-13
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("pay_product_passage_acc")
-public class ProductPassageAcc  extends BaseMapperEntity {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 产品ID
-     */
+public class ProductPassageDTO {
+    private Integer id;
     private Integer productId;
-
-    /**
-     * 支付通道ID
-     */
     private Integer passageId;
-
-    /**
-     * 子账户ID
-     */
-    private Integer accId;
-
+    private Integer widget;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

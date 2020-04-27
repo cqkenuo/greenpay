@@ -21,25 +21,27 @@
                                     <a th:href="@{'/admin/pay/type/list/add'}" class="layui-btn">新增</a>
                                     <button type="button" class="layui-btn">删除选中</button>
                                 </div>
-                                <div th:replace="admin/compose::admin-table_header_right('请输入类型编码')">
+                                <div th:replace="admin/compose::admin-table_header_right('请输入支付类型编码')">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
                             <table id="demo" lay-filter="test"></table>
                             <script type="text/html" id="typeTemplate">
                                 {{# if(d.type === 1) { }}
-                                <span class="layui-badge-rim">支付</span>
+                                <span>支付</span>
                                 {{# } else if(d.type === 2) { }}
-                                <span class="layui-badge-rim">代付</span>
+                                <span>代付</span>
                                 {{# } else { }}
-                                <span class="layui-badge-rim">未知</span>
+                                <span>未知</span>
                                 {{# } }}
                             </script>
                             <script type="text/html" id="statusTemplate">
                                 {{# if(d.status) { }}
-                                <span class="layui-badge layui-bg-green">正常</span>
+                                <span class="layui-badge-dot layui-bg-green"></span>
+                                <span>正常</span>
                                 {{# } else { }}
-                                <span class="layui-badge layui-bg-orange">禁用</span>
+                                <span class="layui-badge-dot layui-bg-orange"></span>
+                                <span>禁用</span>
                                 {{# } }}
                             </script>
                             <script type="text/html" id="barDemo">
@@ -82,8 +84,8 @@
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'id', title: 'ID',width:'5%', unresize:true}
                 ,{field: 'typeCode', title: '支付类型编码', width:'10%', unresize:true}
-                ,{field: 'typeName', title: '支付类型名称', width:'25%', unresize:true}
-                ,{field: 'type', title: '支付类别', width:'15%', unresize:true, templet: '#typeTemplate'}
+                ,{field: 'typeName', title: '支付类型名称', width:'35%', unresize:true}
+                ,{field: 'type', title: '类别', width:'5%', unresize:true, templet: '#typeTemplate'}
                 ,{field: 'status', title: '状态', width:'5%', unresize:true, templet:'#statusTemplate'}
                 ,{field: 'createdAt', title: '创建时间', width:'10%', unresize:true}
                 ,{field: 'updatedAt', title: '更新时间', width:'10%', unresize:true}

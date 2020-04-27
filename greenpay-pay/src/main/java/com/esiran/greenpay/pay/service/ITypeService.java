@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.esiran.greenpay.pay.entity.TypeDTO;
 import com.esiran.greenpay.pay.entity.TypeInputDTO;
 
+import java.util.List;
+
 /**
  * <p>
  * 支付类型 服务类
@@ -18,6 +20,9 @@ import com.esiran.greenpay.pay.entity.TypeInputDTO;
 public interface ITypeService extends IService<Type> {
     Type findTypeByCode(String code);
     TypeDTO getTypeByCode(String code);
+    List<Type> listByType(Integer type);
+    List<Type> listByPayType();
+    List<Type> listByAgentPayType();
     void saveType(TypeInputDTO dto) throws PostResourceException;
     void updateType(TypeInputDTO dto) throws ResourceNotFoundException;
 }

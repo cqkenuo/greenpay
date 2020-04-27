@@ -1,8 +1,10 @@
 package com.esiran.greenpay.pay.service;
 
-import com.esiran.greenpay.pay.entity.Product;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.pay.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.esiran.greenpay.pay.entity.ProductDTO;
 
 import java.util.List;
 
@@ -17,4 +19,8 @@ import java.util.List;
 public interface IProductService extends IService<Product> {
     List<ProductDTO> findAllProduct(ProductDTO productDTO);
     List<ProductDTO> findAllProductByPayTypeCode(String payTypeCode);
+
+    IPage<ProductDTO> selectPage(IPage<ProductDTO> page, ProductDTO productDTO);
+    int add(ProductInputDTO productInputDTO) throws PostResourceException;
+    boolean updateById(Integer id, ProductInputDTO productInputDTO) throws PostResourceException, ResourceNotFoundException;
 }

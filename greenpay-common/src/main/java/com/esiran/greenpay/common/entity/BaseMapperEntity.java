@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class BaseMapperEntity implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
-    protected Integer id;
+    private Integer id;
 
 
     /**

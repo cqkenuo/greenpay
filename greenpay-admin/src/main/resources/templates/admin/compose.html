@@ -34,5 +34,11 @@
         <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
     </div>
 </div>
-
+<footer class="admin-footer" th:fragment="admin-footer">
+    <div class="admin-footer_content">
+        <div class="admin-footer_copyright">
+            Copyright © 2020 <a href="/">greenpay.com</a>
+        </div>
+    </div>
+</footer>
 </html>

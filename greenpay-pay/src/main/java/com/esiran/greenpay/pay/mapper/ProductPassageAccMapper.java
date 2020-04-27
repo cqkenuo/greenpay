@@ -1,6 +1,6 @@
 package com.esiran.greenpay.pay.mapper;
 
-import com.esiran.greenpay.pay.entity.ProductPassageAcc;
+import com.esiran.greenpay.pay.entity.ProductPassage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Militch
  * @since 2020-04-13
  */
-public interface ProductPassageAccMapper extends BaseMapper<ProductPassageAcc> {
+public interface ProductPassageAccMapper extends BaseMapper<ProductPassage> {
 
 }

@@ -24,4 +24,8 @@ public class MerchantReplaceController {
     public String rechargeAdd(){
         return "merchant/replace/rechargeAdd";
     }
+    @GetMapping("/replaceExtract")
+    public String replaceExtract(){
+        return "merchant/replace/replaceExtract";
+    }
 }

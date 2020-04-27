@@ -13,17 +13,20 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.esiran</groupId>
+            <artifactId>greenpay-message</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
             <artifactId>greenpay-merchant</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-pay</artifactId>
         </dependency>
         <dependency>
             <groupId>com.esiran</groupId>
@@ -34,6 +37,7 @@
             <artifactId>greenpay-openapi</artifactId>
         </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

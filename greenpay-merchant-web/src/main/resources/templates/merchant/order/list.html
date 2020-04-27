@@ -76,6 +76,22 @@
                                     </div>
                                     <div>
                                         <table id="orderlist" lay-filter="orders"></table>
+                                        <script type="text/html" id="statusTpl">
+                                            {{#  if(d.status == 1){ }}
+                                            <button class="layui-btn layui-btn-warm layui-btn-xs">待付款</button>
+                                            {{#  } if(d.status == 2) { }}
+                                            <button class="layui-btn layui-btn-xs">已支付</button>
+                                            {{#  } if(d.status == 3) { }}
+                                            <button class="layui-btn layui-btn-normal layui-btn-xs">订单完成</button>
+                                            {{#  } if(d.status == -1) { }}
+                                            <button class="layui-btn layui-btn-disabled layui-btn-xs">交易取消</button>
+                                            {{#  } if(d.status == -2) { }}
+                                            <button class="layui-btn layui-btn-danger layui-btn-xs">交易失败</button>
+                                            {{#  } }}
+                                        </script>
+                                        <script type="text/html" id="operationTpl">
+                                            <button class="layui-btn layui-btn-radius" id="operationBtn">查看详情</button>
+                                        </script>
                                     </div>
 
                                 </div>
@@ -117,9 +133,9 @@
                 , {field: 'orderNo', title: '订单编号', width: "15%",align:'center'}
                 , {field: 'outOrderNo', title: '商户订单号', width: "15%",align:'center'}
                 , {field: 'amount', title: '订单金额', width: "15%",align:'center'}
-                , {field: 'status', title: '订单状态', width: "15%" ,align:'center'}
+                , {field: 'status', title: '订单状态',templet: "#statusTpl", width: "15%" ,align:'center'}
                 , {field: 'createdAt', title: '创建时间', width: "15%",align:'center'}
-                ,{title: '操作', align: 'left', width:'15%'}
+                ,{title: '操作', align: 'left',templet: "#operationTpl", width:'15%'}
             ]]
         });
         laydate.render({
@@ -131,6 +147,13 @@
         form.on('submit(formOrder)',function (data) {
             console.log(data)
             return false;
+        });
+        $("#operationBtn").click(function () {
+            layer.open({
+                type: 2,
+                title: '订单详情',
+                content: ''
+            })
         })
     }();
 </script>

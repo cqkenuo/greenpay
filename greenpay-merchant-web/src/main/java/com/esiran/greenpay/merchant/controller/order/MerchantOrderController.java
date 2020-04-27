@@ -16,6 +16,9 @@ public class MerchantOrderController {
     public String extracts(){
         return "merchant/order/extract";
     }
-
+    @GetMapping("/payextract")
+    public String payextract(){
+        return "merchant/order/payextract";
+    }
 
 }

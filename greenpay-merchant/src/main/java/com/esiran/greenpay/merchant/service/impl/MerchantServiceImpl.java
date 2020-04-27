@@ -235,9 +235,11 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             mp.setProductId(product.getId());
             mp.setProductName(product.getProductName());
             mp.setProductType(product.getProductType());
+            mp.setPayTypeCode(product.getPayTypeCode());
             mp.setInterfaceMode(1);
             mp.setStatus(false);
         }
+        mp.setRateDisplay(NumberUtil.tenThousandPercent(mp.getRate()));
         return mp;
     }
 

@@ -33,8 +33,8 @@ public class MerchantProductDTO {
     private String productName;
     private Integer productType;
     private Integer interfaceMode;
-    private String defaultPassageId;
-    private String defaultPassageAccId;
+    private Integer defaultPassageId;
+    private Integer defaultPassageAccId;
     private BigDecimal rate;
     private String rateDisplay;
     private Boolean status;

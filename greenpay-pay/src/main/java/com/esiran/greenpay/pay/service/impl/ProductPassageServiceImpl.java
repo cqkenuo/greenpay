@@ -2,9 +2,8 @@ package com.esiran.greenpay.pay.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.esiran.greenpay.pay.entity.Product;
 import com.esiran.greenpay.pay.entity.ProductPassage;
-import com.esiran.greenpay.pay.mapper.ProductPassageAccMapper;
+import com.esiran.greenpay.pay.mapper.ProductPassageMapper;
 import com.esiran.greenpay.pay.service.IProductPassageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import java.util.List;
  * @since 2020-04-13
  */
 @Service
-public class ProductPassageServiceImpl extends ServiceImpl<ProductPassageAccMapper, ProductPassage> implements IProductPassageService {
+public class ProductPassageServiceImpl extends ServiceImpl<ProductPassageMapper, ProductPassage> implements IProductPassageService {
 
     @Override
     public void removeByProductId(Integer productId) {

@@ -47,7 +47,7 @@
                             </script>
 
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/merchant/list/{{d.merchantId}}/product/edit?productId={{d.productId}}'}"
+                                <a th:href="@{'/admin/merchant/list/{{d.merchantId}}/product/list/{{d.productId}}/edit'}"
                                    class="layui-btn layui-btn-xs">
                                     配置
                                 </a>
@@ -79,9 +79,9 @@
                 };
             }
             ,cols: [[
-                {field: 'productId', title: '产品ID', width:'15%', unresize:true}
-                ,{field: 'productName', title: '产品名称', width:'20%', unresize:true}
-                ,{field: 'productType', title: '产品类型', width:'15%', unresize:true, templet:'#productTypeTemplate'}
+                {field: 'productId', title: '产品ID', width:'10%', unresize:true}
+                ,{field: 'productName', title: '产品名称', width:'45%', unresize:true}
+                ,{field: 'productType', title: '产品类型', width:'10%', unresize:true, templet:'#productTypeTemplate'}
                 ,{field: 'rateDisplay', align:'right', title: '费率（%）', width:'10%', unresize:true, templet:'#rateTemplate'}
                 ,{field: 'interfaceMode', title: '接口模式', width:'10%', unresize:true, templet:'#interfaceModeTemplate'}
                 ,{field: 'status', title: '状态', width:'10%', unresize:true, templet:'#statusTemplate'}

@@ -97,15 +97,12 @@ public class OrderDTO  {
     private LocalDateTime paidAt;
     private String paidAtDisplay;
 
-    /**
-     * 支付类型编码
-     */
-    private String payTypeCode;
 
     /**
      * 支付产品ID
      */
     private Integer payProductId;
+    private String payProductName;
 
     /**
      * 支付通道ID

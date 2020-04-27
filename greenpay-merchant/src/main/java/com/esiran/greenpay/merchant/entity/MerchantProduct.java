@@ -43,8 +43,8 @@ public class MerchantProduct extends BaseMapperEntity {
      */
     private BigDecimal rate;
 
-    private String defaultPassageId;
-    private String defaultPassageAccId;
+    private Integer defaultPassageId;
+    private Integer defaultPassageAccId;
 
     /**
      * 状态（0：关闭，1：开启）

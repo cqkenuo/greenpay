@@ -1,13 +1,28 @@
 package com.esiran.greenpay.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.esiran.greenpay.merchant.entity.MerchantProduct;
-import com.esiran.greenpay.merchant.entity.MerchantProductDTO;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.mapper.MerchantProductMapper;
+import com.esiran.greenpay.merchant.service.IMerchantProductPassageService;
 import com.esiran.greenpay.merchant.service.IMerchantProductService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.esiran.greenpay.pay.entity.*;
+import com.esiran.greenpay.pay.service.IPassageAccountService;
+import com.esiran.greenpay.pay.service.IPassageService;
+import com.esiran.greenpay.pay.service.IProductService;
+import com.esiran.greenpay.pay.service.ITypeService;
+import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -20,6 +35,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMapper, MerchantProduct> implements IMerchantProductService {
     private static final ModelMapper modelMapper = new ModelMapper();
+    private static final Gson gson = new Gson();
+    private final IProductService productService;
+    private final ITypeService typeService;
+    private final IPassageService passageService;
+    private final IPassageAccountService passageAccountService;
+    private final IMerchantProductPassageService merchantProductPassageService;
+
+    public MerchantProductServiceImpl(
+            IProductService productService,
+            ITypeService typeService,
+            IPassageService passageService,
+            IPassageAccountService passageAccountService, IMerchantProductPassageService merchantProductPassageService) {
+        this.productService = productService;
+        this.typeService = typeService;
+        this.passageService = passageService;
+        this.passageAccountService = passageAccountService;
+        this.merchantProductPassageService = merchantProductPassageService;
+    }
+
     @Override
     public MerchantProductDTO getByProductId(Integer mchId, Integer productId) {
         LambdaQueryWrapper<MerchantProduct> queryWrapper = new LambdaQueryWrapper<>();
@@ -28,5 +62,45 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
         MerchantProduct mp = this.getOne(queryWrapper);
         if (mp == null) return null;
         return modelMapper.map(mp,MerchantProductDTO.class);
+    }
+
+    @Override
+    public boolean updateById(MerchantProductInputDTO merchantProductInputDTO) throws ResourceNotFoundException, PostResourceException {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        Product src = productService.getById(merchantProductInputDTO.getProductId());
+        if (src == null) throw new ResourceNotFoundException("支付产品不存在");
+        MerchantProduct target = modelMapper.map(merchantProductInputDTO,MerchantProduct.class);
+        if (merchantProductInputDTO.getDefaultPassageId() != null){
+            Passage passage = passageService.getById(merchantProductInputDTO.getDefaultPassageId());
+            if (merchantProductInputDTO.getDefaultPassageAccId() == null)
+                throw new PostResourceException("支付通道子账户不能为空");
+            PassageAccount passageAcc = passageAccountService.getById(passage.getId());
+            if (!passage.getId().equals(passageAcc.getPassageId())){
+                throw new PostResourceException("支付通道与子账户不匹配");
+            }
+        }
+        String loopPassages = merchantProductInputDTO.getLoopPassages();
+        if (!StringUtils.isEmpty(loopPassages)){
+            List<MerchantProductPassageInputDTO> passageInputDTOS = gson.fromJson(loopPassages,
+                    new TypeToken<List<MerchantProductPassageInputDTO>>(){}.getType());
+            List<MerchantProductPassageInputDTO> passagesDTOs = passageInputDTOS.stream()
+                    .filter(MerchantProductPassageInputDTO::getUsage)
+                    .collect(Collectors.toList());
+            List<MerchantProductPassage> passages = passagesDTOs.stream()
+                    .map(item->modelMapper.map(item,MerchantProductPassage.class))
+                    .collect(Collectors.toList());
+            merchantProductPassageService.removeByProductId(target.getId());
+            passages.forEach(merchantProductPassageService::save);
+        }
+        removeByProductId(target.getMerchantId(),target.getProductId());
+        return this.save(target);
+    }
+
+    @Override
+    public void removeByProductId(Integer merchantId, Integer productId) {
+        LambdaUpdateWrapper<MerchantProduct> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(MerchantProduct::getMerchantId,merchantId)
+                .eq(MerchantProduct::getProductId,productId);
+        remove(updateWrapper);
     }
 }

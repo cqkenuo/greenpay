@@ -12,13 +12,23 @@
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
                 <div th:replace="admin/compose::layui-breadcrumb('商户管理','支付产品配置')"></div>
+                <div class="layui-card error-card" th:style="${errors==null}?'display:none;':''">
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
+                    </div>
+                </div>
                 <div class="layui-fluid">
                     <div class="layui-row layui-col-space10">
                         <div class="layui-col-md12">
                             <div class="layui-card">
                                 <div class="layui-card-header">支付产品配置</div>
                                 <div class="layui-card-body">
-                                    <form class="layui-form" action="">
+                                    <form class="layui-form" action="" method="post">
+                                        <input type="hidden" name="merchantId" th:value="${mchId}">
+                                        <input type="hidden" name="productId" th:value="${merchantProduct.productId}">
+                                        <input type="hidden" name="payTypeCode" th:value="${merchantProduct.payTypeCode}">
+                                        <input type="hidden" name="productType" th:value="${merchantProduct.productType}">
+                                        <input type="hidden" name="loopPassages">
                                         <div class="layui-form-item">
                                             <label for="productName" class="layui-form-label">产品类型：</label>
                                             <div class="layui-input-block">
@@ -31,7 +41,6 @@
                                         <div class="layui-form-item">
                                             <label for="productType" class="layui-form-label">产品类型：</label>
                                             <div class="layui-input-block">
-                                                <input type="hidden" name="productType" th:value="${merchantProduct.productType}">
                                                 <input id="productType" type="radio"
                                                        value="0" title="收款" disabled
                                                        th:field="*{merchantProduct.productType}">
@@ -43,7 +52,7 @@
                                         <div class="layui-form-item">
                                             <label for="rate" class="layui-form-label">商户费率：</label>
                                             <div class="layui-input-block">
-                                                <input type="number" class="layui-input"
+                                                <input type="text" class="layui-input"
                                                        name="rate" id="rate" autocomplete="off"
                                                        th:value="${merchantProduct.rate}">
                                             </div>
@@ -122,15 +131,109 @@
 <th:block th:replace="admin/footer::script"/>
 <script th:inline="javascript">
     let availPassagesJson = [[${availPassagesJson}]];
-    let productId = [[${data.id}]];
-    let interfaceMode = [[${data.interfaceMode}]];
+    let productId = [[${merchantProduct.productId}]];
+    let interfaceMode = [[${merchantProduct.interfaceMode}]];
     let usagePassagesJson = [[${usagePassagesJson}]];
 </script>
 <script th:inline="none">
     !function(){
+        let availPassagesData = JSON.parse(availPassagesJson);
+        let usagePassagesData = JSON.parse(usagePassagesJson);
         let layer = layui.layer
-            ,table = layui.table;
-        //第一个实例
+            ,$ = layui.jquery
+            ,table = layui.table
+            ,form = layui.form;
+        function resetLoopPassages(){
+            let data = availPassagesData.map(item=>{
+                return {
+                    productId: productId,
+                    passageId:item.id,
+                    usage: item.usage,
+                    widget: item.widget
+                };
+            });
+            $("input[name='loopPassages']").val(JSON.stringify(data));
+        }
+        function initPassageData() {
+            for (let i = 0; i < availPassagesData.length; i++){
+                if (usagePassagesData.length === 0){
+                    availPassagesData[i].LAY_CHECKED = false;
+                    availPassagesData[i].usage = false;
+                    availPassagesData[i].widget = 0;
+                    continue;
+                }
+                for (let j = 0; j < usagePassagesData.length; j++){
+                    const item = availPassagesData[i];
+                    const usageItem = usagePassagesData[j];
+                    if (item.id === usageItem.passageId){
+                        availPassagesData[i].LAY_CHECKED = true;
+                        availPassagesData[i].usage = true;
+                        availPassagesData[i].widget = usageItem.widget;
+                        break;
+                    }else {
+                        availPassagesData[i].LAY_CHECKED = false;
+                        availPassagesData[i].usage = false;
+                        availPassagesData[i].widget = 0;
+                    }
+                }
+            }
+        }
+        function resetInterfaceMode(){
+            if (interfaceMode === 1){
+                $('#defaultPassage').show();
+                $('#defaultPassageAcc').show();
+                $('#loopPassage').hide();
+            }else if(interfaceMode === 2){
+                $('#defaultPassage').hide();
+                $('#defaultPassageAcc').hide();
+                $('#loopPassage').show();
+            }
+        }
+        resetInterfaceMode();
+        initPassageData();
+        resetLoopPassages();
+        table.render({
+            elem: '#loopPassageTable'
+            ,width:430
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field: 'id', title: '通道ID',width:'20%', unresize:true}
+                ,{field: 'passageName', title: '通道名称', width:'48%', unresize:true}
+                ,{field: 'widget', title: '权重', width:'20%', unresize:true, edit:'text'}
+            ]]
+            ,data: availPassagesData
+        });
+        table.on('edit(loopPassageTable)', function(obj){
+            availPassagesData.forEach(item=>{
+                if (item.id === obj.data.id){
+                    item.widget = obj.value;
+                }
+            });
+            resetLoopPassages();
+        });
+        table.on('checkbox(loopPassageTable)', function(obj){
+            console.log('abc');
+            if (obj.type === 'all'){
+                availPassagesData.forEach(item=>{
+                    item.usage = obj.checked;
+                });
+            }else if (obj.type === 'one') {
+                availPassagesData.forEach(item=>{
+                    if (item.id === obj.data.id){
+                        item.usage = obj.checked;
+                    }
+                });
+            }
+            resetLoopPassages();
+        });
+        form.on('radio(interfaceMode)', function(data){
+            console.log(data);
+            interfaceMode = parseInt(data.value);
+            resetInterfaceMode();
+        });
+        form.on('submit(save)', function (data) {
+            return true;
+        });
     }();
 </script>
 

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -19,20 +20,23 @@ import java.math.BigDecimal;
  */
 @Data
 public class MerchantProductInputDTO {
-    @ApiModelProperty(value = "支付类型编码",required = true)
-    @NotEmpty(message = "支付类型编码不能为空")
+    @NotNull(message = "商户ID不能为空")
+    private Integer merchantId;
+    @NotBlank(message = "支付类型编码不能为空")
     private String payTypeCode;
-
-    @ApiModelProperty(value = "支付产品ID",required = true)
-    @NotEmpty(message = "支付产品ID不能为空")
+    @NotNull(message = "支付产品ID不能为空")
     private Integer productId;
-
-    @ApiModelProperty(value = "产品费率",required = true)
-    @NotNull(message = "产品费率不能为空")
-    @Min(value = 0,message = "产品费率必须大于或等于0")
+    @NotBlank(message = "支付产品名称不能为空")
+    private String productName;
+    @NotNull(message = "支付产品类型不能为空")
+    private Integer productType;
+    @NotNull(message = "接口模式不能为空")
+    private Integer interfaceMode;
+    private Integer defaultPassageId;
+    private Integer defaultPassageAccId;
+    @NotNull(message = "商户费率不能为空")
     private BigDecimal rate;
-
-    @ApiModelProperty(value = "状态",required = true)
+    private String loopPassages;
     @NotNull(message = "状态不能为空")
     private Boolean status;
 }

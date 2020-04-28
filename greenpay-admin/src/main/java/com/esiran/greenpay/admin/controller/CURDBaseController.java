@@ -15,20 +15,6 @@ public abstract class CURDBaseController {
         return THEME_PATH.concat("/").concat(viewName);
     }
 
-    @SuppressWarnings("unchecked")
-    public final List<APIError> getErrors(
-            HttpSession httpSession){
-        return (List<APIError>) httpSession.getAttribute("errors");
-    }
-
-    public final String renderViewAndError(
-            String viewName, HttpSession httpSession, ModelMap modelMap){
-        List<APIError> apiErrors = getErrors(httpSession);
-        modelMap.addAttribute("errors", apiErrors);
-        httpSession.removeAttribute("errors");
-        return THEME_PATH.concat("/").concat(viewName);
-    }
-
     public final String redirect(String url){
         return String.format("redirect:%s",url);
     }

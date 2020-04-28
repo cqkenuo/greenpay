@@ -9,6 +9,7 @@ import com.esiran.greenpay.agentpay.service.IAgentPayPassageAccountService;
 import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.IPassageAccountService;
@@ -48,13 +49,13 @@ public class AdminAgentPayPassageController extends CURDBaseController {
         return "admin/agentpay/passage/list";
     }
     @GetMapping("/list/add")
+    @PageViewHandleError
     public String add(ModelMap modelMap, HttpSession httpSession){
         List<Type> availableTypes = typeService.list();
         List<Interface> availableInters = interfaceService.list();
         modelMap.addAttribute("availableTypes",availableTypes);
         modelMap.addAttribute("availableInters",availableInters);
-        return renderViewAndError("agentpay/passage/add",httpSession,modelMap);
-//        return "admin/pay/passage/add";
+        return "admin/agentpay/passage/add";
     }
     @PostMapping("/list/add")
     public String addPost(@Valid AgentPayPassageInputDTO dto) throws PostResourceException {
@@ -63,6 +64,7 @@ public class AdminAgentPayPassageController extends CURDBaseController {
     }
 
     @GetMapping("/list/{passageId}/edit")
+    @PageViewHandleError
     public String edit(@PathVariable String passageId,ModelMap modelMap, HttpSession httpSession){
         AgentPayPassage data = passageService.getById(passageId);
         List<Type> availableTypes = typeService.list();
@@ -70,14 +72,14 @@ public class AdminAgentPayPassageController extends CURDBaseController {
         modelMap.addAttribute("data", data);
         modelMap.addAttribute("availableTypes", availableTypes);
         modelMap.addAttribute("availableInters", availableInters);
-        return renderViewAndError("agentpay/passage/edit", httpSession, modelMap);
+        return "admin/agentpay/passage/edit";
 //        return "admin/pay/passage/edit";
     }
 
     @PostMapping("/list/{passageId}/edit")
     public String editPost(@PathVariable Integer passageId, @Valid AgentPayPassageInputDTO dto) throws ResourceNotFoundException, PostResourceException {
         passageService.updateById(passageId,dto);
-        return String.format("redirect:/admin/agentpay/passage/list/%s/edit",passageId);
+        return redirect("/admin/agentpay/passage/list/%s/edit",passageId);
     }
 
     @GetMapping("/list/{passageId}/acc")
@@ -86,11 +88,11 @@ public class AdminAgentPayPassageController extends CURDBaseController {
         return "admin/agentpay/passage/acc/list";
     }
     @GetMapping("/list/{passageId}/acc/add")
+    @PageViewHandleError
     public String addAcc(@PathVariable String passageId, ModelMap modelMap, HttpSession httpSession){
         AgentPayPassage passage = passageService.getById(passageId);
         modelMap.addAttribute("passage", passage);
-//        return "admin/pay/passage/acc/add";
-        return renderViewAndError("agentpay/passage/acc/add",httpSession,modelMap);
+        return "admin/agentpay/passage/acc/add";
     }
     @PostMapping("/list/{passageId}/acc/add")
     public String addAccPost(@PathVariable Integer passageId, @Valid AgentPayPassageAccountInputDTO dto) throws ResourceNotFoundException, PostResourceException {
@@ -98,13 +100,13 @@ public class AdminAgentPayPassageController extends CURDBaseController {
         return String.format("redirect:/admin/agentpay/passage/list/%s/acc",passageId);
     }
     @GetMapping("/list/{passageId}/acc/{accId}/edit")
+    @PageViewHandleError
     public String editAcc(@PathVariable String passageId, @PathVariable String accId, ModelMap modelMap, HttpSession httpSession){
         AgentPayPassage passage = passageService.getById(passageId);
         AgentPayPassageAccount passageAccount = passageAccountService.getById(accId);
         modelMap.addAttribute("passage", passage);
         modelMap.addAttribute("data",passageAccount);
-//        return "admin/pay/passage/acc/edit";
-        return renderViewAndError("agentpay/passage/acc/edit",httpSession,modelMap);
+        return "admin/agentpay/passage/acc/edit";
     }
 
 

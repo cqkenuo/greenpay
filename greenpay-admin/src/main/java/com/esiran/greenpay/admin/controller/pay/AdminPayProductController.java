@@ -3,6 +3,7 @@ package com.esiran.greenpay.admin.controller.pay;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
 import com.google.gson.Gson;
@@ -44,20 +45,21 @@ public class AdminPayProductController extends CURDBaseController {
         return "admin/pay/product/list";
     }
     @GetMapping("/list/add")
+    @PageViewHandleError
     public String add(HttpSession httpSession, ModelMap modelMap){
         List<Type> availableTypes = typeService.list();
         modelMap.addAttribute("availableTypes",availableTypes);
-//        return "admin/pay/product/add";
-        return renderViewAndError("pay/product/add",httpSession,modelMap);
+        return "admin/pay/product/add";
     }
     @PostMapping("/list/add")
     public String addPost(@Valid ProductInputDTO productInputDTO) throws PostResourceException {
         productService.add(productInputDTO);
-        return "redirect:/admin/pay/product/list";
+        return redirect("/admin/pay/product/list");
     }
 
 
     @GetMapping("/list/{id}/edit")
+    @PageViewHandleError
     public String edit(@PathVariable Integer id, HttpSession httpSession, ModelMap modelMap ){
         Product product = productService.getById(id);
         List<Type> availTypes = typeService.list();
@@ -72,9 +74,7 @@ public class AdminPayProductController extends CURDBaseController {
         modelMap.addAttribute("availPassagesAcc",availPassagesAcc);
         modelMap.addAttribute("usagePassagesJson",usagePassagesJson);
         modelMap.addAttribute("data",product);
-
-//        return "admin/pay/product/edit";
-        return renderViewAndError("pay/product/edit",httpSession,modelMap);
+        return "admin/pay/product/edit";
     }
 
     @PostMapping("/list/{id}/edit")

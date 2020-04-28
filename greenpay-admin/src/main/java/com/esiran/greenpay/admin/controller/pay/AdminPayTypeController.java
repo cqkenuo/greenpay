@@ -3,6 +3,7 @@ package com.esiran.greenpay.admin.controller.pay;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.TypeDTO;
 import com.esiran.greenpay.pay.entity.TypeInputDTO;
 import com.esiran.greenpay.pay.service.ITypeService;
@@ -31,22 +32,24 @@ public class AdminPayTypeController extends CURDBaseController {
         return "admin/pay/type/list";
     }
     @GetMapping("/list/add")
+    @PageViewHandleError
     public String add(HttpSession httpSession, ModelMap modelMap){
-        return renderViewAndError("pay/type/add",httpSession,modelMap);
+        return "admin/pay/type/add";
     }
     @GetMapping("/list/{payTypeCode}/edit")
+    @PageViewHandleError
     public String edit(@PathVariable String payTypeCode,
                        HttpSession httpSession,
                        ModelMap modelMap) throws ResourceNotFoundException {
         TypeDTO typeDTO = typeService.getTypeByCode(payTypeCode);
         if (typeDTO == null) throw new ResourceNotFoundException();
         modelMap.addAttribute("type",typeDTO);
-        return renderViewAndError("pay/type/edit",httpSession,modelMap);
+        return "admin/pay/type/edit";
     }
     @PostMapping("/list/add")
     public String addFrom(@Valid TypeInputDTO inputDTO) throws PostResourceException {
         typeService.saveType(inputDTO);
-        return "redirect:/admin/pay/type/list";
+        return redirect("/admin/pay/type/list");
     }
 
     @PostMapping("/list/{payTypeCode}/edit")
@@ -55,6 +58,6 @@ public class AdminPayTypeController extends CURDBaseController {
             @Valid TypeInputDTO inputDTO
     ) throws ResourceNotFoundException {
         typeService.updateType(inputDTO);
-        return String.format("redirect:/admin/pay/type/list/%s/edit",payTypeCode);
+        return redirect("/admin/pay/type/list/%s/edit",payTypeCode);
     }
 }

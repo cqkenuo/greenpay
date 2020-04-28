@@ -2,6 +2,7 @@ package com.esiran.greenpay.admin.controller.merchant;
 
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.entity.APIError;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.service.IMerchantProductService;
 import com.esiran.greenpay.merchant.service.IMerchantService;
@@ -61,6 +62,7 @@ public class AdminMerchantController extends CURDBaseController {
 
 
     @GetMapping("/list/{mchId}/product/list/{productId}/edit")
+    @PageViewHandleError
     public String product(
             @PathVariable String mchId,
             @PathVariable Integer productId,
@@ -78,7 +80,7 @@ public class AdminMerchantController extends CURDBaseController {
         modelMap.addAttribute("availPassagesJson", availPassagesJson);
         modelMap.addAttribute("usagePassagesJson", usagePassagesJson);
         modelMap.addAttribute("mchId", mchId);
-        return renderViewAndError("merchant/product/edit",httpSession,modelMap);
+        return "admin/merchant/product/edit";
     }
     @PostMapping("/list/{mchId}/product/list/{productId}/edit")
     public String productPost(
@@ -86,7 +88,7 @@ public class AdminMerchantController extends CURDBaseController {
             @PathVariable Integer productId,
             @Valid MerchantProductInputDTO inputDTO) throws Exception {
         merchantProductService.updateById(inputDTO);
-        return String.format("redirect:/admin/merchant/list/%s/product/list/%s/edit",mchId,productId);
+        return redirect("/admin/merchant/list/%s/product/list/%s/edit",mchId,productId);
     }
 
     @GetMapping("/add")

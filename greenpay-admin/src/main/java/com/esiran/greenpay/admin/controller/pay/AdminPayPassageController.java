@@ -3,6 +3,7 @@ package com.esiran.greenpay.admin.controller.pay;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.IPassageAccountService;
@@ -42,12 +43,13 @@ public class AdminPayPassageController extends CURDBaseController {
         return "admin/pay/passage/list";
     }
     @GetMapping("/list/add")
+    @PageViewHandleError
     public String add(ModelMap modelMap, HttpSession httpSession){
         List<Type> availableTypes = typeService.list();
         List<Interface> availableInters = interfaceService.list();
         modelMap.addAttribute("availableTypes",availableTypes);
         modelMap.addAttribute("availableInters",availableInters);
-        return renderViewAndError("pay/passage/add",httpSession,modelMap);
+        return "admin/pay/passage/add";
 //        return "admin/pay/passage/add";
     }
     @PostMapping("/list/add")
@@ -57,6 +59,7 @@ public class AdminPayPassageController extends CURDBaseController {
     }
 
     @GetMapping("/list/{passageId}/edit")
+    @PageViewHandleError
     public String edit(@PathVariable String passageId,ModelMap modelMap, HttpSession httpSession){
         Passage data = passageService.getById(passageId);
         List<Type> availableTypes = typeService.list();
@@ -64,14 +67,13 @@ public class AdminPayPassageController extends CURDBaseController {
         modelMap.addAttribute("data", data);
         modelMap.addAttribute("availableTypes", availableTypes);
         modelMap.addAttribute("availableInters", availableInters);
-        return renderViewAndError("pay/passage/edit", httpSession, modelMap);
-//        return "admin/pay/passage/edit";
+        return "admin/pay/passage/edit";
     }
 
     @PostMapping("/list/{passageId}/edit")
     public String editPost(@PathVariable Integer passageId, @Valid PassageInputDTO dto) throws ResourceNotFoundException, PostResourceException {
         passageService.updateById(passageId,dto);
-        return String.format("redirect:/admin/pay/passage/list/%s/edit",passageId);
+        return redirect("/admin/pay/passage/list/%s/edit",passageId);
     }
 
     @GetMapping("/list/{passageId}/acc")
@@ -80,25 +82,25 @@ public class AdminPayPassageController extends CURDBaseController {
         return "admin/pay/passage/acc/list";
     }
     @GetMapping("/list/{passageId}/acc/add")
+    @PageViewHandleError
     public String addAcc(@PathVariable String passageId, ModelMap modelMap, HttpSession httpSession){
         Passage passage = passageService.getById(passageId);
         modelMap.addAttribute("passage", passage);
-//        return "admin/pay/passage/acc/add";
-        return renderViewAndError("pay/passage/acc/add",httpSession,modelMap);
+        return "admin/pay/passage/acc/add";
     }
     @PostMapping("/list/{passageId}/acc/add")
     public String addAccPost(@PathVariable Integer passageId, @Valid PassageAccountInputDTO dto) throws ResourceNotFoundException, PostResourceException {
         passageAccountService.add(dto);
-        return String.format("redirect:/admin/pay/passage/list/%s/acc",passageId);
+        return redirect("/admin/pay/passage/list/%s/acc",passageId);
     }
     @GetMapping("/list/{passageId}/acc/{accId}/edit")
+    @PageViewHandleError
     public String editAcc(@PathVariable String passageId, @PathVariable String accId, ModelMap modelMap, HttpSession httpSession){
         Passage passage = passageService.getById(passageId);
         PassageAccount passageAccount = passageAccountService.getById(accId);
         modelMap.addAttribute("passage", passage);
         modelMap.addAttribute("data",passageAccount);
-//        return "admin/pay/passage/acc/edit";
-        return renderViewAndError("pay/passage/acc/edit",httpSession,modelMap);
+        return "admin/pay/passage/acc/edit";
     }
 
 
@@ -108,6 +110,6 @@ public class AdminPayPassageController extends CURDBaseController {
             @PathVariable Integer accId,
             @Valid PassageAccountInputDTO dto) throws ResourceNotFoundException, PostResourceException {
         passageAccountService.updateById(accId,dto);
-        return String.format("redirect:/admin/pay/passage/list/%s/acc/%s/edit",passageId,accId);
+        return redirect("/admin/pay/passage/list/%s/acc/%s/edit",passageId,accId);
     }
 }

@@ -40,33 +40,6 @@
 </div>
 <th:block th:replace="merchant/footer::script"/>
 <script th:inline="none">
-    !function () {
-        let layer = layui.layer,
-        form = layui.form,
-        $ = layui.jquery;
-        form.on('submit(formDemo)', function(data){
-            var bankName = data.field.bankName;
-            var accountNumber = data.field.accountNumber;
-            var replaceMoney = data.field.replaceMoney;
-            $.ajax({
-                url:'/merchant/api/v1/replace/add',
-                method:'post',
-                data:data.field,
-                dataType:'JSON',
-                success:function(res){
-                    if(res.code == 0){
-                        layer.msg(res.msg);
-                    }
-                    else
-                        layer.msg(res.msg);
-                },
-                error:function (data) {
-                    throw data;
-                }
-            })
-            return false;
-        });
-    }
 </script>
 </body>
 <style>

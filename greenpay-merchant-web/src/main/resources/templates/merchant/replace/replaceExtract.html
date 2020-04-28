@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">代付金额</label>
+                    <label class="layui-form-label">提现金额</label>
                     <div class="layui-input-block">
                         <input type="text" name="replaceMoney" id="replaceMoney" required  lay-verify="required" placeholder="请输入代付金额" autocomplete="off" class="layui-input">
                     </div>
@@ -40,6 +40,32 @@
 </div>
 <th:block th:replace="merchant/footer::script"/>
 <script th:inline="none">
+    !function(){
+        let layer = layui.layer,
+            form = layui.form,
+            $ = layui.jquery;
+
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                url:'/merchant/api/v1/replaceExtract',
+                method:'post',
+                data:data.field,
+                dataType:'JSON',
+                success:function(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg);
+                    }
+                    else
+                        layer.msg(res.msg);
+                },
+                error:function (data) {
+                    throw data;
+                }
+            })
+            return false;
+        });
+
+    }();
 </script>
 </body>
 <style>

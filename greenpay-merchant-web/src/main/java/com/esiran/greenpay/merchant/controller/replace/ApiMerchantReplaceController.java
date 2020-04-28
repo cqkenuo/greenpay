@@ -84,4 +84,11 @@ public class ApiMerchantReplaceController {
         m.put("msg","提交成功");
         return m;
     }
+    @PostMapping("/replaceExtract")
+    public Map replaceExtract(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("code","1");
+        map.put("msg","提交成功");
+        return map;
+    }
 }

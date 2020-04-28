@@ -165,7 +165,7 @@
     </div>
 </div>
 <th:block th:replace="merchant/footer::script"/>
-<script>
+<script th:inline="none">
     !function () {
         let myChart = echarts.init(document.getElementById('main'));
         let option = {
@@ -191,7 +191,7 @@
         myChart.setOption(option);
     }();
 </script>
-<script>
+<script th:inline="none">
     !function () {
         let layer = layui.layer
             , form = layui.form
@@ -209,7 +209,11 @@
                 type: 2,
                 title: '代付余额提现',
                 area: ['500px','280px'],
-                content: '/merchant/replace/replaceExtract'
+                content: '/merchant/replace/replaceExtract',
+                yes:function (index,layero) {
+                    var submit = layero.find('iframe').contents().find("#formDemo");
+                    submit.click();
+                }
             });
         })
     }();

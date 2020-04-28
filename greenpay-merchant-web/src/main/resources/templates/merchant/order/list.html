@@ -89,8 +89,11 @@
                                             <button class="layui-btn layui-btn-danger layui-btn-xs">交易失败</button>
                                             {{#  } }}
                                         </script>
-                                        <script type="text/html" id="operationTpl">
-                                            <button class="layui-btn layui-btn-radius" id="operationBtn">查看详情</button>
+                                        <script type="text/html" id="barDemo">
+                                            <a th:href="@{'/merchant/order/list/{{d.orderNo}}/detail'}"
+                                               class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
+                                            <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">补单</a>
+                                            <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">通知</a>
                                         </script>
                                     </div>
 
@@ -135,7 +138,7 @@
                 , {field: 'amount', title: '订单金额', width: "15%",align:'center'}
                 , {field: 'status', title: '订单状态',templet: "#statusTpl", width: "15%" ,align:'center'}
                 , {field: 'createdAt', title: '创建时间', width: "15%",align:'center'}
-                ,{title: '操作', align: 'left',templet: "#operationTpl", width:'15%'}
+                ,{title: '操作', align: 'left',toolbar: '#barDemo', width:'15%'}
             ]]
         });
         laydate.render({

@@ -19,5 +19,10 @@ wechat:
   app_secret: 731787f51247a33c4ff210cd613dd780
   mch_id: 1519342911
   mch_key: 2624eedd356624bc7a662c29ceb0a20e
+
 shiro:
   loginUrl: /admin/login
+  sessionManager:
+    cookie:
+      secure: true
+  successUrl: /admin/home

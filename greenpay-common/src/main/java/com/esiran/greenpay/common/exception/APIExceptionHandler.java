@@ -96,7 +96,6 @@ public class APIExceptionHandler {
         return map;
     }
 
-
     @ExceptionHandler(PostResourceException.class)
     public Map<String,Object> handlePostResourceException(
             PostResourceException e, HttpServletResponse response,
@@ -135,30 +134,30 @@ public class APIExceptionHandler {
         response.setStatus(404);
         return map;
     }
-    @ExceptionHandler(Exception.class)
-    public Map<String,Object> handleDefaultException(
-            HttpServletRequest request,
-            Exception e,
-            HttpServletResponse response,
-            HttpSession httpSession) throws IOException {
-        Boolean isView = (Boolean) request.getAttribute("isView");
-        if (isView == null || isView){
-            List<APIError> errors = new ArrayList<>();
-            APIError error = new APIError();
-            error.setCode("SERVER_ERROR");
-            error.setMessage(e.getMessage());
-            errors.add(error);
-            httpSession.setAttribute("errors",errors);
-            String s = request.getRequestURI();
-            System.out.println(s);
-            response.sendRedirect(s);
-            return null;
-        }
-        e.printStackTrace();
-        response.setStatus(500);
-        Map<String,Object> map = new HashMap<>();
-        map.put("code","SERVER_ERROR");
-        map.put("message", e.getMessage());
-        return map;
-    }
+//    @ExceptionHandler(Exception.class)
+//    public Map<String,Object> handleDefaultException(
+//            HttpServletRequest request,
+//            Exception e,
+//            HttpServletResponse response,
+//            HttpSession httpSession) throws IOException {
+//        Boolean isView = (Boolean) request.getAttribute("isView");
+//        if (isView == null || isView){
+//            List<APIError> errors = new ArrayList<>();
+//            APIError error = new APIError();
+//            error.setCode("SERVER_ERROR");
+//            error.setMessage(e.getMessage());
+//            errors.add(error);
+//            httpSession.setAttribute("errors",errors);
+//            String s = request.getRequestURI();
+//            System.out.println(s);
+//            response.sendRedirect(s);
+//            return null;
+//        }
+//        e.printStackTrace();
+//        response.setStatus(500);
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("code","SERVER_ERROR");
+//        map.put("message", e.getMessage());
+//        return map;
+//    }
 }

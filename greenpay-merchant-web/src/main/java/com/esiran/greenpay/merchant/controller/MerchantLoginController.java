@@ -1,10 +1,8 @@
 package com.esiran.greenpay.merchant.controller;
 
+import com.esiran.greenpay.merchant.entity.MerchantLogin;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -17,7 +15,7 @@ public class MerchantLoginController {
     }
     @PostMapping("/login")
     @ResponseBody
-    public Map loginInput(){
+    public Map loginInput(@RequestBody MerchantLogin merchantLogin){
     return null;
     }
 }

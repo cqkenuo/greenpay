@@ -37,6 +37,6 @@ public class AdminUserRealm extends AuthorizingRealm {
         User user = userService.getOne(queryWrapper);
         if (user == null)
             throw new UnknownAccountException();
-        return new SimpleAuthenticationInfo(user,password,null,getName());
+        return new SimpleAuthenticationInfo(user,user.getPassword(),null,getName());
     }
 }

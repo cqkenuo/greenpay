@@ -33,7 +33,11 @@ public class AdminSettleOrderController extends CURDBaseController {
     public String audit(){
         return "admin/settle/audit/list";
     }
-
+    @PostMapping("/audit/{orderNo}/flow/pass")
+    public String auditPost(@PathVariable String orderNo){
+        orderService.updateOrderStatus(orderNo,2);
+        return "redirect:/admin/settle/audit";
+    }
     @GetMapping("/settings")
     public String settings(ModelMap modelMap, HttpSession httpSession){
         LambdaQueryWrapper<SettleConfig> queryWrapper = new LambdaQueryWrapper<>();

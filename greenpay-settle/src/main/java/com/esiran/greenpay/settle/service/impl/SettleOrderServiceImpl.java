@@ -3,9 +3,12 @@ package com.esiran.greenpay.settle.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.settle.entity.SettleOrder;
 import com.esiran.greenpay.settle.entity.SettleOrderDTO;
+import com.esiran.greenpay.settle.entity.SettleOrderInputDTO;
 import com.esiran.greenpay.settle.mapper.SettleOrderMapper;
 import com.esiran.greenpay.settle.service.ISettleOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,8 +38,9 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         dto.setFeeDisplay(NumberUtil.amountFen2Yuan(order.getFee()));
         dto.setSettleAmountDisplay(NumberUtil.amountFen2Yuan(order.getSettleAmount()));
         String status = order.getStatus() == 1 ? "待审核"
-                : order.getStatus() == 2 ? "处理中"
-                : order.getStatus() == 3 ? "已结算"
+                : order.getStatus() == 2 ? "待处理"
+                : order.getStatus() == 3 ? "处理中"
+                : order.getStatus() == 4 ? "已结算"
                 : order.getStatus() == -1 ? "已驳回"
                 : order.getStatus() == -2 ? "结算失败"
                 : "未知";
@@ -81,5 +85,15 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         SettleOrder order = this.getOne(lambdaQueryWrapper);
         if (order == null) return null;
         return SettleOrderServiceImpl.convertOrderEntity(order);
+    }
+
+    @Override
+    public void updateOrderStatus(String orderNo, Integer status) {
+
+    }
+
+    @Override
+    public void postOrder(SettleOrderInputDTO inputDTO) throws PostResourceException, ResourceNotFoundException {
+
     }
 }

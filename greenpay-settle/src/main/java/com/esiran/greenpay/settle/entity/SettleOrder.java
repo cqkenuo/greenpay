@@ -77,7 +77,14 @@ public class SettleOrder extends BaseMapperEntity {
      * 开户行名称
      */
     private String bankName;
-
+    /**
+     * 开户行联行号
+     */
+    private String bankCode;
+    /**
+     * 开户行地址或支行名称
+     */
+    private String bankAddress;
     /**
      * 支付类型编码
      */

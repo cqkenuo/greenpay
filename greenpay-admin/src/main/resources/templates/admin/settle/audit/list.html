@@ -17,7 +17,7 @@
                         <div class="layui-card-header">结算审核</div>
                         <div class="layui-card-body" style="padding: 0">
                             <div class="admin-table_header">
-                                <div th:replace="admin/compose::admin-table_header_right('请输入结算审核')">
+                                <div th:replace="admin/compose::admin-table_header_right('请输入结算订单号')">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
@@ -74,8 +74,7 @@
                 ,limitName: 'size'
             }
             ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
+                {field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
                 ,{field: 'orderNo', title: '交易订单号', width:'12%', unresize:true}
                 ,{field: 'mchId', title: '商户ID', width:'10%', unresize:true}
                 ,{field: 'accountName', title: '结算账户名', width:'18%', unresize:true}

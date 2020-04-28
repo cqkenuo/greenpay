@@ -1,16 +1,11 @@
 package com.esiran.greenpay.settle.entity;
 
-import java.math.BigDecimal;
-import com.esiran.greenpay.common.entity.BaseMapperEntity;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-
-import io.swagger.models.auth.In;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -21,12 +16,7 @@ import lombok.experimental.Accessors;
  * @since 2020-04-27
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@TableName("settle_config")
-public class SettleConfig extends BaseMapperEntity {
-
-    private static final long serialVersionUID = 1L;
+public class SettleConfigDTO {
 
     /**
      * 状态（0：关闭，1：开启）
@@ -47,16 +37,19 @@ public class SettleConfig extends BaseMapperEntity {
      * 金额限制（最小值，单位：分）
      */
     private Integer amountLimitMin;
+    private String amountLimitMinDisplay;
 
     /**
      * 金额限制（最大值，单位：分）
      */
     private Integer amountLimitMax;
+    private String amountLimitMaxDisplay;
 
     /**
      * 每日金额最大值（单位：分）
      */
     private Integer dayAmountLimitMax;
+    private String dayAmountLimitMaxDisplay;
 
     /**
      * 结算费率类型（1：比例收费，2：固定收费，3：比例收费+固定收费）
@@ -67,11 +60,12 @@ public class SettleConfig extends BaseMapperEntity {
      * 结算比例（保留两位小数）
      */
     private BigDecimal settleRate;
+    private String settleRateDisplay;
 
     /**
      * 固定费率（单位：分）
      */
     private Integer settleFee;
-
+    private String settleFeeDisplay;
 
 }

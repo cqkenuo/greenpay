@@ -239,7 +239,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             mp.setInterfaceMode(1);
             mp.setStatus(false);
         }
-        mp.setRateDisplay(NumberUtil.tenThousandPercent(mp.getRate()));
+        mp.setRateDisplay(NumberUtil.twoDecimals(mp.getRate()));
         return mp;
     }
 

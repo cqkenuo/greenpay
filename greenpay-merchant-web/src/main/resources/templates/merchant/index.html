@@ -64,7 +64,7 @@
                                                 <h3>冻结金额</h3>
                                                 <p>
                                                     <cite th:text="${prepaidAccount.getFreezeBalance()}"></cite> 元
-                                                    <button type="button" id="replaceExtractBtn" class="layui-btn layui-btn-sm">提现</button>
+<!--                                                    <button type="button" id="replaceExtractBtn" class="layui-btn layui-btn-sm">提现</button>-->
                                                 </p>
                                             </a>
                                         </li>
@@ -200,7 +200,7 @@
             layer.open({
                 type: 2,
                 title: '商户余额提现',
-                area: ['500px','280px'],
+                area: ['500px','330px'],
                 content: '/merchant/order/payextract',
                 yes:function (index,layero) {
                     var submit = layero.find('iframe').contents().find("#formDemo");

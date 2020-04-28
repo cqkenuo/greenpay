@@ -26,7 +26,7 @@ public class BaseInterceptor implements HandlerInterceptor {
         boolean isPage = method.getReturnType().equals(String.class);
         boolean isJosn = method.isAnnotationPresent(ResponseBody.class);
         boolean isController = (!hm.getBeanType().isAnnotationPresent(RestController.class) && hm.getBeanType().isAnnotationPresent(Controller.class));
-        request.setAttribute("isView", isPage && !isJosn && isController);
+        request.setAttribute("_isView", isPage && !isJosn && isController);
         if (SecurityUtils.getSubject().isAuthenticated()){
             Merchant user = (Merchant) SecurityUtils.getSubject().getPrincipal();
             request.setAttribute("user",user);

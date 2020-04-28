@@ -131,23 +131,23 @@ public class APIExceptionHandler {
         response.setStatus(404);
         return map;
     }
-    @ExceptionHandler(Exception.class)
-    public Map<String,Object> handleDefaultException(
-            HttpServletRequest request,
-            Exception e,
-            HttpServletResponse response,
-            HttpSession httpSession) throws IOException {
-        if (ReqUtil.isView(request)){
-            ReqUtil.savePostError(httpSession,e.getMessage());
-            String s = request.getRequestURI();
-            response.sendRedirect(s);
-            return null;
-        }
-        e.printStackTrace();
-        response.setStatus(500);
-        Map<String,Object> map = new HashMap<>();
-        map.put("code","SERVER_ERROR");
-        map.put("message", e.getMessage());
-        return map;
-    }
+//    @ExceptionHandler(Exception.class)
+//    public Map<String,Object> handleDefaultException(
+//            HttpServletRequest request,
+//            Exception e,
+//            HttpServletResponse response,
+//            HttpSession httpSession) throws IOException {
+//        if (ReqUtil.isView(request)){
+//            ReqUtil.savePostError(httpSession,e.getMessage());
+//            String s = request.getRequestURI();
+//            response.sendRedirect(s);
+//            return null;
+//        }
+//        e.printStackTrace();
+//        response.setStatus(500);
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("code","SERVER_ERROR");
+//        map.put("message", e.getMessage());
+//        return map;
+//    }
 }

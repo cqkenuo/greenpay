@@ -50,7 +50,10 @@
             ,form = layui.form;
         form.on('submit(login)', function(data){
             let passwordText = $("#password").val();
-            let passwordVal = md5(passwordText);
+            let passwordVal = '';
+            if (passwordText.length !== 0){
+                passwordVal = md5(passwordText);
+            }
             $("input[name='password']").val(passwordVal);
             return true;
         });

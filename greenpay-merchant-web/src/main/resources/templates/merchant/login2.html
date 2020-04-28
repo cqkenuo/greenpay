@@ -16,14 +16,13 @@
                 <div class="layui-form-item">
                     <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="username"></label>
                     <input class="layui-input" id="username"
-                           required
                            type="text" name="username"
                            placeholder="请输入登录用户名">
                 </div>
                 <div class="layui-form-item">
                     <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="password"></label>
                     <input class="layui-input" id="password"
-                           type="password" required name="password"
+                           type="password" name="password"
                            placeholder="请输入登录密码">
                 </div>
                 <div class="error-card" th:style="${_errors==null}?'display:none;':'margin-bottom: 15px;'">
@@ -50,7 +49,10 @@
             ,form = layui.form;
         form.on('submit(login)', function(data){
             let passwordText = $("#password").val();
-            let passwordVal = md5(passwordText);
+            let passwordVal = '';
+            if (passwordText.length !== 0){
+                passwordVal = md5(passwordText);
+            }
             $("input[name='password']").val(passwordVal);
             return true;
         });

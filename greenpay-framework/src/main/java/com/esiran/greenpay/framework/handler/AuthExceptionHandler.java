@@ -17,7 +17,9 @@ public class AuthExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public String handleAuthenticationException(
-            AuthenticationException e,HttpServletRequest request, HttpSession httpSession){
+            AuthenticationException e,
+            HttpServletRequest request,
+            HttpSession httpSession){
         List<String> errors = new ArrayList<>();
         if (e instanceof IncorrectCredentialsException){
             errors.add("用户名或密码错误");

@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -16,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 @Aspect
+@Order(99)
 @Component
 public class PageViewAspect {
     @Pointcut("@annotation(com.esiran.greenpay.framework.annotation.PageViewHandleError)")

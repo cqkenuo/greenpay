@@ -13,7 +13,13 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">账号名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="bankName"  id="bankName" required  lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+                        <input type="text" name="accountName"  id="accountName" required  lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="bankName" id="bankName" required  lay-verify="required" placeholder="请输入提现金额" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -25,7 +31,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">提现金额</label>
                     <div class="layui-input-block">
-                        <input type="text" name="replaceMoney" id="replaceMoney" required  lay-verify="required" placeholder="请输入提现金额" autocomplete="off" class="layui-input">
+                        <input type="text" name="amount" id="amount" required  lay-verify="required" placeholder="请输入提现金额" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -40,6 +46,31 @@
 </div>
 <th:block th:replace="merchant/footer::script"/>
 <script th:inline="none">
+    !function(){
+        let layer = layui.layer,
+            form = layui.form,
+            $ = layui.jquery;
+
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                url:'/merchant/api/v1/payextract',
+                method:'post',
+                data:data.field,
+                dataType:'JSON',
+                success:function(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg);
+                    }
+                    else
+                        layer.msg(res.msg);
+                },
+                error:function (data) {
+                    throw data;
+                }
+            })
+            return false;
+        });
+    }();
 </script>
 </body>
 <style>

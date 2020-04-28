@@ -201,7 +201,11 @@
                 type: 2,
                 title: '商户余额提现',
                 area: ['500px','280px'],
-                content: '/merchant/order/payextract'
+                content: '/merchant/order/payextract',
+                yes:function (index,layero) {
+                    var submit = layero.find('iframe').contents().find("#formDemo");
+                    submit.click();
+                }
             });
         });
         $('#replaceExtractBtn').click(function () {

@@ -12,6 +12,20 @@
     <artifactId>greenpay-merchant-web</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-common</artifactId>
@@ -35,6 +49,14 @@
         <dependency>
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-openapi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-agentpay</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-settle</artifactId>
         </dependency>
     </dependencies>
 

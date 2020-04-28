@@ -49,10 +49,10 @@
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-openapi</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.esiran</groupId>
-            <artifactId>greenpay-merchant-web</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.esiran</groupId>-->
+<!--            <artifactId>greenpay-merchant-web</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-agentpay</artifactId>

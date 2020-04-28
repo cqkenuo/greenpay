@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,30 +26,18 @@ import java.util.List;
 @Data
 @ApiModel("MerchantProduct")
 public class MerchantProductDTO {
-
-    @ApiModelProperty("商户ID")
+    private Integer id;
     private Integer merchantId;
-
-    @ApiModelProperty("支付类型编码")
     private String payTypeCode;
-
-    @ApiModelProperty("支付类型名称")
-    private String payTypeName;
-
-    @ApiModelProperty("支付产品ID")
     private Integer productId;
-
-    @ApiModelProperty("支付产品名称")
     private String productName;
-
-    @ApiModelProperty("通道费率")
+    private Integer productType;
+    private Integer interfaceMode;
+    private Integer defaultPassageId;
+    private Integer defaultPassageAccId;
     private BigDecimal rate;
-    @ApiModelProperty("通道费率，格式化")
     private String rateDisplay;
-
-    @ApiModelProperty("状态")
     private Boolean status;
-
-    @ApiModelProperty("可用的产品列表")
-    private List<ProductDTO> availableProducts;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

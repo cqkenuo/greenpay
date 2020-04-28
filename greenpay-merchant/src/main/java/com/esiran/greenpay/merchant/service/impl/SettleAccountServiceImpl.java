@@ -1,6 +1,7 @@
 package com.esiran.greenpay.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.merchant.entity.PrepaidAccount;
 import com.esiran.greenpay.merchant.entity.PrepaidAccountDTO;
 import com.esiran.greenpay.merchant.entity.SettleAccount;
@@ -28,8 +29,8 @@ public class SettleAccountServiceImpl extends ServiceImpl<SettleAccountMapper, S
         settleAccountLambdaQueryWrapper.eq(SettleAccount::getMerchantId,mchId);
         SettleAccount settleAccount = this.getOne(settleAccountLambdaQueryWrapper);
         SettleAccountDTO dto = modelMapper.map(settleAccount,SettleAccountDTO.class);
-        dto.setSettleFeeAmountDisplay(String.format("%.2f",(dto.getSettleFeeAmount()/100.00f)));
-        dto.setSettleFeeRateDisplay(String.format("%.4f",(dto.getSettleFeeRate().floatValue()/100.00f)));
+        dto.setSettleFeeAmountDisplay(NumberUtil.amountFen2Yuan(dto.getSettleFeeAmount()));
+        dto.setSettleFeeRateDisplay(NumberUtil.twoDecimals(dto.getSettleFeeRate()));
         return modelMapper.map(settleAccount,SettleAccountDTO.class);
     }
 }

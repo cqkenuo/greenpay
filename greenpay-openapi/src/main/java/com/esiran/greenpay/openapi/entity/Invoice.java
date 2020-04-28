@@ -33,7 +33,7 @@ public class Invoice {
     /**
      * 支付渠道
      */
-    private String channel;
+    private Integer channel;
 
     /**
      * 商品标题

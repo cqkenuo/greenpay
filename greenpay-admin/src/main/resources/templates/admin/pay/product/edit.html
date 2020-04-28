@@ -141,9 +141,6 @@
             ,$ = layui.jquery
             ,table = layui.table
             ,form = layui.form;
-
-        console.log('可用通道Init',availPassagesData);
-        console.log('已使用通道Init',usagePassagesData);
         function resetLoopPassages(){
             let data = availPassagesData.map(item=>{
                 return {
@@ -178,16 +175,6 @@
                     }
                 }
             }
-
-            availPassagesData.forEach(item=>{
-                console.log('可用通道',item);
-
-                usagePassagesData.every(usageItem=>{
-                    console.log('已选中通道',usageItem);
-
-                })
-            });
-            console.log(availPassagesData);
         }
         function resetInterfaceMode(){
             if (interfaceMode === 1){

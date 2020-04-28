@@ -53,6 +53,14 @@
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-merchant-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-agentpay</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-settle</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -32,8 +32,8 @@ public class InvoiceInputDTO extends BaseSignInput {
     /**
      * 支付渠道
      */
-    @NotBlank(message = "支付渠道不能为空")
-    private String channel;
+    @NotNull(message = "支付渠道不能为空")
+    private Integer channel;
 
     /**
      * 商品标题

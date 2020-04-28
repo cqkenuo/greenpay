@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.util.EncryptUtil;
+import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.common.util.RSAUtil;
 import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.mapper.MerchantMapper;
@@ -80,18 +81,18 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     @Override
     @Transactional
     public void updateMerchantProduct(MerchantProductInputDTO dto, Integer id) throws Exception {
-        MerchantProduct mp = modelMapper.map(dto,MerchantProduct.class);
-        mp.setMerchantId(id);
-        Type type = iTypeService.findTypeByCode(mp.getPayTypeCode());
-        if (type == null) throw new Exception("未知支付类型");
-        Product product = productService.getById(mp.getProductId());
-        if (product == null )  throw new Exception("支付产品不存在");
-        if (!product.getPayTypeCode().equals(type.getTypeCode()))
-            throw new Exception("支付产品不属于该支付类型");
-        LambdaUpdateWrapper<MerchantProduct> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-        lambdaUpdateWrapper.eq(MerchantProduct::getPayTypeCode,mp.getPayTypeCode());
-        merchantProductService.remove(lambdaUpdateWrapper);
-        merchantProductService.save(mp);
+//        MerchantProduct mp = modelMapper.map(dto,MerchantProduct.class);
+//        mp.setMerchantId(id);
+//        Type type = iTypeService.findTypeByCode(mp.getPayTypeCode());
+//        if (type == null) throw new Exception("未知支付类型");
+//        Product product = productService.getById(mp.getProductId());
+//        if (product == null )  throw new Exception("支付产品不存在");
+//        if (!product.getPayTypeCode().equals(type.getTypeCode()))
+//            throw new Exception("支付产品不属于该支付类型");
+//        LambdaUpdateWrapper<MerchantProduct> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+//        lambdaUpdateWrapper.eq(MerchantProduct::getPayTypeCode,mp.getPayTypeCode());
+//        merchantProductService.remove(lambdaUpdateWrapper);
+//        merchantProductService.save(mp);
     }
 
     @Override
@@ -215,73 +216,31 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         if (merchant == null){
             throw new APIException("商户号不存在","MERCHANT_NOT_FOUND");
         }
-        List<Type> types = iTypeService.list();
-        List<MerchantProductDTO> merchantProductDTOS = new ArrayList<>();
-        for (Type type : types){
-            List<ProductDTO> availableProducts = productService.findAllProductByPayTypeCode(type.getTypeCode());
-            MerchantProductDTO dto = new MerchantProductDTO();
-            dto.setMerchantId(mchId);
-            dto.setPayTypeName(type.getTypeName());
-            dto.setPayTypeCode(type.getTypeCode());
-            dto.setAvailableProducts(availableProducts);
-            dto.setRateDisplay("--");
-            dto.setStatus(false);
-            LambdaQueryWrapper<MerchantProduct> merchantProductQueryWrapper =
-                    new QueryWrapper<MerchantProduct>().lambda().eq(MerchantProduct::getMerchantId,mchId)
-                            .eq(MerchantProduct::getPayTypeCode,type.getTypeCode());
-            MerchantProduct merchantProduct = merchantProductService.getOne(merchantProductQueryWrapper);
-            if (merchantProduct == null){
-                merchantProductDTOS.add(dto);
-                continue;
-            }
-            Product product = productService.getById(merchantProduct.getProductId());
-            if (product == null) {
-                merchantProductDTOS.add(dto);
-                continue;
-            }
-            dto.setProductId(product.getId());
-            dto.setProductName(product.getProductName());
-            dto.setStatus(merchantProduct.getStatus());
-            dto.setRate(merchantProduct.getRate());
-            dto.setRateDisplay(String.format("%.2f",dto.getRate().floatValue()*100.00f));
-            merchantProductDTOS.add(dto);
+        List<Product> products = productService.list();
+        List<MerchantProductDTO> mps = new ArrayList<>();
+        for (Product product : products){
+            MerchantProductDTO mp =  this.selectMchProductById(mchId,product.getId());
+            mps.add(mp);
         }
-        return merchantProductDTOS;
+        return mps;
     }
 
     @Override
-    public MerchantProductDTO selectMchProductByIdAndPayTypeCode(Integer mchId, String payTypeCode) throws Exception {
-        LambdaQueryWrapper<Type> typeQueryWrapper = new QueryWrapper<Type>()
-                .lambda().eq(Type::getTypeCode,payTypeCode);
-        Type type = iTypeService.getOne(typeQueryWrapper);
-        if (type == null){
-            throw new Exception("通道编码不存在");
+    public MerchantProductDTO selectMchProductById(Integer mchId, Integer productId){
+        Product product = productService.getById(productId);
+        MerchantProductDTO mp =  merchantProductService.getByProductId(mchId,product.getId());
+        if (mp == null){
+            mp = new MerchantProductDTO();
+            mp.setMerchantId(mchId);
+            mp.setProductId(product.getId());
+            mp.setProductName(product.getProductName());
+            mp.setProductType(product.getProductType());
+            mp.setPayTypeCode(product.getPayTypeCode());
+            mp.setInterfaceMode(1);
+            mp.setStatus(false);
         }
-        LambdaQueryWrapper<MerchantProduct> merchantProductQueryWrapper =
-                new QueryWrapper<MerchantProduct>().lambda().eq(MerchantProduct::getMerchantId,mchId)
-                        .eq(MerchantProduct::getPayTypeCode,type.getTypeCode());
-        MerchantProduct merchantProduct = merchantProductService.getOne(merchantProductQueryWrapper);
-        List<ProductDTO> availableProducts = productService.findAllProductByPayTypeCode(payTypeCode);
-        MerchantProductDTO dto = new MerchantProductDTO();
-        dto.setMerchantId(mchId);
-        dto.setPayTypeName(type.getTypeName());
-        dto.setPayTypeCode(type.getTypeCode());
-        dto.setStatus(false);
-        dto.setRateDisplay("--");
-        dto.setAvailableProducts(availableProducts);
-        if (merchantProduct == null){
-            return dto;
-        }
-        Product product = productService.getById(merchantProduct.getProductId());
-        if (product == null) {
-            return dto;
-        }
-        dto.setProductId(product.getId());
-        dto.setProductName(product.getProductName());
-        dto.setStatus(merchantProduct.getStatus());
-        dto.setRate(merchantProduct.getRate());
-        dto.setRateDisplay(String.format("%.2f",dto.getRate().floatValue()*100.00f));
-        return dto;
+        mp.setRateDisplay(NumberUtil.twoDecimals(mp.getRate()));
+        return mp;
     }
 
     @Override

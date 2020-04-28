@@ -86,8 +86,8 @@ public class Order extends BaseMapperEntity {
      */
     private Integer status;
 
-    private String payTypeCode;
-    private String payTypeName;
+    private Integer payProductId;
+    private String payProductName;
     private LocalDateTime expiredAt;
     /**
      * 支付时间

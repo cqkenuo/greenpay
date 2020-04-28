@@ -4,15 +4,11 @@ import com.esiran.greenpay.admin.entity.UsernamePasswordInputDTO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,11 +18,11 @@ public class AdminController extends CURDBaseController{
         return "admin/index";
     }
     @GetMapping("/login")
-    public String login(HttpSession httpSession, ModelMap modelMap){
+    public String login(){
         if (SecurityUtils.getSubject().isAuthenticated()){
-            return "redirect:/admin/home";
+            return redirect("/admin/home");
         }
-        return renderViewAndError("login",httpSession,modelMap);
+        return "admin/login";
     }
 
     @PostMapping("/login")
@@ -34,6 +30,11 @@ public class AdminController extends CURDBaseController{
         UsernamePasswordToken token = new UsernamePasswordToken(
                 inputDTO.getUsername(),inputDTO.getPassword());
         SecurityUtils.getSubject().login(token);
-        return "redirect:/admin/home";
+        return redirect("/admin/home");
+    }
+    @PostMapping("/logout")
+    public String logout(){
+        SecurityUtils.getSubject().logout();
+        return redirect("/admin/login");
     }
 }

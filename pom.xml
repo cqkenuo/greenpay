@@ -57,7 +57,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
@@ -103,7 +102,6 @@
                 <artifactId>greenpay-openapi</artifactId>
                 <version>${greenpay.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.esiran</groupId>
                 <artifactId>greenpay-merchant-web</artifactId>

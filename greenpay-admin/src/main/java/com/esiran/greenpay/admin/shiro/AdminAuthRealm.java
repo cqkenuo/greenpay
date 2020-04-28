@@ -10,10 +10,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Component;
 
 @Component("authorizer")
-public class AdminUserRealm extends AuthorizingRealm {
+public class AdminAuthRealm extends AuthorizingRealm {
     private final IUserService userService;
 
-    public AdminUserRealm(IUserService userService) {
+    public AdminAuthRealm(IUserService userService) {
         this.userService = userService;
     }
 

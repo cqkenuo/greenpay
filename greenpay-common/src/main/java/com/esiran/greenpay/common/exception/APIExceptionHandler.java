@@ -3,6 +3,7 @@ package com.esiran.greenpay.common.exception;
 import com.baomidou.mybatisplus.extension.enums.ApiErrorCode;
 import com.esiran.greenpay.common.entity.APIError;
 import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.util.ReqUtil;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -65,9 +66,9 @@ public class APIExceptionHandler {
             BindException e, HttpServletResponse response,
             HttpServletRequest request, HttpSession session) throws IOException {
         List<APIError> errors = resolveApiErrors(e.getBindingResult());
-        Boolean isView = (Boolean) request.getAttribute("isView");
-        if (isView == null || isView){
-            session.setAttribute("errors",errors);
+        if (ReqUtil.isView(request)){
+            List<String> es = errors.stream().map(APIError::getMessage).collect(Collectors.toList());
+            ReqUtil.savePostErrors(session,es);
             String s = request.getRequestURI();
             response.sendRedirect(s);
             return null;
@@ -84,8 +85,7 @@ public class APIExceptionHandler {
     public Map<String,Object> handleResourceNotFoundException(
             ResourceNotFoundException e, HttpServletResponse response,
             HttpServletRequest request, HttpSession session) throws IOException {
-        Boolean isView = (Boolean) request.getAttribute("isView");
-        if (isView == null || isView){
+        if (ReqUtil.isView(request)){
             response.setStatus(404);
             return null;
         }
@@ -100,12 +100,9 @@ public class APIExceptionHandler {
     public Map<String,Object> handlePostResourceException(
             PostResourceException e, HttpServletResponse response,
             HttpServletRequest request, HttpSession session) throws IOException {
-        Boolean isView = (Boolean) request.getAttribute("isView");
-        if (isView == null || isView){
+        if (ReqUtil.isView(request)){
+            ReqUtil.savePostError(session,e.getMessage());
             response.setStatus(400);
-            List<APIError> errors = new ArrayList<>();
-            errors.add(new APIError("POST_RESOURCE_FAIL",e.getMessage()));
-            session.setAttribute("errors",errors);
             String s = request.getRequestURI();
             response.sendRedirect(s);
             return null;
@@ -134,30 +131,23 @@ public class APIExceptionHandler {
         response.setStatus(404);
         return map;
     }
-//    @ExceptionHandler(Exception.class)
-//    public Map<String,Object> handleDefaultException(
-//            HttpServletRequest request,
-//            Exception e,
-//            HttpServletResponse response,
-//            HttpSession httpSession) throws IOException {
-//        Boolean isView = (Boolean) request.getAttribute("isView");
-//        if (isView == null || isView){
-//            List<APIError> errors = new ArrayList<>();
-//            APIError error = new APIError();
-//            error.setCode("SERVER_ERROR");
-//            error.setMessage(e.getMessage());
-//            errors.add(error);
-//            httpSession.setAttribute("errors",errors);
-//            String s = request.getRequestURI();
-//            System.out.println(s);
-//            response.sendRedirect(s);
-//            return null;
-//        }
-//        e.printStackTrace();
-//        response.setStatus(500);
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("code","SERVER_ERROR");
-//        map.put("message", e.getMessage());
-//        return map;
-//    }
+    @ExceptionHandler(Exception.class)
+    public Map<String,Object> handleDefaultException(
+            HttpServletRequest request,
+            Exception e,
+            HttpServletResponse response,
+            HttpSession httpSession) throws IOException {
+        if (ReqUtil.isView(request)){
+            ReqUtil.savePostError(httpSession,e.getMessage());
+            String s = request.getRequestURI();
+            response.sendRedirect(s);
+            return null;
+        }
+        e.printStackTrace();
+        response.setStatus(500);
+        Map<String,Object> map = new HashMap<>();
+        map.put("code","SERVER_ERROR");
+        map.put("message", e.getMessage());
+        return map;
+    }
 }

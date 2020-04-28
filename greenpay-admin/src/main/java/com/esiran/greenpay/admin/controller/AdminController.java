@@ -1,6 +1,7 @@
 package com.esiran.greenpay.admin.controller;
 
 import com.esiran.greenpay.admin.entity.UsernamePasswordInputDTO;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ public class AdminController extends CURDBaseController{
         return "admin/index";
     }
     @GetMapping("/login")
+    @PageViewHandleError
     public String login(){
         if (SecurityUtils.getSubject().isAuthenticated()){
             return redirect("/admin/home");

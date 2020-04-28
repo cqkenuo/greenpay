@@ -21,6 +21,7 @@
         <module>greenpay-message</module>
         <module>greenpay-settle</module>
         <module>greenpay-agentpay</module>
+        <module>greenpay-framework</module>
 
     </modules>
     <parent>
@@ -45,6 +46,7 @@
         <modelmapper.version>2.3.0</modelmapper.version>
         <junit.version>4.12</junit.version>
         <swagger2.version>2.9.2</swagger2.version>
+        <shiro.version>1.5.2</shiro.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -123,6 +125,12 @@
                 <artifactId>greenpay-agentpay</artifactId>
                 <version>${greenpay.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.esiran</groupId>
+                <artifactId>greenpay-framework</artifactId>
+                <version>${greenpay.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-generator</artifactId>
@@ -134,7 +142,11 @@
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring-boot-starter</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>

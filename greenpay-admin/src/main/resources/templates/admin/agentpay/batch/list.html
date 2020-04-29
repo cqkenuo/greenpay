@@ -117,12 +117,11 @@
             }
             ,cols: [[ //表头
             {field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
-            ,{field: 'batchNo', title: '交易批次号', width:'11%', unresize:true}
-            ,{field: 'outBatchNo', title: '商户批次号', width:'11%', unresize:true}
+            ,{field: 'batchNo', title: '交易批次号', width:'12%', unresize:true}
+            ,{field: 'outBatchNo', title: '商户批次号', width:'12%', unresize:true}
             ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
-            ,{title: '金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
-            ,{title: '手续费（元）',align:'right', width:'8%', unresize:true,templet: '#feeTemplate'}
-            ,{field: 'batchCount',align:'right', title: '批次笔数（单）', width:'8%', unresize:true}
+            ,{title: '总金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
+            ,{field: 'batchCount',align:'right', title: '总笔数', width:'8%', unresize:true}
             ,{field: 'result', title: '结果', width:'10%', unresize:true, templet:'#resultTemplate'}
             ,{field: 'payProductName', title: '代付通道', width:'10%', unresize:true}
             ,{field: 'status', title: '状态', width:'6%', unresize:true, templet:'#statusTemplate'}

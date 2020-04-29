@@ -35,7 +35,6 @@ CREATE TABLE `agentpay_batch` (
   `agentpay_passage_id` int(11) NOT NULL COMMENT '代付通道ID',
   `agentpay_passage_acc_id` int(11) NOT NULL COMMENT '代付通道账户ID',
   `pay_interface_id` int(11) NOT NULL COMMENT '支付接口ID',
-  `pay_interface_attr` varchar(255) NOT NULL COMMENT '支付接口参数',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单状态（1：待处理，2：处理中，3：处理成功，4：部分成功，-1：处理失败）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -1168,4 +1167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-29 21:40:09
+-- Dump completed on 2020-04-29 21:53:14

@@ -30,6 +30,10 @@ public class MerchantController {
         model.addAttribute("prepaidAccount",prepaidAccount);
         return "merchant/index";
     }
+    @GetMapping("/user/profile")
+    public String user(){
+        return "merchant/user";
+    }
 
 
 }

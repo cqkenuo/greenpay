@@ -23,44 +23,33 @@
                     <input type="password" name="password" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="LAY-user-login-submit">登 入</button>
+                    <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <th:block th:replace="merchant/footer::script"/>
-<script>
-    layui.use(['admin', 'form', 'user'], function(){
-        var $ = layui.$
-            ,setter = layui.setter
-            ,admin = layui.admin
-            ,form = layui.form
-            ,router = layui.router()
-            ,search = router.search;
-
-        form.render();
-
+<script th:inline="none">
+   !function () {
+       let layer = layui.layer,
+           form = layui.form,
+           $ = layui.jquery;
         //提交
-        form.on('submit(LAY-user-login-submit)', function(data){
+        form.on('submit(login)', function(data){
 
             //请求登入接口
-            admin.req({
-                url: './json/user/login.js' //实际使用请改成服务端真实接口
-                ,data: data.field
-                ,done: function(res){
-                    //登入成功的提示与跳转
-                    layer.msg('登入成功', {
-                        offset: '15px'
-                        ,icon: 1
-                        ,time: 1000
-                    }, function(){
-                        location.hash = search.redirect ? decodeURIComponent(search.redirect) : '/';
-                    });
+            $.ajax({
+                url:'/merchant/login',
+                method:'post',
+                data:data.field,
+                dataType:'JSON',
+                error:function () {
+                    layer.msg("账号或密码错误");
                 }
-            });
+            })
         });
-    });
+   }();
 </script>
 </body>
 </html>

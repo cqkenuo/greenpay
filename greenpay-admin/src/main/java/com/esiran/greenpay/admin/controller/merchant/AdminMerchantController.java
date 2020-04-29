@@ -60,6 +60,10 @@ public class AdminMerchantController extends CURDBaseController {
         return "admin/merchant/product/list";
     }
 
+    @GetMapping("/list/{mchId}/agentpay/list")
+    public String agentpay(@PathVariable String mchId){
+        return "admin/merchant/agentpay/list";
+    }
 
     @GetMapping("/list/{mchId}/product/list/{productId}/edit")
     @PageViewHandleError

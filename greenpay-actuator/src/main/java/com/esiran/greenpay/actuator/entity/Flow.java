@@ -7,7 +7,7 @@ import java.util.Map;
 
 public abstract class Flow<T> {
     private List<Task<T>> tasks;
-    private T data;
+    private final T data;
     public Flow(T data) {
         this.data = data;
         this.tasks = new ArrayList<>();
@@ -20,6 +20,15 @@ public abstract class Flow<T> {
             }
         }
     }
+
+    public List<Task<T>> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task<T>> tasks) {
+        this.tasks = tasks;
+    }
+
     public void add(Task<T> task){
         tasks.add(task);
     }

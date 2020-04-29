@@ -33,6 +33,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
         <greenpay.version>1.0-SNAPSHOT</greenpay.version>
         <mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
         <freemarker.version>2.3.30</freemarker.version>
@@ -56,6 +57,11 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-content</artifactId>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>

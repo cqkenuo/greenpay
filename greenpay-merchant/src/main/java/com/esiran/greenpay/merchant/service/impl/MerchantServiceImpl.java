@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.util.EncryptUtil;
 import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.common.util.RSAUtil;
@@ -211,7 +212,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     }
 
     @Override
-    public List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException {
+    public List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException, ResourceNotFoundException {
         Merchant merchant = getById(mchId);
         if (merchant == null){
             throw new APIException("商户号不存在","MERCHANT_NOT_FOUND");
@@ -226,8 +227,11 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     }
 
     @Override
-    public MerchantProductDTO selectMchProductById(Integer mchId, Integer productId){
+    public MerchantProductDTO selectMchProductById(Integer mchId, Integer productId) throws ResourceNotFoundException {
         Product product = productService.getById(productId);
+        if (product == null){
+            throw new ResourceNotFoundException();
+        }
         MerchantProductDTO mp =  merchantProductService.getByProductId(mchId,product.getId());
         if (mp == null){
             mp = new MerchantProductDTO();

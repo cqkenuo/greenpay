@@ -2,6 +2,7 @@ package com.esiran.greenpay.merchant.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.merchant.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.models.auth.In;
@@ -25,7 +26,7 @@ public interface IMerchantService extends IService<Merchant> {
     void updateAccountBalance(Integer accType, Integer mchId, Double amount,  Integer type, Integer action) throws Exception;
     MerchantDetailDTO findMerchantById(Integer id);
     void addMerchant(MerchantInputDTO merchantInputDTO) throws Exception;
-    List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException;
-    MerchantProductDTO selectMchProductById(Integer mchId,Integer productId) throws Exception;
+    List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException, ResourceNotFoundException;
+    MerchantProductDTO selectMchProductById(Integer mchId,Integer productId) throws ResourceNotFoundException;
     IPage<MerchantDTO> selectMerchantByPage(IPage<Void> page);
 }

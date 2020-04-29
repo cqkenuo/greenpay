@@ -17,12 +17,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 @Aspect
-@Order(99)
+@Order(1)
 @Component
 public class PageViewAspect {
     @Pointcut("@annotation(com.esiran.greenpay.framework.annotation.PageViewHandleError)")
     public void pageViewHandleError(){}
-
     private static HttpServletRequest getRequest(){
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -40,7 +39,6 @@ public class PageViewAspect {
         Method method = methodSignature.getMethod();
         return !method.isAnnotationPresent(ResponseBody.class);
     }
-
     @Before("pageViewHandleError()")
     @SuppressWarnings("unchecked")
     public void doBeforePageViewHandelError(JoinPoint joinPoint){

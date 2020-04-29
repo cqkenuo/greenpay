@@ -27,9 +27,11 @@ public class BaseInterceptor implements HandlerInterceptor {
         boolean isController = (!hm.getBeanType().isAnnotationPresent(RestController.class)
                 && hm.getBeanType().isAnnotationPresent(Controller.class));
         request.setAttribute("_isView", isPage && !isJosn && isController);
-        if (SecurityUtils.getSubject().isAuthenticated()){
+        try {
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             request.setAttribute("user",user);
+        }catch (Exception e){
+            return true;
         }
         return true;
     }

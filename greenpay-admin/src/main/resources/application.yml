@@ -21,5 +21,8 @@ wechat:
   mch_key: 2624eedd356624bc7a662c29ceb0a20e
 
 shiro:
+  sessionManager:
+    cookie:
+      name: "abc"
   loginUrl: /admin/login
   successUrl: /admin/home

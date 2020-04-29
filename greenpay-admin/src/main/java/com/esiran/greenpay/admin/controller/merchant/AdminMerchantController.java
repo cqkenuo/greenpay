@@ -93,10 +93,8 @@ public class AdminMerchantController extends CURDBaseController {
 
     @GetMapping("/add")
     @SuppressWarnings("unchecked")
-    public String add(HttpSession httpSession, ModelMap modelMap){
-        List<APIError> apiErrors = (List<APIError>) httpSession.getAttribute("errors");
-        modelMap.addAttribute("errors", apiErrors);
-        httpSession.removeAttribute("errors");
+    @PageViewHandleError
+    public String add(){
         return "admin/merchant/add";
     }
 

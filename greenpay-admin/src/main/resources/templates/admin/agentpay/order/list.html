@@ -15,24 +15,59 @@
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">代付订单</div>
+                        <div class="admin-table_header">
+                            <div class="admin-table_header_right">
+                                <form class="layui-form" action="">
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label for="orderNo">
+                                                <input type="text" class="layui-input"
+                                                       id="orderNo"
+                                                       name="orderNo" required
+                                                       placeholder="请输入交易订单号"
+                                                       autocomplete="off">
+                                            </label>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label for="outOrderNo">
+                                                <input type="text" class="layui-input"
+                                                       name="outOrderNo"
+                                                       id="outOrderNo"
+                                                       placeholder="请输入商户订单号"
+                                                       autocomplete="off">
+                                            </label>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label for="batchNo">
+                                                <input type="text" class="layui-input"
+                                                       name="batchNo"
+                                                       id="batchNo"
+                                                       placeholder="请输入交易批次号"
+                                                       autocomplete="off">
+                                            </label>
+                                        </div>
+                                        <button type="button" class="layui-btn">搜索</button>
+                                    </div>
+                                </form>
+                                <div style="clear:both;"></div>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </div>
                         <div class="layui-card-body" style="padding: 0">
                             <table id="demo" lay-filter="test"></table>
                             <script type="text/html" id="statusTemplate">
                                 {{# if(d.status == 1) { }}
                                 <span class="layui-badge-dot layui-bg-orange"></span>
-                                <span>待支付</span>
+                                <span>待处理</span>
                                 {{# } else if(d.status == 2) { }}
                                 <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>已支付</span>
+                                <span>处理中</span>
                                 {{# } else if(d.status == 3) { }}
                                 <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>已完成</span>
+                                <span>处理成功</span>
                                 {{# } else if(d.status == -1) { }}
                                 <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>交易取消</span>
-                                {{# } else if(d.status == -2) { }}
-                                <span class="layui-badge-dot"></span>
-                                <span>交易失败</span>
+                                <span>处理失败</span>
                                 {{# } else { }}
                                 <span class="layui-badge-dot"></span>
                                 <span>未知</span>
@@ -41,8 +76,18 @@
                             <script type="text/html" id="amountTemplate">
                                 ￥ {{ d.amountDisplay }}
                             </script>
+                            <script type="text/html" id="feeTemplate">
+                                ￥ {{ d.feeDisplay }}
+                            </script>
                             <script type="text/html" id="subjectTemplate">
                                 <span>{{ d.subject }}</span>
+                            </script>
+                            <script type="text/html" id="batchNoTemplate">
+                                {{# if(d.batchNo) { }}
+                                <span>{{ d.batchNo }}</span>
+                                {{# } else { }}
+                                <span>--</span>
+                                {{# } }}
                             </script>
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/admin/order/list/{{d.orderNo}}/detail'}"
@@ -81,16 +126,17 @@
                 ,limitName: 'size'
             }
             ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
-                ,{field: 'orderNo', title: '交易订单号', width:'12%', unresize:true}
-                ,{field: 'outOrderNo', title: '商户订单号', width:'15%', unresize:true}
-                ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
-                ,{title: '金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
-                ,{field: 'payTypeName', title: '支付类型', width:'10%', unresize:true}
-                ,{field: 'status', title: '状态', width:'10%', unresize: true, templet:'#statusTemplate'}
-                ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true , templet:'#statusTemplate'}
-            ]]
+            {field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
+            ,{field: 'orderNo', title: '交易订单号', width:'12%', unresize:true}
+            ,{field: 'outOrderNo', title: '商户订单号', width:'12%', unresize:true}
+            ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
+            ,{title: '交易批次号', width:'12%', unresize:true,templet: '#batchNoTemplate'}
+            ,{title: '金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
+            ,{title: '手续费（元）',align:'right', width:'8%', unresize:true,templet: '#feeTemplate'}
+            ,{field: 'payProductName', title: '代付通道', width:'10%', unresize:true}
+            ,{field: 'status', title: '状态', width:'6%', unresize:true, templet:'#statusTemplate'}
+            ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true}
+        ]]
         });
     }();
 </script>

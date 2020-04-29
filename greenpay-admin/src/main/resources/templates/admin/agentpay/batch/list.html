@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>支付订单 - GreenPay</title>
+    <title>批次管理 - GreenPay</title>
     <th:block th:replace="admin/header::stylesheet" />
 </head>
 <body class="layui-layout-body">
@@ -11,10 +11,10 @@
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('订单管理','支付订单')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('代付管理','批次管理')"></div>
                 <div class="layui-fluid">
                     <div class="layui-card">
-                        <div class="layui-card-header">支付订单</div>
+                        <div class="layui-card-header">批次管理</div>
                         <div class="admin-table_header">
                             <div class="admin-table_header_right">
                                 <form class="layui-form" action="">
@@ -24,7 +24,7 @@
                                                 <input type="text" class="layui-input"
                                                        id="orderNo"
                                                        name="orderNo" required
-                                                       placeholder="请输入交易订单号"
+                                                       placeholder="请输入交易批次号"
                                                        autocomplete="off">
                                             </label>
                                         </div>
@@ -33,7 +33,7 @@
                                                 <input type="text" class="layui-input"
                                                        name="outOrderNo"
                                                        id="outOrderNo"
-                                                       placeholder="请输入商户订单号"
+                                                       placeholder="请输入商户批次号"
                                                        autocomplete="off">
                                             </label>
                                         </div>
@@ -49,19 +49,19 @@
                             <script type="text/html" id="statusTemplate">
                                 {{# if(d.status == 1) { }}
                                 <span class="layui-badge-dot layui-bg-orange"></span>
-                                <span>待支付</span>
+                                <span>待处理</span>
                                 {{# } else if(d.status == 2) { }}
                                 <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>已支付</span>
+                                <span>处理中</span>
                                 {{# } else if(d.status == 3) { }}
                                 <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>已完成</span>
+                                <span>处理成功</span>
+                                {{# } else if(d.status == 4) { }}
+                                <span class="layui-badge-dot layui-bg-green"></span>
+                                <span>部分成功</span>
                                 {{# } else if(d.status == -1) { }}
                                 <span class="layui-badge-dot layui-bg-green"></span>
-                                <span>交易取消</span>
-                                {{# } else if(d.status == -2) { }}
-                                <span class="layui-badge-dot"></span>
-                                <span>交易失败</span>
+                                <span>处理失败</span>
                                 {{# } else { }}
                                 <span class="layui-badge-dot"></span>
                                 <span>未知</span>
@@ -73,14 +73,17 @@
                             <script type="text/html" id="feeTemplate">
                                 ￥ {{ d.feeDisplay }}
                             </script>
+                            <script type="text/html" id="resultTemplate">
+                                <span>成功：0，失败：0</span>
+                            </script>
                             <script type="text/html" id="subjectTemplate">
                                 <span>{{ d.subject }}</span>
                             </script>
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/admin/order/list/{{d.orderNo}}/detail'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
-                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">补单</a>
-                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">通知</a>
+                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">取消</a>
+                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">回调</a>
                             </script>
                         </div>
                     </div>
@@ -113,17 +116,18 @@
                 ,limitName: 'size'
             }
             ,cols: [[ //表头
-                {field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
-                ,{field: 'orderNo', title: '交易订单号', width:'12%', unresize:true}
-                ,{field: 'outOrderNo', title: '商户订单号', width:'15%', unresize:true}
-                ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
-                ,{title: '商品标题', width:'14%', unresize:true, templet: '#subjectTemplate'}
-                ,{title: '金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
-                ,{title: '手续费（元）',align:'right', width:'8%', unresize:true,templet: '#feeTemplate'}
-                ,{field: 'payProductName', title: '支付产品名称', width:'10%', unresize:true}
-                ,{field: 'status', title: '状态', width:'6%', unresize:true, templet:'#statusTemplate'}
-                ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true}
-            ]]
+            {field: 'createdAt', title: '创建时间',width:'10%', unresize:true}
+            ,{field: 'batchNo', title: '交易批次号', width:'11%', unresize:true}
+            ,{field: 'outBatchNo', title: '商户批次号', width:'11%', unresize:true}
+            ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
+            ,{title: '金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
+            ,{title: '手续费（元）',align:'right', width:'8%', unresize:true,templet: '#feeTemplate'}
+            ,{field: 'batchCount',align:'right', title: '批次笔数（单）', width:'8%', unresize:true}
+            ,{field: 'result', title: '结果', width:'10%', unresize:true, templet:'#resultTemplate'}
+            ,{field: 'payProductName', title: '代付通道', width:'10%', unresize:true}
+            ,{field: 'status', title: '状态', width:'6%', unresize:true, templet:'#statusTemplate'}
+            ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true}
+        ]]
         });
     }();
 </script>

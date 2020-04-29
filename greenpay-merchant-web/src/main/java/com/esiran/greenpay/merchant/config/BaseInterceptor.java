@@ -1,5 +1,8 @@
 package com.esiran.greenpay.merchant.config;
 
+import com.esiran.greenpay.merchant.entity.Merchant;
+import com.esiran.greenpay.system.entity.User;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +26,13 @@ public class BaseInterceptor implements HandlerInterceptor {
         boolean isPage = method.getReturnType().equals(String.class);
         boolean isJosn = method.isAnnotationPresent(ResponseBody.class);
         boolean isController = (!hm.getBeanType().isAnnotationPresent(RestController.class) && hm.getBeanType().isAnnotationPresent(Controller.class));
-        request.setAttribute("isView", isPage && !isJosn && isController);
+        request.setAttribute("_isView", isPage && !isJosn && isController);
+        try {
+            Merchant user = (Merchant) SecurityUtils.getSubject().getPrincipal();
+            request.setAttribute("user",user);
+        }catch (Exception e){
+            return true;
+        }
         return true;
     }
 }

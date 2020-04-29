@@ -2,6 +2,7 @@ package com.esiran.greenpay.admin.controller.settle;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.settle.entity.SettleConfig;
 import com.esiran.greenpay.settle.entity.SettleConfigInputDTO;
 import com.esiran.greenpay.settle.entity.SettleOrderDTO;
@@ -39,19 +40,20 @@ public class AdminSettleOrderController extends CURDBaseController {
         return "redirect:/admin/settle/audit";
     }
     @GetMapping("/settings")
+    @PageViewHandleError
     public String settings(ModelMap modelMap, HttpSession httpSession){
         LambdaQueryWrapper<SettleConfig> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.last("LIMIT 1");
         SettleConfig settleConfig = settleConfigService.getOne(queryWrapper);
         modelMap.addAttribute("data", settleConfig);
-        return renderViewAndError("settle/settings/index",httpSession,modelMap);
+        return "admin/settle/settings/index";
     }
 
 
     @PostMapping("/settings")
     public String settingsPost(@Valid SettleConfigInputDTO dto){
         settleConfigService.update(dto);
-        return "redirect:/admin/settle/settings";
+        return redirect("/admin/settle/settings");
     }
     @GetMapping("/audit/{orderNo}/detail")
     public String auditDetail(@PathVariable String orderNo, ModelMap modelMap){

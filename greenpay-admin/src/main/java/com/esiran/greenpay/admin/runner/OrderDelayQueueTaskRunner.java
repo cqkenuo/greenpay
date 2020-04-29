@@ -1,12 +1,9 @@
-package com.esiran.greenpay.runner;
+package com.esiran.greenpay.admin.runner;
 
 import com.esiran.greenpay.message.delayqueue.DelayQueueTaskRunner;
-import com.esiran.greenpay.message.delayqueue.annotation.DelayQueueExecuteTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.lang.management.ManagementFactory;
 
 @Component
 public class OrderDelayQueueTaskRunner implements DelayQueueTaskRunner {

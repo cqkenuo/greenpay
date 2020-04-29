@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
  */
 @Data
 public class SettleOrderInputDTO {
+    @NotNull(message = "商户ID不能为空")
+    private Integer mchId;
     @NotNull(message = "金额不能为空")
     @Min(value = 1, message = "金额至少不能低于1")
     private Integer amount;

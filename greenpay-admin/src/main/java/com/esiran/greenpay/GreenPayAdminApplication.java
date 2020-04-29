@@ -8,8 +8,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @SpringBootApplication
 @ServletComponentScan
 @MapperScan("com.esiran.greenpay.**.mapper")
-public class GreenPayApplication {
+public class GreenPayAdminApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GreenPayApplication.class,args);
+        SpringApplication.run(GreenPayAdminApplication.class,args);
     }
 }

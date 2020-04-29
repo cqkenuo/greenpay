@@ -58,10 +58,10 @@
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-settle</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.esiran</groupId>-->
-<!--            <artifactId>greenpay-framework</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-framework</artifactId>
+        </dependency>
     </dependencies>
 
 

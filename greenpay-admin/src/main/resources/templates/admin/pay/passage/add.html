@@ -12,9 +12,9 @@
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
                 <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付通道')"></div>
-                <div class="layui-card error-card" th:style="${errors==null}?'display:none;':''">
+                <div class="layui-card error-card" th:style="${_errors==null}?'display:none;':''">
                     <div class="layui-card-body">
-                        <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
+                        <blockquote class="layui-elem-quote" th:each="error:${_errors}" th:text="${error}"></blockquote>
                     </div>
                 </div>
                 <div class="layui-fluid">

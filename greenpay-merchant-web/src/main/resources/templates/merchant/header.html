@@ -15,13 +15,18 @@
         <li class="layui-nav-item">
             <a href="javascript:;">
                 <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                username
+                <span style="margin-right:10px;" th:text="${user.name}"></span>
             </a>
             <dl class="layui-nav-child">
                 <dd><a href="">基本资料</a></dd>
                 <dd><a href="">安全设置</a></dd>
                 <hr>
-                <dd><a href="">退出登录</a></dd>
+                <dd>
+                    <form style="display: none" id="_logout" method="post" action="/merchant/logout"></form>
+                    <a href="javascript:;" onclick="document.getElementById('_logout').submit();">
+                        退出登录
+                    </a>
+                </dd>
             </dl>
         </li>
     </ul>

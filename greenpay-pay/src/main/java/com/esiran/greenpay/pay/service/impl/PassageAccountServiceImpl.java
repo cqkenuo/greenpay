@@ -33,6 +33,17 @@ public class PassageAccountServiceImpl extends ServiceImpl<PassageAccountMapper,
     }
 
     @Override
+    public List<PassageAccount> listAvailable(Integer passageId) {
+        LambdaQueryWrapper<PassageAccount> paQueryWrapper
+                = new LambdaQueryWrapper<>();
+        paQueryWrapper.eq(PassageAccount::getPassageId,passageId)
+                .eq(PassageAccount::getStatus,1)
+                .ge(PassageAccount::getWeight,0)
+                .orderByDesc(PassageAccount::getWeight);
+        return list(paQueryWrapper);
+    }
+
+    @Override
     public List<PassageAccount> listByPayTypeCode(String payTypeCode) {
         LambdaQueryWrapper<PassageAccount> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(PassageAccount::getPayTypeCode,payTypeCode);

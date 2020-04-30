@@ -64,6 +64,17 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
     }
 
     @Override
+    public MerchantProductDTO getAvailableByProductId(Integer mchId, Integer productId) {
+        LambdaQueryWrapper<MerchantProduct> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(MerchantProduct::getMerchantId, mchId)
+                .eq(MerchantProduct::getStatus, 1)
+                .eq(MerchantProduct::getProductId, productId);
+        MerchantProduct mp = this.getOne(queryWrapper);
+        if (mp == null) return null;
+        return modelMapper.map(mp,MerchantProductDTO.class);
+    }
+
+    @Override
     public boolean updateById(MerchantProductInputDTO merchantProductInputDTO) throws ResourceNotFoundException, PostResourceException {
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Product src = productService.getById(merchantProductInputDTO.getProductId());

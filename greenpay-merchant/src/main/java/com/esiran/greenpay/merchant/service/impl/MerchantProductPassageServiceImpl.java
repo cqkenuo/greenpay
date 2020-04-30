@@ -9,6 +9,7 @@ import com.esiran.greenpay.merchant.entity.MerchantProductPassage;
 import com.esiran.greenpay.merchant.mapper.MerchantProductPassageMapper;
 import com.esiran.greenpay.merchant.service.IMerchantProductPassageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,16 @@ public class MerchantProductPassageServiceImpl extends ServiceImpl<MerchantProdu
         updateWrapper.eq(MerchantProductPassage::getMchId,mchId);
         updateWrapper.eq(MerchantProductPassage::getProductId,productId);
         remove(updateWrapper);
+    }
+
+    @Override
+    public List<MerchantProductPassage> listAvailable(Integer mchId, Integer productId) {
+        LambdaQueryWrapper<MerchantProductPassage> mppQueryWrapper = new LambdaQueryWrapper<>();
+        mppQueryWrapper.eq(MerchantProductPassage::getMchId,mchId)
+                .eq(MerchantProductPassage::getProductId,productId)
+                .ge(MerchantProductPassage::getWidget,0)
+                .orderByDesc(MerchantProductPassage::getWidget);
+        return list(mppQueryWrapper);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.esiran.greenpay.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,11 +13,8 @@ import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.mapper.MerchantMapper;
 import com.esiran.greenpay.merchant.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.esiran.greenpay.pay.entity.Product;
-import com.esiran.greenpay.pay.entity.ProductDTO;
-import com.esiran.greenpay.pay.entity.Type;
-import com.esiran.greenpay.pay.service.IProductService;
-import com.esiran.greenpay.pay.service.ITypeService;
+import com.esiran.greenpay.pay.entity.*;
+import com.esiran.greenpay.pay.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +25,7 @@ import java.security.KeyPair;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -44,25 +41,31 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     private final ITypeService iTypeService;
     private final IProductService productService;
     private final IMerchantProductService merchantProductService;
+    private final IMerchantProductPassageService merchantProductPassageService;
+    private final IPassageAccountService passageAccountService;
     private final IApiConfigService apiConfigService;
     private final IPayAccountService payAccountService;
     private final IPrepaidAccountService prepaidAccountService;
     private final ISettleAccountService settleAccountService;
+    private final IPassageService passageService;
     private static final ModelMapper modelMapper = new ModelMapper();
     public MerchantServiceImpl(
             ITypeService iTypeService,
             IProductService productService,
             IMerchantProductService merchantProductService,
-            IApiConfigService apiConfigService,
+            IMerchantProductPassageService merchantProductPassageService, IPassageAccountService passageAccountService, IApiConfigService apiConfigService,
             IPayAccountService payAccountService,
-            IPrepaidAccountService prepaidAccountService, ISettleAccountService settleAccountService) {
+            IPrepaidAccountService prepaidAccountService, ISettleAccountService settleAccountService, IPassageService passageService) {
         this.iTypeService = iTypeService;
         this.productService = productService;
         this.merchantProductService = merchantProductService;
+        this.merchantProductPassageService = merchantProductPassageService;
+        this.passageAccountService = passageAccountService;
         this.apiConfigService = apiConfigService;
         this.payAccountService = payAccountService;
         this.prepaidAccountService = prepaidAccountService;
         this.settleAccountService = settleAccountService;
+        this.passageService = passageService;
     }
 
     @Override
@@ -227,10 +230,10 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     }
 
     @Override
-    public MerchantProductDTO selectMchProductById(Integer mchId, Integer productId) throws ResourceNotFoundException {
+    public MerchantProductDTO selectMchProductById(Integer mchId, Integer productId) {
         Product product = productService.getById(productId);
         if (product == null){
-            throw new ResourceNotFoundException();
+            return null;
         }
         MerchantProductDTO mp =  merchantProductService.getByProductId(mchId,product.getId());
         if (mp == null){
@@ -264,5 +267,109 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         }).collect(Collectors.toList());
         merchantDTOIPage.setRecords(merchantDTOList);
         return merchantDTOIPage;
+    }
+
+
+    private PassageAndSubAccount passageAndSubAccount(Integer passageId, Integer accId){
+        Passage passage = passageService.getById(passageId);
+        PassageAccount passageAccount = passageAccountService.getById(accId);
+        if (passage == null || !passage.getStatus()) return null;
+        if (passageAccount == null || !passageAccount.getStatus()) return null;
+        return new PassageAndSubAccount(passage,passageAccount);
+    }
+
+
+    private int randomPickIndex(int[] w){
+        int len = w.length;
+        if (len == 1) return 0;
+        int bound = w[len-1];
+        Random random = new Random();
+        int val = random.nextInt(bound)+1;
+        int left = 0, right = len-1, mid;
+        while (left < right){
+            mid = (right - left) / 2 + left;
+            if (w[mid] == val){
+                return mid;
+            }else if(w[mid] > val){
+                right = mid;
+            }else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+    private Passage solutionPickMchProductPassage(Integer mchId, Integer productId){
+        // 获取可用已配置的商户产品通道，按权重值降序排列
+        List<MerchantProductPassage> mpps = merchantProductPassageService
+                .listAvailable(mchId, productId);
+        if (mpps == null) return null;
+        // 构造权重区间值数组
+        int[] sumArr = new int[mpps.size()];
+        // 权重总和
+        int sum = 0;
+        for (int i=0; i<sumArr.length; i++){
+            MerchantProductPassage productPassage = mpps.get(i);
+            int w = productPassage.getWidget();
+            sum += w;
+            sumArr[i] = sum;
+        }
+        // 根据权重随机获取数组索引
+        int index = randomPickIndex(sumArr);
+        // 根据索引获取产品通道
+        MerchantProductPassage mpp = mpps.get(index);
+        if (mpp == null) return null;
+        Passage passage = passageService.getById(mpp.getPassageId());
+        if (passage == null||!passage.getStatus())
+            return null;
+        return passage;
+    }
+
+    private PassageAccount solutionPickPassageAcc(Integer passageId){
+        List<PassageAccount> pas = passageAccountService
+                .listAvailable(passageId);
+        if (pas == null) return null;
+        // 构造权重区间值数组
+        int[] sumArr = new int[pas.size()];
+        // 权重总和
+        int sum = 0;
+        for (int i=0; i<sumArr.length; i++){
+            PassageAccount productPassage = pas.get(i);
+            int w = productPassage.getWeight();
+            sum += w;
+            sumArr[i] = sum;
+        }
+        // 根据权重随机获取数组索引
+        int index = randomPickIndex(sumArr);
+        PassageAccount pa = pas.get(index);
+        if (pa == null || !pa.getStatus()) return null;
+        return pa;
+    }
+
+    @Override
+    public PassageAndSubAccount scheduler(Integer mchId, Integer productId) {
+        Merchant mch = getById(mchId);
+        if (mch == null)  return null;
+        // 查询商户支持的产品
+        MerchantProductDTO mpd = merchantProductService
+                .getAvailableByProductId(mchId,productId);
+        if (mpd == null) return null;
+        // 获取定义的接口模式
+        Integer inf = mpd.getInterfaceMode();
+        if (inf == null) return null;
+        PassageAndSubAccount pas = null;
+        if (inf.equals(1)){
+            // 接口模式为单独，直接查询配置的默认通道和子账户
+            pas = passageAndSubAccount(mpd.getDefaultPassageId(),mpd.getDefaultPassageAccId());
+        }else if(inf.equals(2)){
+            // 接口模式为轮训，权重随机策略，选择通道和子账户
+            Passage passage = solutionPickMchProductPassage(mchId,productId);
+            if (passage == null) return null;
+            PassageAccount passageAccount = solutionPickPassageAcc(passage.getId());
+            if (passageAccount == null) return null;
+            pas = new PassageAndSubAccount(passage,passageAccount);
+        }
+        if (pas == null) return null;
+        pas.setProductRate(mpd.getRate());
+        return pas;
     }
 }

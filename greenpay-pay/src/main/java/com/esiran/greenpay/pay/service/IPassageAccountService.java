@@ -17,6 +17,7 @@ import java.util.List;
  * @since 2020-04-13
  */
 public interface IPassageAccountService extends IService<PassageAccount> {
+    List<PassageAccount> listAvailable(Integer passageId);
     List<PassageAccount> listByPayTypeCode(String payTypeCode);
     IPage<PassageAccountDTO> selectPage(IPage<PassageAccountDTO> page, PassageAccountDTO passageAccountDTO);
     int add(PassageAccountInputDTO passageAccountInputDTO) throws PostResourceException;

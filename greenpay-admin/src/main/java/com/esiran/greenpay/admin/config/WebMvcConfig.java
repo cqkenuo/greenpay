@@ -2,7 +2,7 @@ package com.esiran.greenpay.admin.config;
 
 import com.esiran.greenpay.common.util.IdWorker;
 import com.esiran.greenpay.message.delayqueue.DelayQueueTaskRegister;
-import com.esiran.greenpay.admin.runner.OrderDelayQueueTaskRunner;
+import com.esiran.greenpay.admin.runner.OrderExpireTaskRunner;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -23,11 +23,11 @@ import java.time.format.DateTimeFormatter;
 @EnableSwagger2
 public class WebMvcConfig implements WebMvcConfigurer {
     private final BaseInterceptor baseInterceptor;
-    private final OrderDelayQueueTaskRunner orderDelayQueueTaskRunner;
+    private final OrderExpireTaskRunner orderExpireTaskRunner;
     public WebMvcConfig(BaseInterceptor baseInterceptor,
-                        OrderDelayQueueTaskRunner orderDelayQueueTaskRunner) {
+                        OrderExpireTaskRunner orderExpireTaskRunner) {
         this.baseInterceptor = baseInterceptor;
-        this.orderDelayQueueTaskRunner = orderDelayQueueTaskRunner;
+        this.orderExpireTaskRunner = orderExpireTaskRunner;
     }
 
     @Bean
@@ -61,7 +61,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public DelayQueueTaskRegister delayQueueTaskRegister(){
         DelayQueueTaskRegister delayQueueTaskRegister = new DelayQueueTaskRegister();
-        delayQueueTaskRegister.register("greenpay:queue:order_task",orderDelayQueueTaskRunner);
+        delayQueueTaskRegister.register("order:expire",orderExpireTaskRunner);
         return delayQueueTaskRegister;
     }
 

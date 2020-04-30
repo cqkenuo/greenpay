@@ -1,11 +1,12 @@
-package com.esiran.greenpay.openapi.entity;
+package com.esiran.greenpay.pay.entity;
 
-import com.esiran.greenpay.pay.entity.Passage;
-import com.esiran.greenpay.pay.entity.PassageAccount;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class PassageAndSubAccount {
+    private BigDecimal productRate;
     private Passage passage;
     private PassageAccount passageAccount;
 

@@ -102,7 +102,7 @@ public class OPenAPISecurityFilter implements Filter {
         long timestamp = Long.parseLong(timestampStr);
         long currentTimestamp = System.currentTimeMillis();
         long timeDiff = currentTimestamp - timestamp;
-        if (timeDiff > 180000)
+        if (timeDiff > 600000 )
             throw new APIException("请求已过期，或超时","INVALID_REQUEST",400);
     }
 

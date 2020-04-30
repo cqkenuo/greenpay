@@ -18,6 +18,7 @@ import java.util.List;
  */
 public interface IMerchantProductPassageService extends IService<MerchantProductPassage> {
     void removeByProductId(Integer mchId,Integer productId);
+    List<MerchantProductPassage> listAvailable(Integer mchId,Integer productId);
     List<MerchantProductPassage> listByProductId(Integer mchId,Integer productId);
 
     boolean updateById(Integer id, MerchantProductInputDTO productInputDTO) throws PostResourceException, ResourceNotFoundException;

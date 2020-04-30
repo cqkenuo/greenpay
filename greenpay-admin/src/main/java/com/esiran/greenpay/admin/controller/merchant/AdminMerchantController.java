@@ -1,7 +1,6 @@
 package com.esiran.greenpay.admin.controller.merchant;
 
 import com.esiran.greenpay.admin.controller.CURDBaseController;
-import com.esiran.greenpay.common.entity.APIError;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.service.IMerchantProductService;
@@ -61,21 +60,21 @@ public class AdminMerchantController extends CURDBaseController {
     }
 
     @GetMapping("/list/{mchId}/agentpay/list")
-    public String agentpay(@PathVariable String mchId){
+    public String agentpay(@PathVariable String mchId,ModelMap modelMap){
+        modelMap.addAttribute("mchId",mchId);
         return "admin/merchant/agentpay/list";
     }
 
     @GetMapping("/list/{mchId}/product/list/{productId}/edit")
     @PageViewHandleError
     public String product(
-            @PathVariable String mchId,
+            @PathVariable Integer mchId,
             @PathVariable Integer productId,
-            HttpSession httpSession,
             ModelMap modelMap) throws Exception {
-        MerchantProductDTO merchantProduct = merchantService.selectMchProductById(Integer.valueOf(mchId),productId);
+        MerchantProductDTO merchantProduct = merchantService.selectMchProductById(mchId,productId);
         List<Passage> availPassages = passageService.listByPayTypeCode(merchantProduct.getPayTypeCode());
         List<PassageAccount> availPassagesAcc = passageAccountService.listByPayTypeCode(merchantProduct.getPayTypeCode());
-        List<MerchantProductPassage> usagePassages = productPassageService.listByProductId(productId);
+        List<MerchantProductPassage> usagePassages = productPassageService.listByProductId(mchId, productId);
         String usagePassagesJson = gson.toJson(usagePassages);
         String availPassagesJson = gson.toJson(availPassages);
         modelMap.addAttribute("merchantProduct", merchantProduct);

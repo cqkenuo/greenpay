@@ -134,6 +134,7 @@
     let productId = [[${merchantProduct.productId}]];
     let interfaceMode = [[${merchantProduct.interfaceMode}]];
     let usagePassagesJson = [[${usagePassagesJson}]];
+    let mchId = [[${mchId}]];
 </script>
 <script th:inline="none">
     !function(){
@@ -147,6 +148,7 @@
             let data = availPassagesData.map(item=>{
                 return {
                     productId: productId,
+                    mchId: mchId,
                     passageId:item.id,
                     usage: item.usage,
                     widget: item.widget

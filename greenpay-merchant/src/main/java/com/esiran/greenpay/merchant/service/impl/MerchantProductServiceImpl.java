@@ -20,7 +20,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +88,7 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
             List<MerchantProductPassage> passages = passagesDTOs.stream()
                     .map(item->modelMapper.map(item,MerchantProductPassage.class))
                     .collect(Collectors.toList());
-            merchantProductPassageService.removeByProductId(target.getId());
+            merchantProductPassageService.removeByProductId(target.getMerchantId(), target.getProductId());
             passages.forEach(merchantProductPassageService::save);
         }
         removeByProductId(target.getMerchantId(),target.getProductId());

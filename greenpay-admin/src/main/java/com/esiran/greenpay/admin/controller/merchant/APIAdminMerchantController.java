@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.util.RSAUtil;
 import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
@@ -49,7 +50,7 @@ public class APIAdminMerchantController {
     @ApiOperation("查询指定商户的支付产品列表")
     @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
     @GetMapping("/{mchId}/products")
-    public List<MerchantProductDTO> product(@PathVariable Integer mchId) throws APIException {
+    public List<MerchantProductDTO> product(@PathVariable Integer mchId) throws APIException, ResourceNotFoundException {
         return merchantService.selectMchProductById(mchId);
     }
 

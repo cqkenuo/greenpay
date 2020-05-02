@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -36,7 +37,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private final IPassageService passageService;
     private final IPassageAccountService passageAccountService;
     private final IProductPassageService productPassageService;
-
     public ProductServiceImpl(
             ITypeService typeService,
             IPassageService passageService,
@@ -125,5 +125,17 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
         target.setUpdatedAt(LocalDateTime.now());
         return updateById(target);
+    }
+
+    @Override
+    @Transactional
+    public void delByIds(List<Integer> ids) {
+        for (Integer id : ids){
+            this.removeById(id);
+            LambdaQueryWrapper<ProductPassage> productPassageLambdaQueryWrapper
+                    = new LambdaQueryWrapper<>();
+            productPassageLambdaQueryWrapper.eq(ProductPassage::getProductId,id);
+            productPassageService.remove(productPassageLambdaQueryWrapper);
+        }
     }
 }

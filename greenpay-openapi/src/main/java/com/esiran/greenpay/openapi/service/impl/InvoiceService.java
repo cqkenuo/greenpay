@@ -123,6 +123,6 @@ public class InvoiceService implements IInvoiceService {
         }finally {
             redisDelayQueueClient.sendDelayMessage("order:expire",order.getOrderNo(),2000);
         }
-        return invoice;
+        return modelMapper.map(order,Invoice.class);
     }
 }

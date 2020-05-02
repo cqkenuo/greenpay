@@ -1,5 +1,5 @@
 server:
-  port: 8087
+  port: 8088
 
 logging:
   level:
@@ -8,9 +8,12 @@ logging:
 
 spring:
   profiles:
-    active: dev
+    active: dev_home
   mvc:
     static-path-pattern: /**
+  thymeleaf:
+    enabled: false
+
 delay_queue:
   redis:
     default_key: 'greenpay:delay_queue'

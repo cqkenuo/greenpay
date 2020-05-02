@@ -25,4 +25,5 @@ public interface ITypeService extends IService<Type> {
     List<Type> listByAgentPayType();
     void saveType(TypeInputDTO dto) throws PostResourceException;
     void updateType(TypeInputDTO dto) throws ResourceNotFoundException;
+    void delByIds(List<Integer> ids) throws PostResourceException;
 }

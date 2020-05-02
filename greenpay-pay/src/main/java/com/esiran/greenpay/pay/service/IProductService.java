@@ -19,8 +19,8 @@ import java.util.List;
 public interface IProductService extends IService<Product> {
     List<ProductDTO> findAllProduct(ProductDTO productDTO);
     List<ProductDTO> findAllProductByPayTypeCode(String payTypeCode);
-
     IPage<ProductDTO> selectPage(IPage<ProductDTO> page, ProductDTO productDTO);
     int add(ProductInputDTO productInputDTO) throws PostResourceException;
     boolean updateById(Integer id, ProductInputDTO productInputDTO) throws PostResourceException, ResourceNotFoundException;
+    void delByIds(List<Integer> ids);
 }

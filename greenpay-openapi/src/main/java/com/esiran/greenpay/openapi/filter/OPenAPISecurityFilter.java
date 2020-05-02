@@ -60,7 +60,7 @@ public class OPenAPISecurityFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-
+        servletRequest.setCharacterEncoding("UTF-8");
         try {
             verifyRequisiteParam(httpServletRequest);
             verifySign(httpServletRequest);

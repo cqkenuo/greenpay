@@ -7,30 +7,43 @@ import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.TypeDTO;
 import com.esiran.greenpay.pay.entity.TypeInputDTO;
 import com.esiran.greenpay.pay.service.ITypeService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/pay/type")
 public class AdminPayTypeController extends CURDBaseController {
     private final ITypeService typeService;
-
+    private static final Gson gson = new GsonBuilder().create();
     public AdminPayTypeController(ITypeService typeService) {
         this.typeService = typeService;
     }
 
     @GetMapping("/list")
+    @PageViewHandleError
     public String list(){
         return "admin/pay/type/list";
     }
+
+    @PostMapping(value = "/list")
+    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+        if (action.equals("del")){
+            List<Integer> allIds = gson.fromJson(ids,
+                    new TypeToken<List<Integer>>(){}.getType());
+            typeService.delByIds(allIds);
+        }
+        return redirect("/admin/pay/type/list");
+    }
+
     @GetMapping("/list/add")
     @PageViewHandleError
     public String add(HttpSession httpSession, ModelMap modelMap){

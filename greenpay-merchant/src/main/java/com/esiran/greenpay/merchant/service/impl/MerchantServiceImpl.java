@@ -281,6 +281,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
 
     private int randomPickIndex(int[] w){
         int len = w.length;
+        if (len == 0) return -1;
         if (len == 1) return 0;
         int bound = w[len-1];
         Random random = new Random();
@@ -302,7 +303,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         // 获取可用已配置的商户产品通道，按权重值降序排列
         List<MerchantProductPassage> mpps = merchantProductPassageService
                 .listAvailable(mchId, productId);
-        if (mpps == null) return null;
+        if (mpps == null||mpps.size() == 0) return null;
         // 构造权重区间值数组
         int[] sumArr = new int[mpps.size()];
         // 权重总和
@@ -327,7 +328,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     private PassageAccount solutionPickPassageAcc(Integer passageId){
         List<PassageAccount> pas = passageAccountService
                 .listAvailable(passageId);
-        if (pas == null) return null;
+        if (pas == null||pas.size()==0) return null;
         // 构造权重区间值数组
         int[] sumArr = new int[pas.size()];
         // 权重总和

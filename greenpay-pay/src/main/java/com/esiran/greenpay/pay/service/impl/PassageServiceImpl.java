@@ -7,12 +7,12 @@ import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.mapper.PassageMapper;
-import com.esiran.greenpay.pay.service.IInterfaceService;
-import com.esiran.greenpay.pay.service.IPassageService;
+import com.esiran.greenpay.pay.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.esiran.greenpay.pay.service.ITypeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,12 +28,18 @@ import java.util.List;
 public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage> implements IPassageService {
 
     private static final ModelMapper modelMapper = new ModelMapper();
-
     private final ITypeService typeService;
     private final IInterfaceService interfaceService;
-    public PassageServiceImpl(ITypeService typeService, IInterfaceService interfaceService) {
+    private final IProductPassageService productPassageService;
+    private final IPassageAccountService passageAccountService;
+    public PassageServiceImpl(ITypeService typeService,
+                              IInterfaceService interfaceService,
+                              @Lazy IProductPassageService productPassageService,
+                              @Lazy IPassageAccountService passageAccountService) {
         this.typeService = typeService;
         this.interfaceService = interfaceService;
+        this.productPassageService = productPassageService;
+        this.passageAccountService = passageAccountService;
     }
 
     @Override
@@ -68,6 +74,28 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage> impl
         TypeDTO typeDTO = typeService.getTypeByCode(passage.getPayTypeCode());
         checkupPost(passage, typeDTO);
         return updateById(passage);
+    }
+
+    @Override
+    @Transactional
+    public void delByIds(List<Integer> ids) throws PostResourceException {
+        for (Integer id : ids){
+            LambdaQueryWrapper<ProductPassage> productPassageQueryWrapper
+                    = new LambdaQueryWrapper<>();
+            productPassageQueryWrapper.eq(ProductPassage::getPassageId,id);
+            List<ProductPassage> pps = productPassageService.list(productPassageQueryWrapper);
+            if (pps == null || pps.size() > 0){
+                throw new PostResourceException("支付通道还有关联的支付产品，无法删除");
+            }
+            LambdaQueryWrapper<PassageAccount> passageAccountQueryWrapper
+                    = new LambdaQueryWrapper<>();
+            passageAccountQueryWrapper.eq(PassageAccount::getPassageId,id);
+            List<PassageAccount> pas = passageAccountService.list(passageAccountQueryWrapper);
+            if (pas == null || pas.size() > 0){
+                throw new PostResourceException("支付通道还有关联的子账户，无法删除");
+            }
+            this.removeById(id);
+        }
     }
 
     private void checkupPost(Passage passage, TypeDTO typeDTO) throws PostResourceException {

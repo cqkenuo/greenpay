@@ -85,4 +85,11 @@ public class PassageAccountServiceImpl extends ServiceImpl<PassageAccountMapper,
         if (passage == null) throw new PostResourceException("支付通道不存在");
         return updateById(passageAccount);
     }
+
+    @Override
+    public void delIds(List<Integer> ids) {
+        for (Integer id : ids){
+            this.removeById(id);
+        }
+    }
 }

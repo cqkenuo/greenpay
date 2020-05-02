@@ -21,4 +21,5 @@ public interface IPassageService extends IService<Passage> {
     IPage<PassageDTO> selectPage(IPage<PassageDTO> page, PassageDTO passageDTO);
     int add(PassageInputDTO passageInputDTO) throws PostResourceException;
     boolean updateById(Integer id, PassageInputDTO passageInputDTO) throws PostResourceException, ResourceNotFoundException;
+    void delByIds(List<Integer> ids) throws PostResourceException;
 }

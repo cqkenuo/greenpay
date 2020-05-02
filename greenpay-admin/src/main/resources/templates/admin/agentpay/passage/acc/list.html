@@ -11,7 +11,12 @@
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('代付管理','支付通道')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('代付管理','代付通道')"></div>
+                <div class="layui-card error-card" th:style="${_errors==null}?'display:none;':''">
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote" th:each="error:${_errors}" th:text="${error}"></blockquote>
+                    </div>
+                </div>
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">通道子账户</div>
@@ -37,7 +42,14 @@
                             </script>
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/admin/agentpay/passage/list/'+${passageId}+'/acc/{{d.id}}/edit'}" class="layui-btn layui-btn-xs">编辑</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                                <form style="display: none" id="_del" method="post" action="">
+                                    <input type="hidden" name="action" value="del">
+                                    <input type="hidden" name="ids" value="[{{d.id}}]">
+                                </form>
+                                <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs"
+                                   onclick="document.getElementById('_del').submit();">
+                                    删除
+                                </a>
                             </script>
                         </div>
                     </div>

@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class ProductInputDTO {
+    @NotBlank(message = "产品编码不能为空")
+    private String productCode;
     @NotBlank(message = "产品名称不能为空")
     private String productName;
     @NotNull(message = "产品类型不能为空")

@@ -26,11 +26,20 @@
                                     <form class="layui-form" action="" method="post">
                                         <input type="hidden" name="merchantId" th:value="${mchId}">
                                         <input type="hidden" name="productId" th:value="${merchantProduct.productId}">
+                                        <input type="hidden" name="productCode" th:value="${merchantProduct.productCode}">
                                         <input type="hidden" name="payTypeCode" th:value="${merchantProduct.payTypeCode}">
                                         <input type="hidden" name="productType" th:value="${merchantProduct.productType}">
                                         <input type="hidden" name="loopPassages">
                                         <div class="layui-form-item">
-                                            <label for="productName" class="layui-form-label">产品类型：</label>
+                                            <label for="productCode" class="layui-form-label">产品编码：</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" class="layui-input"
+                                                       readonly id="productCode" autocomplete="off"
+                                                       th:value="${merchantProduct.productCode}">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label for="productName" class="layui-form-label">产品名称：</label>
                                             <div class="layui-input-block">
                                                 <input type="text" class="layui-input"
                                                        readonly
@@ -42,9 +51,9 @@
                                             <label for="productType" class="layui-form-label">产品类型：</label>
                                             <div class="layui-input-block">
                                                 <input id="productType" type="radio"
-                                                       value="0" title="收款" disabled
+                                                       value="1" title="收款" disabled
                                                        th:field="*{merchantProduct.productType}">
-                                                <input type="radio" value="1" title="充值"
+                                                <input type="radio" value="2" title="充值"
                                                        disabled
                                                        th:field="*{merchantProduct.productType}">
                                             </div>

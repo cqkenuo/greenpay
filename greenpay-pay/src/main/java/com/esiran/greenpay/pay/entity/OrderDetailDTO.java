@@ -50,6 +50,8 @@ public class OrderDetailDTO {
      */
     private String upstreamOrderNo;
 
+    private String payCredential;
+
     private String upstreamExtra;
 
 }

@@ -95,7 +95,6 @@ public class AdminMerchantController extends CURDBaseController {
     }
 
     @GetMapping("/add")
-    @SuppressWarnings("unchecked")
     @PageViewHandleError
     public String add(){
         return "admin/merchant/add";

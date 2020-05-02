@@ -26,6 +26,8 @@ public class MerchantProductInputDTO {
     private String payTypeCode;
     @NotNull(message = "支付产品ID不能为空")
     private Integer productId;
+    @NotNull(message = "支付产品编码不能为空")
+    private String productCode;
     @NotBlank(message = "支付产品名称不能为空")
     private String productName;
     @NotNull(message = "支付产品类型不能为空")

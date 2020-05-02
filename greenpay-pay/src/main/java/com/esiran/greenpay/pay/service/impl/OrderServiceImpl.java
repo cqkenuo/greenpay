@@ -1,6 +1,7 @@
 package com.esiran.greenpay.pay.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.util.NumberUtil;
@@ -27,7 +28,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private final static ModelMapper modelMapper = new ModelMapper();
     @Override
     public IPage<OrderDTO> selectPage(IPage<OrderDTO> page, OrderDTO orderDTO) {
-        IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()));
+        LambdaQueryWrapper<Order> orderQueryWrapper = new LambdaQueryWrapper<>();
+        orderQueryWrapper.orderByDesc(Order::getCreatedAt);
+        IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),orderQueryWrapper);
         return orderPage.convert(OrderDTO::convertOrderEntity);
     }
 

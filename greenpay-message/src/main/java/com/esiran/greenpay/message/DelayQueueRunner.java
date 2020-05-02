@@ -25,14 +25,15 @@ public class DelayQueueRunner implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(DelayQueueRunner.class);
     private final DelayQueueConsumer delayQueueConsumer;
     private final DelayQueueTaskRegister delayQueueTaskRegister;
-    private static final ExecutorService es;
+    private ExecutorService es;
     private static final float THREAD_CHOKE_TIME_SECOND = 2.0f;
     private static final int POOL_SIZE;
+    @Value("${delay_queue.consumer.enabled:false}")
+    private Boolean enabled;
     static {
         long poolSize = Runtime.getRuntime().availableProcessors();
         poolSize =  ((Math.round((THREAD_CHOKE_TIME_SECOND / 0.15))+1) * poolSize);
         POOL_SIZE = (int) poolSize;
-        es = Executors.newFixedThreadPool(POOL_SIZE);
     }
     public DelayQueueRunner(DelayQueueConsumer delayQueueConsumer,
                             DelayQueueTaskRegister delayQueueTaskRegister) {
@@ -41,7 +42,9 @@ public class DelayQueueRunner implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        if (!enabled) return;
         logger.info("Delay queue running, pool_size: {}", POOL_SIZE);
+        es = Executors.newFixedThreadPool(POOL_SIZE);
         AtomicBoolean exit = new AtomicBoolean(false);
         Runtime.getRuntime().addShutdownHook(new Thread(()->{
             exit.set(true);

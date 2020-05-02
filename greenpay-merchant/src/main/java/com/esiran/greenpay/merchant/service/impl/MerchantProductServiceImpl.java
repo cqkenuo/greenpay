@@ -82,9 +82,13 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
         MerchantProduct target = modelMapper.map(merchantProductInputDTO,MerchantProduct.class);
         if (merchantProductInputDTO.getDefaultPassageId() != null){
             Passage passage = passageService.getById(merchantProductInputDTO.getDefaultPassageId());
+            if (passage == null)
+                throw new PostResourceException("支付通道不存在");
             if (merchantProductInputDTO.getDefaultPassageAccId() == null)
                 throw new PostResourceException("支付通道子账户不能为空");
-            PassageAccount passageAcc = passageAccountService.getById(passage.getId());
+            PassageAccount passageAcc = passageAccountService.getById(merchantProductInputDTO.getDefaultPassageAccId());
+            if (passageAcc == null)
+                throw new PostResourceException("支付通道子账户不存在");
             if (!passage.getId().equals(passageAcc.getPassageId())){
                 throw new PostResourceException("支付通道与子账户不匹配");
             }

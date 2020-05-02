@@ -24,6 +24,7 @@ public class PassageAccountDTO {
     private Integer passageId;
     private String accountName;
     private String interfaceAttr;
+    private String interfaceAttrDisplay;
     private Boolean status;
     /**
      * 轮训权重

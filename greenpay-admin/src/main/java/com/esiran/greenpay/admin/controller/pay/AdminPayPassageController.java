@@ -9,9 +9,6 @@ import com.esiran.greenpay.pay.service.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -115,9 +112,9 @@ public class AdminPayPassageController extends CURDBaseController {
     }
     @GetMapping("/list/{passageId}/acc/{accId}/edit")
     @PageViewHandleError
-    public String editAcc(@PathVariable String passageId, @PathVariable String accId, ModelMap modelMap, HttpSession httpSession){
+    public String editAcc(@PathVariable String passageId, @PathVariable Integer accId, ModelMap modelMap, HttpSession httpSession){
         Passage passage = passageService.getById(passageId);
-        PassageAccount passageAccount = passageAccountService.getById(accId);
+        PassageAccountDTO passageAccount = passageAccountService.getDTOById(accId);
         modelMap.addAttribute("passage", passage);
         modelMap.addAttribute("data",passageAccount);
         return "admin/pay/passage/acc/edit";

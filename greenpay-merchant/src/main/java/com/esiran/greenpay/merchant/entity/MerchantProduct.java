@@ -32,6 +32,7 @@ public class MerchantProduct extends BaseMapperEntity {
      * 产品ID
      */
     private Integer productId;
+    private String productCode;
     private String productName;
     private Integer productType;
     /**

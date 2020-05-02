@@ -22,19 +22,28 @@
                         <div class="layui-card-header">添加支付产品</div>
                         <div class="layui-card-body">
                             <form class="layui-form" action="" method="post">
-                                <div class="layui-row layui-form-item">
-                                    <div class="layui-form-item">
-                                        <label for="payTypeCode" class="layui-form-label">支付类型：</label>
-                                        <div class="layui-input-block">
-                                            <select name="payTypeCode" id="payTypeCode">
-                                                <option value="" selected>无</option>
-                                                <option th:each="type:${availableTypes}"
-                                                        th:text="${type.typeName}"
-                                                        th:value="${type.typeCode}">
-                                                </option>
-                                            </select>
-                                        </div>
+                                <div class="layui-form-item">
+                                    <label for="payTypeCode" class="layui-form-label">支付类型：</label>
+                                    <div class="layui-input-block">
+                                        <select name="payTypeCode" id="payTypeCode">
+                                            <option value="" selected>无</option>
+                                            <option th:each="type:${availableTypes}"
+                                                    th:text="${type.typeName}"
+                                                    th:value="${type.typeCode}">
+                                            </option>
+                                        </select>
                                     </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="productCode" class="layui-form-label">产品编码：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input"
+                                               name="productCode" id="productCode"
+                                               autocomplete="off"
+                                               placeholder="请输入产品编码">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
                                     <label for="productName" class="layui-form-label">产品名称：</label>
                                     <div class="layui-input-block">
                                         <input type="text" class="layui-input"

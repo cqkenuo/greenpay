@@ -25,7 +25,7 @@
                                 <div class="layui-form-item">
                                     <label for="payTypeCode" class="layui-form-label">支付类型：</label>
                                     <div class="layui-input-block">
-                                        <select id="payTypeCode">
+                                        <select name="payTypeCode" id="payTypeCode">
                                             <option value="" selected>无</option>
                                             <option th:each="type:${availableTypes}"
                                                     th:text="${type.typeName}"

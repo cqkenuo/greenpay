@@ -89,7 +89,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
 //        mp.setMerchantId(id);
 //        Type type = iTypeService.findTypeByCode(mp.getPayTypeCode());
 //        if (type == null) throw new Exception("未知支付类型");
-//        Product product = productService.getById(mp.getProductId());
+//        Product product = productService.getDTOById(mp.getProductId());
 //        if (product == null )  throw new Exception("支付产品不存在");
 //        if (!product.getPayTypeCode().equals(type.getTypeCode()))
 //            throw new Exception("支付产品不属于该支付类型");
@@ -240,6 +240,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             mp = new MerchantProductDTO();
             mp.setMerchantId(mchId);
             mp.setProductId(product.getId());
+            mp.setProductCode(product.getProductCode());
             mp.setProductName(product.getProductName());
             mp.setProductType(product.getProductType());
             mp.setPayTypeCode(product.getPayTypeCode());
@@ -284,7 +285,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         if (len == 0) return -1;
         if (len == 1) return 0;
         int bound = w[len-1];
-        Random random = new Random();
+        Random random = new Random(System.currentTimeMillis());
         int val = random.nextInt(bound)+1;
         int left = 0, right = len-1, mid;
         while (left < right){

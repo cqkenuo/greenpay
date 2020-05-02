@@ -37,7 +37,7 @@ public class MerchantProductPassageServiceImpl extends ServiceImpl<MerchantProdu
         LambdaQueryWrapper<MerchantProductPassage> mppQueryWrapper = new LambdaQueryWrapper<>();
         mppQueryWrapper.eq(MerchantProductPassage::getMchId,mchId)
                 .eq(MerchantProductPassage::getProductId,productId)
-                .ge(MerchantProductPassage::getWidget,0)
+                .gt(MerchantProductPassage::getWidget,0)
                 .orderByDesc(MerchantProductPassage::getWidget);
         return list(mppQueryWrapper);
     }

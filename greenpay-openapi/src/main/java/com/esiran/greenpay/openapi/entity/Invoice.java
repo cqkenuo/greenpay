@@ -37,7 +37,7 @@ public class Invoice {
     /**
      * 支付渠道
      */
-    private Integer channel;
+    private String channel;
 
     /**
      * 商品标题
@@ -60,6 +60,10 @@ public class Invoice {
      */
     private String notifyUrl;
     /**
+     * 支付凭证
+     */
+    private Map<String,Object> credential;
+    /**
      * 状态
      */
     private Integer status;
@@ -67,7 +71,6 @@ public class Invoice {
      * 创建时间
      */
     private LocalDateTime createdAt;
-
     /**
      * 支付时间
      */

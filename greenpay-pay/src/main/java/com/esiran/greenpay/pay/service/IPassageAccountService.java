@@ -19,6 +19,7 @@ import java.util.List;
 public interface IPassageAccountService extends IService<PassageAccount> {
     List<PassageAccount> listAvailable(Integer passageId);
     List<PassageAccount> listByPayTypeCode(String payTypeCode);
+    PassageAccountDTO getDTOById(Integer id);
     IPage<PassageAccountDTO> selectPage(IPage<PassageAccountDTO> page, PassageAccountDTO passageAccountDTO);
     int add(PassageAccountInputDTO passageAccountInputDTO) throws PostResourceException;
     boolean updateById(Integer id, PassageAccountInputDTO passageAccountInputDTO) throws PostResourceException, ResourceNotFoundException;

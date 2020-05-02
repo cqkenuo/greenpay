@@ -30,6 +30,7 @@ public class MerchantProductDTO {
     private Integer merchantId;
     private String payTypeCode;
     private Integer productId;
+    private String productCode;
     private String productName;
     private Integer productType;
     private Integer interfaceMode;

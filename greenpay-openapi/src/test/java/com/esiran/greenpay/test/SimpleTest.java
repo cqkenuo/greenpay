@@ -17,19 +17,13 @@ import java.util.*;
 
 public class SimpleTest {
 
-    private Integer calculateOrderFee(Integer amount, BigDecimal rate){
-        if (amount == null || rate == null)
-            return null;
-        BigDecimal amountReal = new BigDecimal(amount);
-        BigDecimal rateUnit = new BigDecimal(100);
-        BigDecimal feeRateReal = rate.divide(rateUnit, 4, RoundingMode.HALF_UP);
-        BigDecimal fee = amountReal.multiply(feeRateReal);
-        return fee.intValue();
-    }
     @Test
     public void test(){
-        int fee = calculateOrderFee(100,new BigDecimal("10"));
-        System.out.println(fee);
+        for (int i=0;i<100;i++){
+            Random random = new Random();
+            int r = random.nextInt(9)+1;
+            System.out.println(String.format("随机数: %s",r));
+        }
     }
 
 }

@@ -66,6 +66,7 @@ public class OrderDetail extends BaseMapperEntity {
      */
     private String upstreamOrderNo;
 
+    private String payCredential;
     /**
      * 上游扩展参数
      */

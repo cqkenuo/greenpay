@@ -17,6 +17,8 @@ spring:
 delay_queue:
   redis:
     default_key: 'greenpay:delay_queue'
+  consumer:
+    enabled: false
 
 wechat:
   app_id: wx2aeda339f56138bf

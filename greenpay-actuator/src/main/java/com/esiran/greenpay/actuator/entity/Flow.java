@@ -1,18 +1,18 @@
 package com.esiran.greenpay.actuator.entity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class Flow<T> {
     private List<Task<T>> tasks;
     private final T data;
+    private Map<String,Object> results;
     public Flow(T data) {
         this.data = data;
         this.tasks = new ArrayList<>();
     }
-    public void execDependent(String taskName){
+    public void execDependent(String taskName) throws Exception {
         for (Task<T> task : tasks){
             if (task.dependent().equals(taskName)){
                 task.action(this);
@@ -35,10 +35,10 @@ public abstract class Flow<T> {
     public T getData(){
         return data;
     }
-
-
-    public abstract void setData(T data);
-
-    public abstract void update(T t);
-
+    public void returns(Map<String,Object> results){
+        this.results = results;
+    }
+    public Map<String,Object> getResults(){
+        return results;
+    }
 }

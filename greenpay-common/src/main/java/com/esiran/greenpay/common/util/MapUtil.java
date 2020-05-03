@@ -28,4 +28,8 @@ public class MapUtil {
         }
         return sb.toString();
     }
+
+    public static String sortAndSerialize(Map<String,String> params){
+        return sortAndSerialize(params,null);
+    }
 }

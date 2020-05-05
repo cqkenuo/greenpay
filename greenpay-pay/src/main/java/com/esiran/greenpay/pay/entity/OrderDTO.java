@@ -45,7 +45,7 @@ public class OrderDTO  {
     /**
      * 应用ID
      */
-    private Integer appId;
+    private String appId;
 
     /**
      * 商品标题
@@ -103,7 +103,7 @@ public class OrderDTO  {
      */
     private Integer payProductId;
     private String payProductName;
-
+    private String payProductCode;
     /**
      * 支付通道ID
      */

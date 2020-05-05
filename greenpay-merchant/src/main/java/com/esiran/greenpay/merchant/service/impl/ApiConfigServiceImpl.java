@@ -22,9 +22,15 @@ public class ApiConfigServiceImpl extends ServiceImpl<ApiConfigMapper, ApiConfig
     private static final ModelMapper modelMapper = new ModelMapper();
     @Override
     public ApiConfigDTO findByMerchantId(Integer mchId) {
+        ApiConfig apiConfig = this.getOneByMerchantId(mchId);
+        if (apiConfig == null) return null;
+        return modelMapper.map(apiConfig,ApiConfigDTO.class);
+    }
+
+    @Override
+    public ApiConfig getOneByMerchantId(Integer mchId) {
         LambdaQueryWrapper<ApiConfig> apiConfigLambdaQueryWrapper = new LambdaQueryWrapper<>();
         apiConfigLambdaQueryWrapper.eq(ApiConfig::getMchId,mchId);
-        ApiConfig apiConfig = this.getOne(apiConfigLambdaQueryWrapper);
-        return modelMapper.map(apiConfig,ApiConfigDTO.class);
+        return this.getOne(apiConfigLambdaQueryWrapper);
     }
 }

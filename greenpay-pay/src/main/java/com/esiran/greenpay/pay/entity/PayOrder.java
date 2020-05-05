@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class PayOrder {
-    public String notifyReceiveUrl;
+
+    private String notifyReceiveUrl;
     private Order order;
     private OrderDetail orderDetail;
 }

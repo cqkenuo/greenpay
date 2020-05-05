@@ -16,5 +16,6 @@ import java.util.Map;
  */
 public interface IOrderDetailService extends IService<OrderDetail> {
     OrderDetailDTO getByOrderNo(String orderNo);
+    OrderDetail getOneByOrderNo(String orderNo);
     void updatePayCredentialByOrderNo(String orderNo, Map<String,Object> credential);
 }

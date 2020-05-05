@@ -5,13 +5,13 @@ import com.esiran.greenpay.common.sign.SignType;
 import com.esiran.greenpay.common.sign.SignVerify;
 import com.esiran.greenpay.common.util.EncryptUtil;
 import com.esiran.greenpay.common.util.MapUtil;
-import com.esiran.greenpay.merchant.entity.ApiConfig;
 import com.esiran.greenpay.merchant.entity.ApiConfigDTO;
 import com.esiran.greenpay.merchant.entity.Merchant;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.openapi.entity.WxOPenIdInputDTO;
 import com.esiran.greenpay.openapi.security.OpenAPISecurityUtils;
+import com.esiran.greenpay.openapi.service.IPayloadService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -44,19 +43,19 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/v1/helper/wx")
 public class APIWxHelperController {
     private static final Logger logger = LoggerFactory.getLogger(APIWxHelperController.class);
-    private static final Gson gson = new GsonBuilder().create();
-    private static final String PAYLOAD_KEY_PRE = "greepay:openapi:helper:wx:payload";
-    private final StringRedisTemplate redisTemplate;
+    private static final String PAYLOAD_KEY_PRE = "greenpay:openapi:helper:wx:payload";
     private final IMerchantService merchantService;
     private final IApiConfigService apiConfigService;
+    private final IPayloadService payloadService;
     @Value("${web.hostname}")
     private String webHostname;
     public APIWxHelperController(
-            StringRedisTemplate redisTemplate,
-            IMerchantService merchantService, IApiConfigService apiConfigService) {
-        this.redisTemplate = redisTemplate;
+            IMerchantService merchantService,
+            IApiConfigService apiConfigService,
+            IPayloadService payloadService) {
         this.merchantService = merchantService;
         this.apiConfigService = apiConfigService;
+        this.payloadService = payloadService;
     }
 
     private String savePayload2cache(
@@ -66,33 +65,21 @@ public class APIWxHelperController {
                 || mchId == null || redirectUrl == null){
             return null;
         }
-        Map<String,Object> payload = new HashMap<>();
+        Map<String,String> payload = new HashMap<>();
         payload.put("wxMpAppId", wxMpAppId);
         payload.put("wxMpSecret", wxMpSecret);
         payload.put("redirectUrl",redirectUrl);
         payload.put("mchId", mchId);
-        String payloadJson = gson.toJson(payload);
-        String payloadId = String.valueOf(System.currentTimeMillis());
-        payloadId = EncryptUtil.md5(payloadId + mchId);
-        String payloadKey = String.format("%s:%s",PAYLOAD_KEY_PRE,payloadId);
-        redisTemplate.opsForValue().set(payloadKey,payloadJson,180, TimeUnit.SECONDS);
-        return payloadId;
-    }
-
-    private Map<String,Object> getPayloadByCache(String payloadId){
-        String payloadKey = String.format("%s:%s",PAYLOAD_KEY_PRE,payloadId);
-        String payloadJson = redisTemplate.opsForValue().get(payloadKey);
-        if (StringUtils.isEmpty(payloadJson)) return null;
-        return gson.fromJson(payloadJson,new TypeToken<Map<String,Object>>(){}.getType());
+        return payloadService.savePayload2cache(PAYLOAD_KEY_PRE,payload,180,TimeUnit.SECONDS);
     }
 
 
-    private String buildRedirectUrl(Map<String, Object> payload, String code){
+    private String buildRedirectUrl(Map<String, String> payload, String code){
         if (payload == null) return null;
-        String wxMpAppId = (String) payload.get("wxMpAppId");
-        String wxMpSecret = (String) payload.get("wxMpSecret");
-        String mchId = (String) payload.get("mchId");
-        String redirectUrl = (String) payload.get("redirectUrl");
+        String wxMpAppId = payload.get("wxMpAppId");
+        String wxMpSecret = payload.get("wxMpSecret");
+        String mchId = payload.get("mchId");
+        String redirectUrl = payload.get("redirectUrl");
         if (wxMpAppId == null || wxMpSecret == null
                 || mchId == null || redirectUrl == null){
             return null;
@@ -123,9 +110,14 @@ public class APIWxHelperController {
         SignType signType = new Md5SignType(principal);
         SignVerify signVerify = signType.sign(apiConfig.getApiSecurity());
         String sign = signVerify.getSign();
-        return String.format("%s?%s&sign=%s",redirectUrl,principal,sign);
+        Pattern hasArgsPattern = Pattern.compile("[a-zA-z]+://[^\\s]+?\\?[^\\s]*");
+        Matcher hasArgsMatcher = hasArgsPattern.matcher(redirectUrl);
+        String redirect = String.format("%s?%s&sign=%s",redirectUrl,principal,sign);
+        if (hasArgsMatcher.matches()){
+            redirect = String.format("%s&%s&sign=%s",redirectUrl,principal,sign);
+        }
+        return redirect;
     }
-
 
     @GetMapping("/openid")
     public String openId(
@@ -133,7 +125,6 @@ public class APIWxHelperController {
             HttpServletResponse response) {
         Merchant merchant = OpenAPISecurityUtils.getSubject();
         String redirectUrl = wxOPenIdInputDTO.getRedirectUrl();
-
         String wxMpAppId = "wx2aeda339f56138bf";
         String wxMpSecret = "731787f51247a33c4ff210cd613dd780";
         String payloadId = savePayload2cache(wxMpAppId,wxMpSecret,
@@ -153,9 +144,6 @@ public class APIWxHelperController {
                 WxConsts.OAuth2Scope.SNSAPI_BASE,state);
         return String.format("redirect:%s",authUrl);
     }
-
-
-
     @GetMapping("/callback/code")
     public String callbackByCode(
             HttpServletResponse response,
@@ -169,7 +157,7 @@ public class APIWxHelperController {
             return null;
         }
         String payloadId = m.group(1);
-        Map<String,Object> payload = getPayloadByCache(payloadId);
+        Map<String,String> payload = payloadService.getPayload4cache(PAYLOAD_KEY_PRE,payloadId);
         String redirectUrl = buildRedirectUrl(payload,code);
         if (redirectUrl == null){
             response.setStatus(404);

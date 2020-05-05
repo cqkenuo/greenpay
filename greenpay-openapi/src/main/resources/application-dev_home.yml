@@ -1,12 +1,10 @@
 server:
   port: 8084
-  tomcat:
-    uri-encoding: UTF-8
 
 logging:
   level:
-    com.github.binarywang.wxpay: error
-    me.chanjar.weixin: error
+    com.github.binarywang.wxpay: fatal
+    me.chanjar.weixin: fatal
     com.esiran.greenpay.common.sign: debug
 spring:
   datasource:
@@ -22,13 +20,6 @@ spring:
       strategy:
         content:
           enabled: true
-  messages:
-    encoding: UTF-8
-  http:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
 
 greenpay:
   openapi:

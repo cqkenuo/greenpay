@@ -42,7 +42,9 @@ public class OPenAPISecurityFilter implements Filter {
         this.merchantService = merchantService;
         this.apiConfigService = apiConfigService;
         allowedPaths = new String[]{
-                "/api/v1/helper/wx/callback/code"
+                "/api/v1/helper/wx/callback/code($|/$)",
+                "/api/v1/cashiers/pay/wx/order($|/$)",
+                "/api/v1/invoices/.+?/callback($|/$)"
         };
     }
 
@@ -81,6 +83,7 @@ public class OPenAPISecurityFilter implements Filter {
         String url = httpServletRequest.getRequestURI();
         if (checkAllowedPaths(url)){
             filterChain.doFilter(httpServletRequest, servletResponse);
+            return;
         }
         try {
             verifyRequisiteParam(httpServletRequest);

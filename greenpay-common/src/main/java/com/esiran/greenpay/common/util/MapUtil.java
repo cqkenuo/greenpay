@@ -2,14 +2,27 @@ package com.esiran.greenpay.common.util;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
 public class MapUtil {
     private static final Gson g = new Gson();
-    public static <T> Map<String,String> entity2map(T t){
+    public static <T> Map<String,String> entity2stringMap(T t){
         String json = g.toJson(t);
+        return jsonString2stringMap(json);
+    }
+    public static <T> Map<String,Object> entity2objMap(T t){
+        String json = g.toJson(t);
+        return jsonString2objMap(json);
+    }
+    public static Map<String,String> jsonString2stringMap(String json){
+        if (StringUtils.isEmpty(json)) return null;
         return g.fromJson(json,new TypeToken<Map<String,String>>(){}.getType());
+    }
+    public static Map<String,Object> jsonString2objMap(String json){
+        if (StringUtils.isEmpty(json)) return null;
+        return g.fromJson(json,new TypeToken<Map<String,Object>>(){}.getType());
     }
     public static String sortAndSerialize(Map<String,String> params, String[] excludeKeys){
         Set<String> keys = params.keySet();

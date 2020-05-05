@@ -3,8 +3,8 @@ server:
 
 logging:
   level:
-    com.github.binarywang.wxpay: error
-    me.chanjar.weixin: error
+    com.github.binarywang.wxpay: fatal
+    me.chanjar.weixin: fatal
 
 spring:
   profiles:
@@ -12,7 +12,7 @@ spring:
   mvc:
     static-path-pattern: /**
   thymeleaf:
-    enabled: false
+    enabled: true
   redis:
     port: 6379
     host: 127.0.0.1

@@ -31,11 +31,16 @@ public class OrderDetailServiceImpl extends ServiceImpl<OrderDetailMapper, Order
     private final static Gson gson = new GsonBuilder().create();
     @Override
     public OrderDetailDTO getByOrderNo(String orderNo) {
-        LambdaQueryWrapper<OrderDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(OrderDetail::getOrderNo, orderNo);
-        OrderDetail detail = this.getOne(lambdaQueryWrapper);
+        OrderDetail detail = this.getOneByOrderNo(orderNo);
         if (detail == null) return null;
         return modelMapper.map(detail,OrderDetailDTO.class);
+    }
+
+    @Override
+    public OrderDetail getOneByOrderNo(String orderNo) {
+        LambdaQueryWrapper<OrderDetail> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(OrderDetail::getOrderNo, orderNo);
+        return this.getOne(lambdaQueryWrapper);
     }
 
     @Override

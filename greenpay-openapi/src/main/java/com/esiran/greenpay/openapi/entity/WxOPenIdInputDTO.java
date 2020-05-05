@@ -11,4 +11,5 @@ import javax.validation.constraints.NotBlank;
 public class WxOPenIdInputDTO  extends BaseSignInput {
     @NotBlank(message = "重定向地址不能为空")
     private String redirectUrl;
+    private String payloadId;
 }

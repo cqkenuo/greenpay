@@ -117,7 +117,6 @@ CREATE TABLE `agentpay_passage` (
 
 LOCK TABLES `agentpay_passage` WRITE;
 /*!40000 ALTER TABLE `agentpay_passage` DISABLE KEYS */;
-INSERT INTO `agentpay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (1,'abc','wx_pay_biz','pay_wx_qiye',1,'2020-04-27 18:12:56','2020-04-27 18:12:56');
 /*!40000 ALTER TABLE `agentpay_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +146,6 @@ CREATE TABLE `agentpay_passage_account` (
 
 LOCK TABLES `agentpay_passage_account` WRITE;
 /*!40000 ALTER TABLE `agentpay_passage_account` DISABLE KEYS */;
-INSERT INTO `agentpay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `status`, `created_at`, `updated_at`) VALUES (1,'wx_pay_biz',1,'abc','abc',1,'2020-04-27 18:13:10','2020-04-27 18:13:10');
 /*!40000 ALTER TABLE `agentpay_passage_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +239,7 @@ CREATE TABLE `merchant_pay_account` (
 
 LOCK TABLES `merchant_pay_account` WRITE;
 /*!40000 ALTER TABLE `merchant_pay_account` DISABLE KEYS */;
-INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (1,2,1200,0,'2020-04-17 00:54:21','2020-04-17 00:54:21');
+INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (1,2,234054,0,'2020-04-17 00:54:21','2020-04-17 00:54:21');
 INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (2,3,0,0,'2020-04-17 21:55:41','2020-04-17 21:55:41');
 INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (3,4,10,9400,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant_pay_account` ENABLE KEYS */;
@@ -289,6 +287,7 @@ CREATE TABLE `merchant_product` (
   `merchant_id` int NOT NULL COMMENT '商户ID',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `product_id` int DEFAULT NULL COMMENT '产品ID',
+  `product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
   `product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
   `product_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付产品类型（1：收款，2：充值）',
   `interface_mode` tinyint(1) NOT NULL DEFAULT '1' COMMENT '接口模式（1:单独，2：轮训）',
@@ -299,7 +298,7 @@ CREATE TABLE `merchant_product` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,11 +307,8 @@ CREATE TABLE `merchant_product` (
 
 LOCK TABLES `merchant_product` WRITE;
 /*!40000 ALTER TABLE `merchant_product` DISABLE KEYS */;
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (14,2,'ali_jsapi',2,'支付宝服务窗_忆思然',1,1,0.11,NULL,NULL,1,'2020-04-28 02:09:09','2020-04-28 02:09:09');
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (15,2,'wx_jsapi',4,'abc',1,1,0.20,2,2,0,'2020-04-28 02:10:08','2020-04-28 02:10:08');
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (26,2,'wx_jsapi',3,'微信JSAPI_鸿宇通道',1,2,0.00,2,2,1,'2020-04-30 11:52:04','2020-04-30 11:52:04');
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (27,3,'ali_jsapi',2,'支付宝服务窗支付',1,1,0.02,NULL,NULL,0,'2020-04-30 11:58:23','2020-04-30 11:58:23');
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (29,3,'wx_jsapi',3,'微信公众号支付',1,2,0.03,NULL,NULL,1,'2020-04-30 11:59:44','2020-04-30 11:59:44');
+INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_code`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (12,2,'wx_jsapi',6,'wx_jsapi','微信公众号支付',1,2,4.76,5,4,1,'2020-05-02 21:06:17','2020-05-02 21:06:17');
+INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_code`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (15,2,'ali_jsapi',7,'ali_jsapi','支付宝服务窗支付',1,2,4.50,6,3,1,'2020-05-02 21:25:22','2020-05-02 21:25:22');
 /*!40000 ALTER TABLE `merchant_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,7 +328,7 @@ CREATE TABLE `merchant_product_passage` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品通道';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品通道';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,11 +337,8 @@ CREATE TABLE `merchant_product_passage` (
 
 LOCK TABLES `merchant_product_passage` WRITE;
 /*!40000 ALTER TABLE `merchant_product_passage` DISABLE KEYS */;
-INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (4,2,3,2,1,'2020-04-30 11:52:04','2020-04-30 11:52:04');
-INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (5,2,3,3,3,'2020-04-30 11:52:04','2020-04-30 11:52:04');
-INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (9,3,3,2,0,'2020-04-30 11:59:44','2020-04-30 11:59:44');
-INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (10,3,3,3,0,'2020-04-30 11:59:44','2020-04-30 11:59:44');
-INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (11,3,3,4,0,'2020-04-30 11:59:44','2020-04-30 11:59:44');
+INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (2,2,6,5,1,'2020-05-02 21:06:17','2020-05-02 21:06:17');
+INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (4,2,7,6,1,'2020-05-02 21:25:22','2020-05-02 21:25:22');
 /*!40000 ALTER TABLE `merchant_product_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,14 +452,14 @@ CREATE TABLE `pay_interface` (
   `interface_name` varchar(32) NOT NULL COMMENT '支付接口名称',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '接口调用方式（1：实现类调用，2：插件调用，3：脚本调用）',
-  `interface_impl` varchar(32) DEFAULT NULL COMMENT '实现类类名',
+  `interface_impl` varchar(255) DEFAULT NULL COMMENT '实现类类名',
   `interface_plugin` varchar(32) DEFAULT NULL COMMENT '插件名称',
   `interface_script` varchar(255) DEFAULT NULL COMMENT '脚本内容',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -475,11 +468,8 @@ CREATE TABLE `pay_interface` (
 
 LOCK TABLES `pay_interface` WRITE;
 /*!40000 ALTER TABLE `pay_interface` DISABLE KEYS */;
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (2,'wx_jsapi','微信JSAPI官方','wx_jsapi',1,'abc',NULL,NULL,1,'2020-04-14 02:05:00','2020-04-14 02:05:00');
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (3,'jk_wx_jsapi','微信公众号支付-金控','wx_jsapi',1,'123',NULL,NULL,1,'2020-04-24 16:28:35','2020-04-24 16:28:35');
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (4,'jk_ali_qr','支付宝二维码支付-金控','ali_scan',1,'',NULL,NULL,1,'2020-04-24 17:12:40','2020-04-24 17:12:40');
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (5,'wx_scan','微信扫码支付_官方','wx_scan',1,'',NULL,NULL,1,'2020-04-24 17:26:12','2020-04-24 17:26:12');
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (6,'pay_wx_qiye','微信支付-企业付款-官方','wx_pay_biz',1,'',NULL,NULL,1,'2020-04-27 09:01:35','2020-04-27 09:01:35');
+INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (7,'wx_jsapi','微信公众号支付_官方','wx_jsapi',1,'wxJSAPIPlugin',NULL,NULL,1,'2020-05-02 19:43:31','2020-05-02 19:43:31');
+INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (8,'ali_jsapi','支付宝服务窗支付_官方','ali_jsapi',1,'bbb',NULL,NULL,1,'2020-05-02 20:50:05','2020-05-02 20:50:05');
 /*!40000 ALTER TABLE `pay_interface` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,7 +485,7 @@ CREATE TABLE `pay_order` (
   `order_no` varchar(32) NOT NULL COMMENT '订单编号',
   `order_sn` varchar(32) NOT NULL COMMENT '交易流水号',
   `mch_id` int NOT NULL COMMENT '商户ID',
-  `app_id` int NOT NULL COMMENT '应用ID',
+  `app_id` varchar(32) NOT NULL COMMENT '应用ID',
   `subject` varchar(32) NOT NULL COMMENT '商品标题',
   `out_order_no` varchar(32) NOT NULL COMMENT '商户订单号',
   `amount` int NOT NULL COMMENT '订单金额（单位：分）',
@@ -505,6 +495,7 @@ CREATE TABLE `pay_order` (
   `redirect_url` varchar(255) DEFAULT NULL COMMENT '跳转地址',
   `fee` int NOT NULL DEFAULT '0' COMMENT '订单手续费（单位：分）',
   `pay_product_id` int NOT NULL COMMENT '支付产品ID',
+  `pay_product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
   `pay_product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
   `status` tinyint(1) NOT NULL COMMENT '订单状态（0：待付款，2：已支付，3：订单完成，-1：交易取消，-2：交易失败）',
   `paid_at` datetime DEFAULT NULL COMMENT '支付时间',
@@ -512,7 +503,7 @@ CREATE TABLE `pay_order` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付订单';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -521,18 +512,6 @@ CREATE TABLE `pay_order` (
 
 LOCK TABLES `pay_order` WRITE;
 /*!40000 ALTER TABLE `pay_order` DISABLE KEYS */;
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (2,'1249942871872770048','202004140209381280292',2,123456,'abc','123456',78542,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (3,'1249943048562020352','202004140210202537008',2,1234567,'abc','123456',456123,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (4,'1249943081101430784','202004140210280110581',2,1234567,'abc','1234576',134435,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (5,'1249965518975275008','202004140339376183456',2,1234567,'abc','12345776',41534,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (6,'1249966907960987648','202004140345087778932',2,1234567,'abc','123457786',1523,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (7,'1249967549395898368','202004140347417071605',2,1234567,'abc','1234757786',152334,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (8,'1249968387975680000','202004140351016404322',2,1234567,'abc','12347572786',12345,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (11,'1249973459761631232','202004140411108494707',2,1234567,'abc','123475727186',12345,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (13,'1250458836519751680','202004161219536850645',2,123456,'123484','12346546',4567,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (14,'1252256726720319488','202004201124041122618',2,123456,'123484','1587396162157',1347,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-20 23:24:04','2020-04-20 23:24:04');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (15,'1252257359594655744','202004201126350011901',2,123456,'123484','15873961621573',13,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-20 23:26:35','2020-04-20 23:26:35');
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `fee`, `pay_product_id`, `pay_product_name`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (16,'1252258238792077312','202004201130046184519',2,123456,'123484','1587396593921',1,NULL,0,NULL,NULL,0,3,'微信公众号支付',1,NULL,NULL,'2020-04-20 23:30:05','2020-04-20 23:30:05');
 /*!40000 ALTER TABLE `pay_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,11 +532,12 @@ CREATE TABLE `pay_order_detail` (
   `pay_interface_id` int NOT NULL COMMENT '支付接口ID',
   `pay_interface_attr` varchar(255) NOT NULL COMMENT '支付接口参数',
   `upstream_order_no` varchar(64) DEFAULT NULL COMMENT '上游订单编号',
+  `pay_credential` varchar(255) DEFAULT NULL COMMENT '支付凭证',
   `upstream_extra` varchar(64) DEFAULT NULL COMMENT '上游扩展参数',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单详情';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单详情';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -566,18 +546,6 @@ CREATE TABLE `pay_order_detail` (
 
 LOCK TABLES `pay_order_detail` WRITE;
 /*!40000 ALTER TABLE `pay_order_detail` DISABLE KEYS */;
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (1,'1249942871872770048','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (2,'1249943048562020352','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (3,'1249943081101430784','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (4,'1249965518975275008','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (5,'1249966907960987648','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (6,'1249967549395898368','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (7,'1249968387975680000','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (10,'1249973459761631232','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (12,'1250458836519751680','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (13,'1252256726720319488','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-20 23:24:04','2020-04-20 23:24:04');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (14,'1252257359594655744','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-20 23:26:35','2020-04-20 23:26:35');
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (15,'1252258238792077312','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-20 23:30:05','2020-04-20 23:30:05');
 /*!40000 ALTER TABLE `pay_order_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -597,7 +565,7 @@ CREATE TABLE `pay_passage` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -606,9 +574,8 @@ CREATE TABLE `pay_passage` (
 
 LOCK TABLES `pay_passage` WRITE;
 /*!40000 ALTER TABLE `pay_passage` DISABLE KEYS */;
-INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (2,'微信JSAPI官方通道','wx_jsapi','wx_jsapi',1,'2020-04-14 02:06:20','2020-04-14 02:06:20');
-INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (3,'abc','wx_jsapi','jk_wx_jsapi',1,'2020-04-24 18:38:08','2020-04-24 18:38:08');
-INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (4,'abcdef','wx_jsapi','wx_jsapi',1,'2020-04-24 18:38:30','2020-04-24 18:38:30');
+INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (5,'微信公众号支付官方通道','wx_jsapi','wx_jsapi',1,'2020-05-02 19:47:46','2020-05-02 19:47:46');
+INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (6,'支付宝服务窗支付官方通道','ali_jsapi','ali_jsapi',1,'2020-05-02 20:50:36','2020-05-02 20:50:36');
 /*!40000 ALTER TABLE `pay_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -625,11 +592,12 @@ CREATE TABLE `pay_passage_account` (
   `passage_id` int NOT NULL COMMENT '支付通道ID',
   `account_name` varchar(32) NOT NULL COMMENT '通道账户名称',
   `interface_attr` varchar(255) DEFAULT NULL COMMENT '通道接口参数',
+  `weight` int NOT NULL DEFAULT '0' COMMENT '轮询权重',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道账户';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道账户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -638,9 +606,11 @@ CREATE TABLE `pay_passage_account` (
 
 LOCK TABLES `pay_passage_account` WRITE;
 /*!40000 ALTER TABLE `pay_passage_account` DISABLE KEYS */;
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `status`, `created_at`, `updated_at`) VALUES (2,'wx_jsapi',2,'忆思然网络科技有限公司','{}',0,'2020-04-14 02:07:28','2020-04-14 02:07:28');
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `status`, `created_at`, `updated_at`) VALUES (3,'wx_jsapi',2,'ABC','123',1,'2020-04-24 19:59:21','2020-04-24 19:59:21');
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `status`, `created_at`, `updated_at`) VALUES (4,'wx_jsapi',3,'abcabc','abc',1,'2020-04-25 04:52:35','2020-04-25 04:52:35');
+INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (1,'wx_jsapi',5,'忆思然网络科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',9,1,'2020-05-02 19:49:15','2020-05-02 19:49:15');
+INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (2,'ali_jsapi',6,'重庆忆思然网络科技有限公司','ababa',1,1,'2020-05-02 20:51:05','2020-05-02 20:51:05');
+INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (3,'ali_jsapi',6,'重庆鸿与科技有限公司','aaaa',1,1,'2020-05-02 20:51:51','2020-05-02 20:51:51');
+INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (4,'wx_jsapi',5,'重庆鸿与科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',5,1,'2020-05-02 20:52:08','2020-05-02 20:52:08');
+INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (5,'wx_jsapi',5,'重庆艾美尼克网络科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',3,1,'2020-05-02 23:20:45','2020-05-02 23:20:45');
 /*!40000 ALTER TABLE `pay_passage_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -655,6 +625,7 @@ CREATE TABLE `pay_product` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '支付产品ID',
   `product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
   `product_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付产品类型（1：收款，2：充值）',
+  `product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_mode` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付接口模式（1：单独，2：轮询）',
   `default_passage_id` int DEFAULT NULL COMMENT '默认通道ID',
@@ -663,7 +634,7 @@ CREATE TABLE `pay_product` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付产品';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付产品';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -672,10 +643,8 @@ CREATE TABLE `pay_product` (
 
 LOCK TABLES `pay_product` WRITE;
 /*!40000 ALTER TABLE `pay_product` DISABLE KEYS */;
-INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (2,'支付宝服务窗支付',1,'ali_jsapi',1,2,2,1,'2020-04-14 02:08:38','2020-04-27 10:32:13');
-INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (3,'微信公众号支付',1,'wx_jsapi',2,2,2,1,'2020-04-21 20:02:43','2020-04-25 14:23:33');
-INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (4,'abc',1,'wx_jsapi',2,2,2,1,'2020-04-24 20:59:25','2020-04-25 04:46:16');
-INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (5,'微信公众号充值',1,'wx_jsapi',1,NULL,NULL,1,'2020-04-27 06:04:03','2020-04-27 13:56:27');
+INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `product_code`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (6,'微信公众号支付',1,'wx_jsapi','wx_jsapi',1,5,1,1,'2020-05-02 19:48:40','2020-05-02 21:01:47');
+INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `product_code`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (7,'支付宝服务窗支付',1,'ali_jsapi','ali_jsapi',1,6,3,1,'2020-05-02 20:52:27','2020-05-02 21:13:49');
 /*!40000 ALTER TABLE `pay_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -703,12 +672,6 @@ CREATE TABLE `pay_product_passage` (
 
 LOCK TABLES `pay_product_passage` WRITE;
 /*!40000 ALTER TABLE `pay_product_passage` DISABLE KEYS */;
-INSERT INTO `pay_product_passage` (`id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (13,4,2,10,'2020-04-25 04:46:15','2020-04-25 04:46:15');
-INSERT INTO `pay_product_passage` (`id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (14,4,3,0,'2020-04-25 04:46:15','2020-04-25 04:46:15');
-INSERT INTO `pay_product_passage` (`id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (15,4,4,0,'2020-04-25 04:46:15','2020-04-25 04:46:15');
-INSERT INTO `pay_product_passage` (`id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (16,3,2,0,'2020-04-25 14:23:33','2020-04-25 14:23:33');
-INSERT INTO `pay_product_passage` (`id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (17,3,3,50,'2020-04-25 14:23:33','2020-04-25 14:23:33');
-INSERT INTO `pay_product_passage` (`id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (18,3,4,20,'2020-04-25 14:23:33','2020-04-25 14:23:33');
 /*!40000 ALTER TABLE `pay_product_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -755,7 +718,7 @@ CREATE TABLE `pay_type` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -764,13 +727,8 @@ CREATE TABLE `pay_type` (
 
 LOCK TABLES `pay_type` WRITE;
 /*!40000 ALTER TABLE `pay_type` DISABLE KEYS */;
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (2,'wx_jsapi','微信公众号支付',1,1,'2020-04-14 01:54:17','2020-04-14 01:54:17');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (3,'ali_jsapi','支付宝服务窗支付',1,1,'2020-04-21 20:05:34','2020-04-21 20:05:34');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (4,'ali_scan','支付宝二维码',1,1,'2020-04-23 17:44:43','2020-04-23 17:44:43');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (5,'wx_scan','微信扫码支付',1,1,'2020-04-24 17:25:25','2020-04-24 17:25:25');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (6,'ali_wap','支付宝手机网页支付',1,1,'2020-04-24 22:10:59','2020-04-24 22:10:59');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (7,'wx_wap','微信手机网页支付',1,1,'2020-04-24 22:11:34','2020-04-24 22:11:34');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (8,'wx_pay_biz','微信支付-企业付款',2,1,'2020-04-27 09:00:58','2020-04-27 09:00:58');
+INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (9,'wx_jsapi','微信公众号支付',1,1,'2020-05-02 19:30:08','2020-05-02 19:30:08');
+INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (10,'ali_jsapi','支付宝服务窗支付',1,1,'2020-05-02 20:49:30','2020-05-02 20:49:30');
 /*!40000 ALTER TABLE `pay_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1169,4 +1127,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-30 12:19:04
+-- Dump completed on 2020-05-05 22:33:48

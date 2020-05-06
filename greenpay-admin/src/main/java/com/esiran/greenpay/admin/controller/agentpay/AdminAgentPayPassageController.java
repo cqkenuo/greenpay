@@ -15,12 +15,12 @@ import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.IPassageAccountService;
 import com.esiran.greenpay.pay.service.IPassageService;
 import com.esiran.greenpay.pay.service.ITypeService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -33,6 +33,7 @@ public class AdminAgentPayPassageController extends CURDBaseController {
     private final IAgentPayPassageAccountService passageAccountService;
     private final IInterfaceService interfaceService;
     private final ITypeService typeService;
+    private static final Gson gson = new GsonBuilder().create();
     public AdminAgentPayPassageController(
             IAgentPayPassageService passageService,
             IInterfaceService interfaceService,
@@ -45,8 +46,18 @@ public class AdminAgentPayPassageController extends CURDBaseController {
     }
 
     @GetMapping("/list")
+    @PageViewHandleError
     public String list(){
         return "admin/agentpay/passage/list";
+    }
+
+    @PostMapping(value = "/list")
+    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+        if (action.equals("del")){
+            List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
+            passageService.delIds(allIds);
+        }
+        return redirect("/admin/agentpay/passage/list");
     }
     @GetMapping("/list/add")
     @PageViewHandleError
@@ -83,9 +94,23 @@ public class AdminAgentPayPassageController extends CURDBaseController {
     }
 
     @GetMapping("/list/{passageId}/acc")
+    @PageViewHandleError
     public String listAcc(@PathVariable String passageId, ModelMap modelMap){
         modelMap.addAttribute("passageId", passageId);
         return "admin/agentpay/passage/acc/list";
+    }
+
+    @PostMapping("/list/{passageId}/acc")
+    public String accListPost(
+            @RequestParam String action,
+            @RequestParam String ids,
+            @PathVariable String passageId
+    ) throws PostResourceException {
+        if (action.equals("del")){
+            List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
+            passageAccountService.delByIds(allIds);
+        }
+        return redirect("/admin/agentpay/passage/list/%s/acc",passageId);
     }
     @GetMapping("/list/{passageId}/acc/add")
     @PageViewHandleError

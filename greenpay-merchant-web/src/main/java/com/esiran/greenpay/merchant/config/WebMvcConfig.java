@@ -2,7 +2,6 @@ package com.esiran.greenpay.merchant.config;
 
 import com.esiran.greenpay.common.util.IdWorker;
 import com.esiran.greenpay.message.delayqueue.DelayQueueTaskRegister;
-import com.esiran.greenpay.openapi.filter.OPenAPISecurityFilter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -25,11 +24,8 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 @EnableSwagger2
 public class WebMvcConfig implements WebMvcConfigurer {
-    private final OPenAPISecurityFilter oPenAPISecurityFilter;
     private final BaseInterceptor baseInterceptor;
-    public WebMvcConfig(OPenAPISecurityFilter oPenAPISecurityFilter,
-                        BaseInterceptor baseInterceptor) {
-        this.oPenAPISecurityFilter = oPenAPISecurityFilter;
+    public WebMvcConfig(BaseInterceptor baseInterceptor) {
         this.baseInterceptor = baseInterceptor;
     }
 
@@ -38,11 +34,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new IdWorker(1,1,1);
     }
 
-//    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
-//        converters.add(gsonHttpMessageConverter);
-//    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -64,15 +55,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         objectMapper.registerModule(javaTimeModule).registerModule(new ParameterNamesModule());
         return objectMapper;
-    }
-    @Bean
-    public FilterRegistrationBean<OPenAPISecurityFilter> uploadFilterRegistration() {
-        FilterRegistrationBean<OPenAPISecurityFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(oPenAPISecurityFilter);
-        registration.addUrlPatterns("/api/v1/*");
-        registration.setName("OPenAPISecurityFilter");
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registration;
     }
 
     @Bean

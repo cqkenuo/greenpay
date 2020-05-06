@@ -17,6 +17,7 @@ import com.esiran.greenpay.merchant.entity.MerchantProductInputDTO;
  */
 public interface IMerchantProductService extends IService<MerchantProduct> {
     MerchantProductDTO getByProductId(Integer mchId, Integer productId);
+    MerchantProductDTO getAvailableByProductId(Integer mchId, Integer productId);
     boolean updateById(MerchantProductInputDTO merchantProductInputDTO) throws ResourceNotFoundException, PostResourceException;
     void removeByProductId(Integer merchantId, Integer productId);
 }

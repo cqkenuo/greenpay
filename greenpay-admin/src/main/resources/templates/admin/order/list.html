@@ -15,12 +15,36 @@
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">支付订单</div>
-                        <div class="layui-card-body" style="padding: 0">
-                            <div class="admin-table_header">
-                                <div th:replace="admin/compose::admin-table_header_right('请输入支付接口编码')">
-                                </div>
+                        <div class="admin-table_header">
+                            <div class="admin-table_header_right">
+                                <form class="layui-form" action="">
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label for="orderNo">
+                                                <input type="text" class="layui-input"
+                                                       id="orderNo"
+                                                       name="orderNo" required
+                                                       placeholder="请输入交易订单号"
+                                                       autocomplete="off">
+                                            </label>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label for="outOrderNo">
+                                                <input type="text" class="layui-input"
+                                                       name="outOrderNo"
+                                                       id="outOrderNo"
+                                                       placeholder="请输入商户订单号"
+                                                       autocomplete="off">
+                                            </label>
+                                        </div>
+                                        <button type="button" class="layui-btn">搜索</button>
+                                    </div>
+                                </form>
                                 <div style="clear:both;"></div>
                             </div>
+                            <div style="clear:both;"></div>
+                        </div>
+                        <div class="layui-card-body" style="padding: 0">
                             <table id="demo" lay-filter="test"></table>
                             <script type="text/html" id="statusTemplate">
                                 {{# if(d.status == 1) { }}
@@ -45,6 +69,9 @@
                             </script>
                             <script type="text/html" id="amountTemplate">
                                 ￥ {{ d.amountDisplay }}
+                            </script>
+                            <script type="text/html" id="feeTemplate">
+                                ￥ {{ d.feeDisplay }}
                             </script>
                             <script type="text/html" id="subjectTemplate">
                                 <span>{{ d.subject }}</span>
@@ -90,10 +117,11 @@
                 ,{field: 'orderNo', title: '交易订单号', width:'12%', unresize:true}
                 ,{field: 'outOrderNo', title: '商户订单号', width:'15%', unresize:true}
                 ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
-                ,{title: '商品标题', width:'15%', unresize:true, templet: '#subjectTemplate'}
+                ,{title: '商品标题', width:'14%', unresize:true, templet: '#subjectTemplate'}
                 ,{title: '金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
+                ,{title: '手续费（元）',align:'right', width:'8%', unresize:true,templet: '#feeTemplate'}
                 ,{field: 'payProductName', title: '支付产品名称', width:'10%', unresize:true}
-                ,{field: 'status', title: '状态', width:'10%', unresize:true, templet:'#statusTemplate'}
+                ,{field: 'status', title: '状态', width:'6%', unresize:true, templet:'#statusTemplate'}
                 ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true}
             ]]
         });

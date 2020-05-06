@@ -17,6 +17,15 @@ public class NumberUtil {
         BigDecimal amountUnit = new BigDecimal(100);
         return amount.multiply(amountUnit).intValue();
     }
+    public static Integer calculateAmountFee(Integer amount, BigDecimal rate){
+        if (amount == null || rate == null)
+            return null;
+        BigDecimal amountReal = new BigDecimal(amount);
+        BigDecimal rateUnit = new BigDecimal(100);
+        BigDecimal feeRateReal = rate.divide(rateUnit, 4, RoundingMode.HALF_UP);
+        BigDecimal fee = amountReal.multiply(feeRateReal);
+        return fee.intValue();
+    }
     public static String twoDecimals(BigDecimal src){
         if (src == null) return null;
         BigDecimal amount = src.setScale(2, RoundingMode.HALF_UP);

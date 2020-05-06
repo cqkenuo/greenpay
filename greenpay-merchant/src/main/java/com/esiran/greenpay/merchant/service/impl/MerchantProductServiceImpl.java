@@ -20,7 +20,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +64,17 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
     }
 
     @Override
+    public MerchantProductDTO getAvailableByProductId(Integer mchId, Integer productId) {
+        LambdaQueryWrapper<MerchantProduct> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(MerchantProduct::getMerchantId, mchId)
+                .eq(MerchantProduct::getStatus, 1)
+                .eq(MerchantProduct::getProductId, productId);
+        MerchantProduct mp = this.getOne(queryWrapper);
+        if (mp == null) return null;
+        return modelMapper.map(mp,MerchantProductDTO.class);
+    }
+
+    @Override
     public boolean updateById(MerchantProductInputDTO merchantProductInputDTO) throws ResourceNotFoundException, PostResourceException {
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Product src = productService.getById(merchantProductInputDTO.getProductId());
@@ -72,9 +82,13 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
         MerchantProduct target = modelMapper.map(merchantProductInputDTO,MerchantProduct.class);
         if (merchantProductInputDTO.getDefaultPassageId() != null){
             Passage passage = passageService.getById(merchantProductInputDTO.getDefaultPassageId());
+            if (passage == null)
+                throw new PostResourceException("支付通道不存在");
             if (merchantProductInputDTO.getDefaultPassageAccId() == null)
                 throw new PostResourceException("支付通道子账户不能为空");
-            PassageAccount passageAcc = passageAccountService.getById(passage.getId());
+            PassageAccount passageAcc = passageAccountService.getById(merchantProductInputDTO.getDefaultPassageAccId());
+            if (passageAcc == null)
+                throw new PostResourceException("支付通道子账户不存在");
             if (!passage.getId().equals(passageAcc.getPassageId())){
                 throw new PostResourceException("支付通道与子账户不匹配");
             }
@@ -89,7 +103,7 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
             List<MerchantProductPassage> passages = passagesDTOs.stream()
                     .map(item->modelMapper.map(item,MerchantProductPassage.class))
                     .collect(Collectors.toList());
-            merchantProductPassageService.removeByProductId(target.getId());
+            merchantProductPassageService.removeByProductId(target.getMerchantId(), target.getProductId());
             passages.forEach(merchantProductPassageService::save);
         }
         removeByProductId(target.getMerchantId(),target.getProductId());

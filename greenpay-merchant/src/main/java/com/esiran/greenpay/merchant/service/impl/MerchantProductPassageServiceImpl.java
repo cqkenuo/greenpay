@@ -9,7 +9,6 @@ import com.esiran.greenpay.merchant.entity.MerchantProductPassage;
 import com.esiran.greenpay.merchant.mapper.MerchantProductPassageMapper;
 import com.esiran.greenpay.merchant.service.IMerchantProductPassageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.esiran.greenpay.pay.entity.ProductInputDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,15 +25,27 @@ import java.util.List;
 public class MerchantProductPassageServiceImpl extends ServiceImpl<MerchantProductPassageMapper, MerchantProductPassage> implements IMerchantProductPassageService {
 
     @Override
-    public void removeByProductId(Integer productId) {
+    public void removeByProductId(Integer mchId, Integer productId) {
         LambdaUpdateWrapper<MerchantProductPassage> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(MerchantProductPassage::getMchId,mchId);
         updateWrapper.eq(MerchantProductPassage::getProductId,productId);
         remove(updateWrapper);
     }
 
     @Override
-    public List<MerchantProductPassage> listByProductId(Integer productId) {
+    public List<MerchantProductPassage> listAvailable(Integer mchId, Integer productId) {
+        LambdaQueryWrapper<MerchantProductPassage> mppQueryWrapper = new LambdaQueryWrapper<>();
+        mppQueryWrapper.eq(MerchantProductPassage::getMchId,mchId)
+                .eq(MerchantProductPassage::getProductId,productId)
+                .gt(MerchantProductPassage::getWidget,0)
+                .orderByDesc(MerchantProductPassage::getWidget);
+        return list(mppQueryWrapper);
+    }
+
+    @Override
+    public List<MerchantProductPassage> listByProductId(Integer mchId, Integer productId) {
         LambdaQueryWrapper<MerchantProductPassage> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(MerchantProductPassage::getMchId,mchId);
         queryWrapper.eq(MerchantProductPassage::getProductId,productId);
         return list(queryWrapper);
     }

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class ProductDTO {
     private Integer id;
+    private String productCode;
     private String productName;
     private Integer productType;
     private String payTypeCode;

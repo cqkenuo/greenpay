@@ -24,25 +24,36 @@
                             <form class="layui-form" action="" method="post">
                                 <input type="hidden" name="loopPassages">
                                 <input type="hidden" name="payTypeCode" th:value="${data.payTypeCode}">
-                                <div class="layui-row layui-form-item">
-                                    <div class="layui-form-item">
-                                        <label for="payTypeCode" class="layui-form-label">支付类型：</label>
-                                        <div class="layui-input-block">
-                                            <select disabled id="payTypeCode">
-                                                <option value="" selected>无</option>
-                                                <option th:each="type:${availTypes}"
-                                                        th:text="${type.typeName}"
-                                                        th:value="${type.typeCode}"
-                                                        th:selected="${data.payTypeCode == type.typeCode}">
-                                                </option>
-                                            </select>
-                                        </div>
+                                <div class="layui-form-item">
+                                    <label for="payTypeCode" class="layui-form-label">支付类型：</label>
+                                    <div class="layui-input-block">
+                                        <select disabled id="payTypeCode">
+                                            <option value="" selected>无</option>
+                                            <option th:each="type:${availTypes}"
+                                                    th:text="${type.typeName}"
+                                                    th:value="${type.typeCode}"
+                                                    th:selected="${data.payTypeCode == type.typeCode}">
+                                            </option>
+                                        </select>
                                     </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="productCode" class="layui-form-label">产品编码：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input"
+                                               name="productCode" id="productCode"
+                                               autocomplete="off"
+                                               th:value="${data.productCode}"
+                                               placeholder="请输入产品编码">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
                                     <label for="productName" class="layui-form-label">产品名称：</label>
                                     <div class="layui-input-block">
                                         <input type="text" class="layui-input"
                                                name="productName" id="productName"
-                                               autocomplete="off" th:value="${data.productName}"
+                                               autocomplete="off"
+                                               th:value="${data.productName}"
                                                placeholder="请输入产品名称">
                                     </div>
                                 </div>

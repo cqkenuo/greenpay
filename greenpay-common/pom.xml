@@ -53,6 +53,11 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

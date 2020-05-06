@@ -8,12 +8,10 @@ import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -41,8 +39,17 @@ public class AdminPayProductController extends CURDBaseController {
     }
 
     @GetMapping("/list")
+    @PageViewHandleError
     public String list(){
         return "admin/pay/product/list";
+    }
+    @PostMapping(value = "/list")
+    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+        if (action.equals("del")){
+            List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
+            productService.delByIds(allIds);
+        }
+        return redirect("/admin/pay/product/list");
     }
     @GetMapping("/list/add")
     @PageViewHandleError

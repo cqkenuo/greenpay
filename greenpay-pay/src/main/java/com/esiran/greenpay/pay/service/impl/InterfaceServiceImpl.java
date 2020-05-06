@@ -5,16 +5,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
-import com.esiran.greenpay.pay.entity.Interface;
-import com.esiran.greenpay.pay.entity.InterfaceDTO;
-import com.esiran.greenpay.pay.entity.InterfaceInputDTO;
-import com.esiran.greenpay.pay.entity.TypeDTO;
+import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.mapper.InterfaceMapper;
 import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.esiran.greenpay.pay.service.IPassageService;
 import com.esiran.greenpay.pay.service.ITypeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,9 +30,12 @@ import java.util.List;
 public class InterfaceServiceImpl extends ServiceImpl<InterfaceMapper, Interface> implements IInterfaceService {
     private static final ModelMapper modelMapper = new ModelMapper();
     private final ITypeService typeService;
-
-    public InterfaceServiceImpl(ITypeService typeService) {
+    private final IPassageService passageService;
+    public InterfaceServiceImpl(
+            ITypeService typeService,
+            @Lazy IPassageService passageService) {
         this.typeService = typeService;
+        this.passageService = passageService;
     }
 
     @Override
@@ -86,5 +89,21 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceMapper, Interface
                 throw new PostResourceException("接口编码已经存在");
         }
         return updateById(target);
+    }
+
+    @Override
+    @Transactional
+    public void delByIds(List<Integer> ids) throws PostResourceException {
+        for (Integer id : ids){
+            Interface ints = this.getById(id);
+            LambdaQueryWrapper<Passage> passageQueryWrapper
+                    = new LambdaQueryWrapper<>();
+            passageQueryWrapper.eq(Passage::getInterfaceCode,ints.getInterfaceCode());
+            List<Passage> passages = passageService.list(passageQueryWrapper);
+            if (passages == null || passages.size() > 0){
+                throw new PostResourceException("支付接口还有关联的支付通道，无法删除");
+            }
+            this.removeById(id);
+        }
     }
 }

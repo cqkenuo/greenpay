@@ -13,8 +13,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.pay.entity.PassageAccount;
+import com.esiran.greenpay.pay.entity.ProductPassage;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -76,5 +79,13 @@ public class AgentPayPassageAccountServiceImpl extends ServiceImpl<AgentPayPassa
         AgentPayPassage passage = passageService.getById(passageAccount.getPassageId());
         if (passage == null) throw new PostResourceException("支付通道不存在");
         return updateById(passageAccount);
+    }
+
+    @Override
+    @Transactional
+    public void delByIds(List<Integer> ids) throws PostResourceException {
+        for (Integer id : ids){
+            this.removeById(id);
+        }
     }
 }

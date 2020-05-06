@@ -14,6 +14,8 @@ spring:
 delay_queue:
   redis:
     default_key: 'greenpay:delay_queue'
+  consumer:
+    enabled: true
 wechat:
   app_id: wx2aeda339f56138bf
   app_secret: 731787f51247a33c4ff210cd613dd780
@@ -21,8 +23,5 @@ wechat:
   mch_key: 2624eedd356624bc7a662c29ceb0a20e
 
 shiro:
-  sessionManager:
-    cookie:
-      name: "abc"
   loginUrl: /admin/login
   successUrl: /admin/home

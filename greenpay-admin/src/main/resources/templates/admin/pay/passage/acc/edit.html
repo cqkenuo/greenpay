@@ -48,8 +48,18 @@
                                         <textarea id="interfaceAttr"
                                                   name="interfaceAttr"
                                                   placeholder="请输入接口扩展参数"
-                                                  th:text="${data.interfaceAttr}"
+                                                  th:text="${data.interfaceAttrDisplay}"
                                                   class="layui-textarea"></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="weight" class="layui-form-label">轮询权重：</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" class="layui-input"
+                                               id="weight" name="weight"
+                                               th:value="${data.weight}"
+                                               autocomplete="off"
+                                               placeholder="请输入轮询权重。默认0，即不开启">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">

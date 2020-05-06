@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class MerchantProductPassageInputDTO {
+    private Integer mchId;
     private Integer productId;
     private Integer passageId;
     private Integer widget;

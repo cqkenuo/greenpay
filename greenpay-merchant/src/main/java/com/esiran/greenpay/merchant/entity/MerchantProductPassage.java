@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 public class MerchantProductPassage extends BaseMapperEntity {
 
     private static final long serialVersionUID = 1L;
-
+    private Integer mchId;
     /**
      * 产品ID
      */

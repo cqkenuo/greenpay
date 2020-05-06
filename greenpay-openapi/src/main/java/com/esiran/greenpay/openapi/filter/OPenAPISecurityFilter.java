@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class OPenAPISecurityFilter implements Filter {
@@ -34,10 +36,16 @@ public class OPenAPISecurityFilter implements Filter {
     private final IApiConfigService apiConfigService;
     @Value("${greenpay.openapi.enable_sign:false}")
     private boolean enableSign;
+    private final String[] allowedPaths;
     @Autowired
     public OPenAPISecurityFilter(IMerchantService merchantService, IApiConfigService apiConfigService) {
         this.merchantService = merchantService;
         this.apiConfigService = apiConfigService;
+        allowedPaths = new String[]{
+                "/api/v1/helper/wx/callback/code($|/$)",
+                "/api/v1/cashiers/pay/wx/order($|/$)",
+                "/api/v1/invoices/.+?/callback($|/$)"
+        };
     }
 
     @Override
@@ -56,11 +64,27 @@ public class OPenAPISecurityFilter implements Filter {
         pw.flush();
         pw.close();
     }
+
+    private boolean checkAllowedPaths(String url){
+        for (String path : allowedPaths){
+            Pattern pattern = Pattern.compile(path);
+            Matcher matcher = pattern.matcher(url);
+            if (matcher.matches()){
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-
+        servletRequest.setCharacterEncoding("UTF-8");
+        String url = httpServletRequest.getRequestURI();
+        if (checkAllowedPaths(url)){
+            filterChain.doFilter(httpServletRequest, servletResponse);
+            return;
+        }
         try {
             verifyRequisiteParam(httpServletRequest);
             verifySign(httpServletRequest);
@@ -102,7 +126,7 @@ public class OPenAPISecurityFilter implements Filter {
         long timestamp = Long.parseLong(timestampStr);
         long currentTimestamp = System.currentTimeMillis();
         long timeDiff = currentTimestamp - timestamp;
-        if (timeDiff > 180000)
+        if (timeDiff > 600000 )
             throw new APIException("请求已过期，或超时","INVALID_REQUEST",400);
     }
 

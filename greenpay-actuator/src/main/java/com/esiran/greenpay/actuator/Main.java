@@ -20,7 +20,7 @@ public class Main {
                 }
 
                 @Override
-                public void action(Flow<Object> flow) {
+                public void action(Flow<Object> flow) throws Exception {
 
                 }
             });

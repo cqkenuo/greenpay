@@ -4,18 +4,23 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
+import com.esiran.greenpay.agentpay.entity.AgentPayPassageAccount;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassageDTO;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassageInputDTO;
 import com.esiran.greenpay.agentpay.mapper.AgentPayPassageMapper;
+import com.esiran.greenpay.agentpay.service.IAgentPayPassageAccountService;
 import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.Interface;
+import com.esiran.greenpay.pay.entity.PassageAccount;
+import com.esiran.greenpay.pay.entity.ProductPassage;
 import com.esiran.greenpay.pay.entity.TypeDTO;
 import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.ITypeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,9 +38,14 @@ public class AgentPayPassageServiceImpl extends ServiceImpl<AgentPayPassageMappe
     private static final ModelMapper modelMapper = new ModelMapper();
     private final ITypeService typeService;
     private final IInterfaceService interfaceService;
-    public AgentPayPassageServiceImpl(ITypeService typeService, IInterfaceService interfaceService) {
+    private final IAgentPayPassageAccountService agentPayPassageAccountService;
+    public AgentPayPassageServiceImpl(
+            ITypeService typeService,
+            IInterfaceService interfaceService,
+            @Lazy IAgentPayPassageAccountService agentPayPassageAccountService) {
         this.typeService = typeService;
         this.interfaceService = interfaceService;
+        this.agentPayPassageAccountService = agentPayPassageAccountService;
     }
 
     @Override
@@ -70,6 +80,21 @@ public class AgentPayPassageServiceImpl extends ServiceImpl<AgentPayPassageMappe
         TypeDTO typeDTO = typeService.getTypeByCode(passage.getPayTypeCode());
         checkupPost(passage, typeDTO);
         return updateById(passage);
+    }
+
+    @Override
+    public void delIds(List<Integer> ids) throws PostResourceException {
+        for (Integer id : ids){
+            LambdaQueryWrapper<AgentPayPassageAccount> agentPayPassageAccountQueryWrapper
+                    = new LambdaQueryWrapper<>();
+            agentPayPassageAccountQueryWrapper.eq(AgentPayPassageAccount::getPassageId,id);
+            List<AgentPayPassageAccount> apas = agentPayPassageAccountService
+                    .list(agentPayPassageAccountQueryWrapper);
+            if (apas == null || apas.size() > 0){
+                throw new PostResourceException("代付通道还有关联的子账户，无法删除");
+            }
+            this.removeById(id);
+        }
     }
 
     private void checkupPost(AgentPayPassage passage, TypeDTO typeDTO) throws PostResourceException {

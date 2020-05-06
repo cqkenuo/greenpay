@@ -23,4 +23,5 @@ public interface IAgentPayPassageService extends IService<AgentPayPassage> {
     IPage<AgentPayPassageDTO> selectPage(IPage<AgentPayPassageDTO> page, AgentPayPassageDTO passageDTO);
     int add(AgentPayPassageInputDTO passageInputDTO) throws PostResourceException;
     boolean updateById(Integer id, AgentPayPassageInputDTO passageInputDTO) throws PostResourceException, ResourceNotFoundException;
+    void delIds(List<Integer> ids) throws PostResourceException;
 }

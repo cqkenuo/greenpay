@@ -5,17 +5,13 @@ import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.*;
-import com.esiran.greenpay.pay.service.IInterfaceService;
-import com.esiran.greenpay.pay.service.IPassageAccountService;
-import com.esiran.greenpay.pay.service.IPassageService;
-import com.esiran.greenpay.pay.service.ITypeService;
-import org.modelmapper.ModelMapper;
+import com.esiran.greenpay.pay.service.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -28,6 +24,7 @@ public class AdminPayPassageController extends CURDBaseController {
     private final IInterfaceService interfaceService;
     private final ITypeService typeService;
     private final IPassageAccountService passageAccountService;
+    private static final Gson gson = new GsonBuilder().create();
     public AdminPayPassageController(
             IPassageService passageService,
             IInterfaceService interfaceService,
@@ -39,8 +36,17 @@ public class AdminPayPassageController extends CURDBaseController {
     }
 
     @GetMapping("/list")
+    @PageViewHandleError
     public String list(){
         return "admin/pay/passage/list";
+    }
+    @PostMapping(value = "/list")
+    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+        if (action.equals("del")){
+            List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
+            passageService.delByIds(allIds);
+        }
+        return redirect("/admin/pay/passage/list");
     }
     @GetMapping("/list/add")
     @PageViewHandleError
@@ -50,7 +56,6 @@ public class AdminPayPassageController extends CURDBaseController {
         modelMap.addAttribute("availableTypes",availableTypes);
         modelMap.addAttribute("availableInters",availableInters);
         return "admin/pay/passage/add";
-//        return "admin/pay/passage/add";
     }
     @PostMapping("/list/add")
     public String addPost(@Valid PassageInputDTO dto) throws PostResourceException {
@@ -77,9 +82,21 @@ public class AdminPayPassageController extends CURDBaseController {
     }
 
     @GetMapping("/list/{passageId}/acc")
+    @PageViewHandleError
     public String listAcc(@PathVariable String passageId, ModelMap modelMap){
         modelMap.addAttribute("passageId", passageId);
         return "admin/pay/passage/acc/list";
+    }
+    @PostMapping(value = "/list/{passageId}/acc")
+    public String listAccPost(
+            @PathVariable String passageId,
+            @RequestParam String action,
+            @RequestParam String ids) throws PostResourceException {
+        if (action.equals("del")){
+            List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
+            passageAccountService.delIds(allIds);
+        }
+        return redirect("/admin/pay/passage/list/%s/acc",passageId);
     }
     @GetMapping("/list/{passageId}/acc/add")
     @PageViewHandleError
@@ -95,9 +112,9 @@ public class AdminPayPassageController extends CURDBaseController {
     }
     @GetMapping("/list/{passageId}/acc/{accId}/edit")
     @PageViewHandleError
-    public String editAcc(@PathVariable String passageId, @PathVariable String accId, ModelMap modelMap, HttpSession httpSession){
+    public String editAcc(@PathVariable String passageId, @PathVariable Integer accId, ModelMap modelMap, HttpSession httpSession){
         Passage passage = passageService.getById(passageId);
-        PassageAccount passageAccount = passageAccountService.getById(accId);
+        PassageAccountDTO passageAccount = passageAccountService.getDTOById(accId);
         modelMap.addAttribute("passage", passage);
         modelMap.addAttribute("data",passageAccount);
         return "admin/pay/passage/acc/edit";

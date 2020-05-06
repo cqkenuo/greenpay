@@ -21,9 +21,8 @@ public class PassageAccountInputDTO {
 
     @NotBlank(message = "账户名称不能为空")
     private String accountName;
-
     private String interfaceAttr;
-
+    private Integer weight;
     @NotNull(message = "状态不能为空")
     private Boolean status;
 }

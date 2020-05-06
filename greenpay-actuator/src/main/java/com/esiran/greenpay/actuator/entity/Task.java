@@ -1,7 +1,7 @@
 package com.esiran.greenpay.actuator.entity;
 
-public abstract class Task<T> {
-    public abstract String taskName();
-    public abstract String dependent();
-    public abstract void action(Flow<T> flow);
+public interface Task<T> {
+    String taskName();
+    String dependent();
+    void action(Flow<T> flow) throws Exception;
 }

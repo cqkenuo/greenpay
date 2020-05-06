@@ -5,60 +5,105 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.esiran.greenpay.actuator.Plugin;
 import com.esiran.greenpay.actuator.PluginLoader;
 import com.esiran.greenpay.common.entity.APIException;
-import com.esiran.greenpay.common.util.EncryptUtil;
-import com.esiran.greenpay.common.util.IdWorker;
+import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.common.sign.Md5SignType;
+import com.esiran.greenpay.common.sign.SignType;
+import com.esiran.greenpay.common.sign.SignVerify;
+import com.esiran.greenpay.common.util.*;
+import com.esiran.greenpay.merchant.entity.ApiConfig;
 import com.esiran.greenpay.merchant.entity.Merchant;
-import com.esiran.greenpay.merchant.entity.MerchantProductDTO;
+import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.esiran.greenpay.merchant.service.IMerchantService;
-import com.esiran.greenpay.message.delayqueue.DelayQueueSender;
 import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.openapi.entity.Invoice;
 import com.esiran.greenpay.openapi.entity.InvoiceInputDTO;
-import com.esiran.greenpay.openapi.entity.PayOrder;
-import com.esiran.greenpay.openapi.plugins.PayOrderFlow;
 import com.esiran.greenpay.openapi.service.IInvoiceService;
 import com.esiran.greenpay.pay.entity.*;
+import com.esiran.greenpay.pay.plugin.PayOrderFlow;
 import com.esiran.greenpay.pay.service.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import okhttp3.*;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class InvoiceService implements IInvoiceService {
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
     private static final ModelMapper modelMapper = new ModelMapper();
+    private static final Gson gson = new GsonBuilder().create();
     private final IMerchantService merchantService;
-    private final IProductService productService;
-    private final IPassageAccountService passageAccountService;
-    private final IPassageService passageService;
-    private final IInterfaceService interfaceService;
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;
     private final IdWorker idWorker;
+    private final IInterfaceService interfaceService;
+    private final IProductService productService;
     private final RedisDelayQueueClient redisDelayQueueClient;
+    private final PluginLoader pluginLoader;
+    @Value("${web.hostname:http://localhost}")
+    private String webHostname;
     public InvoiceService(
             IMerchantService merchantService,
+            IOrderService orderService,
+            IOrderDetailService orderDetailService,
+            IdWorker idWorker,
+            IInterfaceService interfaceService,
             IProductService productService,
-            IPassageAccountService passageAccountService,
-            IPassageService passageService,
-            IInterfaceService interfaceService, IOrderService orderService,
-            IOrderDetailService orderDetailService, IdWorker idWorker,
-            RedisDelayQueueClient redisDelayQueueClient) {
+            RedisDelayQueueClient redisDelayQueueClient,
+            PluginLoader pluginLoader, IApiConfigService apiConfigService) {
         this.merchantService = merchantService;
-        this.productService = productService;
-        this.passageAccountService = passageAccountService;
-        this.passageService = passageService;
-        this.interfaceService = interfaceService;
         this.orderService = orderService;
         this.orderDetailService = orderDetailService;
         this.idWorker = idWorker;
+        this.interfaceService = interfaceService;
+        this.productService = productService;
         this.redisDelayQueueClient = redisDelayQueueClient;
+        this.pluginLoader = pluginLoader;
     }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Invoice createInvoiceByInput(InvoiceInputDTO invoiceInputDTO, Merchant merchant) throws Exception {
+        PayOrder payOrder = createPretreatmentInvoice(invoiceInputDTO,merchant);
+        Order order = payOrder.getOrder();
+        OrderDetail orderDetail = payOrder.getOrderDetail();
+        Map<String,Object> results = null;
+        Product product = productService.getById(order.getPayProductId());
+        Interface ins = interfaceService.getById(orderDetail.getPayInterfaceId());
+        try {
+            Plugin<PayOrder> plugin = pluginLoader.loadForClassPath(ins.getInterfaceImpl());
+            PayOrderFlow payOrderFlow = new PayOrderFlow(payOrder);
+            plugin.apply(payOrderFlow);
+            payOrderFlow.execDependent("create");
+            results = payOrderFlow.getResults();
+            orderDetailService.updatePayCredentialByOrderNo(order.getOrderNo(),results);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new APIException("CHANNEL_REQUEST_ERROR","支付渠道请求失败");
+        }
+        Invoice out = modelMapper.map(order,Invoice.class);
+        out.setChannel(product.getProductName());
+        out.setCredential(results);
+        return out;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public PayOrder createPretreatmentInvoice(InvoiceInputDTO invoiceInputDTO, Merchant merchant) throws APIException {
         Invoice invoice = modelMapper.map(invoiceInputDTO,Invoice.class);
         invoice.setOrderNo(String.valueOf(idWorker.nextId()));
         invoice.setOrderSn(EncryptUtil.baseTimelineCode());
@@ -66,45 +111,36 @@ public class InvoiceService implements IInvoiceService {
         if (!merchant.getStatus()){
             throw new APIException("商户状态已锁定","MERCHANT_STATUS_LOCKED");
         }
-        MerchantProductDTO merchantProductDTO;
-        try {
-            merchantProductDTO = merchantService
-                    .selectMchProductById(merchant.getId(),invoice.getChannel());
-        }catch (Exception e){
-            throw new APIException("商户支付渠道未开通","PAY_TYPE_NOT_FOUND");
+        Product product = productService.getByProductCode(invoice.getChannel());
+        if (product == null || !product.getStatus()) {
+            throw new APIException("支付产品暂不支持创建订单","PRODUCT_NOT_SUPPORT");
         }
-        if (!merchantProductDTO.getStatus() ){
-            throw new APIException("商户支付渠道未开通","PAY_TYPE_LOCKED");
+        PassageAndSubAccount passageAndSubAccount =
+                merchantService.scheduler(merchant.getId(),product.getId());
+        if (passageAndSubAccount == null){
+            throw new APIException("支付产品暂不支持创建订单","PRODUCT_NOT_SUPPORT");
         }
-        Product product = productService.getById(merchantProductDTO.getProductId());
-        if (product == null || !product.getStatus()){
-            throw new APIException("系统错误，获取支付产品失败","PAY_PRODUCT_NOT_FOUND");
+        Passage passage = passageAndSubAccount.getPassage();
+        PassageAccount passageAccount = passageAndSubAccount.getPassageAccount();
+        String insCode = passage.getInterfaceCode();
+        Interface ins = interfaceService.getByCode(insCode);
+        if (ins == null || !ins.getStatus()){
+            throw new APIException("支付产品暂不支持创建订单","PRODUCT_NOT_SUPPORT");
         }
-        Passage passage = null;
-        PassageAccount passageAccount = null;
-        if (product.getInterfaceMode() == 1){
-            passage = passageService.getById(product.getDefaultPassageId());
-            passageAccount = passageAccountService.getById(product.getDefaultPassageAccId());
-        }
-        if (passage == null ||!passage.getStatus()){
-            throw new APIException("系统错误，获取支付通道失败","PAY_PASSAGE_NOT_FOUND");
-        }
-        if (passageAccount == null || !passageAccount.getStatus()){
-            throw new APIException("系统错误，获取通道账户失败","PAY_PASSAGE_ACCOUNT_NOT_FOUND");
-        }
-        LambdaQueryWrapper<Interface> lambdaQueryWrapper =
-                new QueryWrapper<Interface>().lambda()
-                        .eq(Interface::getInterfaceCode,passage.getInterfaceCode());
-        Interface ints = interfaceService.getOne(lambdaQueryWrapper);
-        if (ints == null || !ints.getStatus()){
-            throw new APIException("系统错误，获取支付接口失败","PAY_INTERFACE_NOT_FOUND");
-        }
+        logger.info("Create order by Product Id: {}, Passage Id: {}, Passage Account: {}",
+                product.getId(), passage.getId(), passageAccount.getId());
         // 构造订单
         Order order = modelMapper.map(invoice,Order.class);
-        order.setStatus(0);
+        order.setStatus(1);
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
         order.setMchId(merchant.getId());
+        order.setPayProductId(product.getId());
+        Integer orderFee = NumberUtil.calculateAmountFee(order.getAmount(),
+                passageAndSubAccount.getProductRate());
+        order.setFee(orderFee);
+        order.setPayProductName(product.getProductName());
+        order.setPayProductCode(product.getProductCode());
         LambdaQueryWrapper<Order> orderQueryWrapper = new QueryWrapper<Order>().lambda()
                 .eq(Order::getMchId,order.getMchId())
                 .eq(Order::getAppId,order.getAppId())
@@ -115,22 +151,59 @@ public class InvoiceService implements IInvoiceService {
         }
         orderService.save(order);
         OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setPayTypeCode(product.getPayTypeCode());
         orderDetail.setOrderNo(invoice.getOrderNo());
         orderDetail.setPayProductId(product.getId());
         orderDetail.setPayPassageId(passage.getId());
         orderDetail.setPayPassageAccId(passageAccount.getId());
-        orderDetail.setPayInterfaceId(ints.getId());
         orderDetail.setPayInterfaceAttr(passageAccount.getInterfaceAttr());
+        orderDetail.setPayInterfaceId(ins.getId());
+        String channelExtraStr = invoiceInputDTO.getChannelExtra();
+        orderDetail.setUpstreamExtra(channelExtraStr);
         orderDetail.setCreatedAt(LocalDateTime.now());
         orderDetail.setUpdatedAt(LocalDateTime.now());
         orderDetailService.save(orderDetail);
-
-        Plugin<PayOrder> plugin = PluginLoader.loadForClassPath("com.esiran.greenpay.openapi.plugins.WxJsapiPlugin");
         PayOrder payOrder = new PayOrder();
+        payOrder.setOrder(order);
+        payOrder.setOrderDetail(orderDetail);
+        String notifyReceiveUrl = String.format(
+                "%s/api/v1/invoices/%s/callback",
+                webHostname,order.getOrderNo());
+        payOrder.setNotifyReceiveUrl(notifyReceiveUrl);
+        redisDelayQueueClient.sendDelayMessage("order:expire",order.getOrderNo(),20*60*1000);
+        return payOrder;
+    }
+
+    @Override
+    public String handleInvoiceCallback(HttpServletRequest request, HttpServletResponse response, String orderNo) {
+        Order order = orderService.getOneByOrderNo(orderNo);
+        OrderDetail orderDetail = orderDetailService.getOneByOrderNo(orderNo);
+        if (order == null || orderDetail == null || order.getStatus() != 1){
+            response.setStatus(404);
+            return null;
+        }
+        PayOrder payOrder = new PayOrder();
+        payOrder.setOrder(order);
+        payOrder.setOrderDetail(orderDetail);
+        Interface ins = interfaceService.getById(orderDetail.getPayInterfaceId());
         PayOrderFlow payOrderFlow = new PayOrderFlow(payOrder);
-        plugin.apply(payOrderFlow);
-        payOrderFlow.execDependent("create");
-        redisDelayQueueClient.sendDelayMessage("greenpay:queue:order_task",order.getOrderNo(),2000);
-        return invoice;
+        try {
+            Plugin<PayOrder> plugin = pluginLoader.loadForClassPath(ins.getInterfaceImpl());
+            payOrderFlow.setRequest(request);
+            plugin.apply(payOrderFlow);
+            payOrderFlow.execDependent("notify");
+            if (!payOrderFlow.isChecked()){
+                return payOrderFlow.getFailedString();
+            }
+            orderService.updateOrderStatus(orderNo,2);
+            Map<String,String> messagePayload = new HashMap<>();
+            messagePayload.put("orderNo", orderNo);
+            messagePayload.put("mchId", String.valueOf(order.getMchId()));
+            messagePayload.put("count", "1");
+            redisDelayQueueClient.sendDelayMessage("order:notify",gson.toJson(messagePayload),0);
+        } catch (Exception e) {
+            return payOrderFlow.getFailedString();
+        }
+        return payOrderFlow.getSuccessfulString();
     }
 }

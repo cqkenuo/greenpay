@@ -29,6 +29,10 @@ public class Product extends BaseMapperEntity {
      * 支付产品名称
      */
     private String productName;
+    /**
+     * 支付产品编码
+     */
+    private String productCode;
 
     /**
      * 支付产品类型（1：收款，2：充值）

@@ -17,10 +17,11 @@ import java.util.List;
  * @since 2020-04-13
  */
 public interface IProductService extends IService<Product> {
+    Product getByProductCode(String productCode);
     List<ProductDTO> findAllProduct(ProductDTO productDTO);
     List<ProductDTO> findAllProductByPayTypeCode(String payTypeCode);
-
     IPage<ProductDTO> selectPage(IPage<ProductDTO> page, ProductDTO productDTO);
     int add(ProductInputDTO productInputDTO) throws PostResourceException;
     boolean updateById(Integer id, ProductInputDTO productInputDTO) throws PostResourceException, ResourceNotFoundException;
+    void delByIds(List<Integer> ids);
 }

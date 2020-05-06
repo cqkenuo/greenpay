@@ -1,9 +1,9 @@
 package com.esiran.greenpay.admin.config;
 
+import com.esiran.greenpay.admin.runner.OrderNotifyTaskRunner;
 import com.esiran.greenpay.common.util.IdWorker;
 import com.esiran.greenpay.message.delayqueue.DelayQueueTaskRegister;
-import com.esiran.greenpay.openapi.filter.OPenAPISecurityFilter;
-import com.esiran.greenpay.admin.runner.OrderDelayQueueTaskRunner;
+import com.esiran.greenpay.admin.runner.OrderExpireTaskRunner;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -11,30 +11,26 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Configuration
 @EnableSwagger2
 public class WebMvcConfig implements WebMvcConfigurer {
-    private final OPenAPISecurityFilter oPenAPISecurityFilter;
     private final BaseInterceptor baseInterceptor;
-    private final OrderDelayQueueTaskRunner orderDelayQueueTaskRunner;
-    public WebMvcConfig(OPenAPISecurityFilter oPenAPISecurityFilter,
-                        BaseInterceptor baseInterceptor,
-                        OrderDelayQueueTaskRunner orderDelayQueueTaskRunner) {
-        this.oPenAPISecurityFilter = oPenAPISecurityFilter;
+    private final OrderNotifyTaskRunner orderNotifyTaskRunner;
+    private final OrderExpireTaskRunner orderExpireTaskRunner;
+    public WebMvcConfig(BaseInterceptor baseInterceptor,
+                        OrderNotifyTaskRunner orderNotifyTaskRunner, OrderExpireTaskRunner orderExpireTaskRunner) {
         this.baseInterceptor = baseInterceptor;
-        this.orderDelayQueueTaskRunner = orderDelayQueueTaskRunner;
+        this.orderNotifyTaskRunner = orderNotifyTaskRunner;
+        this.orderExpireTaskRunner = orderExpireTaskRunner;
     }
 
     @Bean
@@ -42,11 +38,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new IdWorker(1,1,1);
     }
 
-//    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
-//        converters.add(gsonHttpMessageConverter);
-//    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -69,20 +60,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
         objectMapper.registerModule(javaTimeModule).registerModule(new ParameterNamesModule());
         return objectMapper;
     }
-    @Bean
-    public FilterRegistrationBean<OPenAPISecurityFilter> uploadFilterRegistration() {
-        FilterRegistrationBean<OPenAPISecurityFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(oPenAPISecurityFilter);
-        registration.addUrlPatterns("/api/v1/*");
-        registration.setName("OPenAPISecurityFilter");
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registration;
-    }
 
     @Bean
     public DelayQueueTaskRegister delayQueueTaskRegister(){
         DelayQueueTaskRegister delayQueueTaskRegister = new DelayQueueTaskRegister();
-        delayQueueTaskRegister.register("greenpay:queue:order_task",orderDelayQueueTaskRunner);
+        delayQueueTaskRegister.register("order:expire",orderExpireTaskRunner);
+        delayQueueTaskRegister.register("order:notify",orderNotifyTaskRunner);
         return delayQueueTaskRegister;
     }
 

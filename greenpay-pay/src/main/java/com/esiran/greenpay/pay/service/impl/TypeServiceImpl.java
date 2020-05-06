@@ -1,17 +1,17 @@
 package com.esiran.greenpay.pay.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
-import com.esiran.greenpay.pay.entity.Type;
-import com.esiran.greenpay.pay.entity.TypeDTO;
-import com.esiran.greenpay.pay.entity.TypeInputDTO;
+import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.mapper.TypeMapper;
+import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.ITypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +26,13 @@ import java.util.List;
 @Service
 public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements ITypeService {
     private static final ModelMapper modelMapper = new ModelMapper();
+    private final IInterfaceService interfaceService;
+
+    public TypeServiceImpl(
+            @Lazy IInterfaceService interfaceService) {
+        this.interfaceService = interfaceService;
+    }
+
     @Override
     public Type findTypeByCode(String code) {
         LambdaQueryWrapper<Type> typeLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -72,5 +79,21 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements IT
         if (type == null) throw new ResourceNotFoundException();
         target.setId(type.getId());
         updateById(target);
+    }
+
+    @Override
+    @Transactional
+    public void delByIds(List<Integer> ids) throws PostResourceException {
+        for (Integer id : ids){
+            Type t = this.getById(id);
+            LambdaQueryWrapper<Interface> interfaceQueryWrapper
+                    = new LambdaQueryWrapper<>();
+            interfaceQueryWrapper.eq(Interface::getPayTypeCode,t.getTypeCode());
+            List<Interface> interfaceList = interfaceService.list(interfaceQueryWrapper);
+            if (interfaceList == null || interfaceList.size() > 0){
+                throw new PostResourceException("支付类型还有关联的支付接口，无法删除");
+            }
+            this.removeById(id);
+        }
     }
 }

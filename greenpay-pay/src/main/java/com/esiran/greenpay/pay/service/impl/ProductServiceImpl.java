@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -36,7 +37,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private final IPassageService passageService;
     private final IPassageAccountService passageAccountService;
     private final IProductPassageService productPassageService;
-
     public ProductServiceImpl(
             ITypeService typeService,
             IPassageService passageService,
@@ -46,6 +46,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         this.passageService = passageService;
         this.passageAccountService = passageAccountService;
         this.productPassageService = productPassageService;
+    }
+
+    @Override
+    public Product getByProductCode(String productCode) {
+        LambdaQueryWrapper<Product> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Product::getProductCode,productCode);
+        return this.getOne(lambdaQueryWrapper);
     }
 
     @Override
@@ -82,6 +89,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public int add(ProductInputDTO productInputDTO) throws PostResourceException {
+        Product old = this.getByProductCode(productInputDTO.getProductCode());
+        if (old != null) throw new PostResourceException("产品编码已存在");
         Product target = modelMapper.map(productInputDTO,Product.class);
         TypeDTO typeDTO = typeService.getTypeByCode(target.getPayTypeCode());
         if (typeDTO == null) throw new PostResourceException("支付类型不存在");
@@ -94,6 +103,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Product src = this.getById(id);
         if (src == null) throw new ResourceNotFoundException("支付产品不存在");
+
         Product target = modelMapper.map(productInputDTO,Product.class);
         target.setId(src.getId());
         TypeDTO typeDTO = typeService.getTypeByCode(target.getPayTypeCode());
@@ -101,11 +111,19 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         if (!target.getPayTypeCode().equals(src.getPayTypeCode())){
             throw new PostResourceException("支付类型无法修改");
         }
+        if (!target.getProductCode().equals(src.getPayTypeCode())){
+            Product old = this.getByProductCode(productInputDTO.getProductCode());
+            if (old != null) throw new PostResourceException("产品编码已存在");
+        }
         if (productInputDTO.getDefaultPassageId() != null){
             Passage passage = passageService.getById(productInputDTO.getDefaultPassageId());
             if (productInputDTO.getDefaultPassageAccId() == null)
                 throw new PostResourceException("支付通道子账户不能为空");
-            PassageAccount passageAcc = passageAccountService.getById(passage.getId());
+            if (passage == null)
+                throw new PostResourceException("支付通道不存在");
+            PassageAccount passageAcc = passageAccountService.getById(productInputDTO.getDefaultPassageAccId());
+            if (passageAcc == null)
+                throw new PostResourceException("支付通道子账户不存在");
             if (!passage.getId().equals(passageAcc.getPassageId())){
                 throw new PostResourceException("支付通道与子账户不匹配");
             }
@@ -125,5 +143,17 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
         target.setUpdatedAt(LocalDateTime.now());
         return updateById(target);
+    }
+
+    @Override
+    @Transactional
+    public void delByIds(List<Integer> ids) {
+        for (Integer id : ids){
+            this.removeById(id);
+            LambdaQueryWrapper<ProductPassage> productPassageLambdaQueryWrapper
+                    = new LambdaQueryWrapper<>();
+            productPassageLambdaQueryWrapper.eq(ProductPassage::getProductId,id);
+            productPassageService.remove(productPassageLambdaQueryWrapper);
+        }
     }
 }

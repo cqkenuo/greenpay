@@ -24,7 +24,12 @@ public class PassageAccountDTO {
     private Integer passageId;
     private String accountName;
     private String interfaceAttr;
+    private String interfaceAttrDisplay;
     private Boolean status;
+    /**
+     * 轮训权重
+     */
+    private Integer weight;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

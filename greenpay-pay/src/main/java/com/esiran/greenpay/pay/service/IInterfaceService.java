@@ -10,6 +10,7 @@ import com.esiran.greenpay.pay.entity.InterfaceInputDTO;
 import io.swagger.models.auth.In;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,4 +27,5 @@ public interface IInterfaceService extends IService<Interface> {
     IPage<InterfaceDTO> selectPage(IPage<InterfaceDTO> iPage,InterfaceDTO interfaceDTO);
     int addInterface(InterfaceInputDTO interfaceInputDTO) throws PostResourceException;
     boolean updateById(Integer id, InterfaceInputDTO interfaceInputDTO) throws PostResourceException, ResourceNotFoundException;
+    void delByIds(List<Integer> ids) throws PostResourceException;
 }

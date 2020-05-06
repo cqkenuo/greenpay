@@ -56,10 +56,10 @@ public class RedisDelayQueueConsumer implements DelayQueueConsumer {
                 long start = System.currentTimeMillis();
                 if (close) continue;
                 Set<String> set = redisTemplate.opsForZSet().rangeByScore(redisKey,0,System.currentTimeMillis());
-                if (set != null && set.size() > 1){
+                if (set != null && set.size() > 0){
                     String itemString = set.stream().findFirst().get();
                     DelayMessage message = gson.fromJson(itemString, DelayMessage.class);
-                    if (message!=null){
+                    if (message != null){
                         redisTemplate.opsForZSet().remove(redisKey,itemString);
                         return message;
                     }

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.17, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: greenpay
+-- Host: localhost    Database: greenpay
 -- ------------------------------------------------------
--- Server version	8.0.19
+-- Server version	8.0.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,23 +23,23 @@ DROP TABLE IF EXISTS `agentpay_batch`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `agentpay_batch` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `batch_no` varchar(32) NOT NULL COMMENT '交易批次号',
   `out_batch_no` varchar(32) NOT NULL COMMENT '商户交易批次号',
-  `mch_id` int NOT NULL COMMENT '商户ID',
-  `total_amount` int NOT NULL DEFAULT '0' COMMENT '总金额（单位：分）',
-  `total_count` int NOT NULL DEFAULT '0' COMMENT '总笔数',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `total_amount` int(11) NOT NULL DEFAULT '0' COMMENT '总金额（单位：分）',
+  `total_count` int(11) NOT NULL DEFAULT '0' COMMENT '总笔数',
   `notify_url` varchar(255) DEFAULT NULL COMMENT '订单回调地址',
   `extra` varchar(255) DEFAULT NULL COMMENT '扩展参数',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `agentpay_passage_id` int NOT NULL COMMENT '代付通道ID',
-  `agentpay_passage_acc_id` int NOT NULL COMMENT '代付通道账户ID',
-  `pay_interface_id` int NOT NULL COMMENT '支付接口ID',
+  `agentpay_passage_id` int(11) NOT NULL COMMENT '代付通道ID',
+  `agentpay_passage_acc_id` int(11) NOT NULL COMMENT '代付通道账户ID',
+  `pay_interface_id` int(11) NOT NULL COMMENT '支付接口ID',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单状态（1：待处理，2：处理中，3：处理成功，4：部分成功，-1：处理失败）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付批次';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付批次';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,6 +48,34 @@ CREATE TABLE `agentpay_batch` (
 
 LOCK TABLES `agentpay_batch` WRITE;
 /*!40000 ALTER TABLE `agentpay_batch` DISABLE KEYS */;
+INSERT INTO `agentpay_batch` VALUES (1,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (2,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (3,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (4,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (5,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (6,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (7,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (8,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (9,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (10,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (11,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (12,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (13,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (14,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (15,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (16,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (17,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (18,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (19,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (20,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (21,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (22,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (23,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (24,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (25,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (26,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (27,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
+INSERT INTO `agentpay_batch` VALUES (28,'111111','111111',13123,100000,10,'www.baidu.com',NULL,'1',1,1,1,1,'2020-05-06 17:47:38','2020-05-06 17:47:41');
 /*!40000 ALTER TABLE `agentpay_batch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,12 +87,13 @@ DROP TABLE IF EXISTS `agentpay_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `agentpay_order` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_no` varchar(32) NOT NULL COMMENT '订单号',
   `order_sn` varchar(32) NOT NULL COMMENT '订单流水号',
-  `mch_id` int NOT NULL COMMENT '商户ID',
-  `amount` int NOT NULL DEFAULT '0' COMMENT '订单金额（单位：分）',
-  `fee` int NOT NULL DEFAULT '0' COMMENT '订单手续费（单位：分）',
+  `batch_no` varchar(32) DEFAULT NULL COMMENT '代付批次号',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `amount` int(11) NOT NULL DEFAULT '0' COMMENT '订单金额（单位：分）',
+  `fee` int(11) NOT NULL DEFAULT '0' COMMENT '订单手续费（单位：分）',
   `account_name` varchar(32) NOT NULL COMMENT '账户名',
   `account_number` varchar(32) NOT NULL COMMENT '账户号',
   `bank_name` varchar(32) NOT NULL COMMENT '开户行',
@@ -72,15 +101,16 @@ CREATE TABLE `agentpay_order` (
   `notify_url` varchar(255) DEFAULT NULL COMMENT '订单回调地址',
   `extra` varchar(255) DEFAULT NULL COMMENT '扩展参数',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `agentpay_passage_id` int NOT NULL COMMENT '支付通道ID',
-  `agentpay_passage_acc_id` int NOT NULL COMMENT '支付通道ID',
-  `pay_interface_id` int NOT NULL COMMENT '支付接口ID',
+  `agentpay_passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `agentpay_passage_name` varchar(32) NOT NULL COMMENT '代付通道名称',
+  `agentpay_passage_acc_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `pay_interface_id` int(11) NOT NULL COMMENT '支付接口ID',
   `pay_interface_attr` varchar(255) NOT NULL COMMENT '支付接口参数',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单状态（1：待处理，2：处理中，3：处理成功，-1：处理失败）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付订单表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,6 +119,23 @@ CREATE TABLE `agentpay_order` (
 
 LOCK TABLES `agentpay_order` WRITE;
 /*!40000 ALTER TABLE `agentpay_order` DISABLE KEYS */;
+INSERT INTO `agentpay_order` VALUES (1,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (2,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (3,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (4,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (5,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (6,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (7,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (8,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (9,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (10,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (11,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (12,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (13,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (14,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (15,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (16,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
+INSERT INTO `agentpay_order` VALUES (17,'111111','12312313','13123123',1231,10000,100,'测试号','123124124123123','测试','1232131231','www.baidu.com',NULL,'12312',12313,'测试',213123,123123,'123123',1,'2020-05-06 16:50:50','2020-05-06 16:50:53');
 /*!40000 ALTER TABLE `agentpay_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +147,7 @@ DROP TABLE IF EXISTS `agentpay_passage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `agentpay_passage` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `passage_name` varchar(32) NOT NULL COMMENT '代付通道名称',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_code` varchar(32) NOT NULL COMMENT '支付接口编码',
@@ -108,7 +155,7 @@ CREATE TABLE `agentpay_passage` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付通道';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付通道';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,6 +164,8 @@ CREATE TABLE `agentpay_passage` (
 
 LOCK TABLES `agentpay_passage` WRITE;
 /*!40000 ALTER TABLE `agentpay_passage` DISABLE KEYS */;
+INSERT INTO `agentpay_passage` VALUES (2,'通联代付通道','b2c','b2c_all_in_pay',1,'2020-05-06 15:46:22','2020-05-06 15:46:22');
+INSERT INTO `agentpay_passage` VALUES (3,'银联代付通道_B2C','b2c','b2c_unipay',1,'2020-05-06 19:00:28','2020-05-06 19:00:28');
 /*!40000 ALTER TABLE `agentpay_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,16 +177,16 @@ DROP TABLE IF EXISTS `agentpay_passage_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `agentpay_passage_account` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `passage_id` int NOT NULL COMMENT '代付通道ID',
+  `passage_id` int(11) NOT NULL COMMENT '代付通道ID',
   `account_name` varchar(32) NOT NULL COMMENT '通道账户名称',
   `interface_attr` varchar(255) DEFAULT NULL COMMENT '通道接口参数',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付通道账户';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付通道账户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,6 +195,7 @@ CREATE TABLE `agentpay_passage_account` (
 
 LOCK TABLES `agentpay_passage_account` WRITE;
 /*!40000 ALTER TABLE `agentpay_passage_account` DISABLE KEYS */;
+INSERT INTO `agentpay_passage_account` VALUES (2,'b2c',2,'重庆网络科技有限公司忆思然','123456',1,'2020-05-06 15:46:46','2020-05-06 15:46:46');
 /*!40000 ALTER TABLE `agentpay_passage_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,7 +207,7 @@ DROP TABLE IF EXISTS `merchant`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '商户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商户ID',
   `username` varchar(32) NOT NULL COMMENT '用户名',
   `name` varchar(32) NOT NULL COMMENT '商户名称',
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '电子邮箱',
@@ -176,10 +226,45 @@ CREATE TABLE `merchant` (
 
 LOCK TABLES `merchant` WRITE;
 /*!40000 ALTER TABLE `merchant` DISABLE KEYS */;
-INSERT INTO `merchant` (`id`, `username`, `name`, `email`, `phone`, `password`, `status`, `created_at`, `updated_at`) VALUES (2,'militch','abc@abc','litch.me@gmail.com','','123',1,'2020-04-17 00:54:21','2020-04-22 19:43:53');
-INSERT INTO `merchant` (`id`, `username`, `name`, `email`, `phone`, `password`, `status`, `created_at`, `updated_at`) VALUES (3,'abc','militch','abc@abc.com','','21232f297a57a5a743894a0e4a801fc3',1,'2020-04-17 21:55:40','2020-04-17 21:55:40');
-INSERT INTO `merchant` (`id`, `username`, `name`, `email`, `phone`, `password`, `status`, `created_at`, `updated_at`) VALUES (4,'uniabc','abc@abc','abc@abc','','abc',1,'2020-04-21 01:57:44','2020-04-23 14:36:52');
+INSERT INTO `merchant` VALUES (2,'militch','abc@abc','litch.me@gmail.com','','123',1,'2020-04-17 00:54:21','2020-04-22 19:43:53');
+INSERT INTO `merchant` VALUES (3,'abc','militch','abc@abc.com','','21232f297a57a5a743894a0e4a801fc3',1,'2020-04-17 21:55:40','2020-04-17 21:55:40');
+INSERT INTO `merchant` VALUES (4,'uniabc','abc@abc','abc@abc','11111','abc',1,'2020-04-21 01:57:44','2020-04-23 14:36:52');
 /*!40000 ALTER TABLE `merchant` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `merchant_agentpay_passage`
+--
+
+DROP TABLE IF EXISTS `merchant_agentpay_passage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `merchant_agentpay_passage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
+  `passage_id` int(11) NOT NULL COMMENT '通道ID',
+  `passage_name` varchar(32) NOT NULL COMMENT '通道名称',
+  `passage_acc_id` int(11) NOT NULL COMMENT '通道子账户ID',
+  `passage_acc_name` varchar(32) NOT NULL COMMENT '通道子账户名称',
+  `fee_type` int(11) NOT NULL DEFAULT '1' COMMENT '手续费类型（1：百分比收费，2：固定收费，3：百分比加固定收费）',
+  `fee_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '通道费率',
+  `fee_amount` int(11) NOT NULL DEFAULT '0' COMMENT '固定费用（单位：分）',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT '轮询权重',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户代付通道';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `merchant_agentpay_passage`
+--
+
+LOCK TABLES `merchant_agentpay_passage` WRITE;
+/*!40000 ALTER TABLE `merchant_agentpay_passage` DISABLE KEYS */;
+INSERT INTO `merchant_agentpay_passage` VALUES (1,2,2,'通联代付通道',1,'1',3,0.00,0,1,0,'2020-05-06 17:33:46','2020-05-06 17:33:46');
+/*!40000 ALTER TABLE `merchant_agentpay_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -190,8 +275,8 @@ DROP TABLE IF EXISTS `merchant_api_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_api_config` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `mch_id` int NOT NULL COMMENT '商户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
   `api_key` varchar(32) NOT NULL COMMENT '商户APIKEY',
   `api_security` varchar(32) NOT NULL COMMENT '商户API_SECURITY',
   `private_key` varchar(1024) DEFAULT NULL COMMENT '平台私钥',
@@ -209,9 +294,9 @@ CREATE TABLE `merchant_api_config` (
 
 LOCK TABLES `merchant_api_config` WRITE;
 /*!40000 ALTER TABLE `merchant_api_config` DISABLE KEYS */;
-INSERT INTO `merchant_api_config` (`id`, `mch_id`, `api_key`, `api_security`, `private_key`, `pub_key`, `mch_pub_key`, `created_at`, `updated_at`) VALUES (1,2,'ec3136bbf7fd326277a7f675e500265f','06590e4980b76c53f952ea7fbcd6e78c','MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIIVl7aJVGduveuwxUATC2AJRy0fE5H6tiA2hNtlZE7HDhEg73n1RnMwcBYbCk0xEuunp1Fbw/dBcMrI6GYriba7ffi37gfoCxEt3la5qxx7i4839iFq1I7Jur2PWxipVdEBeo9letpsTmLg52t4oZHA5KWZK1FJnhgfgGPLnCoPAgMBAAECgYA+NfFePIL/DDkLtHhA0lrITOebLpd/YrUi5q/W9MBp5ExX6LZeTuyoPev8xmXA0M1Jod4kzIwFfWhhsn9iDURITHjM1T4K36IdLKQimtwnp3DChMJtRwqev0g8ZIkHdQqourYscq1VxOIwR97xGsH54WFQOJlopUizs+NosmzOcQJBANiZ2NSXMZEmP5mBijwL11UAuvTXSMEyr2HvrruPtz5w2FfJwH0yHwLVjE8DtMDaVFsib1dJTVc0VGZujw4708MCQQCZvww4IbpwuqpZ0ft/UJvIfjwII+CjjmK7CG9Ae2I3qgAmW+J8tsRg7b6nVBz3fu6Qz3KBQLy3eoAzqVus+qfFAkEAuUkyAPmtPxtXAHudwqvmciKDy3p2FD7FZKPh9zSDbniduMsvTGmZuZTvx4/GCcs6qhMU57ge3uA26sDcwzJOfQJAc8SLquiavq+P/jpDKcbExt9mzKpXSFC6vyLGwsMlXczAeCHQFSB6FpJucQjBFwuZD6llCzZ346B2UHBB+6pyEQJBAJJ3NlIAUQl9JgKdwjiBWiQIdV1TGP/jDw2E9Xv7yAbrrj0NLdL9bYcv2dFnl8J0yIObNvhrWdP1S2FPB3nEb0I=','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCCFZe2iVRnbr3rsMVAEwtgCUctHxOR+rYgNoTbZWROxw4RIO959UZzMHAWGwpNMRLrp6dRW8P3QXDKyOhmK4m2u334t+4H6AsRLd5Wuasce4uPN/YhatSOybq9j1sYqVXRAXqPZXrabE5i4OdreKGRwOSlmStRSZ4YH4Bjy5wqDwIDAQAB',NULL,'2020-04-17 00:54:21','2020-04-17 00:54:21');
-INSERT INTO `merchant_api_config` (`id`, `mch_id`, `api_key`, `api_security`, `private_key`, `pub_key`, `mch_pub_key`, `created_at`, `updated_at`) VALUES (2,3,'da8d3f4f24b8a8fab3ae804b8e29e377','37a6a3fe23eac4a01337b13b6903edb9','MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIeHTpKLbuPGX+b1vmI86IzdmyhjtGWmVfmKtM83cjT7DKFjC8cgp23n/f2PyRfCLkUqZBzcLCawmSaeDHvfke+d0oIOYG9cL2ZFKgAUokz+kvxDmBNU1JmwlZkxQsxV2/STuvEPBJSH6hBzs8DRBO2tTRMeGs2Kn7PVLp3h3g9LAgMBAAECgYBoMuR7EQ7ButwzA09L0k5tN1g6dmXVHUzOnhEjnBqHl1j/n9oHUBjKDGqgD3Npe9b9QHlWIwUi/fXR1gP9HUfiUwa028gmMFJpuqRbGTf+14maFvY/174UPPk1E2YOqP7w9KetMdbhZSkLNiX0DabW5WoHHFDtDPQWPoV45QDdOQJBANwZbn4PkD3nGbZ4fBQYxKcsCOVtakKL523+cfPQlQjFIb0MbUVE5AVe3Rtiaa/+1vc4EIn0qhQ9UfWYbE3QHycCQQCdon+cqr+1CH2XOTOTwSFOxJBiHNOlxCbZ5+un5p/I8qjanGXa7mZod63AswpsR3/nxX6tc1e1J8VIq/eiyiU9AkEAhsaf7VuUZQOVsDG5MQk1qnSBghPtBJDtB2LO3pD0IemszjnE06zqwAsl8/XgZ9/yPHI9VmzWlQwzmuNaNo/h8wJAOdAzRV5KWTb3+NJ93B7k/GKTIai45v790MWCZF3tFGILE8JwiM8OuBnMm/QOSpAelP6V6z92V3ZyoKiRdh71cQJBAKYse+8ICTGgBl/G6AhbO9wY230dcAAHrYQnVbCY6shFmDk3reUSGzd1/A8rwk4qkzZHKUOS4WPEQYmo7TT93Bo=','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCHh06Si27jxl/m9b5iPOiM3ZsoY7RlplX5irTPN3I0+wyhYwvHIKdt5/39j8kXwi5FKmQc3CwmsJkmngx735HvndKCDmBvXC9mRSoAFKJM/pL8Q5gTVNSZsJWZMULMVdv0k7rxDwSUh+oQc7PA0QTtrU0THhrNip+z1S6d4d4PSwIDAQAB',NULL,'2020-04-17 21:55:41','2020-04-17 21:55:41');
-INSERT INTO `merchant_api_config` (`id`, `mch_id`, `api_key`, `api_security`, `private_key`, `pub_key`, `mch_pub_key`, `created_at`, `updated_at`) VALUES (3,4,'cc48cbb82c24c7a9816b51778de66540','fe7da3f982b9a4313dbc5f4ecfe5bec2','MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALp5mT8AuRiAaT+GyF3OKcLSOnw525FVQTqnyF2jkokmY3ru5AJy4MdgBryyBlS4Xx+dLjP8Zz8ByDLMhs+jUeWAk8UyCeLZTUc+NHa5vdXg8jZeeW831B+s73wJEbhqIif7+BcnsXWmcBvXk3Fi8HqlBuiZUUu3jSRn//6q2SKXAgMBAAECgYEAknGklAHxWvidrzIecOzThxiqrZySftRBYdsaU8996Q+o2IZ7siCdvnX/VHlK14XjzmQWQOVb//NaUeqlhLNyQD3+PXCNPg1QwI8i85hlxZfi7wkcSbPAibWy1L0mtf0VvmHsoCLMGKoVHay9ANTb0VgWVpBOShOLHizD2gPk5kECQQDuRtdMMp+4VcfdbVzX7qsiD9F4aB3kXjKudatnsxY9qLRXtDOPJyDhLCNABdO2QOeSNzPLzxxlv8P9rTZABR7/AkEAyFhfSlJOHlObJzixX1NOLAKwwuo/hN7tx1yTaS++RIej3vFpFH2KcFI801jI2/SFyJTcbBMDzFW7+gVk4SyUaQJANaCgCDhEllpIF1/ry3Wd8paY0H6ua51/zqARKc+2q73yiOK3z/pAfi1O6bPmCFjnRZNDBxXgEE5usANx+EquxQJAI36cq1M3qeHQHDvMGQJuWBfF71KHHGhOokKBj2I5CHUrkEUfA9VWIJ5BToRtWaLRzP6qqq8Xviz2V8561/YI+QJAYOdpdkZZoBH0syCsFXKl2UAcMEgKur4qbXy1PsL6RxoIUjNBpTiV99EFP4vXRcsX0sCJTh+GbVt4bbZH7hZfGA==','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6eZk/ALkYgGk/hshdzinC0jp8OduRVUE6p8hdo5KJJmN67uQCcuDHYAa8sgZUuF8fnS4z/Gc/AcgyzIbPo1HlgJPFMgni2U1HPjR2ub3V4PI2XnlvN9QfrO98CRG4aiIn+/gXJ7F1pnAb15NxYvB6pQbomVFLt40kZ//+qtkilwIDAQAB',NULL,'2020-04-21 01:57:44','2020-04-21 01:57:44');
+INSERT INTO `merchant_api_config` VALUES (1,2,'ec3136bbf7fd326277a7f675e500265f','06590e4980b76c53f952ea7fbcd6e78c','MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIIVl7aJVGduveuwxUATC2AJRy0fE5H6tiA2hNtlZE7HDhEg73n1RnMwcBYbCk0xEuunp1Fbw/dBcMrI6GYriba7ffi37gfoCxEt3la5qxx7i4839iFq1I7Jur2PWxipVdEBeo9letpsTmLg52t4oZHA5KWZK1FJnhgfgGPLnCoPAgMBAAECgYA+NfFePIL/DDkLtHhA0lrITOebLpd/YrUi5q/W9MBp5ExX6LZeTuyoPev8xmXA0M1Jod4kzIwFfWhhsn9iDURITHjM1T4K36IdLKQimtwnp3DChMJtRwqev0g8ZIkHdQqourYscq1VxOIwR97xGsH54WFQOJlopUizs+NosmzOcQJBANiZ2NSXMZEmP5mBijwL11UAuvTXSMEyr2HvrruPtz5w2FfJwH0yHwLVjE8DtMDaVFsib1dJTVc0VGZujw4708MCQQCZvww4IbpwuqpZ0ft/UJvIfjwII+CjjmK7CG9Ae2I3qgAmW+J8tsRg7b6nVBz3fu6Qz3KBQLy3eoAzqVus+qfFAkEAuUkyAPmtPxtXAHudwqvmciKDy3p2FD7FZKPh9zSDbniduMsvTGmZuZTvx4/GCcs6qhMU57ge3uA26sDcwzJOfQJAc8SLquiavq+P/jpDKcbExt9mzKpXSFC6vyLGwsMlXczAeCHQFSB6FpJucQjBFwuZD6llCzZ346B2UHBB+6pyEQJBAJJ3NlIAUQl9JgKdwjiBWiQIdV1TGP/jDw2E9Xv7yAbrrj0NLdL9bYcv2dFnl8J0yIObNvhrWdP1S2FPB3nEb0I=','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCCFZe2iVRnbr3rsMVAEwtgCUctHxOR+rYgNoTbZWROxw4RIO959UZzMHAWGwpNMRLrp6dRW8P3QXDKyOhmK4m2u334t+4H6AsRLd5Wuasce4uPN/YhatSOybq9j1sYqVXRAXqPZXrabE5i4OdreKGRwOSlmStRSZ4YH4Bjy5wqDwIDAQAB',NULL,'2020-04-17 00:54:21','2020-04-17 00:54:21');
+INSERT INTO `merchant_api_config` VALUES (2,3,'da8d3f4f24b8a8fab3ae804b8e29e377','37a6a3fe23eac4a01337b13b6903edb9','MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIeHTpKLbuPGX+b1vmI86IzdmyhjtGWmVfmKtM83cjT7DKFjC8cgp23n/f2PyRfCLkUqZBzcLCawmSaeDHvfke+d0oIOYG9cL2ZFKgAUokz+kvxDmBNU1JmwlZkxQsxV2/STuvEPBJSH6hBzs8DRBO2tTRMeGs2Kn7PVLp3h3g9LAgMBAAECgYBoMuR7EQ7ButwzA09L0k5tN1g6dmXVHUzOnhEjnBqHl1j/n9oHUBjKDGqgD3Npe9b9QHlWIwUi/fXR1gP9HUfiUwa028gmMFJpuqRbGTf+14maFvY/174UPPk1E2YOqP7w9KetMdbhZSkLNiX0DabW5WoHHFDtDPQWPoV45QDdOQJBANwZbn4PkD3nGbZ4fBQYxKcsCOVtakKL523+cfPQlQjFIb0MbUVE5AVe3Rtiaa/+1vc4EIn0qhQ9UfWYbE3QHycCQQCdon+cqr+1CH2XOTOTwSFOxJBiHNOlxCbZ5+un5p/I8qjanGXa7mZod63AswpsR3/nxX6tc1e1J8VIq/eiyiU9AkEAhsaf7VuUZQOVsDG5MQk1qnSBghPtBJDtB2LO3pD0IemszjnE06zqwAsl8/XgZ9/yPHI9VmzWlQwzmuNaNo/h8wJAOdAzRV5KWTb3+NJ93B7k/GKTIai45v790MWCZF3tFGILE8JwiM8OuBnMm/QOSpAelP6V6z92V3ZyoKiRdh71cQJBAKYse+8ICTGgBl/G6AhbO9wY230dcAAHrYQnVbCY6shFmDk3reUSGzd1/A8rwk4qkzZHKUOS4WPEQYmo7TT93Bo=','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCHh06Si27jxl/m9b5iPOiM3ZsoY7RlplX5irTPN3I0+wyhYwvHIKdt5/39j8kXwi5FKmQc3CwmsJkmngx735HvndKCDmBvXC9mRSoAFKJM/pL8Q5gTVNSZsJWZMULMVdv0k7rxDwSUh+oQc7PA0QTtrU0THhrNip+z1S6d4d4PSwIDAQAB',NULL,'2020-04-17 21:55:41','2020-04-17 21:55:41');
+INSERT INTO `merchant_api_config` VALUES (3,4,'cc48cbb82c24c7a9816b51778de66540','fe7da3f982b9a4313dbc5f4ecfe5bec2','MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALp5mT8AuRiAaT+GyF3OKcLSOnw525FVQTqnyF2jkokmY3ru5AJy4MdgBryyBlS4Xx+dLjP8Zz8ByDLMhs+jUeWAk8UyCeLZTUc+NHa5vdXg8jZeeW831B+s73wJEbhqIif7+BcnsXWmcBvXk3Fi8HqlBuiZUUu3jSRn//6q2SKXAgMBAAECgYEAknGklAHxWvidrzIecOzThxiqrZySftRBYdsaU8996Q+o2IZ7siCdvnX/VHlK14XjzmQWQOVb//NaUeqlhLNyQD3+PXCNPg1QwI8i85hlxZfi7wkcSbPAibWy1L0mtf0VvmHsoCLMGKoVHay9ANTb0VgWVpBOShOLHizD2gPk5kECQQDuRtdMMp+4VcfdbVzX7qsiD9F4aB3kXjKudatnsxY9qLRXtDOPJyDhLCNABdO2QOeSNzPLzxxlv8P9rTZABR7/AkEAyFhfSlJOHlObJzixX1NOLAKwwuo/hN7tx1yTaS++RIej3vFpFH2KcFI801jI2/SFyJTcbBMDzFW7+gVk4SyUaQJANaCgCDhEllpIF1/ry3Wd8paY0H6ua51/zqARKc+2q73yiOK3z/pAfi1O6bPmCFjnRZNDBxXgEE5usANx+EquxQJAI36cq1M3qeHQHDvMGQJuWBfF71KHHGhOokKBj2I5CHUrkEUfA9VWIJ5BToRtWaLRzP6qqq8Xviz2V8561/YI+QJAYOdpdkZZoBH0syCsFXKl2UAcMEgKur4qbXy1PsL6RxoIUjNBpTiV99EFP4vXRcsX0sCJTh+GbVt4bbZH7hZfGA==','MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6eZk/ALkYgGk/hshdzinC0jp8OduRVUE6p8hdo5KJJmN67uQCcuDHYAa8sgZUuF8fnS4z/Gc/AcgyzIbPo1HlgJPFMgni2U1HPjR2ub3V4PI2XnlvN9QfrO98CRG4aiIn+/gXJ7F1pnAb15NxYvB6pQbomVFLt40kZ//+qtkilwIDAQAB',NULL,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant_api_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,10 +308,10 @@ DROP TABLE IF EXISTS `merchant_pay_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_pay_account` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '商户支付账户ID',
-  `merchant_id` int NOT NULL COMMENT '商户ID',
-  `avail_balance` int NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
-  `freeze_balance` int NOT NULL DEFAULT '0' COMMENT '冻结余额（分）',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商户支付账户ID',
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
+  `avail_balance` int(11) NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
+  `freeze_balance` int(11) NOT NULL DEFAULT '0' COMMENT '冻结余额（分）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -239,9 +324,9 @@ CREATE TABLE `merchant_pay_account` (
 
 LOCK TABLES `merchant_pay_account` WRITE;
 /*!40000 ALTER TABLE `merchant_pay_account` DISABLE KEYS */;
-INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (1,2,234054,0,'2020-04-17 00:54:21','2020-04-17 00:54:21');
-INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (2,3,0,0,'2020-04-17 21:55:41','2020-04-17 21:55:41');
-INSERT INTO `merchant_pay_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (3,4,10,9400,'2020-04-21 01:57:44','2020-04-21 01:57:44');
+INSERT INTO `merchant_pay_account` VALUES (1,2,235754,3600,'2020-04-17 00:54:21','2020-04-17 00:54:21');
+INSERT INTO `merchant_pay_account` VALUES (2,3,0,0,'2020-04-17 21:55:41','2020-04-17 21:55:41');
+INSERT INTO `merchant_pay_account` VALUES (3,4,10,9400,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant_pay_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,10 +338,10 @@ DROP TABLE IF EXISTS `merchant_prepaid_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_prepaid_account` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '账户ID',
-  `merchant_id` int NOT NULL COMMENT '商户ID',
-  `avail_balance` int NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
-  `freeze_balance` int NOT NULL DEFAULT '0' COMMENT '冻结金额（分）',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '账户ID',
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
+  `avail_balance` int(11) NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
+  `freeze_balance` int(11) NOT NULL DEFAULT '0' COMMENT '冻结金额（分）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -269,9 +354,9 @@ CREATE TABLE `merchant_prepaid_account` (
 
 LOCK TABLES `merchant_prepaid_account` WRITE;
 /*!40000 ALTER TABLE `merchant_prepaid_account` DISABLE KEYS */;
-INSERT INTO `merchant_prepaid_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (1,2,0,0,'2020-04-17 00:54:21','2020-04-17 00:54:21');
-INSERT INTO `merchant_prepaid_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (2,3,0,0,'2020-04-17 21:55:41','2020-04-17 21:55:41');
-INSERT INTO `merchant_prepaid_account` (`id`, `merchant_id`, `avail_balance`, `freeze_balance`, `created_at`, `updated_at`) VALUES (3,4,0,0,'2020-04-21 01:57:44','2020-04-21 01:57:44');
+INSERT INTO `merchant_prepaid_account` VALUES (1,2,0,0,'2020-04-17 00:54:21','2020-04-17 00:54:21');
+INSERT INTO `merchant_prepaid_account` VALUES (2,3,0,0,'2020-04-17 21:55:41','2020-04-17 21:55:41');
+INSERT INTO `merchant_prepaid_account` VALUES (3,4,0,0,'2020-04-21 01:57:44','2020-04-21 01:57:44');
 /*!40000 ALTER TABLE `merchant_prepaid_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,17 +368,17 @@ DROP TABLE IF EXISTS `merchant_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_product` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '商户产品ID',
-  `merchant_id` int NOT NULL COMMENT '商户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商户产品ID',
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `product_id` int DEFAULT NULL COMMENT '产品ID',
+  `product_id` int(11) DEFAULT NULL COMMENT '产品ID',
   `product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
   `product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
   `product_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付产品类型（1：收款，2：充值）',
   `interface_mode` tinyint(1) NOT NULL DEFAULT '1' COMMENT '接口模式（1:单独，2：轮训）',
   `rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '通道费率',
-  `default_passage_id` int DEFAULT NULL COMMENT '默认通道ID',
-  `default_passage_acc_id` int DEFAULT NULL COMMENT '默认通道账号ID',
+  `default_passage_id` int(11) DEFAULT NULL COMMENT '默认通道ID',
+  `default_passage_acc_id` int(11) DEFAULT NULL COMMENT '默认通道账号ID',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -307,8 +392,8 @@ CREATE TABLE `merchant_product` (
 
 LOCK TABLES `merchant_product` WRITE;
 /*!40000 ALTER TABLE `merchant_product` DISABLE KEYS */;
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_code`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (12,2,'wx_jsapi',6,'wx_jsapi','微信公众号支付',1,2,4.76,5,4,1,'2020-05-02 21:06:17','2020-05-02 21:06:17');
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `product_code`, `product_name`, `product_type`, `interface_mode`, `rate`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (15,2,'ali_jsapi',7,'ali_jsapi','支付宝服务窗支付',1,2,4.50,6,3,1,'2020-05-02 21:25:22','2020-05-02 21:25:22');
+INSERT INTO `merchant_product` VALUES (12,2,'wx_jsapi',6,'wx_jsapi','微信公众号支付',1,2,4.76,5,4,1,'2020-05-02 21:06:17','2020-05-02 21:06:17');
+INSERT INTO `merchant_product` VALUES (15,2,'ali_jsapi',7,'ali_jsapi','支付宝服务窗支付',1,2,4.50,6,3,1,'2020-05-02 21:25:22','2020-05-02 21:25:22');
 /*!40000 ALTER TABLE `merchant_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,11 +405,11 @@ DROP TABLE IF EXISTS `merchant_product_passage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_product_passage` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `mch_id` int NOT NULL COMMENT '商户ID',
-  `product_id` int NOT NULL COMMENT '产品ID',
-  `passage_id` int NOT NULL COMMENT '支付通道ID',
-  `widget` int NOT NULL DEFAULT '0' COMMENT '权重',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `product_id` int(11) NOT NULL COMMENT '产品ID',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `widget` int(11) NOT NULL DEFAULT '0' COMMENT '权重',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -337,8 +422,8 @@ CREATE TABLE `merchant_product_passage` (
 
 LOCK TABLES `merchant_product_passage` WRITE;
 /*!40000 ALTER TABLE `merchant_product_passage` DISABLE KEYS */;
-INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (2,2,6,5,1,'2020-05-02 21:06:17','2020-05-02 21:06:17');
-INSERT INTO `merchant_product_passage` (`id`, `mch_id`, `product_id`, `passage_id`, `widget`, `created_at`, `updated_at`) VALUES (4,2,7,6,1,'2020-05-02 21:25:22','2020-05-02 21:25:22');
+INSERT INTO `merchant_product_passage` VALUES (2,2,6,5,1,'2020-05-02 21:06:17','2020-05-02 21:06:17');
+INSERT INTO `merchant_product_passage` VALUES (4,2,7,6,1,'2020-05-02 21:25:22','2020-05-02 21:25:22');
 /*!40000 ALTER TABLE `merchant_product_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,11 +435,11 @@ DROP TABLE IF EXISTS `merchant_settle_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_settle_account` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `merchant_id` int NOT NULL COMMENT '商户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
   `settle_fee_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算收费类型（1：百分比收费，2：固定收费）',
   `settle_fee_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '结算费率（百分比）',
-  `settle_fee_amount` int NOT NULL DEFAULT '0' COMMENT '结算费用（单位，分）',
+  `settle_fee_amount` int(11) NOT NULL DEFAULT '0' COMMENT '结算费用（单位，分）',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -368,9 +453,9 @@ CREATE TABLE `merchant_settle_account` (
 
 LOCK TABLES `merchant_settle_account` WRITE;
 /*!40000 ALTER TABLE `merchant_settle_account` DISABLE KEYS */;
-INSERT INTO `merchant_settle_account` (`id`, `merchant_id`, `settle_fee_type`, `settle_fee_rate`, `settle_fee_amount`, `status`, `created_at`, `updated_at`) VALUES (1,2,1,0.02,1,1,'2020-04-21 01:25:24','2020-04-28 02:31:13');
-INSERT INTO `merchant_settle_account` (`id`, `merchant_id`, `settle_fee_type`, `settle_fee_rate`, `settle_fee_amount`, `status`, `created_at`, `updated_at`) VALUES (2,3,1,0.00,0,0,'2020-04-21 01:25:29','2020-04-21 01:25:29');
-INSERT INTO `merchant_settle_account` (`id`, `merchant_id`, `settle_fee_type`, `settle_fee_rate`, `settle_fee_amount`, `status`, `created_at`, `updated_at`) VALUES (3,4,1,0.00,0,0,'2020-04-21 01:57:45','2020-04-23 14:37:00');
+INSERT INTO `merchant_settle_account` VALUES (1,2,1,0.02,1,1,'2020-04-21 01:25:24','2020-04-28 02:31:13');
+INSERT INTO `merchant_settle_account` VALUES (2,3,1,0.00,0,0,'2020-04-21 01:25:29','2020-04-21 01:25:29');
+INSERT INTO `merchant_settle_account` VALUES (3,4,1,0.00,0,0,'2020-04-21 01:57:45','2020-04-23 14:37:00');
 /*!40000 ALTER TABLE `merchant_settle_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -382,11 +467,11 @@ DROP TABLE IF EXISTS `pay_extract`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_extract` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `extract_no` varchar(32) NOT NULL COMMENT '订单编号',
-  `mch_id` int NOT NULL COMMENT '商户id',
-  `amount` int NOT NULL COMMENT '提现金额',
-  `status` int NOT NULL COMMENT '提现状态 0 待审核 ，1提现成功，-1提现失败',
+  `mch_id` int(11) NOT NULL COMMENT '商户id',
+  `amount` int(11) NOT NULL COMMENT '提现金额',
+  `status` int(11) NOT NULL COMMENT '提现状态 0 待审核 ，1提现成功，-1提现失败',
   `created_at` datetime NOT NULL COMMENT '创建时间',
   `end_at` datetime DEFAULT NULL COMMENT '结束时间',
   `updated_at` datetime NOT NULL COMMENT '更新时间',
@@ -400,42 +485,42 @@ CREATE TABLE `pay_extract` (
 
 LOCK TABLES `pay_extract` WRITE;
 /*!40000 ALTER TABLE `pay_extract` DISABLE KEYS */;
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (1,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:19');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (2,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:49');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (3,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:53');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (4,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:55');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (5,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:58');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (6,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:00');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (7,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:05');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (8,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:08');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (9,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:11');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (10,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:15');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (11,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:17');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (12,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:20');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (13,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:24');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (14,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:27');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (15,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:30');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (16,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:32');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (17,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:35');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (18,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:38');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (19,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:40');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (20,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:43');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (21,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:46');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (22,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:49');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (23,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:51');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (24,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:54');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (25,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:59');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (26,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:01');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (27,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:04');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (28,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:07');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (29,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:09');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (30,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:12');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (31,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:15');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (32,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:17');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (33,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:19');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (34,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:22');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (35,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:24');
-INSERT INTO `pay_extract` (`id`, `extract_no`, `mch_id`, `amount`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (36,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:27');
+INSERT INTO `pay_extract` VALUES (1,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:19');
+INSERT INTO `pay_extract` VALUES (2,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:49');
+INSERT INTO `pay_extract` VALUES (3,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:53');
+INSERT INTO `pay_extract` VALUES (4,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:55');
+INSERT INTO `pay_extract` VALUES (5,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:49:58');
+INSERT INTO `pay_extract` VALUES (6,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:00');
+INSERT INTO `pay_extract` VALUES (7,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:05');
+INSERT INTO `pay_extract` VALUES (8,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:08');
+INSERT INTO `pay_extract` VALUES (9,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:11');
+INSERT INTO `pay_extract` VALUES (10,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:15');
+INSERT INTO `pay_extract` VALUES (11,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:17');
+INSERT INTO `pay_extract` VALUES (12,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:20');
+INSERT INTO `pay_extract` VALUES (13,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:24');
+INSERT INTO `pay_extract` VALUES (14,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:27');
+INSERT INTO `pay_extract` VALUES (15,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:30');
+INSERT INTO `pay_extract` VALUES (16,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:32');
+INSERT INTO `pay_extract` VALUES (17,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:35');
+INSERT INTO `pay_extract` VALUES (18,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:38');
+INSERT INTO `pay_extract` VALUES (19,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:40');
+INSERT INTO `pay_extract` VALUES (20,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:43');
+INSERT INTO `pay_extract` VALUES (21,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:46');
+INSERT INTO `pay_extract` VALUES (22,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:49');
+INSERT INTO `pay_extract` VALUES (23,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:51');
+INSERT INTO `pay_extract` VALUES (24,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:54');
+INSERT INTO `pay_extract` VALUES (25,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:50:59');
+INSERT INTO `pay_extract` VALUES (26,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:01');
+INSERT INTO `pay_extract` VALUES (27,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:04');
+INSERT INTO `pay_extract` VALUES (28,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:07');
+INSERT INTO `pay_extract` VALUES (29,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:09');
+INSERT INTO `pay_extract` VALUES (30,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:12');
+INSERT INTO `pay_extract` VALUES (31,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:15');
+INSERT INTO `pay_extract` VALUES (32,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:17');
+INSERT INTO `pay_extract` VALUES (33,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:19');
+INSERT INTO `pay_extract` VALUES (34,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:22');
+INSERT INTO `pay_extract` VALUES (35,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:24');
+INSERT INTO `pay_extract` VALUES (36,'1',1111,1111,1,'2020-04-17 16:42:09','2020-04-30 16:42:11','2020-04-17 16:51:27');
 /*!40000 ALTER TABLE `pay_extract` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -447,7 +532,7 @@ DROP TABLE IF EXISTS `pay_interface`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_interface` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付接口ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付接口ID',
   `interface_code` varchar(32) NOT NULL COMMENT '支付接口编码',
   `interface_name` varchar(32) NOT NULL COMMENT '支付接口名称',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
@@ -459,7 +544,7 @@ CREATE TABLE `pay_interface` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -468,8 +553,10 @@ CREATE TABLE `pay_interface` (
 
 LOCK TABLES `pay_interface` WRITE;
 /*!40000 ALTER TABLE `pay_interface` DISABLE KEYS */;
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (7,'wx_jsapi','微信公众号支付_官方','wx_jsapi',1,'wxJSAPIPlugin',NULL,NULL,1,'2020-05-02 19:43:31','2020-05-02 19:43:31');
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (8,'ali_jsapi','支付宝服务窗支付_官方','ali_jsapi',1,'bbb',NULL,NULL,1,'2020-05-02 20:50:05','2020-05-02 20:50:05');
+INSERT INTO `pay_interface` VALUES (7,'wx_jsapi','微信公众号支付_官方','wx_jsapi',1,'wxJSAPIPlugin',NULL,NULL,1,'2020-05-02 19:43:31','2020-05-02 19:43:31');
+INSERT INTO `pay_interface` VALUES (8,'ali_jsapi','支付宝服务窗支付_官方','ali_jsapi',1,'bbb',NULL,NULL,1,'2020-05-02 20:50:05','2020-05-02 20:50:05');
+INSERT INTO `pay_interface` VALUES (9,'b2c_all_in_pay','通联代付','b2c',1,'tl',NULL,NULL,1,'2020-05-06 15:45:59','2020-05-06 15:45:59');
+INSERT INTO `pay_interface` VALUES (10,'b2c_unipay','银联代付_B2C','b2c',1,'unipay',NULL,NULL,1,'2020-05-06 18:59:59','2020-05-06 18:59:59');
 /*!40000 ALTER TABLE `pay_interface` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -481,20 +568,20 @@ DROP TABLE IF EXISTS `pay_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_order` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_no` varchar(32) NOT NULL COMMENT '订单编号',
   `order_sn` varchar(32) NOT NULL COMMENT '交易流水号',
-  `mch_id` int NOT NULL COMMENT '商户ID',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
   `app_id` varchar(32) NOT NULL COMMENT '应用ID',
   `subject` varchar(32) NOT NULL COMMENT '商品标题',
   `out_order_no` varchar(32) NOT NULL COMMENT '商户订单号',
-  `amount` int NOT NULL COMMENT '订单金额（单位：分）',
+  `amount` int(11) NOT NULL COMMENT '订单金额（单位：分）',
   `body` varchar(64) DEFAULT NULL COMMENT '商品描述',
-  `client_ip` int NOT NULL DEFAULT '0' COMMENT '客户端IP',
+  `client_ip` int(11) NOT NULL DEFAULT '0' COMMENT '客户端IP',
   `notify_url` varchar(255) DEFAULT NULL COMMENT '回调地址',
   `redirect_url` varchar(255) DEFAULT NULL COMMENT '跳转地址',
-  `fee` int NOT NULL DEFAULT '0' COMMENT '订单手续费（单位：分）',
-  `pay_product_id` int NOT NULL COMMENT '支付产品ID',
+  `fee` int(11) NOT NULL DEFAULT '0' COMMENT '订单手续费（单位：分）',
+  `pay_product_id` int(11) NOT NULL COMMENT '支付产品ID',
   `pay_product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
   `pay_product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
   `status` tinyint(1) NOT NULL COMMENT '订单状态（0：待付款，2：已支付，3：订单完成，-1：交易取消，-2：交易失败）',
@@ -523,13 +610,13 @@ DROP TABLE IF EXISTS `pay_order_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_order_detail` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_no` varchar(32) NOT NULL COMMENT '订单编号',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `pay_product_id` int NOT NULL COMMENT '支付产品ID',
-  `pay_passage_id` int NOT NULL COMMENT '支付通道ID',
-  `pay_passage_acc_id` int NOT NULL COMMENT '支付通道子账户ID',
-  `pay_interface_id` int NOT NULL COMMENT '支付接口ID',
+  `pay_product_id` int(11) NOT NULL COMMENT '支付产品ID',
+  `pay_passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `pay_passage_acc_id` int(11) NOT NULL COMMENT '支付通道子账户ID',
+  `pay_interface_id` int(11) NOT NULL COMMENT '支付接口ID',
   `pay_interface_attr` varchar(255) NOT NULL COMMENT '支付接口参数',
   `upstream_order_no` varchar(64) DEFAULT NULL COMMENT '上游订单编号',
   `pay_credential` varchar(255) DEFAULT NULL COMMENT '支付凭证',
@@ -557,7 +644,7 @@ DROP TABLE IF EXISTS `pay_passage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_passage` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付通道ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付通道ID',
   `passage_name` varchar(32) NOT NULL COMMENT '支付通道名称',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_code` varchar(32) NOT NULL COMMENT '支付接口编码',
@@ -574,8 +661,8 @@ CREATE TABLE `pay_passage` (
 
 LOCK TABLES `pay_passage` WRITE;
 /*!40000 ALTER TABLE `pay_passage` DISABLE KEYS */;
-INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (5,'微信公众号支付官方通道','wx_jsapi','wx_jsapi',1,'2020-05-02 19:47:46','2020-05-02 19:47:46');
-INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (6,'支付宝服务窗支付官方通道','ali_jsapi','ali_jsapi',1,'2020-05-02 20:50:36','2020-05-02 20:50:36');
+INSERT INTO `pay_passage` VALUES (5,'微信公众号支付官方通道','wx_jsapi','wx_jsapi',1,'2020-05-02 19:47:46','2020-05-02 19:47:46');
+INSERT INTO `pay_passage` VALUES (6,'支付宝服务窗支付官方通道','ali_jsapi','ali_jsapi',1,'2020-05-02 20:50:36','2020-05-02 20:50:36');
 /*!40000 ALTER TABLE `pay_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,12 +674,12 @@ DROP TABLE IF EXISTS `pay_passage_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_passage_account` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付通道账户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付通道账户ID',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `passage_id` int NOT NULL COMMENT '支付通道ID',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
   `account_name` varchar(32) NOT NULL COMMENT '通道账户名称',
   `interface_attr` varchar(255) DEFAULT NULL COMMENT '通道接口参数',
-  `weight` int NOT NULL DEFAULT '0' COMMENT '轮询权重',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT '轮询权重',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -606,11 +693,11 @@ CREATE TABLE `pay_passage_account` (
 
 LOCK TABLES `pay_passage_account` WRITE;
 /*!40000 ALTER TABLE `pay_passage_account` DISABLE KEYS */;
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (1,'wx_jsapi',5,'忆思然网络科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',9,1,'2020-05-02 19:49:15','2020-05-02 19:49:15');
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (2,'ali_jsapi',6,'重庆忆思然网络科技有限公司','ababa',1,1,'2020-05-02 20:51:05','2020-05-02 20:51:05');
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (3,'ali_jsapi',6,'重庆鸿与科技有限公司','aaaa',1,1,'2020-05-02 20:51:51','2020-05-02 20:51:51');
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (4,'wx_jsapi',5,'重庆鸿与科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',5,1,'2020-05-02 20:52:08','2020-05-02 20:52:08');
-INSERT INTO `pay_passage_account` (`id`, `pay_type_code`, `passage_id`, `account_name`, `interface_attr`, `weight`, `status`, `created_at`, `updated_at`) VALUES (5,'wx_jsapi',5,'重庆艾美尼克网络科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',3,1,'2020-05-02 23:20:45','2020-05-02 23:20:45');
+INSERT INTO `pay_passage_account` VALUES (1,'wx_jsapi',5,'忆思然网络科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',9,1,'2020-05-02 19:49:15','2020-05-02 19:49:15');
+INSERT INTO `pay_passage_account` VALUES (2,'ali_jsapi',6,'重庆忆思然网络科技有限公司','ababa',1,1,'2020-05-02 20:51:05','2020-05-02 20:51:05');
+INSERT INTO `pay_passage_account` VALUES (3,'ali_jsapi',6,'重庆鸿与科技有限公司','aaaa',1,1,'2020-05-02 20:51:51','2020-05-02 20:51:51');
+INSERT INTO `pay_passage_account` VALUES (4,'wx_jsapi',5,'重庆鸿与科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',5,1,'2020-05-02 20:52:08','2020-05-02 20:52:08');
+INSERT INTO `pay_passage_account` VALUES (5,'wx_jsapi',5,'重庆艾美尼克网络科技有限公司','{\"appId\":\"wx2aeda339f56138bf\",\"mchId\":\"1519342911\",\"mchKey\":\"2624eedd356624bc7a662c29ceb0a20e\"}',3,1,'2020-05-02 23:20:45','2020-05-02 23:20:45');
 /*!40000 ALTER TABLE `pay_passage_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -622,14 +709,14 @@ DROP TABLE IF EXISTS `pay_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_product` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付产品ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付产品ID',
   `product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
   `product_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付产品类型（1：收款，2：充值）',
   `product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_mode` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付接口模式（1：单独，2：轮询）',
-  `default_passage_id` int DEFAULT NULL COMMENT '默认通道ID',
-  `default_passage_acc_id` int DEFAULT NULL COMMENT '默认通道账户ID',
+  `default_passage_id` int(11) DEFAULT NULL COMMENT '默认通道ID',
+  `default_passage_acc_id` int(11) DEFAULT NULL COMMENT '默认通道账户ID',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -643,8 +730,8 @@ CREATE TABLE `pay_product` (
 
 LOCK TABLES `pay_product` WRITE;
 /*!40000 ALTER TABLE `pay_product` DISABLE KEYS */;
-INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `product_code`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (6,'微信公众号支付',1,'wx_jsapi','wx_jsapi',1,5,1,1,'2020-05-02 19:48:40','2020-05-02 21:01:47');
-INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `product_code`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (7,'支付宝服务窗支付',1,'ali_jsapi','ali_jsapi',1,6,3,1,'2020-05-02 20:52:27','2020-05-02 21:13:49');
+INSERT INTO `pay_product` VALUES (6,'微信公众号支付',1,'wx_jsapi','wx_jsapi',1,5,1,1,'2020-05-02 19:48:40','2020-05-02 21:01:47');
+INSERT INTO `pay_product` VALUES (7,'支付宝服务窗支付',1,'ali_jsapi','ali_jsapi',1,6,3,1,'2020-05-02 20:52:27','2020-05-02 21:13:49');
 /*!40000 ALTER TABLE `pay_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -656,10 +743,10 @@ DROP TABLE IF EXISTS `pay_product_passage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_product_passage` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `product_id` int NOT NULL COMMENT '产品ID',
-  `passage_id` int NOT NULL COMMENT '支付通道ID',
-  `widget` int NOT NULL DEFAULT '0' COMMENT '权重',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `product_id` int(11) NOT NULL COMMENT '产品ID',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `widget` int(11) NOT NULL DEFAULT '0' COMMENT '权重',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -683,10 +770,10 @@ DROP TABLE IF EXISTS `pay_product_passage_acc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_product_passage_acc` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `product_id` int NOT NULL COMMENT '产品ID',
-  `passage_id` int NOT NULL COMMENT '支付通道ID',
-  `acc_id` int NOT NULL COMMENT '子账户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `product_id` int(11) NOT NULL COMMENT '产品ID',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `acc_id` int(11) NOT NULL COMMENT '子账户ID',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -710,7 +797,7 @@ DROP TABLE IF EXISTS `pay_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_type` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '类型ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '类型ID',
   `type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `type_name` varchar(32) NOT NULL COMMENT '支付类型名称',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类别(1：支付，2，代付)',
@@ -718,7 +805,7 @@ CREATE TABLE `pay_type` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -727,8 +814,9 @@ CREATE TABLE `pay_type` (
 
 LOCK TABLES `pay_type` WRITE;
 /*!40000 ALTER TABLE `pay_type` DISABLE KEYS */;
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (9,'wx_jsapi','微信公众号支付',1,1,'2020-05-02 19:30:08','2020-05-02 19:30:08');
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (10,'ali_jsapi','支付宝服务窗支付',1,1,'2020-05-02 20:49:30','2020-05-02 20:49:30');
+INSERT INTO `pay_type` VALUES (9,'wx_jsapi','微信公众号支付',1,1,'2020-05-02 19:30:08','2020-05-02 19:30:08');
+INSERT INTO `pay_type` VALUES (10,'ali_jsapi','支付宝服务窗支付',1,1,'2020-05-02 20:49:30','2020-05-02 20:49:30');
+INSERT INTO `pay_type` VALUES (11,'b2c','企业对个人',2,1,'2020-05-06 15:44:39','2020-05-06 15:44:39');
 /*!40000 ALTER TABLE `pay_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -740,13 +828,13 @@ DROP TABLE IF EXISTS `replacepay_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `replacepay_order` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `replace_id` varchar(255) NOT NULL COMMENT '代付订单id',
   `mch_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商户id',
   `bank_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '银行账号名',
-  `account_number` bigint NOT NULL COMMENT '银行账号',
-  `replace_money` bigint NOT NULL COMMENT '代付金额',
-  `status` int NOT NULL COMMENT '订单状态 0 待审核 1 审核通过 -1 审核失败',
+  `account_number` bigint(20) NOT NULL COMMENT '银行账号',
+  `replace_money` bigint(20) NOT NULL COMMENT '代付金额',
+  `status` int(11) NOT NULL COMMENT '订单状态 0 待审核 1 审核通过 -1 审核失败',
   `created_at` datetime NOT NULL COMMENT '订单创建时间',
   `end_at` datetime DEFAULT NULL COMMENT '订单结束时间',
   `updated_at` datetime NOT NULL COMMENT '订单更新时间',
@@ -760,49 +848,49 @@ CREATE TABLE `replacepay_order` (
 
 LOCK TABLES `replacepay_order` WRITE;
 /*!40000 ALTER TABLE `replacepay_order` DISABLE KEYS */;
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (1,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (27,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (28,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (29,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (30,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (31,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (32,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (33,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (34,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (35,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (36,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (37,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (38,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (39,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (40,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (41,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (42,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (43,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (44,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (45,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (46,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (47,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (48,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (49,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (50,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (51,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (52,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (53,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (54,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (55,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (56,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (57,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (58,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (59,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (60,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (61,'202004181157305001251359172482580481','11111','战三',100000,10000,0,'2020-04-18 11:57:30',NULL,'2020-04-18 11:57:31');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (62,'202004181203241011251360655592730625','11111','11111',111111,10000,0,'2020-04-18 12:03:24',NULL,'2020-04-18 12:03:25');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (63,'202004181412200731251393102615265282','11111','张三',1111111,100000,0,'2020-04-18 14:12:20',NULL,'2020-04-18 14:12:21');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (64,'202004181414466541251393717420507137','11111','战三',11111111,100000,0,'2020-04-18 14:14:46',NULL,'2020-04-18 14:14:47');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (65,'202004181417086741251394313221312513','11111','张三',11111,10000,0,'2020-04-18 14:17:09',NULL,'2020-04-18 14:17:09');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (66,'202004181419569751251395018975895554','11111','战三',111111,10000,0,'2020-04-18 14:19:57',NULL,'2020-04-18 14:19:57');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (67,'202004181426047861251396561691303938','11111','11111',11111,10000,0,'2020-04-18 14:26:05',NULL,'2020-04-18 14:26:05');
-INSERT INTO `replacepay_order` (`id`, `replace_id`, `mch_id`, `bank_name`, `account_number`, `replace_money`, `status`, `created_at`, `end_at`, `updated_at`) VALUES (68,'202004181431284541251397919244902402','11111','1111',1111,111100,0,'2020-04-18 14:31:28',NULL,'2020-04-18 14:31:28');
+INSERT INTO `replacepay_order` VALUES (1,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (27,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (28,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (29,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (30,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (31,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (32,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (33,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (34,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (35,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (36,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (37,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (38,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (39,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (40,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (41,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (42,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (43,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (44,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (45,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (46,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (47,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (48,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (49,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (50,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (51,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (52,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (53,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (54,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (55,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (56,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (57,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (58,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (59,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (60,'1111','111','1111',111,111,1,'2020-04-17 18:09:41','2020-04-23 18:09:44','2020-04-17 18:09:47');
+INSERT INTO `replacepay_order` VALUES (61,'202004181157305001251359172482580481','11111','战三',100000,10000,0,'2020-04-18 11:57:30',NULL,'2020-04-18 11:57:31');
+INSERT INTO `replacepay_order` VALUES (62,'202004181203241011251360655592730625','11111','11111',111111,10000,0,'2020-04-18 12:03:24',NULL,'2020-04-18 12:03:25');
+INSERT INTO `replacepay_order` VALUES (63,'202004181412200731251393102615265282','11111','张三',1111111,100000,0,'2020-04-18 14:12:20',NULL,'2020-04-18 14:12:21');
+INSERT INTO `replacepay_order` VALUES (64,'202004181414466541251393717420507137','11111','战三',11111111,100000,0,'2020-04-18 14:14:46',NULL,'2020-04-18 14:14:47');
+INSERT INTO `replacepay_order` VALUES (65,'202004181417086741251394313221312513','11111','张三',11111,10000,0,'2020-04-18 14:17:09',NULL,'2020-04-18 14:17:09');
+INSERT INTO `replacepay_order` VALUES (66,'202004181419569751251395018975895554','11111','战三',111111,10000,0,'2020-04-18 14:19:57',NULL,'2020-04-18 14:19:57');
+INSERT INTO `replacepay_order` VALUES (67,'202004181426047861251396561691303938','11111','11111',11111,10000,0,'2020-04-18 14:26:05',NULL,'2020-04-18 14:26:05');
+INSERT INTO `replacepay_order` VALUES (68,'202004181431284541251397919244902402','11111','1111',1111,111100,0,'2020-04-18 14:31:28',NULL,'2020-04-18 14:31:28');
 /*!40000 ALTER TABLE `replacepay_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -814,11 +902,11 @@ DROP TABLE IF EXISTS `replacepay_recharge`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `replacepay_recharge` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `recharge_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '代付充值id',
   `mch_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商户id',
-  `recharge_money` bigint NOT NULL COMMENT '充值金额',
-  `status` int NOT NULL COMMENT '充值订单状态 0 待审核 1 充值成功 -1 未充值',
+  `recharge_money` bigint(20) NOT NULL COMMENT '充值金额',
+  `status` int(11) NOT NULL COMMENT '充值订单状态 0 待审核 1 充值成功 -1 未充值',
   `created_at` datetime NOT NULL COMMENT '创建时间',
   `end_time` datetime DEFAULT NULL COMMENT '结束时间',
   `updated_at` datetime NOT NULL COMMENT '更新时间',
@@ -832,35 +920,35 @@ CREATE TABLE `replacepay_recharge` (
 
 LOCK TABLES `replacepay_recharge` WRITE;
 /*!40000 ALTER TABLE `replacepay_recharge` DISABLE KEYS */;
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (1,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (43,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (44,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (45,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (46,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (47,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (48,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (49,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (50,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (51,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (52,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (53,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (54,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (55,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (56,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (57,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (58,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (59,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (60,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (61,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (62,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (63,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (64,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (65,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (66,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (67,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (68,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (69,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
-INSERT INTO `replacepay_recharge` (`id`, `recharge_id`, `mch_id`, `recharge_money`, `status`, `created_at`, `end_time`, `updated_at`) VALUES (70,'202004181503330801251405991715549185','1',10000,0,'2020-04-18 15:03:33',NULL,'2020-04-18 15:03:33');
+INSERT INTO `replacepay_recharge` VALUES (1,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (43,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (44,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (45,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (46,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (47,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (48,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (49,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (50,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (51,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (52,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (53,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (54,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (55,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (56,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (57,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (58,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (59,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (60,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (61,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (62,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (63,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (64,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (65,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (66,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (67,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (68,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (69,'1111','1',111,1,'2020-04-17 18:30:34','2020-04-17 18:30:38','2020-04-17 18:30:41');
+INSERT INTO `replacepay_recharge` VALUES (70,'202004181503330801251405991715549185','1',10000,0,'2020-04-18 15:03:33',NULL,'2020-04-18 15:03:33');
 /*!40000 ALTER TABLE `replacepay_recharge` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,16 +960,16 @@ DROP TABLE IF EXISTS `settle_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `settle_config` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `audit_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '审核状态（0：关闭，1：开启）',
   `settle_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算类型（1：人工结算，2：自动结算）',
-  `amount_limit_min` int NOT NULL DEFAULT '0' COMMENT '金额限制（最小值，单位：分）',
-  `amount_limit_max` int NOT NULL DEFAULT '0' COMMENT '金额限制（最大值，单位：分）',
-  `day_amount_limit_max` int NOT NULL DEFAULT '0' COMMENT '每日金额最大值（单位：分）',
+  `amount_limit_min` int(11) NOT NULL DEFAULT '0' COMMENT '金额限制（最小值，单位：分）',
+  `amount_limit_max` int(11) NOT NULL DEFAULT '0' COMMENT '金额限制（最大值，单位：分）',
+  `day_amount_limit_max` int(11) NOT NULL DEFAULT '0' COMMENT '每日金额最大值（单位：分）',
   `settle_fee_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算费率类型（1：比例收费，2：固定收费，3：比例收费+固定收费）',
   `settle_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '结算比例（百分比）',
-  `settle_fee` int NOT NULL DEFAULT '0' COMMENT '固定费率（单位：分）',
+  `settle_fee` int(11) NOT NULL DEFAULT '0' COMMENT '固定费率（单位：分）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -894,7 +982,7 @@ CREATE TABLE `settle_config` (
 
 LOCK TABLES `settle_config` WRITE;
 /*!40000 ALTER TABLE `settle_config` DISABLE KEYS */;
-INSERT INTO `settle_config` (`id`, `status`, `audit_status`, `settle_type`, `amount_limit_min`, `amount_limit_max`, `day_amount_limit_max`, `settle_fee_type`, `settle_rate`, `settle_fee`, `created_at`, `updated_at`) VALUES (1,0,1,2,1000,0,0,1,0.00,0,'2020-04-27 22:55:13','2020-04-27 22:55:13');
+INSERT INTO `settle_config` VALUES (1,0,1,2,1000,0,0,1,0.00,0,'2020-04-27 22:55:13','2020-04-27 22:55:13');
 /*!40000 ALTER TABLE `settle_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -906,30 +994,30 @@ DROP TABLE IF EXISTS `settle_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `settle_order` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_no` varchar(32) NOT NULL COMMENT '结算订单号',
   `order_sn` varchar(32) NOT NULL COMMENT '结算流水号',
-  `mch_id` int NOT NULL COMMENT '商户ID',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
   `settle_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算类型（1：人工结算，2：自动结算）',
-  `amount` int NOT NULL DEFAULT '0' COMMENT '订单金额（单位：分）',
-  `fee` int NOT NULL DEFAULT '0' COMMENT '结算手续费（单位：分）',
-  `settle_amount` int NOT NULL DEFAULT '0' COMMENT '结算金额（单位：分）',
+  `amount` int(11) NOT NULL DEFAULT '0' COMMENT '订单金额（单位：分）',
+  `fee` int(11) NOT NULL DEFAULT '0' COMMENT '结算手续费（单位：分）',
+  `settle_amount` int(11) NOT NULL DEFAULT '0' COMMENT '结算金额（单位：分）',
   `account_name` varchar(32) NOT NULL COMMENT '结算账户名',
   `account_number` varchar(32) NOT NULL COMMENT '结算账号',
   `bank_name` varchar(32) NOT NULL COMMENT '开户行名称',
   `bank_code` varchar(32) NOT NULL COMMENT '银行联行号',
   `bank_address` varchar(64) DEFAULT NULL COMMENT '开户行地址（或支行名称）',
   `pay_type_code` varchar(32) DEFAULT NULL COMMENT '支付类型编码',
-  `agentpay_passage_id` int DEFAULT NULL COMMENT '代付通道ID',
-  `agentpay_passage_acc_id` int DEFAULT NULL COMMENT '代付通道账户ID',
-  `pay_interface_id` int DEFAULT NULL COMMENT '支付接口ID',
+  `agentpay_passage_id` int(11) DEFAULT NULL COMMENT '代付通道ID',
+  `agentpay_passage_acc_id` int(11) DEFAULT NULL COMMENT '代付通道账户ID',
+  `pay_interface_id` int(11) DEFAULT NULL COMMENT '支付接口ID',
   `pay_interface_attr` varchar(255) DEFAULT NULL COMMENT '支付接口参数',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态（1：待审核，2：待处理，3：处理中，4：已结算，-1：已驳回，-2：结算失败）',
   `settled_at` datetime DEFAULT NULL COMMENT '结算时间',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户结算订单';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户结算订单';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -938,7 +1026,17 @@ CREATE TABLE `settle_order` (
 
 LOCK TABLES `settle_order` WRITE;
 /*!40000 ALTER TABLE `settle_order` DISABLE KEYS */;
-INSERT INTO `settle_order` (`id`, `order_no`, `order_sn`, `mch_id`, `settle_type`, `amount`, `fee`, `settle_amount`, `account_name`, `account_number`, `bank_name`, `bank_code`, `bank_address`, `pay_type_code`, `agentpay_passage_id`, `agentpay_passage_acc_id`, `pay_interface_id`, `pay_interface_attr`, `status`, `settled_at`, `created_at`, `updated_at`) VALUES (1,'151321515313','15615315815',1515,1,11515,151,15613,'欧阳娜娜','156156145165156','重庆银行','',NULL,NULL,NULL,NULL,NULL,NULL,2,NULL,'2020-04-27 19:24:32','2020-04-27 19:24:32');
+INSERT INTO `settle_order` VALUES (1,'151321515313','15615315815',1515,1,11515,151,15613,'欧阳娜娜','156156145165156','重庆银行','',NULL,NULL,NULL,NULL,NULL,NULL,2,NULL,'2020-04-27 19:24:32','2020-04-27 19:24:32');
+INSERT INTO `settle_order` VALUES (2,'1257958413455986688','202005060500321636703',2,1,100,0,0,'abc@abc','litch.me@gmail.com','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,-1,NULL,'2020-05-06 17:00:32','2020-05-06 17:00:32');
+INSERT INTO `settle_order` VALUES (3,'1257958933272858624','202005060502360970851',2,1,100,0,0,'abc@abc','litch.me@gmail.com','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:02:36','2020-05-06 17:02:36');
+INSERT INTO `settle_order` VALUES (4,'1257959341038899200','202005060504133164694',2,1,100,0,0,'abc@abc','litch.me@gmail.com','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:04:13','2020-05-06 17:04:13');
+INSERT INTO `settle_order` VALUES (5,'1257959736104587264','202005060505475071006',2,1,100,0,0,'abc@abc','litch','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:05:48','2020-05-06 17:05:48');
+INSERT INTO `settle_order` VALUES (6,'1257960026195234816','202005060506566707432',2,1,100,0,0,'abc@abc','aa','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:06:57','2020-05-06 17:06:57');
+INSERT INTO `settle_order` VALUES (7,'1257960449081741312','202005060508374939510',2,1,100,0,0,'abc@abc','abc@abc','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:08:37','2020-05-06 17:08:37');
+INSERT INTO `settle_order` VALUES (8,'1257960774823972864','202005060509551574729',2,1,100,0,0,'abc@abc','abcabc','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:09:55','2020-05-06 17:09:55');
+INSERT INTO `settle_order` VALUES (9,'1257960799624892416','202005060510010699717',2,1,100,0,0,'abc@abc','abcabc','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:10:01','2020-05-06 17:10:01');
+INSERT INTO `settle_order` VALUES (10,'1257961565819375616','202005060513037450323',2,1,100,0,0,'abc@abc','abcabc','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 17:13:04','2020-05-06 17:13:04');
+INSERT INTO `settle_order` VALUES (11,'1257979668586434560','202005060624597812928',2,1,100,0,0,'abc@abc','abcabc','招商银行','016','重庆渝中区',NULL,NULL,NULL,NULL,NULL,1,NULL,'2020-05-06 18:25:00','2020-05-06 18:25:00');
 /*!40000 ALTER TABLE `settle_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -950,14 +1048,14 @@ DROP TABLE IF EXISTS `system_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_menu` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单标题',
   `mark` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单标识',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '菜单类型（1:目录,2:菜单,3:按钮）',
   `icon` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '目录图标',
   `path` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '菜单路由',
-  `parent_id` int DEFAULT NULL COMMENT '上级菜单ID',
-  `sorts` int NOT NULL DEFAULT '0' COMMENT '排序权重',
+  `parent_id` int(11) DEFAULT NULL COMMENT '上级菜单ID',
+  `sorts` int(11) NOT NULL DEFAULT '0' COMMENT '排序权重',
   `extra` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -971,20 +1069,20 @@ CREATE TABLE `system_menu` (
 
 LOCK TABLES `system_menu` WRITE;
 /*!40000 ALTER TABLE `system_menu` DISABLE KEYS */;
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (1,'管理员列表','system',1,'','a',0,1,NULL,'2020-04-22 16:28:55','2020-04-22 16:28:55');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (2,'用户管理','a',1,NULL,'a',0,0,'','2020-04-22 17:10:11','2020-04-22 17:10:11');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (3,'添加','system:users:add',2,NULL,NULL,2,0,NULL,'2020-04-22 17:11:01','2020-04-22 17:11:01');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (4,'删除','system:users:del',2,NULL,NULL,2,0,NULL,'2020-04-22 17:11:23','2020-04-22 17:11:23');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (5,'修改','system:users:edit',2,NULL,NULL,2,0,NULL,'2020-04-22 17:11:45','2020-04-22 17:11:45');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (6,'查看','system:users:cat',2,NULL,NULL,2,0,NULL,'2020-04-22 17:12:13','2020-04-22 17:12:13');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (7,'角色管理','system:roles',1,NULL,'/admin/system/roles',0,0,NULL,'2020-04-22 17:13:01','2020-04-22 17:13:01');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (8,'添加','system:roles:add',2,NULL,NULL,7,0,NULL,'2020-04-22 17:13:29','2020-04-22 17:13:29');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (9,'删除','system:roles:del',2,NULL,NULL,7,0,NULL,'2020-04-22 17:13:52','2020-04-22 17:13:52');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (10,'修改','system:roles:edit',2,NULL,NULL,7,0,NULL,'2020-04-22 17:14:15','2020-04-22 17:14:15');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (11,'查看','system:roles:cat',2,NULL,NULL,7,0,NULL,'2020-04-22 17:14:40','2020-04-22 17:14:40');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (14,'管理员列表','system',1,NULL,'a',0,1,'null','2020-04-27 11:41:47','2020-04-27 11:41:47');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (15,'管理员1','a',1,NULL,'a',14,0,'','2020-04-27 12:44:34','2020-04-27 12:44:34');
-INSERT INTO `system_menu` (`id`, `title`, `mark`, `type`, `icon`, `path`, `parent_id`, `sorts`, `extra`, `created_at`, `updated_at`) VALUES (16,'管理员2','a',1,NULL,'a',15,0,'','2020-04-27 12:45:01','2020-04-27 12:45:01');
+INSERT INTO `system_menu` VALUES (1,'管理员列表','system',1,'','a',0,1,NULL,'2020-04-22 16:28:55','2020-04-22 16:28:55');
+INSERT INTO `system_menu` VALUES (2,'用户管理','a',1,NULL,'a',0,0,'','2020-04-22 17:10:11','2020-04-22 17:10:11');
+INSERT INTO `system_menu` VALUES (3,'添加','system:users:add',2,NULL,NULL,2,0,NULL,'2020-04-22 17:11:01','2020-04-22 17:11:01');
+INSERT INTO `system_menu` VALUES (4,'删除','system:users:del',2,NULL,NULL,2,0,NULL,'2020-04-22 17:11:23','2020-04-22 17:11:23');
+INSERT INTO `system_menu` VALUES (5,'修改','system:users:edit',2,NULL,NULL,2,0,NULL,'2020-04-22 17:11:45','2020-04-22 17:11:45');
+INSERT INTO `system_menu` VALUES (6,'查看','system:users:cat',2,NULL,NULL,2,0,NULL,'2020-04-22 17:12:13','2020-04-22 17:12:13');
+INSERT INTO `system_menu` VALUES (7,'角色管理','system:roles',1,NULL,'/admin/system/roles',0,0,NULL,'2020-04-22 17:13:01','2020-04-22 17:13:01');
+INSERT INTO `system_menu` VALUES (8,'添加','system:roles:add',2,NULL,NULL,7,0,NULL,'2020-04-22 17:13:29','2020-04-22 17:13:29');
+INSERT INTO `system_menu` VALUES (9,'删除','system:roles:del',2,NULL,NULL,7,0,NULL,'2020-04-22 17:13:52','2020-04-22 17:13:52');
+INSERT INTO `system_menu` VALUES (10,'修改','system:roles:edit',2,NULL,NULL,7,0,NULL,'2020-04-22 17:14:15','2020-04-22 17:14:15');
+INSERT INTO `system_menu` VALUES (11,'查看','system:roles:cat',2,NULL,NULL,7,0,NULL,'2020-04-22 17:14:40','2020-04-22 17:14:40');
+INSERT INTO `system_menu` VALUES (14,'管理员列表','system',1,NULL,'a',0,1,'null','2020-04-27 11:41:47','2020-04-27 11:41:47');
+INSERT INTO `system_menu` VALUES (15,'管理员1','a',1,NULL,'a',14,0,'','2020-04-27 12:44:34','2020-04-27 12:44:34');
+INSERT INTO `system_menu` VALUES (16,'管理员2','a',1,NULL,'a',15,0,'','2020-04-27 12:45:01','2020-04-27 12:45:01');
 /*!40000 ALTER TABLE `system_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -996,7 +1094,7 @@ DROP TABLE IF EXISTS `system_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_role` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
   `role_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色编码',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -1011,9 +1109,9 @@ CREATE TABLE `system_role` (
 
 LOCK TABLES `system_role` WRITE;
 /*!40000 ALTER TABLE `system_role` DISABLE KEYS */;
-INSERT INTO `system_role` (`id`, `name`, `role_code`, `created_at`, `updated_at`) VALUES (1,'admin','3,4,5,6,2','2020-04-21 17:59:10','2020-04-21 17:59:10');
-INSERT INTO `system_role` (`id`, `name`, `role_code`, `created_at`, `updated_at`) VALUES (4,'a','1','2020-04-24 18:05:04','2020-04-24 18:05:04');
-INSERT INTO `system_role` (`id`, `name`, `role_code`, `created_at`, `updated_at`) VALUES (6,'user1','3,4,5,6,2','2020-04-28 17:20:42','2020-04-28 17:20:42');
+INSERT INTO `system_role` VALUES (1,'admin','3,4,5,6,2','2020-04-21 17:59:10','2020-04-21 17:59:10');
+INSERT INTO `system_role` VALUES (4,'a','1','2020-04-24 18:05:04','2020-04-24 18:05:04');
+INSERT INTO `system_role` VALUES (6,'user1','3,4,5,6,2','2020-04-28 17:20:42','2020-04-28 17:20:42');
 /*!40000 ALTER TABLE `system_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1025,9 +1123,9 @@ DROP TABLE IF EXISTS `system_role_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_role_menu` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `role_id` int NOT NULL COMMENT '角色ID',
-  `menu_id` int NOT NULL COMMENT '菜单ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
+  `menu_id` int(11) NOT NULL COMMENT '菜单ID',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -1040,17 +1138,17 @@ CREATE TABLE `system_role_menu` (
 
 LOCK TABLES `system_role_menu` WRITE;
 /*!40000 ALTER TABLE `system_role_menu` DISABLE KEYS */;
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (9,1,3,'2020-04-27 19:04:49','2020-04-27 19:04:49');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (10,1,4,'2020-04-27 19:04:49','2020-04-27 19:04:49');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (11,1,5,'2020-04-27 19:04:49','2020-04-27 19:04:49');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (12,1,6,'2020-04-27 19:04:49','2020-04-27 19:04:49');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (13,1,2,'2020-04-27 19:04:49','2020-04-27 19:04:49');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (14,6,3,'2020-04-28 17:20:42','2020-04-28 17:20:42');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (15,6,4,'2020-04-28 17:20:42','2020-04-28 17:20:42');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (16,6,5,'2020-04-28 17:20:42','2020-04-28 17:20:42');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (17,6,6,'2020-04-28 17:20:42','2020-04-28 17:20:42');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (18,6,2,'2020-04-28 17:20:42','2020-04-28 17:20:42');
-INSERT INTO `system_role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES (24,4,1,'2020-04-28 18:03:01','2020-04-28 18:03:01');
+INSERT INTO `system_role_menu` VALUES (9,1,3,'2020-04-27 19:04:49','2020-04-27 19:04:49');
+INSERT INTO `system_role_menu` VALUES (10,1,4,'2020-04-27 19:04:49','2020-04-27 19:04:49');
+INSERT INTO `system_role_menu` VALUES (11,1,5,'2020-04-27 19:04:49','2020-04-27 19:04:49');
+INSERT INTO `system_role_menu` VALUES (12,1,6,'2020-04-27 19:04:49','2020-04-27 19:04:49');
+INSERT INTO `system_role_menu` VALUES (13,1,2,'2020-04-27 19:04:49','2020-04-27 19:04:49');
+INSERT INTO `system_role_menu` VALUES (14,6,3,'2020-04-28 17:20:42','2020-04-28 17:20:42');
+INSERT INTO `system_role_menu` VALUES (15,6,4,'2020-04-28 17:20:42','2020-04-28 17:20:42');
+INSERT INTO `system_role_menu` VALUES (16,6,5,'2020-04-28 17:20:42','2020-04-28 17:20:42');
+INSERT INTO `system_role_menu` VALUES (17,6,6,'2020-04-28 17:20:42','2020-04-28 17:20:42');
+INSERT INTO `system_role_menu` VALUES (18,6,2,'2020-04-28 17:20:42','2020-04-28 17:20:42');
+INSERT INTO `system_role_menu` VALUES (24,4,1,'2020-04-28 18:03:01','2020-04-28 18:03:01');
 /*!40000 ALTER TABLE `system_role_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1062,7 +1160,7 @@ DROP TABLE IF EXISTS `system_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_user` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
   `password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户密码',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户邮箱',
@@ -1079,10 +1177,10 @@ CREATE TABLE `system_user` (
 
 LOCK TABLES `system_user` WRITE;
 /*!40000 ALTER TABLE `system_user` DISABLE KEYS */;
-INSERT INTO `system_user` (`id`, `username`, `password`, `email`, `created_at`, `updated_at`) VALUES (1,'admin','900150983cd24fb0d6963f7d28e17f72','12@qq.com','2020-04-21 14:38:41','2020-04-29 16:20:59');
-INSERT INTO `system_user` (`id`, `username`, `password`, `email`, `created_at`, `updated_at`) VALUES (4,'123456','123456','aa@qq.com','2020-04-27 17:06:09','2020-04-27 17:06:09');
-INSERT INTO `system_user` (`id`, `username`, `password`, `email`, `created_at`, `updated_at`) VALUES (7,'user1','123456','test@qq.com','2020-04-28 17:23:50','2020-04-28 17:23:50');
-INSERT INTO `system_user` (`id`, `username`, `password`, `email`, `created_at`, `updated_at`) VALUES (8,'user2','123456','ab@qq.com','2020-04-28 17:24:16','2020-04-28 17:24:16');
+INSERT INTO `system_user` VALUES (1,'admin','900150983cd24fb0d6963f7d28e17f72','12@qq.com','2020-04-21 14:38:41','2020-04-29 16:20:59');
+INSERT INTO `system_user` VALUES (4,'123456','123456','aa@qq.com','2020-04-27 17:06:09','2020-04-27 17:06:09');
+INSERT INTO `system_user` VALUES (7,'user1','123456','test@qq.com','2020-04-28 17:23:50','2020-04-28 17:23:50');
+INSERT INTO `system_user` VALUES (8,'user2','123456','ab@qq.com','2020-04-28 17:24:16','2020-04-28 17:24:16');
 /*!40000 ALTER TABLE `system_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1094,9 +1192,9 @@ DROP TABLE IF EXISTS `system_user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_user_role` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL COMMENT '用户ID',
-  `role_id` int NOT NULL COMMENT '角色ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -1109,12 +1207,12 @@ CREATE TABLE `system_user_role` (
 
 LOCK TABLES `system_user_role` WRITE;
 /*!40000 ALTER TABLE `system_user_role` DISABLE KEYS */;
-INSERT INTO `system_user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES (1,1,1,'2020-04-22 17:34:38','2020-04-22 17:34:38');
-INSERT INTO `system_user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES (2,4,4,'2020-04-27 17:06:09','2020-04-27 17:06:09');
-INSERT INTO `system_user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES (3,5,1,'2020-04-27 17:09:44','2020-04-27 17:09:44');
-INSERT INTO `system_user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES (4,6,1,'2020-04-28 16:51:05','2020-04-28 16:51:05');
-INSERT INTO `system_user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES (5,7,1,'2020-04-28 17:23:50','2020-04-28 17:23:50');
-INSERT INTO `system_user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES (6,8,6,'2020-04-28 17:24:16','2020-04-28 17:24:16');
+INSERT INTO `system_user_role` VALUES (1,1,1,'2020-04-22 17:34:38','2020-04-22 17:34:38');
+INSERT INTO `system_user_role` VALUES (2,4,4,'2020-04-27 17:06:09','2020-04-27 17:06:09');
+INSERT INTO `system_user_role` VALUES (3,5,1,'2020-04-27 17:09:44','2020-04-27 17:09:44');
+INSERT INTO `system_user_role` VALUES (4,6,1,'2020-04-28 16:51:05','2020-04-28 16:51:05');
+INSERT INTO `system_user_role` VALUES (5,7,1,'2020-04-28 17:23:50','2020-04-28 17:23:50');
+INSERT INTO `system_user_role` VALUES (6,8,6,'2020-04-28 17:24:16','2020-04-28 17:24:16');
 /*!40000 ALTER TABLE `system_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1127,4 +1225,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-05 22:33:48
+-- Dump completed on 2020-05-06 19:42:35

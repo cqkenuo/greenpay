@@ -149,7 +149,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         if (i == -1) throw new Exception("账户类型不正确");
         if (i == 0) throw new Exception("账户余额不足");
     }
-    
+
     @Override
     public MerchantDetailDTO findMerchantById(Integer id) {
         Merchant merchant = getById(id);

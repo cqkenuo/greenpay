@@ -2,6 +2,8 @@ package com.esiran.greenpay.merchant.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -16,67 +18,24 @@ import java.time.LocalDateTime;
 @Data
 public class MerchantAgentPayPassageInputDTO {
 
-    private Integer id;
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 商户ID
-     */
+    @NotNull(message = "商户ID不能为空")
     private Integer merchantId;
 
-    /**
-     * 通道ID
-     */
+    @NotNull(message = "通道ID不能为空")
     private Integer passageId;
 
-    /**
-     * 通道名称
-     */
+    @NotBlank(message = "通道名称不能为空")
     private String passageName;
 
-    /**
-     * 通道子账户ID
-     */
-    private Integer passageAccId;
-
-    /**
-     * 通道子账户名称
-     */
-    private String passageAccName;
-
-    /**
-     * 手续费类型（1：百分比收费，2：固定收费，3：百分比加固定收费）
-     */
+    @NotNull(message = "收费类型不能为空")
     private Integer feeType;
-
-    /**
-     * 通道费率
-     */
+    @NotNull(message = "商户费率不能为空")
     private BigDecimal feeRate;
-
-    /**
-     * 固定费用（单位：分）
-     */
+    @NotNull(message = "固定费率不能为空")
     private Integer feeAmount;
-
-    /**
-     * 轮询权重
-     */
+    @NotNull(message = "轮询权重不能为空")
     private Integer weight;
 
-    /**
-     * 状态（0：关闭，1：开启）
-     */
+    @NotNull(message = "状态不能为空")
     private Boolean status;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createdAt;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updatedAt;
 }

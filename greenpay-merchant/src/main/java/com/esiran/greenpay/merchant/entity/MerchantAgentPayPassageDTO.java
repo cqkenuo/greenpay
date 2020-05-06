@@ -39,15 +39,6 @@ public class MerchantAgentPayPassageDTO {
      */
     private String passageName;
 
-    /**
-     * 通道子账户ID
-     */
-    private Integer passageAccId;
-
-    /**
-     * 通道子账户名称
-     */
-    private String passageAccName;
 
     /**
      * 手续费类型（1：百分比收费，2：固定收费，3：百分比加固定收费）

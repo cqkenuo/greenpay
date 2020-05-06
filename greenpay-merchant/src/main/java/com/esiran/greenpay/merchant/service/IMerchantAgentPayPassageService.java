@@ -3,6 +3,7 @@ package com.esiran.greenpay.merchant.service;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassageDTO;
+import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassageInputDTO;
 
 /**
  * <p>
@@ -15,4 +16,5 @@ import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassageDTO;
 public interface IMerchantAgentPayPassageService extends IService<MerchantAgentPayPassage> {
     MerchantAgentPayPassage getOneByMchId(Integer mchId, Integer passageId);
     MerchantAgentPayPassageDTO getOneDTOByMchId(Integer mchId, Integer passageId);
+    void updateByInput(MerchantAgentPayPassageInputDTO inputDTO);
 }

@@ -30,32 +30,9 @@
                         <div class="layui-card-header">代付通道配置</div>
                         <div class="layui-card-body">
                             <form class="layui-form" action="" method="post">
-<!--                                <div class="layui-form-item">-->
-<!--                                    <label for="payTypeCode" class="layui-form-label">支付类型：</label>-->
-<!--                                    <div class="layui-input-block">-->
-<!--                                        <select disabled id="payTypeCode">-->
-<!--                                            <option value="" selected>无</option>-->
-<!--                                            <option th:each="type:${availableTypes}"-->
-<!--                                                    th:text="${type.typeName}"-->
-<!--                                                    th:value="${type.typeCode}"-->
-<!--                                                    th:selected="${data.payTypeCode == type.typeCode}">-->
-<!--                                            </option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="layui-form-item">-->
-<!--                                    <label for="interfaceCode" class="layui-form-label">支付接口：</label>-->
-<!--                                    <div class="layui-input-block">-->
-<!--                                        <select disabled id="interfaceCode">-->
-<!--                                            <option value="" selected>无</option>-->
-<!--                                            <option th:each="ins:${availableInters}"-->
-<!--                                                    th:text="${ins.interfaceName}"-->
-<!--                                                    th:value="${ins.interfaceCode}"-->
-<!--                                                    th:selected="${data.interfaceCode == ins.interfaceCode}">-->
-<!--                                            </option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                                <input type="hidden" name="feeAmount">
+                                <input type="hidden" name="merchantId" th:value="${mchId}">
+                                <input type="hidden" name="passageId" th:value="${data.passageId}">
                                 <div class="layui-row layui-form-item">
                                     <label for="passageName" class="layui-form-label">通道名称：</label>
                                     <div class="layui-input-block">
@@ -90,19 +67,28 @@
                                 <div class="layui-row layui-form-item">
                                     <label for="feeRate" class="layui-form-label">百分比费率：</label>
                                     <div class="layui-input-block">
-                                        <input type="number" class="layui-input"
+                                        <input type="text" class="layui-input"
                                                name="feeRate" id="feeRate"
                                                autocomplete="off" th:value="${data.feeRate}"
                                                placeholder="请输入百分比费率，保留2位小数">
                                     </div>
                                 </div>
                                 <div class="layui-row layui-form-item">
-                                    <label for="feeAmount" class="layui-form-label">固定费用：</label>
+                                    <label for="feeAmountYuan" class="layui-form-label">固定费用：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input"
+                                               id="feeAmountYuan" autocomplete="off"
+                                               th:value="${data.feeAmountDisplay}"
+                                               placeholder="请输入固定费用，单位：元">
+                                    </div>
+                                </div>
+                                <div class="layui-row layui-form-item">
+                                    <label for="weight" class="layui-form-label">轮询权重：</label>
                                     <div class="layui-input-block">
                                         <input type="number" class="layui-input"
-                                               name="feeAmount" id="feeAmount"
-                                               autocomplete="off" th:value="${data.feeAmountDisplay}"
-                                               placeholder="请输入固定费用，单位：元">
+                                               name="weight" id="weight"
+                                               autocomplete="off" th:value="${data.weight}"
+                                               placeholder="请输入轮询权重">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -120,7 +106,9 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button type="submit" class="layui-btn">提交</button>
+                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="update">
+                                            提交
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -136,7 +124,18 @@
 <script th:inline="none">
     !function(){
         let layer = layui.layer
-            ,table = layui.table;
+            ,$ = layui.jquery
+            ,form = layui.form;
+        form.on('submit(update)', function(data){
+            let feeAmountYuanText = $("#feeAmountYuan").val();
+            let feeAmountYuan = 0;
+            if (feeAmountYuanText.length > 0){
+                feeAmountYuan = parseFloat(feeAmountYuanText);
+            }
+            let feeAmountFen = Math.round(feeAmountYuan*100);
+            $("input[name='feeAmount']").val(feeAmountFen);
+            return true;
+        });
     }();
 </script>
 

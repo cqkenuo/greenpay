@@ -133,19 +133,21 @@ public class AdminMerchantController extends CURDBaseController {
         if (merchant == null) throw new ResourceNotFoundException("商户不存在");
         MerchantAgentPayPassageDTO data = merchantService.selectMchAgentPayPassageByMchId(mchId,passageId);
         if (data == null) throw new ResourceNotFoundException("代付通道不存在");
-//        MerchantProductDTO merchantProduct = merchantService.selectMchProductById(mchId,productId);
-//        List<Passage> availPassages = passageService.listByPayTypeCode(merchantProduct.getPayTypeCode());
-//        List<PassageAccount> availPassagesAcc = passageAccountService.listByPayTypeCode(merchantProduct.getPayTypeCode());
-//        List<MerchantProductPassage> usagePassages = productPassageService.listByProductId(mchId, productId);
-//        String usagePassagesJson = gson.toJson(usagePassages);
-//        String availPassagesJson = gson.toJson(availPassages);
-//        modelMap.addAttribute("merchantProduct", merchantProduct);
-//        modelMap.addAttribute("availPassages", availPassages);
-//        modelMap.addAttribute("availPassagesAcc", availPassagesAcc);
-//        modelMap.addAttribute("availPassagesJson", availPassagesJson);
-//        modelMap.addAttribute("usagePassagesJson", usagePassagesJson);
         modelMap.addAttribute("mchId", mchId);
         modelMap.addAttribute("data", data);
         return "admin/merchant/agentpay/edit";
+    }
+
+    @PostMapping("/list/{mchId}/agentpay/list/{passageId}/edit")
+    public String agentPayPassagePost(
+            @PathVariable Integer mchId,
+            @PathVariable Integer passageId,
+            @Valid MerchantAgentPayPassageInputDTO dto) throws Exception {
+        Merchant merchant = merchantService.getById(mchId);
+        if (merchant == null) throw new ResourceNotFoundException("商户不存在");
+        AgentPayPassage passage = agentPayPassageService.getById(passageId);
+        if (passage == null)  throw new ResourceNotFoundException("代付通道不存在");
+        merchantAgentPayPassageService.updateByInput(dto);
+        return redirect("/admin/merchant/list/%s/agentpay/list/%s/edit",mchId,passageId);
     }
 }

@@ -1,14 +1,20 @@
 package com.esiran.greenpay.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassage;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassageDTO;
+import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassageInputDTO;
 import com.esiran.greenpay.merchant.mapper.MerchantAgentPayPassageMapper;
 import com.esiran.greenpay.merchant.service.IMerchantAgentPayPassageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -38,5 +44,19 @@ public class MerchantAgentPayPassageServiceImpl extends ServiceImpl<MerchantAgen
         dto.setFeeAmountDisplay(NumberUtil.amountFen2Yuan(mapp.getFeeAmount()));
         dto.setFeeRateDisplay(NumberUtil.twoDecimals(mapp.getFeeRate()));
         return dto;
+    }
+
+    @Override
+    @Transactional
+    public void updateByInput(MerchantAgentPayPassageInputDTO inputDTO) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        MerchantAgentPayPassage mapp = modelMapper.map(inputDTO,MerchantAgentPayPassage.class);
+        LambdaUpdateWrapper<MerchantAgentPayPassage> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(MerchantAgentPayPassage::getMerchantId,inputDTO.getMerchantId())
+                .eq(MerchantAgentPayPassage::getPassageId,mapp.getPassageId());
+        remove(updateWrapper);
+        mapp.setCreatedAt(LocalDateTime.now());
+        mapp.setUpdatedAt(LocalDateTime.now());
+        save(mapp);
     }
 }

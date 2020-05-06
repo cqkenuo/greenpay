@@ -2,6 +2,7 @@ package com.esiran.greenpay.admin.controller;
 
 import com.esiran.greenpay.common.entity.APIError;
 import com.esiran.greenpay.merchant.entity.Merchant;
+import com.esiran.greenpay.system.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ public abstract class CURDBaseController {
         return redirect(String.format(url,args));
     }
 
-    public final Merchant theUser(){
+    public final User theUser(){
         Object principal = SecurityUtils.getSubject().getPrincipal();
-        return (Merchant) principal;
+        return (User) principal;
     }
 }

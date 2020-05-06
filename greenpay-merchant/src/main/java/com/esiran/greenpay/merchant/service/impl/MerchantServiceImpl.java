@@ -278,7 +278,11 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         return new PassageAndSubAccount(passage,passageAccount);
     }
 
-
+    /**
+     * 根据权重随机选择
+     * @param w 权重数组
+     * @return 索引
+     */
     private int randomPickIndex(int[] w){
         int len = w.length;
         if (len == 0) return -1;

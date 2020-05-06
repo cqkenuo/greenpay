@@ -11,31 +11,42 @@
         <div th:replace="admin/side::menu"></div>
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
-                <div th:replace="admin/compose::layui-breadcrumb('商户管理','商户产品配置')"></div>
+                <div th:replace="admin/compose::layui-breadcrumb('商户管理','代付通道')"></div>
                 <div class="layui-fluid">
                     <div class="layui-card">
-                        <div class="layui-card-header">商户产品配置</div>
+                        <div class="layui-card-header">代付通道管理</div>
                         <div class="layui-card-body" style="padding: 0">
                             <table id="demo" lay-filter="test"></table>
-                            <script type="text/html" id="productTypeTemplate">
-                                {{# if(d.productType == 1) { }}
-                                <span>收款</span>
-                                {{# } else if(d.productType == 2) { }}
-                                <span>充值</span>
-                                {{# } }}
-                            </script>
-                            <script type="text/html" id="rateTemplate">
-                                {{# if(d.rateDisplay) { }}
-                                <span>{{ d.rateDisplay }}</span>
+                            <script type="text/html" id="feeTypeTemplate">
+                                {{# if(d.feeType == 1) { }}
+                                <span>百分比收费</span>
+                                {{# } else if(d.feeType == 2) { }}
+                                <span>固定收费</span>
+                                {{# } else if(d.feeType == 3) { }}
+                                <span>百分比加固定收费</span>
                                 {{# } else { }}
                                 <span>未配置</span>
                                 {{# } }}
                             </script>
-                            <script type="text/html" id="interfaceModeTemplate">
-                                {{# if(d.interfaceMode == 1) { }}
-                                <span>单独</span>
-                                {{# } else if(d.interfaceMode == 2) { }}
-                                <span>轮训</span>
+                            <script type="text/html" id="feeRateTemplate">
+                                {{# if(d.feeRateDisplay) { }}
+                                <span> {{d.feeRateDisplay}}</span>
+                                {{# } else { }}
+                                <span>未配置</span>
+                                {{# } }}
+                            </script>
+                            <script type="text/html" id="feeAmountTemplate">
+                                {{# if(d.feeAmountDisplay) { }}
+                                <span> {{d.feeAmountDisplay}}</span>
+                                {{# } else { }}
+                                <span>未配置</span>
+                                {{# } }}
+                            </script>
+                            <script type="text/html" id="weightTemplate">
+                                {{# if(d.weight) { }}
+                                <span>{{d.weight}}</span>
+                                {{# } else { }}
+                                <span>未配置</span>
                                 {{# } }}
                             </script>
                             <script type="text/html" id="statusTemplate">
@@ -47,7 +58,7 @@
                             </script>
 
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/merchant/list/{{d.merchantId}}/product/list/{{d.productId}}/edit'}"
+                                <a th:href="@{'/admin/merchant/list/{{d.merchantId}}/agentpay/list/{{d.passageId}}/edit'}"
                                    class="layui-btn layui-btn-xs">
                                     配置
                                 </a>
@@ -69,7 +80,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            ,url: '/admin/api/v1/merchants/2/products' //数据接口
+            ,url: '/admin/api/v1/merchants/2/agent_pay_passages' //数据接口
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {
                     "code": 0,
@@ -79,10 +90,12 @@
                 };
             }
             ,cols: [[
-                {field: 'productId', title: '通道ID', width:'10%', unresize:true}
-                ,{field: 'productName', title: '通道名称', width:'45%', unresize:true}
-                ,{field: 'rateDisplay', align:'right', title: '费率（%）', width:'10%', unresize:true, templet:'#rateTemplate'}
-                ,{field: 'interfaceMode', title: '默认', width:'10%', unresize:true, templet:'#interfaceModeTemplate'}
+                {field: 'passageId', title: '通道ID', width:'10%', unresize:true}
+                ,{field: 'passageName', title: '通道名称', width:'35%', unresize:true}
+                ,{ title: '收费类型', width:'10%', unresize:true, templet:'#feeTypeTemplate'}
+                ,{align: 'right', title: '百分比费率（%）', width:'10%', unresize:true, templet:'#feeRateTemplate'}
+                ,{align: 'right', title: '固定费率（元）', width:'10%', unresize:true, templet:'#feeAmountTemplate'}
+                ,{align: 'right', title: '轮询权重', width:'10%', unresize:true, templet:'#weightTemplate'}
                 ,{field: 'status', title: '状态', width:'10%', unresize:true, templet:'#statusTemplate'}
                 ,{title: '操作', width:'5%', align: 'left', toolbar: '#barDemo',unresize:true}
             ]]

@@ -43,14 +43,14 @@
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/admin/agentpay/passage/list/{{d.id}}/edit'}" class="layui-btn layui-btn-xs">编辑</a>
                                 <a th:href="@{'/admin/agentpay/passage/list/{{d.id}}/acc'}" class="layui-btn layui-btn-xs">通道子账户配置</a>
-                                <form style="display: none" id="_del" method="post" action="">
-                                    <input type="hidden" name="action" value="del">
-                                    <input type="hidden" name="ids" value="[{{d.id}}]">
-                                </form>
                                 <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs"
                                    onclick="document.getElementById('_del').submit();">
                                     删除
                                 </a>
+                                <form style="display: none" id="_del" method="post" action="">
+                                    <input type="hidden" name="action" value="del">
+                                    <input type="hidden" name="ids" value="[{{d.id}}]">
+                                </form>
                             </script>
                         </div>
                     </div>

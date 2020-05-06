@@ -15,58 +15,56 @@
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-tab layui-tab-brief">
-                            <ul class="layui-tab-title">
-                                <li class="layui-this">支付订单</li>
-                            </ul>
                             <div class="layui-fluid">
                                 <div class="layui-row layui-col-space15">
                                     <div class="layui-col-md12">
                                         <div class="layui-card">
                                             <div class="layui-card-header">设置我的资料</div>
                                             <div class="layui-card-body" pad15="">
-
+                                            <form class="layui-form" action="">
                                                 <div class="layui-form" lay-filter="">
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">用户名</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="username" value="xianxin" readonly="" class="layui-input">
+                                                            <input type="text" name="username" readonly="" class="layui-input" th:value="${user.getUsername()}">
                                                         </div>
+                                                        <div class="layui-form-mid layui-word-aux">不可修改</div>
                                                     </div>
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">昵称</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="nickname" value="贤心" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                                                            <input type="text" name="nickname" th:value="${user.getName()}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
                                                         </div>
                                                     </div>
-                                                    <div class="layui-form-item">
-                                                        <label class="layui-form-label">性别</label>
-                                                        <div class="layui-input-block">
-                                                            <input type="radio" name="sex" value="男" title="男"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>男</div></div>
-                                                            <input type="radio" name="sex" value="女" title="女" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>女</div></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="layui-form-item">
-                                                        <label class="layui-form-label">头像</label>
-                                                        <div class="layui-input-inline">
-                                                            <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
-                                                        </div>
-                                                        <div class="layui-input-inline layui-btn-container" style="width: auto;">
-                                                            <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
-                                                                <i class="layui-icon"></i>上传图片
-                                                            </button><input class="layui-upload-file" type="file" accept="" name="file">
-                                                            <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
-                                                        </div>
-                                                    </div>
+<!--                                                    <div class="layui-form-item">-->
+<!--                                                        <label class="layui-form-label">性别</label>-->
+<!--                                                        <div class="layui-input-block">-->
+<!--                                                            <input type="radio" name="sex" value="男" title="男"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>男</div></div>-->
+<!--                                                            <input type="radio" name="sex" value="女" title="女" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>女</div></div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="layui-form-item">-->
+<!--                                                        <label class="layui-form-label">头像</label>-->
+<!--                                                        <div class="layui-input-inline">-->
+<!--                                                            <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">-->
+<!--                                                        </div>-->
+<!--                                                        <div class="layui-input-inline layui-btn-container" style="width: auto;">-->
+<!--                                                            <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">-->
+<!--                                                                <i class="layui-icon"></i>上传图片-->
+<!--                                                            </button><input class="layui-upload-file" type="file" accept="" name="file">-->
+<!--                                                            <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">手机</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="cellphone" value="" lay-verify="phone" autocomplete="off" class="layui-input">
+                                                            <input type="text" name="cellphone" th:value="${user.getPhone()}" lay-verify="phone" autocomplete="off" class="layui-input">
                                                         </div>
                                                     </div>
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">邮箱</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="email" value="" lay-verify="email" autocomplete="off" class="layui-input">
+                                                            <input type="text" name="email" th:value="${user.getEmail()}" lay-verify="email" autocomplete="off" class="layui-input">
                                                         </div>
                                                     </div>
                                                     <div class="layui-form-item layui-form-text">
@@ -82,7 +80,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                            </form>
                                             </div>
                                         </div>
                                     </div>
@@ -103,6 +101,26 @@
             ,table = layui.table
             ,laydate = layui.laydate
             ,form = layui.form;
+
+        form.on('submit(setmyinfo)',function (data) {
+            $.ajax({
+                url:'/merchant/api/v1/payextract',
+                method:'post',
+                data:data.field,
+                dataType:'JSON',
+                success:function(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg);
+                    }
+                    else
+                        layer.msg(res.msg);
+                },
+                error:function (data) {
+                    throw data;
+                }
+            });
+            return false;
+        })
     }();
 </script>
 </body>

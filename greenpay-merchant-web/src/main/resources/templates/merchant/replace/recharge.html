@@ -53,6 +53,21 @@
                                     </div>
                                     <div>
                                         <table id="rechargeList" lay-filter="recharge"></table>
+                                        <script type="text/html" id="statusTpl">
+                                            {{#  if(d.status == 0){ }}
+                                            <button class="layui-btn layui-btn-warm layui-btn-xs">待审核</button>
+                                            {{#  } if(d.status == 1) { }}
+                                            <button class="layui-btn layui-btn-xs">审核通过</button>
+                                            {{#  } if(d.status == -1) { }}
+                                            <button class="layui-btn layui-btn-normal layui-btn-xs">审核失败</button>
+                                            {{#  } }}
+                                        </script>
+<!--                                        <script type="text/html" id="barDemo">-->
+<!--                                            <a th:href="@{'/merchant/order/list/{{d.orderNo}}/detail'}"-->
+<!--                                               class="layui-btn layui-btn-xs layui-btn-primary">查看</a>-->
+<!--                                            <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">补单</a>-->
+<!--                                            <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">通知</a>-->
+<!--                                        </script>-->
                                     </div>
 
                                 </div>
@@ -92,7 +107,7 @@
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'rechargeId', title: '充值单号', width: "15%",align:'center'}
                 , {field: 'rechargeMoney', title: '充值金额', width: "15%",align:'center'}
-                , {field: 'status', title: '状态', width: "15%" ,align:'center'}
+                , {field: 'status', title: '状态',templet: "#statusTpl", width: "15%" ,align:'center'}
                 , {field: 'createdAt', title: '创建时间', width: "15%",align:'center'}
                 ,{title: '操作', align: 'left', width:'15%'}
             ]]

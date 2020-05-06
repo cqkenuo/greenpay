@@ -53,6 +53,15 @@
                                     </div>
                                     <div>
                                         <table id="extractlist" lay-filter="extract"></table>
+                                        <script type="text/html" id="statusTpl">
+                                            {{#  if(d.status == 0){ }}
+                                            <button class="layui-btn layui-btn-warm layui-btn-xs">待审核</button>
+                                            {{#  } if(d.status == 1) { }}
+                                            <button class="layui-btn layui-btn-xs">审核通过</button>
+                                            {{#  } if(d.status == -1) { }}
+                                            <button class="layui-btn layui-btn-normal layui-btn-xs">审核失败</button>
+                                            {{#  } }}
+                                        </script>
                                     </div>
 
                                 </div>
@@ -92,7 +101,7 @@
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'extractNo', title: '订单编号', width: "15%",align:'center'}
                 , {field: 'amount', title: '提现金额', width: "15%",align:'center'}
-                , {field: 'status', title: '状态', width: "15%" ,align:'center'}
+                , {field: 'status', title: '状态',templet: "#statusTpl", width: "15%" ,align:'center'}
                 , {field: 'createdAt', title: '创建时间', width: "15%",align:'center'}
                 ,{title: '操作', align: 'left', width:'15%'}
             ]]

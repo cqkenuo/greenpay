@@ -68,7 +68,7 @@
                                 {{# } }}
                             </script>
                             <script type="text/html" id="amountTemplate">
-                                ￥ {{ d.amountDisplay }}
+                                ￥ {{ d.totalAmountDisplay }}
                             </script>
                             <script type="text/html" id="feeTemplate">
                                 ￥ {{ d.feeDisplay }}
@@ -101,7 +101,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            ,url: '/admin/api/v1/orders' //数据接口
+            ,url: '/admin/api/v1/agentpay/batch' //数据接口
             ,page: true //开启分页
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {
@@ -121,8 +121,8 @@
             ,{field: 'outBatchNo', title: '商户批次号', width:'12%', unresize:true}
             ,{field: 'mchId', title: '商户ID', width:'5%', unresize:true}
             ,{title: '总金额（元）',align:'right', width:'8%', unresize:true,templet: '#amountTemplate'}
-            ,{field: 'batchCount',align:'right', title: '总笔数', width:'8%', unresize:true}
-            ,{field: 'result', title: '结果', width:'10%', unresize:true, templet:'#resultTemplate'}
+            ,{field: 'totalCount',align:'right', title: '总笔数', width:'8%', unresize:true}
+            // ,{field: 'result', title: '结果', width:'10%', unresize:true, templet:'#resultTemplate'}
             ,{field: 'payProductName', title: '代付通道', width:'10%', unresize:true}
             ,{field: 'status', title: '状态', width:'6%', unresize:true, templet:'#statusTemplate'}
             ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true}

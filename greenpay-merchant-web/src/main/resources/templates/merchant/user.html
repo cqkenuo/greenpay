@@ -26,14 +26,14 @@
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">用户名</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="username" readonly="" class="layui-input" th:value="${user.getUsername()}">
+                                                            <input type="text" name="username" readonly="" class="layui-input" th:value="${merchant.getUsername()}">
                                                         </div>
                                                         <div class="layui-form-mid layui-word-aux">不可修改</div>
                                                     </div>
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">昵称</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="nickname" th:value="${user.getName()}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                                                            <input type="text" name="nickname" th:value="${merchant.getName()}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
                                                         </div>
                                                     </div>
 <!--                                                    <div class="layui-form-item">-->
@@ -58,13 +58,13 @@
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">手机</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="cellphone" th:value="${user.getPhone()}" lay-verify="phone" autocomplete="off" class="layui-input">
+                                                            <input type="text" name="cellphone" th:value="${merchant.getPhone()}" lay-verify="phone" autocomplete="off" class="layui-input">
                                                         </div>
                                                     </div>
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">邮箱</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="email" th:value="${user.getEmail()}" lay-verify="email" autocomplete="off" class="layui-input">
+                                                            <input type="text" name="email" th:value="${merchant.getEmail()}" lay-verify="email" autocomplete="off" class="layui-input">
                                                         </div>
                                                     </div>
                                                     <div class="layui-form-item layui-form-text">

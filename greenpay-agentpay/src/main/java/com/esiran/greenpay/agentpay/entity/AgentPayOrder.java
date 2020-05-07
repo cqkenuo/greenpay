@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.modelmapper.ModelMapper;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  * <p>
@@ -31,6 +34,11 @@ public class AgentPayOrder extends BaseMapperEntity {
      * 订单流水号
      */
     private String orderSn;
+
+    /**
+     * 代付批次号
+     */
+    private String batchNo;
 
     /**
      * 商户ID
@@ -82,15 +90,16 @@ public class AgentPayOrder extends BaseMapperEntity {
      */
     private String payTypeCode;
 
-    /**
-     * 支付类型名称
-     */
-    private String payTypeName;
 
     /**
      * 支付通道ID
      */
     private Integer agentpayPassageId;
+
+    /**
+     * 代付通道名称
+     */
+    private String agentpayPassageName;
 
     /**
      * 支付通道ID
@@ -110,7 +119,7 @@ public class AgentPayOrder extends BaseMapperEntity {
     /**
      * 订单状态（1：待处理，2：处理中，3：处理成功，4：处理失败）
      */
-    private Boolean status;
+    private Integer status;
 
 
 }

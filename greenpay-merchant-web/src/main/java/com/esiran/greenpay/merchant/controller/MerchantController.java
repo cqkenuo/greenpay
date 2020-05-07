@@ -46,7 +46,7 @@ public class MerchantController extends CURDBaseController{
     @GetMapping("/user/profile")
     public String user(Model model){
         Merchant merchant = theUser();
-        model.addAttribute("user",merchant);
+        model.addAttribute("merchant",merchant);
         return "merchant/user";
     }
 

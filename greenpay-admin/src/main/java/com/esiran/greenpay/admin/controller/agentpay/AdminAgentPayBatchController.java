@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminAgentPayBatchController {
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;
+
     public AdminAgentPayBatchController(
             IOrderService orderService,
             IOrderDetailService orderDetailService) {
@@ -33,6 +34,6 @@ public class AdminAgentPayBatchController {
         OrderDetailDTO orderDetail = orderDetailService.getByOrderNo(orderNo);
         modelMap.addAttribute("order", order);
         modelMap.addAttribute("orderDetail", orderDetail);
-        return "admin/order/detail";
+        return "admin/agentpay/order/detail";
     }
 }

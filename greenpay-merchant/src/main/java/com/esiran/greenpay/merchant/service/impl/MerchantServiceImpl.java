@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
+import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.util.EncryptUtil;
@@ -48,6 +50,8 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     private final IPrepaidAccountService prepaidAccountService;
     private final ISettleAccountService settleAccountService;
     private final IPassageService passageService;
+    private final IMerchantAgentPayPassageService mchAgentPayPassageService;
+    private final IAgentPayPassageService agentPayPassageService;
     private static final ModelMapper modelMapper = new ModelMapper();
     public MerchantServiceImpl(
             ITypeService iTypeService,
@@ -55,7 +59,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             IMerchantProductService merchantProductService,
             IMerchantProductPassageService merchantProductPassageService, IPassageAccountService passageAccountService, IApiConfigService apiConfigService,
             IPayAccountService payAccountService,
-            IPrepaidAccountService prepaidAccountService, ISettleAccountService settleAccountService, IPassageService passageService) {
+            IPrepaidAccountService prepaidAccountService, ISettleAccountService settleAccountService, IPassageService passageService, IMerchantAgentPayPassageService mchAgentPayPassageService, IAgentPayPassageService agentPayPassageService) {
         this.iTypeService = iTypeService;
         this.productService = productService;
         this.merchantProductService = merchantProductService;
@@ -66,6 +70,8 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         this.prepaidAccountService = prepaidAccountService;
         this.settleAccountService = settleAccountService;
         this.passageService = passageService;
+        this.mchAgentPayPassageService = mchAgentPayPassageService;
+        this.agentPayPassageService = agentPayPassageService;
     }
 
     @Override
@@ -143,7 +149,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         if (i == -1) throw new Exception("账户类型不正确");
         if (i == 0) throw new Exception("账户余额不足");
     }
-    
+
     @Override
     public MerchantDetailDTO findMerchantById(Integer id) {
         Merchant merchant = getById(id);
@@ -228,6 +234,43 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         return mps;
     }
 
+    public static MerchantAgentPayPassageDTO buildMerchantAgentPayPassageDTO(
+            Integer mchId,
+            AgentPayPassage agentPayPassage){
+        MerchantAgentPayPassageDTO dto = new MerchantAgentPayPassageDTO();
+        dto.setMerchantId(mchId);
+        dto.setPassageId(agentPayPassage.getId());
+        dto.setPassageName(agentPayPassage.getPassageName());
+        dto.setStatus(false);
+        return dto;
+    }
+
+    @Override
+    public List<MerchantAgentPayPassageDTO> listMchAgentPayPassageByMchId(Integer mchId) {
+        List<AgentPayPassage> agentPayPassages = agentPayPassageService.list();
+        List<MerchantAgentPayPassageDTO> al = new ArrayList<>();
+        for (AgentPayPassage app : agentPayPassages){
+            MerchantAgentPayPassageDTO dto = mchAgentPayPassageService.getOneDTOByMchId(mchId,app.getId());
+            if (dto == null){
+                dto = buildMerchantAgentPayPassageDTO(mchId,app);
+            }
+            al.add(dto);
+        }
+        return al;
+    }
+
+    @Override
+    public MerchantAgentPayPassageDTO selectMchAgentPayPassageByMchId(Integer mchId, Integer passageId) {
+        AgentPayPassage app = agentPayPassageService.getById(passageId);
+        if (app == null) return null;
+        MerchantAgentPayPassageDTO data = mchAgentPayPassageService.getOneDTOByMchId(mchId,passageId);
+        if (data == null){
+            data = buildMerchantAgentPayPassageDTO(mchId,app);
+        }
+        return data;
+    }
+
+
     @Override
     public MerchantProductDTO selectMchProductById(Integer mchId, Integer productId) {
         Product product = productService.getById(productId);
@@ -278,7 +321,11 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         return new PassageAndSubAccount(passage,passageAccount);
     }
 
-
+    /**
+     * 根据权重随机选择
+     * @param w 权重数组
+     * @return 索引
+     */
     private int randomPickIndex(int[] w){
         int len = w.length;
         if (len == 0) return -1;

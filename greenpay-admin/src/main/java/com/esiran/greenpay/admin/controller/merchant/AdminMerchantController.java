@@ -1,8 +1,12 @@
 package com.esiran.greenpay.admin.controller.merchant;
 
 import com.esiran.greenpay.admin.controller.CURDBaseController;
+import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
+import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.merchant.entity.*;
+import com.esiran.greenpay.merchant.service.IMerchantAgentPayPassageService;
 import com.esiran.greenpay.merchant.service.IMerchantProductService;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.merchant.service.IMerchantProductPassageService;
@@ -18,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -33,7 +36,17 @@ public class AdminMerchantController extends CURDBaseController {
     private final IPassageAccountService passageAccountService;
     private final IMerchantProductService merchantProductService;
     private final IMerchantProductPassageService productPassageService;
-    public AdminMerchantController(IMerchantService merchantService, IProductService productService, ITypeService typeService, IPassageService passageService, IPassageAccountService passageAccountService, IMerchantProductService merchantProductService, IMerchantProductPassageService productPassageService) {
+    private final IMerchantAgentPayPassageService merchantAgentPayPassageService;
+    private final IAgentPayPassageService agentPayPassageService;
+    public AdminMerchantController(
+            IMerchantService merchantService,
+            IProductService productService,
+            ITypeService typeService,
+            IPassageService passageService,
+            IPassageAccountService passageAccountService,
+            IMerchantProductService merchantProductService,
+            IMerchantProductPassageService productPassageService,
+            IMerchantAgentPayPassageService merchantAgentPayPassageService, IAgentPayPassageService agentPayPassageService) {
         this.merchantService = merchantService;
         this.productService = productService;
         this.typeService = typeService;
@@ -41,6 +54,8 @@ public class AdminMerchantController extends CURDBaseController {
         this.passageAccountService = passageAccountService;
         this.merchantProductService = merchantProductService;
         this.productPassageService = productPassageService;
+        this.merchantAgentPayPassageService = merchantAgentPayPassageService;
+        this.agentPayPassageService = agentPayPassageService;
     }
 
     @GetMapping("/list")
@@ -104,5 +119,35 @@ public class AdminMerchantController extends CURDBaseController {
     public String add(@Valid MerchantInputDTO merchant) throws Exception {
         merchantService.addMerchant(merchant);
         return "redirect:/admin/merchant/list";
+    }
+
+
+
+    @GetMapping("/list/{mchId}/agentpay/list/{passageId}/edit")
+    @PageViewHandleError
+    public String agentPayPassage(
+            @PathVariable Integer mchId,
+            @PathVariable Integer passageId,
+            ModelMap modelMap) throws Exception {
+        Merchant merchant = merchantService.getById(mchId);
+        if (merchant == null) throw new ResourceNotFoundException("商户不存在");
+        MerchantAgentPayPassageDTO data = merchantService.selectMchAgentPayPassageByMchId(mchId,passageId);
+        if (data == null) throw new ResourceNotFoundException("代付通道不存在");
+        modelMap.addAttribute("mchId", mchId);
+        modelMap.addAttribute("data", data);
+        return "admin/merchant/agentpay/edit";
+    }
+
+    @PostMapping("/list/{mchId}/agentpay/list/{passageId}/edit")
+    public String agentPayPassagePost(
+            @PathVariable Integer mchId,
+            @PathVariable Integer passageId,
+            @Valid MerchantAgentPayPassageInputDTO dto) throws Exception {
+        Merchant merchant = merchantService.getById(mchId);
+        if (merchant == null) throw new ResourceNotFoundException("商户不存在");
+        AgentPayPassage passage = agentPayPassageService.getById(passageId);
+        if (passage == null)  throw new ResourceNotFoundException("代付通道不存在");
+        merchantAgentPayPassageService.updateByInput(dto);
+        return redirect("/admin/merchant/list/%s/agentpay/list/%s/edit",mchId,passageId);
     }
 }

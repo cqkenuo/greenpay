@@ -55,6 +55,16 @@ public class APIAdminMerchantController {
     }
 
 
+    @ApiOperation("查询指定商户的代付通道列表")
+    @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
+    @GetMapping("/{mchId}/agent_pay_passages")
+    public List<MerchantAgentPayPassageDTO> agentPayPassage(@PathVariable Integer mchId) throws APIException, ResourceNotFoundException {
+        Merchant mch = merchantService.getById(mchId);
+        if (mch == null) throw new ResourceNotFoundException("商户不存在");
+        return merchantService.listMchAgentPayPassageByMchId(mchId);
+    }
+
+
     @ApiOperation("修改商户的支付产品")
     @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
     @PostMapping(value = "/{mchId}/products")
@@ -136,8 +146,4 @@ public class APIAdminMerchantController {
                 .eq(ApiConfig::getMchId,mchId);
         apiConfigService.update(updateWrapper);
     }
-
-
-
-
 }

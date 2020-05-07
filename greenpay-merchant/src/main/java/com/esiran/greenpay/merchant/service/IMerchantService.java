@@ -29,6 +29,8 @@ public interface IMerchantService extends IService<Merchant> {
     MerchantDetailDTO findMerchantById(Integer id);
     void addMerchant(MerchantInputDTO merchantInputDTO) throws Exception;
     List<MerchantProductDTO> selectMchProductById(Integer mchId) throws APIException, ResourceNotFoundException;
+    List<MerchantAgentPayPassageDTO> listMchAgentPayPassageByMchId(Integer mchId);
+    MerchantAgentPayPassageDTO selectMchAgentPayPassageByMchId(Integer mchId, Integer passageId);
     MerchantProductDTO selectMchProductById(Integer mchId,Integer productId);
     IPage<MerchantDTO> selectMerchantByPage(IPage<Void> page);
     PassageAndSubAccount scheduler(Integer mchId, Integer productId);

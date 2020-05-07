@@ -41,7 +41,10 @@ public class AgentPayPassageAccount extends BaseMapperEntity {
      * 通道接口参数
      */
     private String interfaceAttr;
-
+    /**
+     * 轮询权重
+     */
+    private Integer weight;
     /**
      * 状态（0：关闭，1：开启）
      */

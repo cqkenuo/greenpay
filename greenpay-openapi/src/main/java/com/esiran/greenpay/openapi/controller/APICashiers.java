@@ -160,6 +160,7 @@ public class APICashiers {
         try {
             wxConfig = wxMpService.createJsapiSignature(currentUrl);
         } catch (WxErrorException e) {
+            e.printStackTrace();
             response.setStatus(404);
             return null;
         }

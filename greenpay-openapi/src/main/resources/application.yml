@@ -3,8 +3,8 @@ server:
 
 logging:
   level:
-    com.github.binarywang.wxpay: fatal
-    me.chanjar.weixin: fatal
+    com.github.binarywang.wxpay: error
+    me.chanjar.weixin: error
 
 spring:
   profiles:

@@ -49,7 +49,7 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-        chainDefinition.addPathDefinition("/admin/**", "authc");
+        chainDefinition.addPathDefinition("/merchant/**", "authc");
         chainDefinition.addPathDefinition("/**", "anon");
         return chainDefinition;
     }

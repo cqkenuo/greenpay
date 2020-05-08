@@ -34,7 +34,7 @@ public class AgentPayOrder extends BaseMapperEntity {
      * 订单流水号
      */
     private String orderSn;
-
+    private String outOrderNo;
     /**
      * 代付批次号
      */

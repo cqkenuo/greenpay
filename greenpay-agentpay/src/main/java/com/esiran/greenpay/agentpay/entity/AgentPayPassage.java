@@ -36,7 +36,6 @@ public class AgentPayPassage extends BaseMapperEntity {
      * 支付接口编码
      */
     private String interfaceCode;
-
     /**
      * 状态（0：关闭，1：开启）
      */

@@ -21,6 +21,7 @@ public class AgentPayPassageAccountDTO {
     private String accountName;
     private String interfaceAttr;
     private Boolean status;
+    private Integer weight;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

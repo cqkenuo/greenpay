@@ -23,6 +23,8 @@ public class AgentPayPassageAccountInputDTO {
 
     private String interfaceAttr;
 
+    @NotNull(message = "轮询权重不能为空")
+    private Integer weight;
     @NotNull(message = "状态不能为空")
     private Boolean status;
 }

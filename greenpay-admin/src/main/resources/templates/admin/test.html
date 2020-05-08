@@ -5,9 +5,6 @@
     <th:block th:replace="admin/header::stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/login.css}">
     <style>
-        .layui-layer-close {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -30,7 +27,10 @@
             console.log(i);
             if (i === 0){
                 layer.confirm('媳妇，爱不爱我？', {
-                    btn: ['爱', '不爱']
+                    btn: ['爱', '不爱'],
+                    cancel : function(){
+                        return false;
+                    }
                 }, function(index){
                     showOk();
                     return true;
@@ -39,7 +39,10 @@
                 });
             }else if(i===1){
                 layer.confirm('我就晓得你要选不爱。在问你一次，爱不爱？', {
-                    btn: ['爱', '不爱']
+                    btn: ['爱', '不爱'],
+                    cancel : function(){
+                        return false;
+                    }
                 }, function(index){
                     showOk();
                     return true;
@@ -48,7 +51,10 @@
                 });
             }else if(i === 2){
                 layer.confirm('哼，你还不点。爱不爱我？', {
-                    btn: ['爱', '不爱']
+                    btn: ['爱', '不爱'],
+                    cancel : function(){
+                        return false;
+                    }
                 }, function(index){
                     showOk();
                     return true;
@@ -57,7 +63,10 @@
                 });
             }else if(i === 3){
                 layer.confirm('是不是大笨蛋？', {
-                    btn: ['是', '不是']
+                    btn: ['是', '不是'],
+                    cancel : function(){
+                        return false;
+                    }
                 }, function(index){
                     showLove(4);
                     return true;
@@ -66,7 +75,10 @@
                 });
             }else if(i === 4){
                 layer.confirm('哈哈，刚刚开玩笑的。你想我不？', {
-                    btn: ['想', '不想']
+                    btn: ['想', '不想'],
+                    cancel : function(){
+                        return false;
+                    }
                 }, function(index){
                     showLove(5);
                     return true;
@@ -75,7 +87,10 @@
                 });
             }else if(i === 5){
                 layer.confirm('那你还爱我不？', {
-                    btn: ['爱', '不爱']
+                    btn: ['爱', '不爱'],
+                    cancel : function(){
+                        return false;
+                    }
                 }, function(index){
                     showOk();
                     return true;
@@ -84,7 +99,10 @@
                 });
             }else {
                 layer.confirm('爱不爱？', {
-                    btn: ['爱', '不爱']
+                    btn: ['爱', '不爱'],
+                    cancel : function(){
+                        return false;
+                    }
                 }, function(index){
                     showOk();
                     return true;

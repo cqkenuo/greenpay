@@ -21,6 +21,6 @@ public interface ISettleOrderService extends IService<SettleOrder> {
     IPage<SettleOrderDTO> selectPageByAudit(IPage<SettleOrderDTO> page);
     IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page);
     SettleOrderDTO getByOrderNo(String orderNo);
-    void updateOrderStatus(String orderNo, Integer status);
+    void updateOrderStatus(String orderNo, Integer status) throws PostResourceException;
     void postOrder(SettleOrderInputDTO inputDTO) throws PostResourceException, ResourceNotFoundException;
 }

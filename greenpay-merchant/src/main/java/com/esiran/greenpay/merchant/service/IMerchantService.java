@@ -1,6 +1,8 @@
 package com.esiran.greenpay.merchant.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
+import com.esiran.greenpay.agentpay.entity.AgentPayPassageAccount;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.merchant.entity.*;
@@ -34,4 +36,6 @@ public interface IMerchantService extends IService<Merchant> {
     MerchantProductDTO selectMchProductById(Integer mchId,Integer productId);
     IPage<MerchantDTO> selectMerchantByPage(IPage<Void> page);
     PassageAndSubAccount scheduler(Integer mchId, Integer productId);
+    MerchantAgentPayPassage schedulerAgentPayPassage(Integer mchId);
+    AgentPayPassageAccount schedulerAgentPayPassageAcc(Integer mchId, Integer passageId);
 }

@@ -54,7 +54,10 @@ public class AgentPayOrder extends BaseMapperEntity {
      * 订单手续费（单位：分）
      */
     private Integer fee;
-
+    /**
+     * 账户类型（1：对公，2：对私）
+     */
+    private Integer accountType;
     /**
      * 账户名
      */

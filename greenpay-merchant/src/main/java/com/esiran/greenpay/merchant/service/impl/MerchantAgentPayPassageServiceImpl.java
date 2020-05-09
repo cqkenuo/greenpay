@@ -6,6 +6,7 @@ import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassage;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassageDTO;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassageInputDTO;
+import com.esiran.greenpay.merchant.entity.MerchantProduct;
 import com.esiran.greenpay.merchant.mapper.MerchantAgentPayPassageMapper;
 import com.esiran.greenpay.merchant.service.IMerchantAgentPayPassageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -34,6 +36,15 @@ public class MerchantAgentPayPassageServiceImpl extends ServiceImpl<MerchantAgen
         queryWrapper.eq(MerchantAgentPayPassage::getMerchantId,mchId)
                 .eq(MerchantAgentPayPassage::getPassageId,passageId);
         return getOne(queryWrapper);
+    }
+
+    @Override
+    public List<MerchantAgentPayPassage> listAvailableByMchId(Integer mchId) {
+        LambdaQueryWrapper<MerchantAgentPayPassage> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(MerchantAgentPayPassage::getMerchantId, mchId)
+                .eq(MerchantAgentPayPassage::getStatus, 1)
+                .gt(MerchantAgentPayPassage::getWeight, 0);
+        return this.list(queryWrapper);
     }
 
     @Override

@@ -11,6 +11,8 @@ public class TransferInputDTO {
     private String outOrderNo;
     @NotNull(message = "订单金额不能为空")
     private Integer amount;
+    @NotNull(message = "账户类型不能为空")
+    private Integer accountType;
     @NotBlank(message = "账户名不能为空")
     private String accountName;
     @NotBlank(message = "账户号不能为空")

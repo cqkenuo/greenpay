@@ -12,6 +12,11 @@
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
                 <div th:replace="admin/compose::layui-breadcrumb('订单管理','支付订单')"></div>
+                <div class="layui-card error-card" th:style="${_errors==null}?'display:none;':''">
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote" th:each="error:${_errors}" th:text="${error}"></blockquote>
+                    </div>
+                </div>
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">支付订单</div>
@@ -77,10 +82,15 @@
                                 <span>{{ d.subject }}</span>
                             </script>
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/order/list/{{d.orderNo}}/detail'}"
+                                <form style="display: none" id="notify_{{d.orderNo}}" method="post" action="">
+                                    <input type="hidden" name="mchId" value="{{d.mchId}}">
+                                    <input type="hidden" name="orderNo" value="{{d.orderNo}}">
+                                </form>
+                                <a th:href="@{'/admin/order/list/{{d.mchId}}/detail'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
                                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">补单</a>
-                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">通知</a>
+                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary"
+                                    onclick="document.getElementById('notify_{{d.orderNo}}').submit()">通知</a>
                             </script>
                         </div>
                     </div>

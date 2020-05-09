@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -87,5 +88,54 @@ public class AgentPayPassageAccountServiceImpl extends ServiceImpl<AgentPayPassa
         for (Integer id : ids){
             this.removeById(id);
         }
+    }
+
+    @Override
+    public List<AgentPayPassageAccount> listAvailableByPassageId(Integer passageId) {
+        LambdaQueryWrapper<AgentPayPassageAccount> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AgentPayPassageAccount::getPassageId, passageId)
+                .eq(AgentPayPassageAccount::getStatus, 1)
+                .gt(AgentPayPassageAccount::getWeight, 0);
+        return this.list(queryWrapper);
+    }
+    private static int randomPickIndex(int[] w){
+        int len = w.length;
+        if (len == 0) return -1;
+        if (len == 1) return 0;
+        int bound = w[len-1];
+        Random random = new Random(System.currentTimeMillis());
+        int val = random.nextInt(bound)+1;
+        int left = 0, right = len-1, mid;
+        while (left < right){
+            mid = (right - left) / 2 + left;
+            if (w[mid] == val){
+                return mid;
+            }else if(w[mid] > val){
+                right = mid;
+            }else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+    @Override
+    public AgentPayPassageAccount schedulerAgentPayPassageAcc(Integer passageId) {
+        List<AgentPayPassageAccount> passageAccounts = listAvailableByPassageId(passageId);
+        if (passageAccounts == null || passageAccounts.size() == 0) return null;
+        // 构造权重区间值数组
+        int[] sumArr = new int[passageAccounts.size()];
+        // 权重总和
+        int sum = 0;
+        for (int i=0; i<sumArr.length; i++){
+            AgentPayPassageAccount account = passageAccounts.get(i);
+            int w = account.getWeight();
+            sum += w;
+            sumArr[i] = sum;
+        }
+        // 根据权重随机获取数组索引
+        int index = randomPickIndex(sumArr);
+        AgentPayPassageAccount account = passageAccounts.get(index);
+        if (account == null || !account.getStatus()) return null;
+        return account;
     }
 }

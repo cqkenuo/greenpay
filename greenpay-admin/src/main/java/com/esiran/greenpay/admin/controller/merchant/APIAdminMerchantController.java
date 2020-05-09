@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
@@ -141,6 +142,7 @@ public class APIAdminMerchantController {
         ApiConfig apiConfig = apiConfigService.getOne(queryWrapper);
         if (apiConfig == null) throw new Exception("商户不存在");
         String publicKey = RSAUtil.resolvePublicKey(content);
+
         LambdaUpdateWrapper<ApiConfig> updateWrapper = new UpdateWrapper<ApiConfig>().lambda();
         updateWrapper.set(ApiConfig::getMchPubKey,publicKey)
                 .eq(ApiConfig::getMchId,mchId);

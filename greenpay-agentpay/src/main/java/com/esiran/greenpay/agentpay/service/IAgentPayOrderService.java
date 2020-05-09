@@ -23,4 +23,6 @@ public interface IAgentPayOrderService extends IService<AgentPayOrder> {
 
     AgentPayOrder getOneByOrderNo(String orderNo);
 
+//    AgentPayOrder
+
 }

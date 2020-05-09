@@ -59,6 +59,8 @@ public class APIMerchantController extends CURDBaseController {
         if (!merchant.getPassword().equals(oldPassword)) {
             throw new PostResourceException("旧密码错误为空");
         }
+        merchant.setPassword(password);
+        merchantService.updateById(merchant);
     }
 
     @ApiOperation("上传商户公钥")

@@ -3,6 +3,7 @@ package com.esiran.greenpay.settle.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.util.EncryptUtil;
@@ -180,52 +181,43 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
 
         //计算结算金额
         //获取对应商户的费率
-        Integer free = 0;
-        Integer SettleAmount = 0;
         SettleAccountDTO settleAccountDTO = iSettleAccountService.findByMerchantId(merchant.getId());
         if (!settleAccountDTO.getStatus()) {
             throw new PostResourceException("结算状态已关闭");
         }
-        //1)百分比
-        //2)固定
-        //3)百分+固定
-        BigDecimal amount = new BigDecimal(inputDTO.getAmount());
-        BigDecimal freerate ;
-        BigDecimal  feeAmount;
-        switch (settleAccountDTO.getSettleFeeType()) {
-            case 1:
-                freerate = amount.multiply(settleAccountDTO.getSettleFeeRate());
-                free = freerate.intValue();
-                break;
-            case 2:
-                feeAmount = new BigDecimal(settleAccountDTO.getSettleFeeAmount());
-                free = feeAmount.intValue()* 100;
-                break;
-            case 3:
-                //百分比
-                freerate = amount.multiply(settleAccountDTO.getSettleFeeRate());
-                free = freerate.intValue();
-                //固定
-                Integer free2;
-                feeAmount = new BigDecimal(settleAccountDTO.getSettleFeeAmount());
-                free2 = feeAmount.intValue();
-
-                free = free + free2;
-                break;
-            default:
-                break;
+        Integer feeType = settleAccountDTO.getSettleFeeType();
+        Integer orderFee;
+        if (feeType == 1){
+            // 当手续费类型为百分比收费时，根据订单金额计算手续费
+            BigDecimal feeRate = settleAccountDTO.getSettleFeeRate();
+            if (feeRate == null) throw new PostResourceException("结算失败，系统异常");
+            orderFee = NumberUtil.calculateAmountFee(inputDTO.getAmount(),feeRate);
+        }else if (feeType == 2){
+            // 当手续费类型为固定收费时，手续费为固定金额
+            Integer feeAmount = settleAccountDTO.getSettleFeeAmount();
+            if (feeAmount == null) throw new PostResourceException("结算失败，系统异常");
+            orderFee = feeAmount;
+        }else if(feeType == 3){
+            // 当手续费类型为百分比加固定收费时，根据订单金额计算手续费然后加固定手续费
+            BigDecimal feeRate = settleAccountDTO.getSettleFeeRate();
+            Integer feeAmount = settleAccountDTO.getSettleFeeAmount();
+            if (feeRate == null||feeAmount == null) throw new PostResourceException("结算失败，系统异常");
+            orderFee = NumberUtil.calculateAmountFee(inputDTO.getAmount(),feeRate);
+            orderFee += feeAmount;
+        }else {
+            throw new PostResourceException("结算失败，系统异常");
         }
 
         //记录到订单中
-        SettleAmount = inputDTO.getAmount()-free;
+
 
         SettleOrder settleOrder = modelMapper.map(inputDTO, SettleOrder.class);
         settleOrder.setOrderNo(String.valueOf(idWorker.nextId()));
         settleOrder.setOrderSn(EncryptUtil.baseTimelineCode());
         settleOrder.setSettleType(true);
         settleOrder.setStatus(1);
-        settleOrder.setFee(free);
-        settleOrder.setSettleAmount(SettleAmount);
+        settleOrder.setFee(orderFee);
+        settleOrder.setSettleAmount(settleOrder.getAmount()-orderFee);
         settleOrder.setCreatedAt(LocalDateTime.now());
         settleOrder.setUpdatedAt(settleOrder.getCreatedAt());
         save(settleOrder);

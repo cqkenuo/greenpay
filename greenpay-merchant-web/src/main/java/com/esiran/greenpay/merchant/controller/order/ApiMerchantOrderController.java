@@ -54,7 +54,6 @@ public class ApiMerchantOrderController extends CURDBaseController {
     public Map payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
         Map m = new HashMap();
         try {
-            settleOrderInputDTO.setAmount(settleOrderInputDTO.getAmount() * 100);
             settleOrderService.postOrder(settleOrderInputDTO);
         } catch (PostResourceException e) {
             m.put("code",0);

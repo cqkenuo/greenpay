@@ -40,7 +40,7 @@ services:
     ports:
       - 4306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=greenpay
       - MYSQL_DATABASE=greenpay
       - MYSQL_USER=greenpay
       - MYSQL_PASSWORD=greenpay

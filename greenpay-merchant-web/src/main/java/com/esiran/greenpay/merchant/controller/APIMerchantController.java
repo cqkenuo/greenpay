@@ -1,6 +1,8 @@
 package com.esiran.greenpay.merchant.controller;
 
 
+import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/merchant/api/v1")
@@ -45,6 +49,19 @@ public class APIMerchantController extends CURDBaseController {
         merchant.setUpdatedAt(LocalDateTime.now());
         merchantService.updateById(merchant);
     }
+    @PostMapping("/updatepassword")
+    @PageViewHandleError
+    public void updatePassword(@RequestBody
+                                    @NotBlank(message = "旧密码不能为空") String oldPassword,
+                                    @NotBlank(message = "新密码不能为空") String password,
+                               Map<String,String> map ) throws Exception {
+        Merchant merchant = theUser();
+        if (!merchant.getPassword().equals(oldPassword)) {
+            throw new PostResourceException("旧密码错误为空");
+        }
+        merchant.setPassword(password);
+        merchantService.updateById(merchant);
+    }
 
     @ApiOperation("上传商户公钥")
     @PostMapping(value = "/mch_pub_key",produces = "text/plain")
@@ -55,5 +72,6 @@ public class APIMerchantController extends CURDBaseController {
         updateWrapper.set(ApiConfig::getMchPubKey, publicKey)
                 .eq(ApiConfig::getMchId, merchant.getId());
         apiConfigService.update(updateWrapper);
+
     }
 }

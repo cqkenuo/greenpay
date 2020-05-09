@@ -20,6 +20,10 @@ public class MerchantReplaceController {
     public String replacesAdd() {
         return "merchant/replace/add";
     }
+    @GetMapping("/replaces/bath")
+    public String bath() {
+        return "merchant/replace/bath";
+    }
     @GetMapping("/recharge/add")
     public String rechargeAdd(){
         return "merchant/replace/rechargeAdd";

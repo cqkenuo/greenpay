@@ -10,16 +10,19 @@ import com.esiran.greenpay.merchant.entity.UsernamePasswordInputDTO;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.esiran.greenpay.merchant.service.IPrepaidAccountService;
+import com.esiran.greenpay.pay.entity.Order;
+import com.esiran.greenpay.pay.service.IOrderService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.LongStream;
 
 @Controller
 @RequestMapping("/merchant")
@@ -27,11 +30,13 @@ public class MerchantController extends CURDBaseController{
 
     private final IPayAccountService payAccountService;
     private final IPrepaidAccountService prepaidAccountService;
+    private final IOrderService orderService;
     private final IMerchantService merchantService;
 
-    public MerchantController(IPayAccountService payAccountService, IPrepaidAccountService prepaidAccountService, IMerchantService merchantService) {
+    public MerchantController(IPayAccountService payAccountService, IPrepaidAccountService prepaidAccountService, IOrderService orderService, IMerchantService merchantService) {
         this.payAccountService = payAccountService;
         this.prepaidAccountService = prepaidAccountService;
+        this.orderService = orderService;
         this.merchantService = merchantService;
     }
 
@@ -40,7 +45,16 @@ public class MerchantController extends CURDBaseController{
         Merchant m = theUser();
         PayAccount payAccount = payAccountService.getOne(new LambdaQueryWrapper<PayAccount>().eq(PayAccount::getMerchantId, m.getId()));
         PrepaidAccount prepaidAccount = prepaidAccountService.getOne(new LambdaQueryWrapper<PrepaidAccount>().eq(PrepaidAccount::getMerchantId, m.getId()));
+        List<Order> orders = orderService.getByDay(m.getId());
+        long count = orders.size();
+        long orderMoenyTotal = orders.stream().mapToLong(Order::getAmount).sum();
+        long orderMoeny2Total = orders.stream().filter(order -> 2 == order.getStatus()).mapToLong(Order::getAmount).sum();
+        long count2 = orders.stream().filter(order -> 2 == order.getStatus()).count();
         model.addAttribute("payAccount",payAccount);
+        model.addAttribute("count",count);
+        model.addAttribute("count2",count2);
+        model.addAttribute("orderMoenyTotal",orderMoenyTotal);
+        model.addAttribute("orderMoeny2Total",orderMoeny2Total);
         model.addAttribute("prepaidAccount",prepaidAccount);
         return "merchant/index";
     }

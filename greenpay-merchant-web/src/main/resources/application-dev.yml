@@ -21,12 +21,3 @@ spring:
       strategy:
         content:
           enabled: true
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: group-replace
-      auto-offset-reset: earliest
-greenpay:
-  openapi:
-    enable_sign: false
-

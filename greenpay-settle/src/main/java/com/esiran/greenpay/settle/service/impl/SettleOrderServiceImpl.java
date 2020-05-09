@@ -77,6 +77,7 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         SettleOrder settleOrder = modelMapper.map(orderDTO,SettleOrder.class);
         LambdaQueryWrapper<SettleOrder> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SettleOrder::getStatus,orderDTO.getStatus());
+        queryWrapper.orderByDesc(SettleOrder::getCreatedAt);
         queryWrapper.setEntity(settleOrder);
         IPage<SettleOrder> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),queryWrapper);
         return orderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
@@ -87,6 +88,7 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         LambdaQueryWrapper<SettleOrder> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.ge(SettleOrder::getStatus,-1);
         queryWrapper.lt(SettleOrder::getStatus,2);
+        queryWrapper.orderByDesc(SettleOrder::getCreatedAt);
         IPage<SettleOrder> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),queryWrapper);
         return orderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
     }
@@ -95,6 +97,7 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
     public IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page) {
         LambdaQueryWrapper<SettleOrder> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.ge(SettleOrder::getStatus,2);
+        queryWrapper.orderByDesc(SettleOrder::getCreatedAt);
         IPage<SettleOrder> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),queryWrapper);
         return orderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
     }

@@ -22,7 +22,6 @@
         <module>greenpay-settle</module>
         <module>greenpay-agentpay</module>
         <module>greenpay-framework</module>
-
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

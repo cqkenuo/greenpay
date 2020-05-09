@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  admin-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.admin-web
+    ports:
+      - 8088:80
+    depends_on:
+      - redis
+      - db_mysql
+
+  merchant-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.merchant-web
+    ports:
+      - 8088:80
+    depends_on:
+      - redis
+      - db_mysql
+
+  merchant-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.merchant-web
+    ports:
+      - 3307:3306
+    volumes:
+      - db_data:/var/lib/mysql
+
+  redis:
+    image: redis
+    volumes:
+      - redis_data:/data
+
+volumes:
+  db_data: {}
+  redis_data: {}

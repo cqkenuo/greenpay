@@ -12,6 +12,11 @@
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
                 <div th:replace="admin/compose::layui-breadcrumb('结算管理','结算审核')"></div>
+                <div class="layui-card error-card" th:style="${_errors==null}?'display:none;':''">
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote" th:each="error:${_errors}" th:text="${error}"></blockquote>
+                    </div>
+                </div>
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">结算审核</div>
@@ -61,9 +66,21 @@
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/admin/settle/audit/{{d.orderNo}}/detail'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
-                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">审核通过</a>
-                                <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">驳回</a>
+                                <a  href="javascript:;" class="layui-btn layui-btn-xs "
+                                    onclick="document.getElementById('noPass_{{d.orderNo}}').submit()">驳回</a>
+                                <a  href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary"
+                                    onclick="document.getElementById('pass_{{d.orderNo}}').submit()">审核通过</a>
+                                <form style="display: none" id="pass_{{d.orderNo}}" method="post" action="">
+                                    <input type="hidden" name="action" value="pass">
+                                    <input type="hidden" name="orderNo" value="{{d.orderNo}}">
+                                </form>
+
+                                <form style="display: none" id="noPass_{{d.orderNo}}" method="post" action="">
+                                    <input type="hidden" name="action" value="nopass">
+                                    <input type="hidden" name="orderNo" value="{{d.orderNo}}">
+                                </form>
                             </script>
+
                         </div>
                     </div>
                 </div>

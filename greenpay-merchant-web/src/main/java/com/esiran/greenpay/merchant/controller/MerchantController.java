@@ -3,24 +3,23 @@ package com.esiran.greenpay.merchant.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.merchant.entity.Merchant;
+import com.esiran.greenpay.merchant.entity.MerchantDetailDTO;
 import com.esiran.greenpay.merchant.entity.PayAccount;
 import com.esiran.greenpay.merchant.entity.PrepaidAccount;
 import com.esiran.greenpay.merchant.entity.UsernamePasswordInputDTO;
+import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.esiran.greenpay.merchant.service.IPrepaidAccountService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/merchant")
@@ -28,10 +27,12 @@ public class MerchantController extends CURDBaseController{
 
     private final IPayAccountService payAccountService;
     private final IPrepaidAccountService prepaidAccountService;
+    private final IMerchantService merchantService;
 
-    public MerchantController(IPayAccountService payAccountService, IPrepaidAccountService prepaidAccountService) {
+    public MerchantController(IPayAccountService payAccountService, IPrepaidAccountService prepaidAccountService, IMerchantService merchantService) {
         this.payAccountService = payAccountService;
         this.prepaidAccountService = prepaidAccountService;
+        this.merchantService = merchantService;
     }
 
     @GetMapping("/home")
@@ -50,10 +51,18 @@ public class MerchantController extends CURDBaseController{
         return "merchant/user";
     }
 
+    @GetMapping("/user/api")
+    public String userapi(Model model) {
+        Merchant merchant = theUser();
+        MerchantDetailDTO merchantDetailDTO = merchantService.findMerchantById(merchant.getId());
+        model.addAttribute("merchant", merchantDetailDTO);
+        return "merchant/userapi";
+    }
+
     @GetMapping("/login")
     @PageViewHandleError
-    public String login(){
-        if (SecurityUtils.getSubject().isAuthenticated()){
+    public String login() {
+        if (SecurityUtils.getSubject().isAuthenticated()) {
             return redirect("/merchant/home");
         }
         return "merchant/login2";

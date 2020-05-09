@@ -15,5 +15,9 @@
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-merchant</artifactId>
+        </dependency>
     </dependencies>
 </project>

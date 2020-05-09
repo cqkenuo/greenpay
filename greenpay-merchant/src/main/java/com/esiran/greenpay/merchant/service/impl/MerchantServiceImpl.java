@@ -83,7 +83,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         LambdaUpdateWrapper<Merchant> updateWrapper = new LambdaUpdateWrapper<>();
         if (dto == null) return;
         updateWrapper.set(Merchant::getName,dto.getName());
-        updateWrapper.set(Merchant::getName,dto.getEmail());
+        updateWrapper.set(Merchant::getEmail,dto.getEmail());
         updateWrapper.set(Merchant::getStatus,dto.getStatus());
         updateWrapper.set(Merchant::getUpdatedAt, LocalDateTime.now());
         updateWrapper.eq(Merchant::getId,target.getId());

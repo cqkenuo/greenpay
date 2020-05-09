@@ -41,7 +41,7 @@ public class ApiMerchantOrderController {
     }
 
     @PostMapping("/payextract")
-    public Map payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
+    public Map payExtract(@Validated  SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
         settleOrderService.postOrder(settleOrderInputDTO);
         Map m = new HashMap<String,String>();
         m.put("code","1");

@@ -33,12 +33,11 @@ public class AdminSettleOrderController extends CURDBaseController {
     private final ISettleConfigService settleConfigService;
     private final IOrderDetailService orderDetailService;
     public AdminSettleOrderController(
-            ISettleOrderService orderService, ISettleConfigService settleConfigService, IOrderDetailService orderDetailService, ISettleOrderService settleOrderService) {
+            ISettleOrderService orderService, ISettleConfigService settleConfigService, IOrderDetailService orderDetailService) {
         this.orderService = orderService;
         this.settleConfigService = settleConfigService;
 //        this.settleOrderService = settleOrderService;
         this.orderDetailService = orderDetailService;
-        this.settleOrderService = settleOrderService;
     }
 
     @GetMapping("/list/{orderNo}/settlement")
@@ -101,25 +100,37 @@ public class AdminSettleOrderController extends CURDBaseController {
     @PageViewHandleError
     public String audit() {
 
-//        return "admin/settle/audit/list";
-        return "admin/settle/audit/addTemp";
+        return "admin/settle/audit/list";
+//        return "admin/settle/audit/addTemp";
     }
-//    @PostMapping("/audit")
-//    public String auditPost(@RequestParam String orderNo,@RequestParam String action) throws PostResourceException {
-//        switch (action) {
-//            case "pass":
-//                orderService.updateOrderStatus(orderNo,2);
-//                break;
-//            case "nopass":
-//                orderService.updateOrderStatus(orderNo,-1);
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        return "redirect:/admin/settle/audit";
-//    }
+    @PostMapping("/audit")
+    public String auditPost(@RequestParam String orderNo,@RequestParam String action) throws PostResourceException {
+        switch (action) {
+            case "pass":
+                orderService.updateOrderStatus(orderNo,2);
+                break;
+            case "nopass":
+                orderService.updateOrderStatus(orderNo,-1);
+                break;
+            default:
+                break;
+        }
 
+        return "redirect:/admin/settle/audit";
+    }
+
+    //测试订单提交
+
+//    private final ISettleOrderService settleOrderService;
+//    @ResponseBody
+//    @PostMapping("/audit")
+//    public Map payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
+//        settleOrderService.postOrder(settleOrderInputDTO);
+//        Map m = new HashMap<String,String>();
+//        m.put("code","1");
+//        m.put("msg","提交成功");
+//        return m;
+//    }
 
 
     @GetMapping("/settings")
@@ -152,16 +163,4 @@ public class AdminSettleOrderController extends CURDBaseController {
         return "admin/settle/payable/detail";
     }
 
-    //
-
-    private final ISettleOrderService settleOrderService;
-    @ResponseBody
-    @PostMapping("/audit")
-    public Map payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
-        settleOrderService.postOrder(settleOrderInputDTO);
-        Map m = new HashMap<String,String>();
-        m.put("code","1");
-        m.put("msg","提交成功");
-        return m;
-    }
 }

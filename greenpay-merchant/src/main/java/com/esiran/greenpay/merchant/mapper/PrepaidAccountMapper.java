@@ -17,4 +17,5 @@ public interface PrepaidAccountMapper extends BaseMapper<PrepaidAccount> {
     int updateBalance(@Param("mchId") Integer mchId,
                       @Param("availAmount") Integer availAmount,
                       @Param("freezeAmount") Integer freezeAmount);
+    Integer selectAvailBalance(@Param("mchId") Integer mchId,@Param("amount") Integer amount);
 }

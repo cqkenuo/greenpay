@@ -16,7 +16,9 @@ import com.esiran.greenpay.common.util.IdWorker;
 import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.merchant.entity.Merchant;
 import com.esiran.greenpay.merchant.entity.MerchantAgentPayPassage;
+import com.esiran.greenpay.merchant.entity.PrepaidAccount;
 import com.esiran.greenpay.merchant.service.IMerchantService;
+import com.esiran.greenpay.merchant.service.IPrepaidAccountService;
 import com.esiran.greenpay.openapi.entity.Transfer;
 import com.esiran.greenpay.openapi.entity.TransferInputDTO;
 import com.esiran.greenpay.openapi.service.ITransferService;
@@ -33,8 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class TransferService implements ITransferService {
@@ -48,13 +48,16 @@ public class TransferService implements ITransferService {
     private final IInterfaceService interfaceService;
     private final IAgentPayOrderService orderService;
     private final PluginLoader pluginLoader;
+    private final IPrepaidAccountService prepaidAccountService;
     public TransferService(
             IdWorker idWorker,
             IMerchantService merchantService,
             IAgentPayPassageService agentPayPassageService,
             IAgentPayPassageAccountService agentPayPassageAccountService,
             IInterfaceService interfaceService,
-            IAgentPayOrderService orderService, PluginLoader pluginLoader) {
+            IAgentPayOrderService orderService,
+            PluginLoader pluginLoader,
+            IPrepaidAccountService prepaidAccountService) {
         this.idWorker = idWorker;
         this.merchantService = merchantService;
         this.agentPayPassageService = agentPayPassageService;
@@ -62,6 +65,7 @@ public class TransferService implements ITransferService {
         this.interfaceService = interfaceService;
         this.orderService = orderService;
         this.pluginLoader = pluginLoader;
+        this.prepaidAccountService = prepaidAccountService;
     }
 
     @Override
@@ -109,7 +113,7 @@ public class TransferService implements ITransferService {
         // 订单金额以及手续费初始化
         Integer feeType = mapp.getFeeType();
         if (feeType == null) throw new APIException("系统错误，无法创建订单","SYSTEM_ERROR",500);
-        Integer orderFee = 0;
+        Integer orderFee;
         Integer orderAmount = agentPayOrder.getAmount();
         if (feeType == 1){
             // 当手续费类型为百分比收费时，根据订单金额计算手续费
@@ -130,6 +134,12 @@ public class TransferService implements ITransferService {
             orderFee += feeAmount;
         }else {
             throw new APIException("系统错误，无法创建订单","SYSTEM_ERROR",500);
+        }
+        PrepaidAccount pa = prepaidAccountService.getByMerchantId(mchId);
+        if (pa == null) throw new APIException("系统错误，无法创建订单","SYSTEM_ERROR",500);
+        int r = prepaidAccountService.updateBalance(mchId,(orderAmount+orderFee),-(orderAmount+orderFee));
+        if (r <= 0){
+            throw new APIException("账户可用余额不足，无法创建订单","ACCOUNT_AVAIL_BALANCE_NOT_ENOUGH",401);
         }
         agentPayOrder.setFee(orderFee);
         agentPayOrder.setStatus(1);

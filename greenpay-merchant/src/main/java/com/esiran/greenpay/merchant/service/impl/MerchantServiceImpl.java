@@ -157,19 +157,27 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         Merchant merchant = getById(id);
         MerchantDetailDTO dto = modelMapper.map(merchant, MerchantDetailDTO.class);
         ApiConfigDTO apiConfigDTO = apiConfigService.findByMerchantId(merchant.getId());
-        String publicKeyVal = String.format("%s\r\n%s\r\n%s",
-                RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
-                apiConfigDTO.getPubKey(),
-                RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
-        String privateKeyVal = String.format("%s\r\n%s\r\n%s",
-                RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN,
-                apiConfigDTO.getPrivateKey(),
-                RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN);
-
-        String mchPublicKeyVal = String.format("%s\r\n%s\r\n%s",
-                RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
-                apiConfigDTO.getMchPubKey(),
-                RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
+        String publicKeyVal = null;
+        String privateKeyVal = null;
+        String mchPublicKeyVal = null;
+        if (!StringUtils.isEmpty(apiConfigDTO.getPubKey())){
+            publicKeyVal = String.format("%s\r\n%s\r\n%s",
+                    RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
+                    apiConfigDTO.getPubKey(),
+                    RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
+        }
+        if (!StringUtils.isEmpty(apiConfigDTO.getPrivateKey())){
+            privateKeyVal = String.format("%s\r\n%s\r\n%s",
+                    RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN,
+                    apiConfigDTO.getPrivateKey(),
+                    RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN);
+        }
+        if (!StringUtils.isEmpty(apiConfigDTO.getMchPubKey())){
+            mchPublicKeyVal = String.format("%s\r\n%s\r\n%s",
+                    RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
+                    apiConfigDTO.getMchPubKey(),
+                    RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
+        }
         apiConfigDTO.setPubKeyVal(publicKeyVal);
         apiConfigDTO.setPrivateKeyVal(privateKeyVal);
         apiConfigDTO.setMchPubKeyVal(mchPublicKeyVal);

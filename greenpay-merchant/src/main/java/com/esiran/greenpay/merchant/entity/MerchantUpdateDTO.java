@@ -22,6 +22,7 @@ public class MerchantUpdateDTO {
     @NotBlank(message = "电子邮箱不能为空")
     private String email;
     @ApiModelProperty("联系手机")
+    @NotBlank(message = "联系手机不能为空")
     private String phone;
     @ApiModelProperty("状态（0：关闭，1：开启）")
     @NotNull(message = "状态不能为空")

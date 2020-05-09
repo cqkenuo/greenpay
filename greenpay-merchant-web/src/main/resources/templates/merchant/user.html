@@ -31,18 +31,18 @@
                                                         <div class="layui-form-mid layui-word-aux">不可修改</div>
                                                     </div>
                                                     <div class="layui-form-item">
-                                                        <label class="layui-form-label">昵称</label>
+                                                        <label class="layui-form-label">商户名称</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="nickname" th:value="${merchant.getName()}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                                                            <input type="text" name="name" th:value="${merchant.getName()}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
                                                         </div>
                                                     </div>
-<!--                                                    <div class="layui-form-item">-->
-<!--                                                        <label class="layui-form-label">性别</label>-->
-<!--                                                        <div class="layui-input-block">-->
-<!--                                                            <input type="radio" name="sex" value="男" title="男"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>男</div></div>-->
-<!--                                                            <input type="radio" name="sex" value="女" title="女" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>女</div></div>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
+                                                    <div class="layui-form-item">
+                                                        <label class="layui-form-label">状态</label>
+                                                        <div class="layui-input-block">
+                                                            <input type="radio" name="status" value="1" title="开启"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>开启</div></div>
+                                                            <input type="radio" name="status" value="0" title="关闭" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>关闭</div></div>
+                                                        </div>
+                                                    </div>
 <!--                                                    <div class="layui-form-item">-->
 <!--                                                        <label class="layui-form-label">头像</label>-->
 <!--                                                        <div class="layui-input-inline">-->
@@ -58,7 +58,7 @@
                                                     <div class="layui-form-item">
                                                         <label class="layui-form-label">手机</label>
                                                         <div class="layui-input-inline">
-                                                            <input type="text" name="cellphone" th:value="${merchant.getPhone()}" lay-verify="phone" autocomplete="off" class="layui-input">
+                                                            <input type="text" name="phone" th:value="${merchant.getPhone()}" lay-verify="phone" autocomplete="off" class="layui-input">
                                                         </div>
                                                     </div>
                                                     <div class="layui-form-item">
@@ -67,12 +67,12 @@
                                                             <input type="text" name="email" th:value="${merchant.getEmail()}" lay-verify="email" autocomplete="off" class="layui-input">
                                                         </div>
                                                     </div>
-                                                    <div class="layui-form-item layui-form-text">
-                                                        <label class="layui-form-label">备注</label>
-                                                        <div class="layui-input-block">
-                                                            <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
-                                                        </div>
-                                                    </div>
+<!--                                                    <div class="layui-form-item layui-form-text">-->
+<!--                                                        <label class="layui-form-label">备注</label>-->
+<!--                                                        <div class="layui-input-block">-->
+<!--                                                            <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
                                                     <div class="layui-form-item">
                                                         <div class="layui-input-block">
                                                             <button class="layui-btn" lay-submit="" lay-filter="setmyinfo">确认修改</button>
@@ -100,24 +100,15 @@
         let layer = layui.layer
             ,table = layui.table
             ,laydate = layui.laydate
+            ,$ = layui.jquery
             ,form = layui.form;
 
         form.on('submit(setmyinfo)',function (data) {
             $.ajax({
-                url:'/merchant/api/v1/payextract',
+                url:'/merchant/api/v1/update',
                 method:'post',
                 data:data.field,
                 dataType:'JSON',
-                success:function(res){
-                    if(res.code == 0){
-                        layer.msg(res.msg);
-                    }
-                    else
-                        layer.msg(res.msg);
-                },
-                error:function (data) {
-                    throw data;
-                }
             });
             return false;
         })

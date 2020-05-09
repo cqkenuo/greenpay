@@ -58,6 +58,21 @@
                                                 <tr class="admin-detail-row">
                                                     <td class="layui-form layui-form-pane" colspan="1">
                                                         <div class="layui-form-item">
+                                                            <label for="outOrderNo" class="layui-form-label">
+                                                                商户订单号
+                                                            </label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" class="layui-input"
+                                                                       autocomplete="off" readonly
+                                                                       id="outOrderNo"
+                                                                       th:value="${agentPayOrder.outOrderNo}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="admin-detail-row">
+                                                    <td class="layui-form layui-form-pane" colspan="1">
+                                                        <div class="layui-form-item">
                                                             <label for="batchNo" class="layui-form-label">
                                                                 代付批次号
                                                             </label>

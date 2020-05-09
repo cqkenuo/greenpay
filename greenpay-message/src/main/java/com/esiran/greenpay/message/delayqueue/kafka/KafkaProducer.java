@@ -14,24 +14,24 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 public class KafkaProducer {
 
 
-    @Autowired
-    private KafkaTemplate<String,String> kafkaTemplate;
-
-    public void replaceProducer(String message){
-        log.info(String.format("$$ -> 生产者 replace message --> %s",message));
-        ListenableFuture<SendResult<String, String>> future  = this.kafkaTemplate.send("replace", message);
-        future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                log.info("消息：{} 发送失败，原因：{}", message, throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(SendResult<String, String> result) {
-                log.info("成功发送消息：{}，offset=[{}]", message, result.getRecordMetadata().offset());
-            }
-        });
-    }
+//    @Autowired
+//    private KafkaTemplate<String,String> kafkaTemplate;
+//
+//    public void replaceProducer(String message){
+//        log.info(String.format("$$ -> 生产者 replace message --> %s",message));
+//        ListenableFuture<SendResult<String, String>> future  = this.kafkaTemplate.send("replace", message);
+//        future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+//            @Override
+//            public void onFailure(Throwable throwable) {
+//                log.info("消息：{} 发送失败，原因：{}", message, throwable.getMessage());
+//            }
+//
+//            @Override
+//            public void onSuccess(SendResult<String, String> result) {
+//                log.info("成功发送消息：{}，offset=[{}]", message, result.getRecordMetadata().offset());
+//            }
+//        });
+//    }
 
 //    public void replaceListProducer(String message){
 //        log.info(String.format("$$ -> 生产者 replace message --> %s",message));

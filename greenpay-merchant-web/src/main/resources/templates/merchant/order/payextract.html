@@ -10,10 +10,12 @@
     <div class="layui-tab-item layui-show">
         <div class="layui-row">
             <form class="layui-form" action="">
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">账号名</label>
                     <div class="layui-input-block">
                         <input type="text" name="accountName"  id="accountName" required  lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+                        <input type="hidden" name="mchId"  id="mchId" th:value="${merId}" required  lay-verify="required" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">

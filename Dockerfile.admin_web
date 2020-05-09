@@ -8,8 +8,8 @@ RUN apk update && apk add --no-cache --virtual .tmp \
 
 VOLUME /tmp
 WORKDIR /opt
-EXPOSE 80
+EXPOSE 8081
 
-COPY greenpay-merchant-web/target/lib/ ./lib/
-COPY greenpay-merchant-web/target/app.jar ./app.jar
+COPY greenpay-admin/target/lib/ ./lib/
+COPY greenpay-admin/target/app.jar ./app.jar
 ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/opt/app.jar"]

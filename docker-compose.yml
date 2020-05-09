@@ -1,20 +1,22 @@
 version: '3.7'
 
 services:
-  admin-web:
+  admin_web:
+    restart: always
     build:
       context: .
-      dockerfile: Dockerfile.admin-web
+      dockerfile: Dockerfile.admin_web
     ports:
       - 9081:8081
     depends_on:
       - redis
       - mysql
 
-  merchant-web:
+  merchant_web:
+    restart: always
     build:
       context: .
-      dockerfile: Dockerfile.merchant-web
+      dockerfile: Dockerfile.merchant_web
     ports:
       - 9082:8082
     depends_on:
@@ -22,6 +24,7 @@ services:
       - mysql
 
   openapi:
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile.openapi
@@ -32,6 +35,7 @@ services:
       - mysql
 
   mysql:
+    restart: always
     image: mysql:8
     ports:
       - 4306:3306
@@ -41,15 +45,15 @@ services:
       - MYSQL_USER=greenpay
       - MYSQL_PASSWORD=greenpay
       - TZ=Asia/Shanghai
-    command: [
-      "--default_authentication_plugin=mysql_native_password",
-      "--character-set-server=utf8mb4",
-      "--collation-server=utf8mb4_unicode_ci"
-    ]
+    command:
+      --default_authentication_plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
     volumes:
       - mysql_data:/var/lib/mysql/data
 
   redis:
+    restart: always
     image: redis
     volumes:
       - redis_data:/data

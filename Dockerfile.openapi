@@ -8,7 +8,7 @@ RUN apk update && apk add --no-cache --virtual .tmp \
 
 VOLUME /tmp
 WORKDIR /opt
-EXPOSE 80
+EXPOSE 8083
 
 COPY greenpay-openapi/target/lib/ ./lib/
 COPY greenpay-openapi/target/app.jar ./app.jar

@@ -21,6 +21,3 @@ spring:
       strategy:
         content:
           enabled: true
-greenpay:
-  openapi:
-    enable_sign: false

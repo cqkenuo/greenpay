@@ -58,6 +58,10 @@ public class AgentPayOrderDTO {
     private String feeDisplay;
     private String amountDisplay;
     /**
+     * 账户类型（1：对公，2：对私）
+     */
+    private Integer accountType;
+    /**
      * 账户名
      */
     private String accountName;

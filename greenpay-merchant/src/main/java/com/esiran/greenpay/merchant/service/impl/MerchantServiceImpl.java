@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
+import com.esiran.greenpay.agentpay.entity.AgentPayPassageAccount;
 import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
@@ -53,6 +54,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     private final IMerchantAgentPayPassageService mchAgentPayPassageService;
     private final IAgentPayPassageService agentPayPassageService;
     private static final ModelMapper modelMapper = new ModelMapper();
+
     public MerchantServiceImpl(
             ITypeService iTypeService,
             IProductService productService,
@@ -425,5 +427,31 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         if (pas == null) return null;
         pas.setProductRate(mpd.getRate());
         return pas;
+    }
+
+    @Override
+    public MerchantAgentPayPassage schedulerAgentPayPassage(Integer mchId) {
+        List<MerchantAgentPayPassage> passages = mchAgentPayPassageService.listAvailableByMchId(mchId);
+        if (passages == null || passages.size() == 0) return null;
+        // 构造权重区间值数组
+        int[] sumArr = new int[passages.size()];
+        // 权重总和
+        int sum = 0;
+        for (int i=0; i<sumArr.length; i++){
+            MerchantAgentPayPassage mapp = passages.get(i);
+            int w = mapp.getWeight();
+            sum += w;
+            sumArr[i] = sum;
+        }
+        // 根据权重随机获取数组索引
+        int index = randomPickIndex(sumArr);
+        MerchantAgentPayPassage pa = passages.get(index);
+        if (pa == null || !pa.getStatus()) return null;
+        return pa;
+    }
+
+    @Override
+    public AgentPayPassageAccount schedulerAgentPayPassageAcc(Integer mchId, Integer passageId) {
+        return null;
     }
 }

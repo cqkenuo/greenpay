@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Update;
  */
 public interface PayAccountMapper extends BaseMapper<PayAccount> {
     void updateAvailBalance(@Param("mchId") Integer mchId, @Param("amount") Integer amount);
-    void updateFreezeBalance(@Param("mchId") Integer mchId, @Param("amount") Integer amount);
+    int updateFreezeBalance(@Param("mchId") Integer mchId, @Param("amount") Integer amount);
     int updateBalance(@Param("mchId") Integer mchId, @Param("availAmount") Integer availAmount,
                        @Param("freezeAmount") Integer freezeAmount);
 

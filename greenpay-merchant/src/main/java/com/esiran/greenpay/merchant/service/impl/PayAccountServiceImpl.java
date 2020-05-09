@@ -40,9 +40,9 @@ public class PayAccountServiceImpl extends ServiceImpl<PayAccountMapper, PayAcco
     }
 
     @Override
-    public void updateFreezeBalance(Integer mchId, Integer amount) {
-        if (mchId == null || amount == null) return;
-        this.baseMapper.updateFreezeBalance(mchId,amount);
+    public int updateFreezeBalance(Integer mchId, Integer amount) {
+        if (mchId == null || amount == null) return 0;
+       return this.baseMapper.updateFreezeBalance(mchId,amount);
     }
 
     @Override

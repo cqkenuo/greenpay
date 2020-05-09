@@ -10,6 +10,7 @@ import com.esiran.greenpay.common.util.EncryptUtil;
 import com.esiran.greenpay.common.util.IdWorker;
 import com.esiran.greenpay.common.util.NumberUtil;
 import com.esiran.greenpay.merchant.entity.Merchant;
+import com.esiran.greenpay.merchant.entity.PayAccountDTO;
 import com.esiran.greenpay.merchant.entity.SettleAccountDTO;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.merchant.service.IPayAccountService;
@@ -114,7 +115,7 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateOrderStatus(String orderNo, Integer status) throws PostResourceException {
+    public void updateOrderStatus(String orderNo, Integer updateStatus) throws PostResourceException {
         SettleOrderDTO orderDTO = getByOrderNo(orderNo);
         if (orderDTO == null) {
             throw new PostResourceException("订单不存在");
@@ -136,21 +137,29 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
             throw new PostResourceException("订单状态：已结算");
         }
 
-        if (status == 1) {
+        if (updateStatus == 1) {
             throw new PostResourceException("订单状态：待审核");
         }
 
-        if (status == -1) {
+        //反还用户冻结金额
+        if (updateStatus == -1) {
             int result = payAccountService.updateBalance(orderDTO.getMchId(), -orderDTO.getAmount(), orderDTO.getAmount());
             if (result == 0) {
                 throw new PostResourceException("账户余额不正确");
             }
         }
 
-        //结算逻辑:成功后不能标识，待处理状态才能标识已经结算
+        //更新用户冻结金额
+       if (updateStatus ==4){
+           int status = payAccountService.updateFreezeBalance(orderDTO.getMchId(), orderDTO.getAmount());
+           if (status == 0) {
+               throw new PostResourceException("账户冻结金额异常");
+           }
+       }
 
 
-        settleOrder.setStatus(status);
+        settleOrder.setStatus(updateStatus);
+        settleOrder.setUpdatedAt(LocalDateTime.now());
         updateById(settleOrder);
 
     }

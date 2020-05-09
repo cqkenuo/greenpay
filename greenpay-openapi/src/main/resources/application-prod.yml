@@ -20,3 +20,6 @@ spring:
       strategy:
         content:
           enabled: true
+
+web:
+  hostname: http://s7buy.esiran.com

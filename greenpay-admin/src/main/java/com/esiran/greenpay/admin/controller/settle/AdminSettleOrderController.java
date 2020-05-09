@@ -87,6 +87,7 @@ public class AdminSettleOrderController extends CURDBaseController {
 
         switch (action) {
             case "settlement":
+
                 orderService.updateOrderStatus(orderNo, 4);
                 break;
             default:

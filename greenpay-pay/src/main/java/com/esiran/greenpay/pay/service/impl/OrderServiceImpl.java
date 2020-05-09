@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,6 +63,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Order::getOrderNo, orderNo);
         return this.getOne(lambdaQueryWrapper);
+    }
+
+    @Override
+    public List<Order> getByDay(Integer mchId) {
+        return this.baseMapper.getByDay(mchId);
     }
 
     @Override

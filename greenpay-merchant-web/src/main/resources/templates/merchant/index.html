@@ -23,8 +23,7 @@
                                             <a lay-href="" class="layadmin-backlog-body">
                                                 <h3>账户可用余额</h3>
                                                 <p>
-                                                    <cite th:text="${payAccount.getAvailBalance()}"></cite> 元
-                                                    <button  id="payExtractBtn" class="layui-btn layui-btn-sm">提现</button>
+                                                    <cite th:text="${#numbers.formatDecimal(payAccount.getAvailBalance()/100,1,2)}"></cite> 元
                                                 </p>
                                             </a>
                                         </li>
@@ -32,7 +31,7 @@
                                             <a lay-href="" class="layadmin-backlog-body">
                                                 <h3>账户冻结余额</h3>
                                                 <p>
-                                                    <cite th:text="${payAccount.getFreezeBalance()}"></cite> 元
+                                                    <cite th:text="${#numbers.formatDecimal(payAccount.getFreezeBalance()/100,1,2)}"></cite> 元
                                                 </p>
                                             </a>
                                         </li>
@@ -40,7 +39,7 @@
                                             <a lay-href="" class="layadmin-backlog-body">
                                                 <h3>账户代付余额</h3>
                                                 <p>
-                                                    <cite th:text="${prepaidAccount.getFreezeBalance()}"></cite> 元
+                                                    <cite th:text="${#numbers.formatDecimal(prepaidAccount.getFreezeBalance()/100,1,2)}"></cite> 元
                                                 </p>
                                             </a>
                                         </li>
@@ -48,7 +47,7 @@
                                             <a lay-href="" class="layadmin-backlog-body">
                                                 <h3>账户代付冻结余额</h3>
                                                 <p>
-                                                    <cite th:text="${prepaidAccount.getAvailBalance()}"></cite> 元
+                                                    <cite th:text="${#numbers.formatDecimal(prepaidAccount.getAvailBalance()/100,1,2)}"></cite> 元
                                                 </p>
                                             </a>
                                         </li>
@@ -84,25 +83,25 @@
                                             <li class="layui-col-xs2">
                                                 <a lay-href="" class="layadmin-backlog-body">
                                                     <h3>今日收单总数</h3>
-                                                    <p><cite>0</cite> 个</p>
+                                                    <p><cite th:text="${count}"></cite> 个</p>
                                                 </a>
                                             </li>
                                             <li class="layui-col-xs2">
                                                 <a lay-href="" class="layadmin-backlog-body">
                                                     <h3>今日收单总额</h3>
-                                                    <p><cite>0</cite> 元</p>
+                                                    <p><cite th:text="${#numbers.formatDecimal(orderMoenyTotal/100,1,2)}"></cite> 元</p>
                                                 </a>
                                             </li>
                                             <li class="layui-col-xs2">
                                                 <a lay-href="" class="layadmin-backlog-body">
                                                     <h3>今日成交笔数</h3>
-                                                    <p><cite>0</cite> 个</p>
+                                                    <p><cite th:text="${count2}"></cite> 个</p>
                                                 </a>
                                             </li>
                                             <li class="layui-col-xs2">
                                                 <a lay-href="" class="layadmin-backlog-body">
                                                     <h3>今日成交总额</h3>
-                                                    <p><cite>0</cite> 元</p>
+                                                    <p><cite th:text="${#numbers.formatDecimal(orderMoeny2Total/100,1,2)}"></cite> 元</p>
                                                 </a>
                                             </li>
 <!--                                            <li class="layui-col-xs2">-->

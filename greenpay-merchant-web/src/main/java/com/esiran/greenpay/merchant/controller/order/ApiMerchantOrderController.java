@@ -1,14 +1,20 @@
 package com.esiran.greenpay.merchant.controller.order;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
+import com.esiran.greenpay.merchant.controller.CURDBaseController;
+import com.esiran.greenpay.merchant.entity.Merchant;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
+import com.esiran.greenpay.settle.entity.SettleOrder;
 import com.esiran.greenpay.settle.entity.SettleOrderInputDTO;
 import com.esiran.greenpay.settle.service.ISettleOrderService;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/merchant/api/v1")
-public class ApiMerchantOrderController {
+public class ApiMerchantOrderController extends CURDBaseController {
 
 
     private final IOrderService payOrderService;
@@ -33,16 +39,35 @@ public class ApiMerchantOrderController {
 
     @GetMapping("/orders")
     public IPage<Order> orderList(Page<Order> page){
+        Merchant merchant = theUser();
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<Order>().eq(Order::getMchId, merchant.getId());
         return payOrderService.page(page);
     }
     @GetMapping("/extracts")
-    public IPage<Extract> extractList(Page<Extract> page){
-        return extractService.page(page);
+    public IPage<SettleOrder> extractList(Page<SettleOrder> page){
+        Merchant merchant = theUser();
+        LambdaQueryWrapper<SettleOrder> wrapper = new LambdaQueryWrapper<SettleOrder>().eq(SettleOrder::getMchId, merchant.getId());
+        return settleOrderService.page(page,wrapper);
     }
 
     @PostMapping("/payextract")
-    public void payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
-        settleOrderService.postOrder(settleOrderInputDTO);
+    public Map payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
+        Map m = new HashMap();
+        try {
+            settleOrderService.postOrder(settleOrderInputDTO);
+        } catch (PostResourceException e) {
+            m.put("code",0);
+            m.put("msg",e.getMessage());
+            return m;
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+            m.put("code",0);
+            m.put("msg",e.getMessage());
+            return m;
+        }
+        m.put("code",1);
+        m.put("msg","提交成功");
+        return m;
     }
 
 }

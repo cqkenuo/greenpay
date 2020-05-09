@@ -2,7 +2,7 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>单笔代付 - GreenPay</title>
+    <title>提现 - GreenPay</title>
     <th:block th:replace="merchant/header::stylesheet"/>
 </head>
 <body>
@@ -54,6 +54,14 @@
             $ = layui.jquery;
 
         form.on('submit(formDemo)', function(data){
+            console.log(data);
+            let feeAmountYuan = 0;
+            let feeAmountYuanText = data.field.amount;
+            if (feeAmountYuanText.length > 0){
+                feeAmountYuan = parseFloat(feeAmountYuanText);
+            }
+            let feeAmountFen = Math.round(feeAmountYuan*100);
+            data.field.amount = feeAmountFen;
             $.ajax({
                 url:'/merchant/api/v1/payextract',
                 method:'post',
@@ -69,7 +77,7 @@
                 error:function (data) {
                     throw data;
                 }
-            })
+            });
             return false;
         });
     }();

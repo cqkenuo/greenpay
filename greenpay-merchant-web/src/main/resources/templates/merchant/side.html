@@ -21,6 +21,7 @@
                     <cite>交易管理</cite>
                 </a>
                 <dl class="layui-nav-child">
+                    <dd th:replace="merchant/side::layui_nav_item('/merchant/order/payextract','余额提现')"></dd>
                     <dd th:replace="merchant/side::layui_nav_item('/merchant/order/list','订单列表')"></dd>
                     <dd th:replace="merchant/side::layui_nav_item('/merchant/order/extract','提现记录')"></dd>
                 </dl>

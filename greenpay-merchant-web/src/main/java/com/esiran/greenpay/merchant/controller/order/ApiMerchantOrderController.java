@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
 import com.esiran.greenpay.settle.entity.SettleOrderInputDTO;
@@ -41,8 +42,23 @@ public class ApiMerchantOrderController {
     }
 
     @PostMapping("/payextract")
-    public void payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
-        settleOrderService.postOrder(settleOrderInputDTO);
+    public Map payExtract(@Validated SettleOrderInputDTO settleOrderInputDTO) throws ResourceNotFoundException, PostResourceException {
+        Map m = new HashMap();
+        try {
+            settleOrderService.postOrder(settleOrderInputDTO);
+        } catch (PostResourceException e) {
+            m.put("code",0);
+            m.put("msg","提交失败");
+            return m;
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+            m.put("code",0);
+            m.put("msg","提交失败");
+            return m;
+        }
+        m.put("code",1);
+        m.put("msg","提交成功");
+        return m;
     }
 
 }

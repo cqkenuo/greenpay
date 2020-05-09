@@ -75,6 +75,16 @@
                 method:'post',
                 data:data.field,
                 dataType:'JSON',
+                success:function(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg);
+                    }
+                    else
+                        layer.msg(res.msg);
+                },
+                error:function (data) {
+                    throw data;
+                }
             });
             return false;
         })

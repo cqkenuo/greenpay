@@ -21,40 +21,40 @@
                             <div class="layui-tab-content">
                                 <div class="layui-tab-item layui-show">
                                     <div class="layui-row">
-                                        <form class="layui-form" style="float:right; margin-bottom: 10px;">
-                                            <div class="layui-form-item" style="margin:0;">
-                                                <div class="layui-input-inline">
-                                                    <input type="text" name="createTimeStart" id="createTimeStart"
-                                                           autocomplete="off" placeholder="开始时间" class="layui-input"
-                                                           lay-key="9">
-                                                </div>
-                                                <div class="layui-input-inline">
-                                                    <input type="text" name="createTimeEnd" id="createTimeEnd"
-                                                           autocomplete="off" placeholder="结束时间" class="layui-input"
-                                                           lay-key="10">
-                                                </div>
-                                                <div class="layui-input-inline">
-                                                    <input type="text" name="payOrderId" id="payOrderId"
-                                                           placeholder="支付单号" autocomplete="off" class="layui-input">
-                                                </div>
-                                                <div class="layui-input-inline">
-                                                    <input type="text" name="mchOrderNo" id="mchOrderNo"
-                                                           placeholder="商户单号" autocomplete="off" class="layui-input">
-                                                </div>
-                                                <div class="layui-input-inline">
-                                                    <div class="layui-input-block">
-                                                        <select name="status" id="status" lay-verify="required">
-                                                            <option value="-99">状态</option>
-                                                            <option value="1">支付成功</option>
-                                                            <option value="0">待支付</option>
-                                                            <option value="-1">支付失败</option>
-                                                            <option value="2">退款</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <button id="search" class="layui-btn" lay-submit data-type="reload" lay-filter="formOrder">搜索</button>
-                                            </div>
-                                        </form>
+<!--                                        <form class="layui-form" style="float:right; margin-bottom: 10px;">-->
+<!--                                            <div class="layui-form-item" style="margin:0;">-->
+<!--                                                <div class="layui-input-inline">-->
+<!--                                                    <input type="text" name="createTimeStart" id="createTimeStart"-->
+<!--                                                           autocomplete="off" placeholder="开始时间" class="layui-input"-->
+<!--                                                           lay-key="9">-->
+<!--                                                </div>-->
+<!--                                                <div class="layui-input-inline">-->
+<!--                                                    <input type="text" name="createTimeEnd" id="createTimeEnd"-->
+<!--                                                           autocomplete="off" placeholder="结束时间" class="layui-input"-->
+<!--                                                           lay-key="10">-->
+<!--                                                </div>-->
+<!--                                                <div class="layui-input-inline">-->
+<!--                                                    <input type="text" name="payOrderId" id="payOrderId"-->
+<!--                                                           placeholder="支付单号" autocomplete="off" class="layui-input">-->
+<!--                                                </div>-->
+<!--                                                <div class="layui-input-inline">-->
+<!--                                                    <input type="text" name="mchOrderNo" id="mchOrderNo"-->
+<!--                                                           placeholder="商户单号" autocomplete="off" class="layui-input">-->
+<!--                                                </div>-->
+<!--                                                <div class="layui-input-inline">-->
+<!--                                                    <div class="layui-input-block">-->
+<!--                                                        <select name="status" id="status" lay-verify="required">-->
+<!--                                                            <option value="-99">状态</option>-->
+<!--                                                            <option value="1">支付成功</option>-->
+<!--                                                            <option value="0">待支付</option>-->
+<!--                                                            <option value="-1">支付失败</option>-->
+<!--                                                            <option value="2">退款</option>-->
+<!--                                                        </select>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <button id="search" class="layui-btn" lay-submit data-type="reload" lay-filter="formOrder">搜索</button>-->
+<!--                                            </div>-->
+<!--                                        </form>-->
 <!--                                        <div class="layui-form-item">-->
 <!--                                            <blockquote class="layui-elem-quote" id="amountTip">-->
 <!--                                                提交订单数:-->
@@ -92,7 +92,7 @@
                                         <script type="text/html" id="barDemo">
                                             <a th:href="@{'/merchant/order/list/{{d.orderNo}}/detail'}"
                                                class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
-                                            <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">补单</a>
+<!--                                            <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">补单</a>-->
                                             <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary">通知</a>
                                         </script>
                                     </div>

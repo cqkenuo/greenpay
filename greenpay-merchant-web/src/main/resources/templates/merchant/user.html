@@ -36,13 +36,13 @@
                                                             <input type="text" name="name" th:value="${merchant.getName()}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
                                                         </div>
                                                     </div>
-                                                    <div class="layui-form-item">
-                                                        <label class="layui-form-label">状态</label>
-                                                        <div class="layui-input-block">
-                                                            <input type="radio" name="status" value="1" title="开启"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>开启</div></div>
-                                                            <input type="radio" name="status" value="0" title="关闭" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>关闭</div></div>
-                                                        </div>
-                                                    </div>
+<!--                                                    <div class="layui-form-item">-->
+<!--                                                        <label class="layui-form-label">状态</label>-->
+<!--                                                        <div class="layui-input-block">-->
+<!--                                                            <input type="radio" name="status" value="1" title="开启"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>开启</div></div>-->
+<!--                                                            <input type="radio" name="status" value="0" title="关闭" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>关闭</div></div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
 <!--                                                    <div class="layui-form-item">-->
 <!--                                                        <label class="layui-form-label">头像</label>-->
 <!--                                                        <div class="layui-input-inline">-->
@@ -108,6 +108,16 @@
                 method:'post',
                 data:data.field,
                 dataType:'JSON',
+                success:function(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg);
+                    }
+                    else
+                        layer.msg(res.msg);
+                },
+                error:function (data) {
+                    throw data;
+                }
             });
             return false;
         })

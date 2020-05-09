@@ -29,12 +29,29 @@ services:
       - 8083:8083
     depends_on:
       - redis
-      - db_mysql
+      - mysql
+
+  mysql:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=greenpay
+      - MYSQL_USER=greenpay
+      - MYSQL_PASSWORD=tel_fee_forward
+      - TZ=Asia/Shanghai
+    command: [
+      "--default_authentication_plugin=mysql_native_password",
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci"
+    ]
+    volumes:
+      - mysql:/var/lib/mysql/data
+
   redis:
     image: redis
     volumes:
       - redis_data:/data
 
 volumes:
-  db_data: {}
+  mysql_data: {}
   redis_data: {}

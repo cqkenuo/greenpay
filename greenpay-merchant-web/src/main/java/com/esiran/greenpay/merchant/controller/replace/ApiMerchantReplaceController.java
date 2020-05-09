@@ -3,6 +3,7 @@ package com.esiran.greenpay.merchant.controller.replace;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.esiran.greenpay.agentpay.entity.AgentPayBatchInputDTO;
 import com.esiran.greenpay.pay.entity.ReplacepayOrder;
 import com.esiran.greenpay.pay.entity.ReplacepayRecharge;
 import com.esiran.greenpay.pay.service.IExtractService;
@@ -61,6 +62,10 @@ public class ApiMerchantReplaceController {
         m.put("code",1);
         m.put("msg","提交成功");
         return m;
+    }
+    @PostMapping("/replace/bath")
+    public Map bath(@Validated AgentPayBatchInputDTO batchInputDTO){
+        return null;
     }
 
     @PostMapping("/recharge/add")

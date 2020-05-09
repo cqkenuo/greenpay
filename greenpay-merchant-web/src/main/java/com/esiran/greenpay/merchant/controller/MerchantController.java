@@ -49,6 +49,12 @@ public class MerchantController extends CURDBaseController{
         model.addAttribute("merchant",merchant);
         return "merchant/user";
     }
+    @GetMapping("/user/security")
+    public String security(Model model){
+        Merchant merchant = theUser();
+        model.addAttribute("merchant",merchant);
+        return "merchant/security";
+    }
 
     @GetMapping("/login")
     @PageViewHandleError

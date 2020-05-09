@@ -9,4 +9,9 @@
           AND `avail_balance` >= ${availAmount}
           AND `freeze_balance` >= ${freezeAmount}
     </update>
+    <select id="selectAvailBalance">
+        SELECT `avail_balance`- ${amount} AS avail_balance
+        FROM merchant_prepaid_account
+        WHERE merchant_id = ${mchId};
+    </select>
 </mapper>

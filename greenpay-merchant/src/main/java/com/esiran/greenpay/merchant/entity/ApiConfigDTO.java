@@ -40,5 +40,6 @@ public class ApiConfigDTO {
      * 商户公钥
      */
     private String mchPubKey;
+    private String mchPubKeyVal;
 
 }

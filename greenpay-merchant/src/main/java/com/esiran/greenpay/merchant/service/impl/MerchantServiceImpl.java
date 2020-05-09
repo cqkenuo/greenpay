@@ -163,8 +163,14 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
                 RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN,
                 apiConfigDTO.getPrivateKey(),
                 RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN);
+
+        String mchPublicKeyVal = String.format("%s\r\n%s\r\n%s",
+                RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
+                apiConfigDTO.getMchPubKey(),
+                RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
         apiConfigDTO.setPubKeyVal(publicKeyVal);
         apiConfigDTO.setPrivateKeyVal(privateKeyVal);
+        apiConfigDTO.setMchPubKeyVal(mchPublicKeyVal);
         PayAccountDTO payAccountDTO = payAccountService.findByMerchantId(merchant.getId());
         PrepaidAccountDTO prepaidAccountDTO = prepaidAccountService.findByMerchantId(merchant.getId());
         SettleAccountDTO settleAccountDTO = settleAccountService.findByMerchantId(merchant.getId());

@@ -132,6 +132,9 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
             throw new PostResourceException("订单状态：已结算");
         }
 
+        if (status == 1) {
+            throw new PostResourceException("订单状态：待审核");
+        }
 
         if (status == -1) {
             int result = payAccountService.updateBalance(orderDTO.getMchId(), -orderDTO.getAmount(), orderDTO.getAmount());

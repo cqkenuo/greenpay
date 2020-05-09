@@ -180,7 +180,7 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         Integer free = 0;
         Integer SettleAmount = 0;
         SettleAccountDTO settleAccountDTO = iSettleAccountService.findByMerchantId(merchant.getId());
-        if (settleAccountDTO.getStatus()) {
+        if (!settleAccountDTO.getStatus()) {
             throw new PostResourceException("结算状态已关闭");
         }
         //1)百分比

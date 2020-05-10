@@ -8,6 +8,7 @@ import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassageAccount;
 import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
 import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.util.EncryptUtil;
 import com.esiran.greenpay.common.util.NumberUtil;
@@ -161,23 +162,24 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         String privateKeyVal = null;
         String mchPublicKeyVal = null;
         if (!StringUtils.isEmpty(apiConfigDTO.getPubKey())){
-            publicKeyVal = String.format("%s\r\n%s\r\n%s",
+            publicKeyVal = RSAUtil.formatKeyPem(
                     RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
                     apiConfigDTO.getPubKey(),
                     RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
         }
         if (!StringUtils.isEmpty(apiConfigDTO.getPrivateKey())){
-            privateKeyVal = String.format("%s\r\n%s\r\n%s",
+            privateKeyVal = RSAUtil.formatKeyPem(
                     RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN,
                     apiConfigDTO.getPrivateKey(),
                     RSAUtil.PEM_FILE_PRIVATE_PKCS8_BEGIN);
         }
         if (!StringUtils.isEmpty(apiConfigDTO.getMchPubKey())){
-            mchPublicKeyVal = String.format("%s\r\n%s\r\n%s",
+            mchPublicKeyVal = RSAUtil.formatKeyPem(
                     RSAUtil.PEM_FILE_PUBLIC_PKCS1_BEGIN,
                     apiConfigDTO.getMchPubKey(),
                     RSAUtil.PEM_FILE_PUBLIC_PKCS1_END);
         }
+//        RSAUtil.verify()
         apiConfigDTO.setPubKeyVal(publicKeyVal);
         apiConfigDTO.setPrivateKeyVal(privateKeyVal);
         apiConfigDTO.setMchPubKeyVal(mchPublicKeyVal);
@@ -200,7 +202,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
                 .eq(Merchant::getEmail, merchant.getEmail());
         Merchant oldMerchant = getOne(queryWrapper);
         if (oldMerchant != null){
-            throw new Exception("用户名或邮箱已存在");
+            throw new PostResourceException("用户名或邮箱已存在");
         }
         save(merchant);
         // api 配置信息构造

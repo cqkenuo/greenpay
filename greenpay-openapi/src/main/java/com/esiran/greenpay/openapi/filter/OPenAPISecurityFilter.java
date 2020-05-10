@@ -138,7 +138,7 @@ public class OPenAPISecurityFilter implements Filter {
         String principal = MapUtil.sortAndSerialize(params,new String[]{"sign"});
         SignType signType = signTypeStr.equals("md5") ? new Md5SignType(principal)
                 : signTypeStr.equals("hmac_md5") ? new HMACMD5SignType(principal)
-                : signTypeStr.equals("rsa") ? new RSASignType(principal) :null;
+                : signTypeStr.equals("rsa") ? new RSA2SignType(principal) :null;
         if (signType == null)
             throw new APIException("无效的签名方式","INVALID_REQUEST_SIGN_TYPE",400);
         String apiKey = request.getParameter("apiKey");
@@ -154,7 +154,7 @@ public class OPenAPISecurityFilter implements Filter {
             throw new APIException("无效的 API_KEY","INVALID_API_KEY",400);
         SignVerify signVerify;
         String sign;
-        if (signType instanceof RSASignType){
+        if (signType instanceof RSA2SignType){
             signVerify = signType.sign(apiConfig.getMchPubKey());
             sign = request.getParameter("sign");
             sign = UrlSafeB64.decode(sign);

@@ -13,4 +13,9 @@ public class HMACMD5SignType extends SignTypeAbs {
                 EncryptUtil.hmacMd5(this.getPrincipal(),credential)
         );
     }
+
+    @Override
+    public String sign2(String credential) {
+        return EncryptUtil.hmacMd5(this.getPrincipal(),credential);
+    }
 }

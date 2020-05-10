@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @ApiModel("MerchantInput")
@@ -26,6 +27,7 @@ public class MerchantInputDTO {
     @ApiModelProperty("状态")
     private Boolean status;
     @ApiModelProperty("密码")
+    @Size(min = 32,max = 32,message = "密码格式错误")
     @NotBlank(message = "密码不能为空")
     private String password;
 

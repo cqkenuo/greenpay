@@ -93,10 +93,10 @@ public class InvoiceService implements IInvoiceService {
             orderDetailService.updatePayCredentialByOrderNo(order.getOrderNo(),results);
         }catch (Exception e){
             e.printStackTrace();
-            throw new APIException("CHANNEL_REQUEST_ERROR","支付渠道请求失败");
+            throw new APIException("CHANNEL_REQUEST_ERROR",e.getMessage());
         }
         Invoice out = modelMapper.map(order,Invoice.class);
-        out.setChannel(product.getProductName());
+        out.setChannel(product.getProductCode());
         out.setCredential(results);
         return out;
     }

@@ -319,7 +319,9 @@
                                                     <fieldset class="layui-elem-field">
                                                         <legend>平台私钥</legend>
                                                         <div class="layui-field-box">
-                                                            <textarea style="height: 254px" readonly class="layui-textarea" th:text="${merchant.apiConfig.privateKeyVal}"></textarea>
+                                                            <textarea style="height: 200px"
+                                                                      readonly class="layui-textarea"
+                                                                      th:text="${merchant.apiConfig.privateKeyVal}"></textarea>
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -327,7 +329,10 @@
                                                     <fieldset class="layui-elem-field">
                                                         <legend>平台公钥</legend>
                                                         <div class="layui-field-box">
-                                                            <textarea style="height: 130px" readonly class="layui-textarea" th:text="${merchant.apiConfig.pubKeyVal}"></textarea>
+                                                            <textarea style="height: 200px"
+                                                                      readonly
+                                                                      class="layui-textarea"
+                                                                      th:text="${merchant.apiConfig.pubKeyVal}"></textarea>
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -347,14 +352,14 @@
                                                     <form class="layui-form">
                                                         <div class="layui-form-item">
                                                             <textarea name="desc"
+                                                                      style="height: 150px"
                                                                       placeholder="请输入内容"
                                                                       th:text="${merchant.apiConfig.mchPubKeyVal}"
-                                                                      class="layui-textarea" value="publicKey"></textarea>
+                                                                      class="layui-textarea"></textarea>
                                                         </div>
                                                         <div>
                                                             <input type="hidden" name="method" value="publicKey">
                                                             <button style="width: 100%" type="submit" class="layui-btn" lay-submit lay-filter="publicKey">重置公钥</button>
-<!--                                                            <button style="width: 100%" type="submit" class="layui-btn" lay-submit	lay-verify="publicKey">重置公钥</button>-->
                                                         </div>
                                                     </form>
                                                 </div>

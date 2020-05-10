@@ -43,15 +43,25 @@
                                                         </div>
                                                     </fieldset>
                                                 </div>
-
                                                 <div class="layui-form-item">
                                                     <fieldset class="layui-elem-field">
                                                         <legend>平台公钥</legend>
                                                         <div class="layui-field-box">
-                                                            <textarea style="height: 130px" readonly class="layui-textarea" th:text="${merchant.apiConfig.pubKeyVal}"></textarea>
-                                                        </div>
-                                                        <div class="layui-fluid admin-table_header_right" >
-                                                            <button class="layui-btn "  lay-filter="downPublicKey">下载平台公钥</button>
+                                                            <div class="layui-form-item">
+                                                                <textarea name="desc"
+                                                                          style="height: 200px"
+                                                                          placeholder="请输入内容"
+                                                                          readonly
+                                                                          th:text="${merchant.apiConfig.pubKeyVal}"
+                                                                          class="layui-textarea"></textarea>
+                                                            </div>
+                                                            <div>
+                                                                <a class="layui-btn"
+                                                                   target="_blank"
+                                                                   th:href="@{'/merchant/user/download/rsa/api_pub_key.pem'}">
+                                                                    下载公钥文件
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -72,13 +82,17 @@
                                                         <div class="layui-form-item">
                                                             <textarea name="desc"
                                                                       placeholder="请输入内容"
+                                                                      style="height: 200px"
                                                                       th:text="${merchant.apiConfig.mchPubKeyVal}"
-                                                                      class="layui-textarea" value="publicKey"></textarea>
+                                                                      class="layui-textarea"></textarea>
                                                         </div>
-                                                        <div class="layui-fluid admin-table_header_right" >
-                                                            <input type="hidden" name="method" value="publicKey">
+                                                        <div>
                                                             <button  type="submit" class="layui-btn" lay-submit lay-filter="publicKey">重置公钥</button>
-<!--                                                            <button style="width: 100%" type="submit" class="layui-btn" lay-submit	lay-verify="publicKey">重置公钥</button>-->
+                                                            <a class="layui-btn"
+                                                               target="_blank"
+                                                               th:href="@{'/merchant/user/download/rsa/pub_key.pem'}">
+                                                                下载公钥文件
+                                                            </a>
                                                         </div>
                                                     </form>
                                                 </div>

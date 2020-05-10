@@ -14,13 +14,17 @@ import com.esiran.greenpay.pay.entity.Order;
 import com.esiran.greenpay.pay.service.IOrderService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -64,13 +68,47 @@ public class MerchantController extends CURDBaseController{
         model.addAttribute("merchant",merchant);
         return "merchant/user";
     }
+    @GetMapping("/user/pub/file")
+    public String pubKeyFile(Model model){
+        Merchant merchant = theUser();
+        model.addAttribute("merchant",merchant);
+        return "merchant/user";
+    }
     @GetMapping("/user/security")
     public String security(Model model){
         Merchant merchant = theUser();
         model.addAttribute("merchant",merchant);
         return "merchant/security";
     }
-
+    @GetMapping("/user/download/rsa/{filename}")
+    public void downloadRsa(@PathVariable String filename, HttpServletResponse response) throws IOException {
+        if (StringUtils.isEmpty(filename)){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        Merchant merchant = theUser();
+        MerchantDetailDTO merchantDetailDTO = merchantService.findMerchantById(merchant.getId());
+        if (merchantDetailDTO == null){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        String pubKeyVal = merchantDetailDTO.getApiConfig().getPubKeyVal();
+        String mchPubKeyVal = merchantDetailDTO.getApiConfig().getMchPubKeyVal();
+        OutputStream os = response.getOutputStream();
+        if (filename.equals("api_pub_key.pem") && !StringUtils.isEmpty(pubKeyVal)){
+            os.write(pubKeyVal.getBytes());
+        }else if(filename.equals("pub_key.pem") && !StringUtils.isEmpty(mchPubKeyVal)){
+            os.write(mchPubKeyVal.getBytes());
+        }else{
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition",String.format("attachment; filename=%s",filename));
+        os.flush();
+        os.close();
+        response.flushBuffer();
+    }
     @GetMapping("/user/api")
     public String userapi(Model model) {
         Merchant merchant = theUser();

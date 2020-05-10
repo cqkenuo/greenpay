@@ -10,6 +10,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @MapperScan("com.esiran.greenpay.**.mapper")
 public class GreenPayMerchantApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GreenPayMerchantApplication.class,args);
+        SpringApplication.run(GreenPayMerchantApplication.class, args);
     }
 }

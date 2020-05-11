@@ -6,44 +6,63 @@
     <th:block th:replace="merchant/header::stylesheet"/>
 </head>
 <body>
-<div class="layui-tab-content">
-    <div class="layui-tab-item layui-show">
-        <div class="layui-row">
-            <form class="layui-form" action="">
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">账号名</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="accountName"  id="accountName" required  lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
-                        <input type="hidden" name="mchId"  id="mchId" th:value="${merId}" required  lay-verify="required" autocomplete="off" class="layui-input">
+<div class="layadmin-tabspage-none">
+    <div class="layui-layout layui-layout-admin">
+        <div th:replace="merchant/header::nav"></div>
+        <div th:replace="merchant/side::menu"></div>
+        <div class="layui-body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <div class="layui-fluid">
+                    <div class="layui-card">
+                        <div class="layui-tab layui-tab-brief">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this">余额提现</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+                                    <div class="layui-row">
+                                        <form class="layui-form" action="">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">账户名</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="accountName"  id="accountName" required  lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+                                                    <input type="hidden" name="mchId"  id="mchId" th:value="${merId}" required  lay-verify="required" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">开户行</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="bankName" id="bankName" required  lay-verify="required" placeholder="请输入开户行" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">银行账号</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="accountNumber" id="accountNumber" required  lay-verify="required" placeholder="请输入银行账号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">提现金额</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="amount" id="amount" required  lay-verify="required" placeholder="请输入提现金额" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <div class="layui-input-block">
+                                                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">开户行</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="bankName" id="bankName" required  lay-verify="required" placeholder="请输入提现金额" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">银行账号</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="accountNumber" id="accountNumber" required  lay-verify="required" placeholder="请输入银行账号" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">提现金额</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="amount" id="amount" required  lay-verify="required" placeholder="请输入提现金额" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
+        <div class="layadmin-body-shade" layadmin-event="shade"></div>
     </div>
 </div>
 <th:block th:replace="merchant/footer::script"/>

@@ -54,6 +54,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     private final IPassageService passageService;
     private final IMerchantAgentPayPassageService mchAgentPayPassageService;
     private final IAgentPayPassageService agentPayPassageService;
+    private final IOrderService orderService;
     private static final ModelMapper modelMapper = new ModelMapper();
 
     public MerchantServiceImpl(
@@ -62,7 +63,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
             IMerchantProductService merchantProductService,
             IMerchantProductPassageService merchantProductPassageService, IPassageAccountService passageAccountService, IApiConfigService apiConfigService,
             IPayAccountService payAccountService,
-            IPrepaidAccountService prepaidAccountService, ISettleAccountService settleAccountService, IPassageService passageService, IMerchantAgentPayPassageService mchAgentPayPassageService, IAgentPayPassageService agentPayPassageService) {
+            IPrepaidAccountService prepaidAccountService, ISettleAccountService settleAccountService, IPassageService passageService, IMerchantAgentPayPassageService mchAgentPayPassageService, IAgentPayPassageService agentPayPassageService, IOrderService orderService) {
         this.iTypeService = iTypeService;
         this.productService = productService;
         this.merchantProductService = merchantProductService;
@@ -75,6 +76,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         this.passageService = passageService;
         this.mchAgentPayPassageService = mchAgentPayPassageService;
         this.agentPayPassageService = agentPayPassageService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -463,5 +465,24 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
     @Override
     public AgentPayPassageAccount schedulerAgentPayPassageAcc(Integer mchId, Integer passageId) {
         return null;
+    }
+
+    @Override
+    public HomeData homeData(Integer mchId) {
+        PayAccountDTO payAccountDTO = payAccountService.findByMerchantId(mchId);
+        PrepaidAccountDTO prepaidAccountDTO = prepaidAccountService.findByMerchantId(mchId);
+        List<Order> orders = orderService.getByDay(mchId);
+        int totalCount = orders.size();
+        int totalMoney = orders.stream().mapToInt(Order::getAmount).sum();
+        int successCount = (int) orders.stream().filter(order -> 2 == order.getStatus()).count();
+        int successMoney = orders.stream().filter(order -> 2 == order.getStatus()).mapToInt(Order::getAmount).sum();
+        HomeData homeData = new HomeData();
+        homeData.setPayAccountDTO(payAccountDTO);
+        homeData.setPrepaidAccountDTO(prepaidAccountDTO);
+        homeData.setTotalCount(totalCount);
+        homeData.setSuccessCount(successCount);
+        homeData.setTotalMoney(NumberUtil.amountFen2Yuan(totalCount));
+        homeData.setSuccessMoney(NumberUtil.amountFen2Yuan(successMoney));
+        return homeData;
     }
 }

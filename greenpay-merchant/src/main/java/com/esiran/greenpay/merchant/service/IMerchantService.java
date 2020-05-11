@@ -38,4 +38,5 @@ public interface IMerchantService extends IService<Merchant> {
     PassageAndSubAccount scheduler(Integer mchId, Integer productId);
     MerchantAgentPayPassage schedulerAgentPayPassage(Integer mchId);
     AgentPayPassageAccount schedulerAgentPayPassageAcc(Integer mchId, Integer passageId);
+    HomeData homeData(Integer mchId);
 }

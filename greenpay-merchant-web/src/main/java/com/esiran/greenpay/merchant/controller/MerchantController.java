@@ -2,11 +2,7 @@ package com.esiran.greenpay.merchant.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
-import com.esiran.greenpay.merchant.entity.Merchant;
-import com.esiran.greenpay.merchant.entity.MerchantDetailDTO;
-import com.esiran.greenpay.merchant.entity.PayAccount;
-import com.esiran.greenpay.merchant.entity.PrepaidAccount;
-import com.esiran.greenpay.merchant.entity.UsernamePasswordInputDTO;
+import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.esiran.greenpay.merchant.service.IPrepaidAccountService;
@@ -47,19 +43,8 @@ public class MerchantController extends CURDBaseController{
     @GetMapping("/home")
     public String home(Model model){
         Merchant m = theUser();
-        PayAccount payAccount = payAccountService.getOne(new LambdaQueryWrapper<PayAccount>().eq(PayAccount::getMerchantId, m.getId()));
-        PrepaidAccount prepaidAccount = prepaidAccountService.getOne(new LambdaQueryWrapper<PrepaidAccount>().eq(PrepaidAccount::getMerchantId, m.getId()));
-        List<Order> orders = orderService.getByDay(m.getId());
-        long count = orders.size();
-        long orderMoenyTotal = orders.stream().mapToLong(Order::getAmount).sum();
-        long orderMoeny2Total = orders.stream().filter(order -> 2 == order.getStatus()).mapToLong(Order::getAmount).sum();
-        long count2 = orders.stream().filter(order -> 2 == order.getStatus()).count();
-        model.addAttribute("payAccount",payAccount);
-        model.addAttribute("count",count);
-        model.addAttribute("count2",count2);
-        model.addAttribute("orderMoenyTotal",orderMoenyTotal);
-        model.addAttribute("orderMoeny2Total",orderMoeny2Total);
-        model.addAttribute("prepaidAccount",prepaidAccount);
+        HomeData homeData = merchantService.homeData(m.getId());
+        model.addAttribute("homeData",homeData);
         return "merchant/index";
     }
     @GetMapping("/user/profile")

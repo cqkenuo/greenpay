@@ -1,14 +1,13 @@
 package com.esiran.greenpay.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.esiran.greenpay.merchant.entity.ApiConfig;
-import com.esiran.greenpay.merchant.entity.ApiConfigDTO;
-import com.esiran.greenpay.merchant.entity.PayAccount;
-import com.esiran.greenpay.merchant.entity.PayAccountDTO;
+import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.mapper.PayAccountMapper;
 import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.esiran.greenpay.merchant.service.IPrepaidAccountService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -50,5 +49,6 @@ public class PayAccountServiceImpl extends ServiceImpl<PayAccountMapper, PayAcco
         if (mchId == null || availAmount == null || freezeAmount== null) return 0;
         return this.baseMapper.updateBalance(mchId,availAmount,freezeAmount);
     }
+
 
 }

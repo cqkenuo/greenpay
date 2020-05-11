@@ -174,6 +174,14 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
     @Transactional(rollbackFor = Exception.class)
     public void postOrder(SettleOrderInputDTO inputDTO) throws PostResourceException, ResourceNotFoundException {
         Merchant merchant = iMerchantService.getById(inputDTO.getMchId());
+        String chinaRegex = "^[\\u4E00-\\u9FA5]+$";
+        String bankRegex = "^([1-9]{1})\\d{15,}$";
+        if (!inputDTO.getAccountNumber().matches(bankRegex)){
+            throw new PostResourceException("银行账号错误");
+        }
+        if (!inputDTO.getAccountName().matches(chinaRegex)){
+            throw new PostResourceException("账户名异常");
+        }
 
         if (merchant == null) {
             throw new PostResourceException("商户不存在");

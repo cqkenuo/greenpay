@@ -25,3 +25,6 @@ greenpay:
   openapi:
     enable_sign: false
 
+web:
+  hostname: http://s7buy.esiran.com
+

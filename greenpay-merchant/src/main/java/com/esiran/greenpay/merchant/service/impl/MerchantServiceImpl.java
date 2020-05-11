@@ -481,7 +481,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         homeData.setPrepaidAccountDTO(prepaidAccountDTO);
         homeData.setTotalCount(totalCount);
         homeData.setSuccessCount(successCount);
-        homeData.setTotalMoney(NumberUtil.amountFen2Yuan(totalCount));
+        homeData.setTotalMoney(NumberUtil.amountFen2Yuan(totalMoney));
         homeData.setSuccessMoney(NumberUtil.amountFen2Yuan(successMoney));
         return homeData;
     }

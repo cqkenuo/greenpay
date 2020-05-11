@@ -1,5 +1,6 @@
 package com.esiran.greenpay.admin.controller.order;
 
+import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.merchant.entity.ApiConfigDTO;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/admin/order")
-public class AdminPayOrderController {
+@RequestMapping("/order")
+public class AdminPayOrderController extends CURDBaseController {
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;
 
@@ -73,7 +74,7 @@ public class AdminPayOrderController {
         if (!b) {
             throw new PostResourceException("通知成功，商户返回值校验失败");
         }
-        return "redirect:/admin/order/list";
+        return redirect("/admin/order/list");
     }
 
     @GetMapping("/list/{orderNo}/detail")

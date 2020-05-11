@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/admin/user")
+@RequestMapping("/user")
 public class AdminUserController extends CURDBaseController {
     private final IUserService userService;
 

@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/pay/type")
+@RequestMapping("/pay/type")
 public class AdminPayTypeController extends CURDBaseController {
     private final ITypeService typeService;
     private static final Gson gson = new GsonBuilder().create();

@@ -71,7 +71,7 @@ public class AdminAgentPayPassageController extends CURDBaseController {
     @PostMapping("/list/add")
     public String addPost(@Valid AgentPayPassageInputDTO dto) throws PostResourceException {
         passageService.add(dto);
-        return "redirect:/admin/agentpay/passage/list";
+        return redirect("/admin/agentpay/passage/list");
     }
 
     @GetMapping("/list/{passageId}/edit")
@@ -84,7 +84,6 @@ public class AdminAgentPayPassageController extends CURDBaseController {
         modelMap.addAttribute("availableTypes", availableTypes);
         modelMap.addAttribute("availableInters", availableInters);
         return "admin/agentpay/passage/edit";
-//        return "admin/pay/passage/edit";
     }
 
     @PostMapping("/list/{passageId}/edit")
@@ -122,7 +121,7 @@ public class AdminAgentPayPassageController extends CURDBaseController {
     @PostMapping("/list/{passageId}/acc/add")
     public String addAccPost(@PathVariable Integer passageId, @Valid AgentPayPassageAccountInputDTO dto) throws ResourceNotFoundException, PostResourceException {
         passageAccountService.add(dto);
-        return String.format("redirect:/admin/agentpay/passage/list/%s/acc",passageId);
+        return redirect("/admin/agentpay/passage/list/%s/acc",passageId);
     }
     @GetMapping("/list/{passageId}/acc/{accId}/edit")
     @PageViewHandleError
@@ -141,6 +140,6 @@ public class AdminAgentPayPassageController extends CURDBaseController {
             @PathVariable Integer accId,
             @Valid AgentPayPassageAccountInputDTO dto) throws ResourceNotFoundException, PostResourceException {
         passageAccountService.updateById(accId,dto);
-        return String.format("redirect:/admin/agentpay/passage/list/%s/acc/%s/edit",passageId,accId);
+        return redirect("/admin/agentpay/passage/list/%s/acc/%s/edit",passageId,accId);
     }
 }

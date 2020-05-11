@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/pay/product")
+@RequestMapping("/pay/product")
 public class AdminPayProductController extends CURDBaseController {
     private final ITypeService typeService;
     private final IProductService productService;
@@ -87,6 +87,6 @@ public class AdminPayProductController extends CURDBaseController {
     @PostMapping("/list/{id}/edit")
     public String editPost(@PathVariable Integer id, @Valid ProductInputDTO productInputDTO ) throws PostResourceException, ResourceNotFoundException {
         productService.updateById(id,productInputDTO);
-        return String.format("redirect:/admin/pay/product/list/%s/edit",id);
+        return redirect("/admin/pay/product/list/%s/edit",id);
     }
 }

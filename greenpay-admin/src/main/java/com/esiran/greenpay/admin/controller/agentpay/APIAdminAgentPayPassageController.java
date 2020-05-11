@@ -11,7 +11,7 @@ import com.esiran.greenpay.pay.entity.PassageDTO;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/api/v1/agentpay/passages")
+@RequestMapping("/api/v1/agentpay/passages")
 public class APIAdminAgentPayPassageController {
     private final IAgentPayPassageService passageService;
     private final IAgentPayPassageAccountService passageAccountService;

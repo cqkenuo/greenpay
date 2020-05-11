@@ -12,7 +12,7 @@
                     <cite>首页</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="admin/side::layui_nav_item('/admin/home','数据概览')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/home','数据概览')"></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -21,8 +21,8 @@
                     <cite>商户管理</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="admin/side::layui_nav_item('/admin/merchant/list','商户列表')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/merchant/add','添加商户')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/merchant/list','商户列表')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/merchant/add','添加商户')"></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -31,7 +31,7 @@
                     <cite>订单管理</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="admin/side::layui_nav_item('/admin/order/list','支付订单')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/order/list','支付订单')"></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -40,10 +40,10 @@
                     <cite>支付配置</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="admin/side::layui_nav_item('/admin/pay/type/list','支付类型')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/pay/interface/list','支付接口')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/pay/passage/list','支付通道')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/pay/product/list','支付产品')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/pay/type/list','支付类型')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/pay/interface/list','支付接口')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/pay/passage/list','支付通道')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/pay/product/list','支付产品')"></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -52,8 +52,8 @@
                     <cite>结算管理</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="admin/side::layui_nav_item('/admin/settle/audit', '结算审核')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/settle/payable', '应付结算')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/settle/audit', '结算审核')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/settle/payable', '应付结算')"></dd>
 <!--                    <dd th:replace="admin/side::layui_nav_item('/admin/settle/settings', '结算设置')"></dd>-->
                 </dl>
             </li>
@@ -63,9 +63,9 @@
                     <cite>代付管理</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="admin/side::layui_nav_item('/admin/agentpay/order/list', '代付订单')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/agentpay/batch/list', '批次管理')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/agentpay/passage/list', '代付通道')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/agentpay/order/list', '代付订单')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/agentpay/batch/list', '批次管理')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/agentpay/passage/list', '代付通道')"></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -74,8 +74,8 @@
                     <cite>个人中心</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="admin/side::layui_nav_item('/admin/user/profile','基础资料')"></dd>
-                    <dd th:replace="admin/side::layui_nav_item('/admin/user/security','安全设置')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/user/profile','基础资料')"></dd>
+                    <dd th:replace="admin/side::layui_nav_item('/user/security','安全设置')"></dd>
                 </dl>
             </li>
 <!--            <li class="layui-nav-item">-->

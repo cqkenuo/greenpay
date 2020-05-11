@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/admin/api/v1/settle")
+@RequestMapping("/api/v1/settle")
 public class APIAdminSettleOrderController {
     private ISettleOrderService orderService;
     public APIAdminSettleOrderController(ISettleOrderService orderService) {

@@ -64,9 +64,9 @@
                                 <span>{{ d.subject }}</span>
                             </script>
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/settle/payable/{{d.orderNo}}/detail'}"
+                                <a th:href="@{'/settle/payable/{{d.orderNo}}/detail'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
-                                <a th:href="@{'/admin/settle/list/{{d.orderNo}}/settlement'}"
+                                <a th:href="@{'/settle/list/{{d.orderNo}}/settlement'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">结算</a>
                                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary"
                                    onclick="document.getElementById('mark_{{d.id}}').submit()">标记结算</a>
@@ -91,7 +91,7 @@
         //第一个实例
         table.render({
             elem: '#demo'
-            ,url: '/admin/api/v1/settle/payable' //数据接口
+            ,url: '/api/v1/settle/payable' //数据接口
             ,page: true //开启分页
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/admin/api/v1/orders")
+@RequestMapping("/api/v1/orders")
 public class APIAdminPayOrderController {
     private IOrderService orderService;
     public APIAdminPayOrderController(IOrderService orderService) {

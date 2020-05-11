@@ -51,8 +51,11 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-        chainDefinition.addPathDefinition("/admin/**", "authc");
-        chainDefinition.addPathDefinition("/**", "anon");
+        chainDefinition.addPathDefinition("/css/**", "anon");
+        chainDefinition.addPathDefinition("/font/**", "anon");
+        chainDefinition.addPathDefinition("/layui/**", "anon");
+        chainDefinition.addPathDefinition("/simditor/**", "anon");
+        chainDefinition.addPathDefinition("/**", "authc");
         return chainDefinition;
     }
 }

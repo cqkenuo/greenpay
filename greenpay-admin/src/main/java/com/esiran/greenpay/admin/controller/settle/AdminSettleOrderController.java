@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/admin/settle")
+@RequestMapping("/settle")
 public class AdminSettleOrderController extends CURDBaseController {
     private final ISettleOrderService orderService;
     private final ISettleConfigService settleConfigService;
@@ -117,7 +117,7 @@ public class AdminSettleOrderController extends CURDBaseController {
                 break;
         }
 
-        return "redirect:/admin/settle/audit";
+        return redirect("/admin/settle/audit");
     }
 
     //测试订单提交

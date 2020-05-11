@@ -9,7 +9,7 @@ import com.esiran.greenpay.pay.service.IPassageService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/api/v1/pay/passages")
+@RequestMapping("/api/v1/pay/passages")
 public class APIAdminPayPassageController {
     private IPassageService passageService;
     private IPassageAccountService passageAccountService;

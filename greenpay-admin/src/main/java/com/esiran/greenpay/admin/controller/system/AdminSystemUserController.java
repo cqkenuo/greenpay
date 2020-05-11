@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin/system/user")
+@RequestMapping("/system/user")
 public class AdminSystemUserController {
     @GetMapping("/list")
     public String index(){

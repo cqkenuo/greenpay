@@ -2,13 +2,13 @@ version: '3.7'
 
 services:
   admin_web:
-    restart: always
     image: registry.cn-hangzhou.aliyuncs.com/esiran/greenpay-admin-web
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile.admin_web
     ports:
-      - 9081:8081
+      - 8081:8081
     depends_on:
       - redis
       - mysql
@@ -20,7 +20,7 @@ services:
       context: .
       dockerfile: Dockerfile.merchant_web
     ports:
-      - 9082:8082
+      - 8082:8082
     depends_on:
       - redis
       - mysql
@@ -32,7 +32,7 @@ services:
       context: .
       dockerfile: Dockerfile.openapi
     ports:
-      - 9083:8083
+      - 8083:8083
     depends_on:
       - redis
       - mysql
@@ -41,7 +41,7 @@ services:
     restart: always
     image: mysql:8
     ports:
-      - 4306:3306
+      - 3307:3306
     environment:
       - MYSQL_ROOT_PASSWORD=greenpay
       - MYSQL_DATABASE=greenpay

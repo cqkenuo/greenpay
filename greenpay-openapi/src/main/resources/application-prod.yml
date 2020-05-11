@@ -23,7 +23,7 @@ spring:
           enabled: true
 
 web:
-  hostname: http://s7buy.esiran.com
+  hostname: http://api.pay.leyyx.cn
 
 greenpay:
   openapi:

@@ -12,6 +12,7 @@ import com.esiran.greenpay.merchant.entity.MerchantSercurityDTO;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +58,7 @@ public class APIMerchantController extends CURDBaseController {
         }
         m.put("code",1);
         m.put("msg","修改成功");
+//        SecurityUtils.getSubject().logout();
         return m;
     }
     @PostMapping("/updatepassword")

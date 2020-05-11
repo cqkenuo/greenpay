@@ -83,7 +83,7 @@ public class MerchantController extends CURDBaseController{
         OutputStream os = response.getOutputStream();
         if (filename.equals("api_pub_key.pem") && !StringUtils.isEmpty(pubKeyVal)){
             os.write(pubKeyVal.getBytes());
-        }else if(filename.equals("pub_key.pem") && !StringUtils.isEmpty(mchPubKeyVal)){
+        }else if(filename.equals("public_key.pem") && !StringUtils.isEmpty(mchPubKeyVal)){
             os.write(mchPubKeyVal.getBytes());
         }else{
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

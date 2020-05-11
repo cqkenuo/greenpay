@@ -61,10 +61,15 @@ public class AdminPayOrderController {
         if (merchant == null) {
             throw new PostResourceException("未查詢到商戶");
         }
-
-        String security = merchant.getApiSecurity();
+        String signType = "md5";
+        String credential = merchant.getApiSecurity();
+        String apiPrivKey = merchant.getPrivateKey();
+        if (apiPrivKey != null && apiPrivKey.length() > 0){
+            signType = "rsa";
+            credential = apiPrivKey;
+        }
         //发送通知
-        boolean b = orderNotifyService.notifyByOrderNo(orderNo, security);
+        boolean b = orderNotifyService.notifyByOrderNo(orderNo, credential,signType);
         if (!b) {
             throw new PostResourceException("通知成功，商户返回值校验失败");
         }

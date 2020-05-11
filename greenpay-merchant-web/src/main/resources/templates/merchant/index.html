@@ -35,22 +35,22 @@
                                                 </p>
                                             </a>
                                         </li>
-                                        <li class="layui-col-xs4">
-                                            <a lay-href="" class="layadmin-backlog-body">
-                                                <h3>账户代付余额</h3>
-                                                <p>
-                                                    <cite th:text="${homeData.prepaidAccountDTO.availBalanceDisplay}"></cite> 元
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs4">
-                                            <a lay-href="" class="layadmin-backlog-body">
-                                                <h3>账户代付冻结余额</h3>
-                                                <p>
-                                                    <cite th:text="${homeData.prepaidAccountDTO.freezeBalanceDisplay}"></cite> 元
-                                                </p>
-                                            </a>
-                                        </li>
+<!--                                        <li class="layui-col-xs4">-->
+<!--                                            <a lay-href="" class="layadmin-backlog-body">-->
+<!--                                                <h3>账户代付余额</h3>-->
+<!--                                                <p>-->
+<!--                                                    <cite th:text="${homeData.prepaidAccountDTO.availBalanceDisplay}"></cite> 元-->
+<!--                                                </p>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li class="layui-col-xs4">-->
+<!--                                            <a lay-href="" class="layadmin-backlog-body">-->
+<!--                                                <h3>账户代付冻结余额</h3>-->
+<!--                                                <p>-->
+<!--                                                    <cite th:text="${homeData.prepaidAccountDTO.freezeBalanceDisplay}"></cite> 元-->
+<!--                                                </p>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
 <!--                                        <li class="layui-col-xs4">-->
 <!--                                            <a lay-href="" class="layadmin-backlog-body">-->
 <!--                                                <h3>不可用代付余额</h3>-->
@@ -164,65 +164,6 @@
     </div>
 </div>
 <th:block th:replace="merchant/footer::script"/>
-<script th:inline="none">
-    !function () {
-        let myChart = echarts.init(document.getElementById('main'));
-        let option = {
-            grid: {
-                left: '2%',
-                right: '2%',
-                top: '5%',
-                bottom: '10%'
-            },
-            xAxis: {
-                type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Sun', 'Sun', 'Sun', 'Sun', 'Sun']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                data: [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320],
-                type: 'line',
-                radius: '100%'
-            }]
-        };
-        myChart.setOption(option);
-    }();
-</script>
-<script th:inline="none">
-    !function () {
-        let layer = layui.layer
-            , form = layui.form
-            , $ = layui.jquery;
-        $('#payExtractBtn').click(function () {
-            layer.open({
-                type: 2,
-                title: '商户余额提现',
-                area: ['500px','330px'],
-                content: '/merchant/order/payextract',
-                yes:function (index,layero) {
-                    var submit = layero.find('iframe').contents().find("#formDemo");
-                    submit.click();
-                }
-            });
-        });
-        $('#replaceExtractBtn').click(function () {
-            layer.open({
-                type: 2,
-                title: '代付余额提现',
-                area: ['500px','280px'],
-                content: '/merchant/replace/replaceExtract',
-                yes:function (index,layero) {
-                    var submit = layero.find('iframe').contents().find("#formDemo");
-                    submit.click();
-                }
-            });
-        })
-    }();
-</script>
-
-
 </body>
 
 </html>

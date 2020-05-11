@@ -12,6 +12,7 @@ import com.esiran.greenpay.merchant.entity.MerchantSercurityDTO;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +39,13 @@ public class APIMerchantController extends CURDBaseController {
 
     @PostMapping("/update")
     public Map updateMerchant(@Validated MerMerchantUpdateDTO merchantUpdateDTO){
-        Merchant merchant = theUser();
         Map m = new HashMap();
+        Merchant merchant = theUser();
+        if (!merchant.getUsername().equals(merchantUpdateDTO.getUsername())){
+            m.put("code",0);
+            m.put("msg","用户名不可修改");
+            return m;
+        }
         BeanUtils.copyProperties(merchantUpdateDTO,merchant);
         merchant.setUpdatedAt(LocalDateTime.now());
         try {
@@ -52,6 +58,7 @@ public class APIMerchantController extends CURDBaseController {
         }
         m.put("code",1);
         m.put("msg","修改成功");
+//        SecurityUtils.getSubject().logout();
         return m;
     }
     @PostMapping("/updatepassword")
@@ -62,6 +69,11 @@ public class APIMerchantController extends CURDBaseController {
         if (!merchant.getPassword().equals(oldPasswordMd5)) {
             m.put("code",0);
             m.put("msg","旧密码错误");
+            return m;
+        }
+        if (!merchantSercurityDTO.getConPassword().equals(merchantSercurityDTO.getPassword())){
+            m.put("code",0);
+            m.put("msg","新密码与确认密码不一致");
             return m;
         }
         merchant.setPassword(EncryptUtil.md5(merchantSercurityDTO.getPassword()));

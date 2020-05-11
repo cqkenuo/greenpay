@@ -105,6 +105,15 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
     }
 
     @Override
+    public IPage<SettleOrderDTO> findPageByMchId(IPage<SettleOrderDTO> page, Integer mchId) {
+        LambdaQueryWrapper<SettleOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(SettleOrder::getCreatedAt);
+        wrapper.eq(SettleOrder::getMchId,mchId);
+        IPage<SettleOrder> settleOrderPage = this.page(new Page<>(page.getCurrent(), page.getSize()), wrapper);
+        return settleOrderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
+    }
+
+    @Override
     public SettleOrderDTO getByOrderNo(String orderNo) {
         LambdaQueryWrapper<SettleOrder> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(SettleOrder::getOrderNo, orderNo);

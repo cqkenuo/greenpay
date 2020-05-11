@@ -1,6 +1,7 @@
 package com.esiran.greenpay.settle.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.settle.entity.SettleOrder;
@@ -20,7 +21,10 @@ public interface ISettleOrderService extends IService<SettleOrder> {
     IPage<SettleOrderDTO> selectPage(IPage<SettleOrderDTO> page, SettleOrderDTO orderDTO);
     IPage<SettleOrderDTO> selectPageByAudit(IPage<SettleOrderDTO> page);
     IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page);
+    IPage<SettleOrderDTO> findPageByMchId(IPage<SettleOrderDTO> Page, Integer mchId);
     SettleOrderDTO getByOrderNo(String orderNo);
     void updateOrderStatus(String orderNo, Integer status) throws PostResourceException;
     void postOrder(SettleOrderInputDTO inputDTO) throws PostResourceException, ResourceNotFoundException;
+
+
 }

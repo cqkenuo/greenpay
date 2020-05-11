@@ -12,6 +12,7 @@ import com.esiran.greenpay.merchant.entity.Merchant;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
 import com.esiran.greenpay.settle.entity.SettleOrder;
+import com.esiran.greenpay.settle.entity.SettleOrderDTO;
 import com.esiran.greenpay.settle.entity.SettleOrderInputDTO;
 import com.esiran.greenpay.settle.service.ISettleOrderService;
 import org.aspectj.weaver.ast.Or;
@@ -38,16 +39,19 @@ public class ApiMerchantOrderController extends CURDBaseController {
     }
 
     @GetMapping("/orders")
-    public IPage<Order> orderList(Page<Order> page){
+    public IPage<OrderDTO> orderList(
+            @RequestParam(required = false,defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "10") Integer size){
         Merchant merchant = theUser();
-        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<Order>().eq(Order::getMchId, merchant.getId());
-        return payOrderService.page(page);
+        return payOrderService.findPageByMchId(new Page<>(current,size),merchant.getId());
+
     }
     @GetMapping("/extracts")
-    public IPage<SettleOrder> extractList(Page<SettleOrder> page){
+    public IPage<SettleOrderDTO> extractList(
+            @RequestParam(required = false,defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "10") Integer size){
         Merchant merchant = theUser();
-        LambdaQueryWrapper<SettleOrder> wrapper = new LambdaQueryWrapper<SettleOrder>().eq(SettleOrder::getMchId, merchant.getId());
-        return settleOrderService.page(page,wrapper);
+        return settleOrderService.findPageByMchId(new Page<>(current,size),merchant.getId());
     }
 
     @PostMapping("/payextract")

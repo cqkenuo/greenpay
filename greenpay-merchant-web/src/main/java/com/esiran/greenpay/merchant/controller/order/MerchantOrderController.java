@@ -27,11 +27,11 @@ public class MerchantOrderController extends CURDBaseController {
 
     @GetMapping("/list")
     public String orderList(){
-        return "merchant/order/list";
+        return "merchant/order/orderlist";
     }
     @GetMapping("/extract")
     public String extracts(){
-        return "merchant/order/extract";
+        return "merchant/order/extractlist";
     }
     @GetMapping("/payextract")
     public String payextract(Model model){

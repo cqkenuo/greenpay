@@ -79,4 +79,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         update(orderUpdateWrapper);
     }
 
+    @Override
+    public IPage<OrderDTO> findPageByMchId(IPage<OrderDTO> page, Integer mchId) {
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Order::getCreatedAt);
+        wrapper.eq(Order::getMchId,mchId);
+        IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(), page.getSize()), wrapper);
+        return orderPage.convert(OrderDTO::convertOrderEntity);
+    }
+
 }

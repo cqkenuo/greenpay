@@ -64,6 +64,11 @@ public class APIMerchantController extends CURDBaseController {
             m.put("msg","旧密码错误");
             return m;
         }
+        if (!merchantSercurityDTO.getConPassword().equals(merchantSercurityDTO.getPassword())){
+            m.put("code",0);
+            m.put("msg","新密码与确认密码不一致");
+            return m;
+        }
         merchant.setPassword(EncryptUtil.md5(merchantSercurityDTO.getPassword()));
         merchantService.updateById(merchant);
         m.put("code",1);

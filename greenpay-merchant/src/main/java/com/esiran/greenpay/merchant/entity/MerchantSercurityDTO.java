@@ -11,4 +11,6 @@ public class MerchantSercurityDTO {
     private String oldPassword;
     @NotEmpty(message = "密码不能为空")
     private String password;
+    @NotEmpty(message = "确认密码不能为空")
+    private String conPassword;
 }

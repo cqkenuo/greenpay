@@ -62,8 +62,9 @@ public class MerchantController extends CURDBaseController{
     @GetMapping("/user/security")
     public String security(Model model){
         Merchant merchant = theUser();
-        model.addAttribute("merchant",merchant);
-        return "merchant/security";
+        MerchantDetailDTO merchantDetailDTO = merchantService.findMerchantById(merchant.getId());
+        model.addAttribute("merchant", merchantDetailDTO);
+        return "merchant/usersecurity";
     }
     @GetMapping("/user/download/rsa/{filename}")
     public void downloadRsa(@PathVariable String filename, HttpServletResponse response) throws IOException {

@@ -38,8 +38,13 @@ public class APIMerchantController extends CURDBaseController {
 
     @PostMapping("/update")
     public Map updateMerchant(@Validated MerMerchantUpdateDTO merchantUpdateDTO){
-        Merchant merchant = theUser();
         Map m = new HashMap();
+        Merchant merchant = theUser();
+        if (!merchant.getUsername().equals(merchantUpdateDTO.getUsername())){
+            m.put("code",0);
+            m.put("msg","用户名不可修改");
+            return m;
+        }
         BeanUtils.copyProperties(merchantUpdateDTO,merchant);
         merchant.setUpdatedAt(LocalDateTime.now());
         try {

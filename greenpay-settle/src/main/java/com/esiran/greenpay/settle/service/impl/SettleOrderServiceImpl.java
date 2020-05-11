@@ -226,8 +226,6 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         }
 
         //记录到订单中
-
-
         SettleOrder settleOrder = modelMapper.map(inputDTO, SettleOrder.class);
         settleOrder.setOrderNo(String.valueOf(idWorker.nextId()));
         settleOrder.setOrderSn(EncryptUtil.baseTimelineCode());

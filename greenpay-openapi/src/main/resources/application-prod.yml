@@ -23,3 +23,10 @@ spring:
 
 web:
   hostname: http://s7buy.esiran.com
+
+greenpay:
+  openapi:
+    security:
+      sign:
+        enabled: true
+        allow_types: md5,rsa

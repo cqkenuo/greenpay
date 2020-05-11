@@ -22,3 +22,10 @@ delay_queue:
     default_key: 'greenpay:delay_queue'
   consumer:
     enabled: false
+
+greenpay:
+  openapi:
+    security:
+      sign:
+        enabled: true
+        allow_types: md5,hmac_md5,rsa

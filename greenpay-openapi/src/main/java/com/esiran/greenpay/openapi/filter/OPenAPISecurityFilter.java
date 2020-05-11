@@ -34,8 +34,10 @@ public class OPenAPISecurityFilter implements Filter {
     private final static Gson gson = new Gson();
     private final IMerchantService merchantService;
     private final IApiConfigService apiConfigService;
-    @Value("${greenpay.openapi.enable_sign:false}")
-    private boolean enableSign;
+    @Value("${greenpay.openapi.security.sign.enabled:false}")
+    private boolean verifySignEnabled;
+    @Value("#{'${greenpay.openapi.security.sign.allow_types:}'.split(',')}")
+    private List<String> allowSignTypes;
     private final String[] allowedPaths;
     @Autowired
     public OPenAPISecurityFilter(IMerchantService merchantService, IApiConfigService apiConfigService) {
@@ -136,6 +138,9 @@ public class OPenAPISecurityFilter implements Filter {
         if (StringUtils.isEmpty(signTypeStr))
             throw new APIException("无效的签名方式","INVALID_REQUEST_SIGN_TYPE",400);
         String principal = MapUtil.sortAndSerialize(params,new String[]{"sign"});
+        if (!allowSignTypes.contains(signTypeStr)){
+            throw new APIException("无效的签名方式","INVALID_REQUEST_SIGN_TYPE",400);
+        }
         SignType signType = signTypeStr.equals("md5") ? new Md5SignType(principal)
                 : signTypeStr.equals("hmac_md5") ? new HMACMD5SignType(principal)
                 : signTypeStr.equals("rsa") ? new RSA2SignType(principal) :null;
@@ -164,8 +169,9 @@ public class OPenAPISecurityFilter implements Filter {
         }
         if (StringUtils.isEmpty(sign))
             throw new APIException("签名内容不能为空","INVALID_REQUEST",400);
-//        if (!(signVerify.verify(sign) || enableSign))
-//            throw new APIException("签名校验失败","INVALID_SIGN",400);
+        if (verifySignEnabled && !signVerify.verify(sign)) {
+            throw new APIException("签名校验失败","INVALID_SIGN",400);
+        }
         OpenAPISecurityUtils.setSubject(merchant);
     }
 

@@ -47,7 +47,7 @@ public class APIWxHelperController {
     private final IMerchantService merchantService;
     private final IApiConfigService apiConfigService;
     private final IPayloadService payloadService;
-    @Value("${web.hostname}")
+    @Value("${web.hostname:http://localhost}")
     private String webHostname;
     public APIWxHelperController(
             IMerchantService merchantService,

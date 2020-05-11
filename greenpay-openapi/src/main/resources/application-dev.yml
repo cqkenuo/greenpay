@@ -5,7 +5,7 @@ logging:
   level:
     com.github.binarywang.wxpay: error
     me.chanjar.weixin: error
-
+    com.esiran.greenpay.common.sign: debug
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,10 +21,13 @@ spring:
       strategy:
         content:
           enabled: true
-greenpay:
-  openapi:
-    enable_sign: false
 
 web:
   hostname: http://s7buy.esiran.com
 
+greenpay:
+  openapi:
+    security:
+      sign:
+        enabled: true
+        allow_types: md5,hmac_md5,rsa

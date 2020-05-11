@@ -163,9 +163,10 @@ public class RSAUtil {
             // 因为签名的时候输出为 BASE64 编码格式，所以需要解码
             return signature.verify(Base64.getDecoder().decode(sign));
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | SignatureException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            return false;
         }
-        return false;
+//        return false;
     }
 
     /**

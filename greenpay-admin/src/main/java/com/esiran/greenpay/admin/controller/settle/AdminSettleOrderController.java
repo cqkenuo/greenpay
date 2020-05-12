@@ -94,15 +94,13 @@ public class AdminSettleOrderController extends CURDBaseController {
                 break;
         }
 
-        return "redirect:/admin/settle/payable";
+        return redirect("/settle/payable");
     }
 
     @GetMapping("/audit")
     @PageViewHandleError
     public String audit() {
-
         return "admin/settle/audit/list";
-//        return "admin/settle/audit/addTemp";
     }
     @PostMapping("/audit")
     public String auditPost(@RequestParam String orderNo,@RequestParam String action) throws PostResourceException {

@@ -14,6 +14,25 @@
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">支付订单</div>
+                        <div class="demoTable">
+                            交易订单号：
+                            <div class="layui-inline">
+                                <input class="layui-input" name="orderNo" id="orderNo" autocomplete="off">
+                            </div>
+                            商户订单号：
+                            <div class="layui-inline">
+                                <input class="layui-input" name="outOrderNo" id="outOrderNo" autocomplete="off">
+                            </div>
+                            支付产品名称：
+                            <div class="layui-inline">
+                                <input class="layui-input" name="payProductName" id="payProductName" autocomplete="off">
+                            </div>
+                            状态：
+                            <div class="layui-inline">
+                                <input class="layui-input" name="status" id="status" autocomplete="off">
+                            </div>
+                            <button class="layui-btn" data-type="reload">搜索</button>
+                        </div>
                         <div class="layui-card-body" style="padding: 0">
                             <table id="demo" lay-filter="test"></table>
                             <script type="text/html" id="statusTemplate">
@@ -66,14 +85,14 @@
 </div>
 <th:block th:replace="merchant/footer::script"/>
 <script th:inline="none">
-    !function(){
-        let layer = layui.layer
-            ,table = layui.table;
+    layui.use('table', function(){
+        var table = layui.table;
         //第一个实例
         table.render({
             elem: '#demo'
-            ,url: '/merchant/api/v1/orders' //数据接口
+            ,url: '/api/v1/orders' //数据接口
             ,page: true //开启分页
+            ,id: 'testReload'
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {
                     "code": 0,
@@ -99,7 +118,32 @@
                 ,{title: '操作', align: 'left', width:'12%', toolbar: '#barDemo', unresize:true}
             ]]
         });
-    }();
+        var $ = layui.$, active = {
+            reload: function(){
+                var orderNo = $('#orderNo');
+                var outOrderNo = $('#outOrderNo');
+                var payProductName = $('#payProductName');
+                var status = $('#status');
+
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        orderNo: orderNo.val(),
+                        outOrderNo: outOrderNo.val(),
+                        payProductName: payProductName.val(),
+                        status: status.val()
+                    }
+                }, 'data');
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
 </script>
 
 </body>

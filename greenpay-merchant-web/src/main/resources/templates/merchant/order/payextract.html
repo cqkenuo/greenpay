@@ -82,7 +82,7 @@
             let feeAmountFen = Math.round(feeAmountYuan*100);
             data.field.amount = feeAmountFen;
             $.ajax({
-                url:'/merchant/api/v1/payextract',
+                url:'/api/v1/payextract',
                 method:'post',
                 data:data.field,
                 dataType:'JSON',

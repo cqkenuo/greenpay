@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 @Controller
-@RequestMapping("/merchant")
+@RequestMapping
 public class MerchantController extends CURDBaseController{
 
     private final IPayAccountService payAccountService;

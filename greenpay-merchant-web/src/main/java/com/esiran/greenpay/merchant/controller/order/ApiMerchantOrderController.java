@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/merchant/api/v1")
+@RequestMapping("/api/v1")
 public class ApiMerchantOrderController extends CURDBaseController {
 
 
@@ -41,7 +41,8 @@ public class ApiMerchantOrderController extends CURDBaseController {
     @GetMapping("/orders")
     public IPage<OrderDTO> orderList(
             @RequestParam(required = false,defaultValue = "1") Integer current,
-            @RequestParam(required = false, defaultValue = "10") Integer size){
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            String orderNo,String outOrderNo,String payProductName,String status){
         Merchant merchant = theUser();
         return payOrderService.findPageByMchId(new Page<>(current,size),merchant.getId());
 

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/merchant/api/v1")
+@RequestMapping("/api/v1")
 public class APIMerchantController extends CURDBaseController {
 
     private final IApiConfigService apiConfigService;

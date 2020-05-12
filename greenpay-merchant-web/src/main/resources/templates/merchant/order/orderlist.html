@@ -23,10 +23,6 @@
                             <div class="layui-inline">
                                 <input class="layui-input" name="outOrderNo" id="outOrderNo" autocomplete="off">
                             </div>
-                            支付产品名称：
-                            <div class="layui-inline">
-                                <input class="layui-input" name="payProductName" id="payProductName" autocomplete="off">
-                            </div>
                             状态：
                             <div class="layui-inline">
                                 <input class="layui-input" name="status" id="status" autocomplete="off">
@@ -127,13 +123,14 @@
 
                 //执行重载
                 table.reload('testReload', {
+                    url: '/api/v1/query/orders',
+                    method: 'post',
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: {
                         orderNo: orderNo.val(),
                         outOrderNo: outOrderNo.val(),
-                        payProductName: payProductName.val(),
                         status: status.val()
                     }
                 }, 'data');

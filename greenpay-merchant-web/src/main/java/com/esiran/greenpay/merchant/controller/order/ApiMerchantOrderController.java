@@ -41,11 +41,17 @@ public class ApiMerchantOrderController extends CURDBaseController {
     @GetMapping("/orders")
     public IPage<OrderDTO> orderList(
             @RequestParam(required = false,defaultValue = "1") Integer current,
-            @RequestParam(required = false, defaultValue = "10") Integer size,
-            String orderNo,String outOrderNo,String payProductName,String status){
+            @RequestParam(required = false, defaultValue = "10") Integer size){
         Merchant merchant = theUser();
         return payOrderService.findPageByMchId(new Page<>(current,size),merchant.getId());
-
+    }
+    @PostMapping("/query/orders")
+    public IPage<OrderDTO> qureyOrderList(
+            @RequestParam(required = false,defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            OrderQueryDTO orderQueryDTO){
+        Merchant merchant = theUser();
+        return payOrderService.findPageByQuery(new Page<>(current,size),merchant.getId(),orderQueryDTO);
     }
     @GetMapping("/extracts")
     public IPage<SettleOrderDTO> extractList(

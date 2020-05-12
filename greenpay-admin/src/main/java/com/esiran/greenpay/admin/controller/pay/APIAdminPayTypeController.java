@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/v1/pay/types")
+@RequestMapping("/api/v1/pay/types")
 public class APIAdminPayTypeController {
     private final ITypeService typeService;
     private final IProductService productService;

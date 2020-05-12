@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin/agentpay/batch")
+@RequestMapping("/agentpay/batch")
 public class AdminAgentPayBatchController {
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;

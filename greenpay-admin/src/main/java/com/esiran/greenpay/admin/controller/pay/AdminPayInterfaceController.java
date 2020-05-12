@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/pay/interface")
+@RequestMapping("/pay/interface")
 public class AdminPayInterfaceController extends CURDBaseController {
     private final IInterfaceService interfaceService;
     private final ITypeService typeService;

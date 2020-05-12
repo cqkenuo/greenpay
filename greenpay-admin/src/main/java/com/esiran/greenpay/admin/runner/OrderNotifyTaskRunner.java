@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -68,8 +69,15 @@ public class OrderNotifyTaskRunner implements DelayQueueTaskRunner {
         orderService.updateOrderStatus(orderNo,3);
         ApiConfig apiConfig = apiConfigService.getOneByMerchantId(order.getMchId());
         if (apiConfig == null) return;
+        String apiPrivKey = apiConfig.getPrivateKey();
+        String signType = "md5";
+        String credential = apiConfig.getApiSecurity();
+        if (!StringUtils.isEmpty(apiPrivKey)){
+            signType = "rsa";
+            credential = apiPrivKey;
+        }
         try {
-            boolean ok = orderNotifyService.notifyByOrderNo(order.getOrderNo(),apiConfig.getApiSecurity());
+            boolean ok = orderNotifyService.notifyByOrderNo(order.getOrderNo(),credential,signType);
             if (!ok) taskRetry(content);
         } catch (PostResourceException e) {
             e.printStackTrace();

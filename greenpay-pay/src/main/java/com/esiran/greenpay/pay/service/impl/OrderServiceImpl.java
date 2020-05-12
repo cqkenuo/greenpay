@@ -12,6 +12,7 @@ import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.pay.entity.Order;
 import com.esiran.greenpay.pay.entity.OrderDTO;
 import com.esiran.greenpay.pay.entity.OrderDetail;
+import com.esiran.greenpay.pay.entity.OrderQueryDTO;
 import com.esiran.greenpay.pay.mapper.OrderMapper;
 import com.esiran.greenpay.pay.service.IOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -20,6 +21,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -46,6 +48,23 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public IPage<OrderDTO> selectPage(IPage<OrderDTO> page, OrderDTO orderDTO) {
         LambdaQueryWrapper<Order> orderQueryWrapper = new LambdaQueryWrapper<>();
         orderQueryWrapper.orderByDesc(Order::getCreatedAt);
+        IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),orderQueryWrapper);
+        return orderPage.convert(OrderDTO::convertOrderEntity);
+    }
+
+    @Override
+    public IPage<OrderDTO> selectPage(IPage<OrderDTO> page, OrderQueryDTO orderDTO) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Order order = modelMapper.map(orderDTO,Order.class);
+        LambdaQueryWrapper<Order> orderQueryWrapper = new LambdaQueryWrapper<>();
+        orderQueryWrapper.orderByDesc(Order::getCreatedAt);
+        if (orderDTO.getStartTime() != null){
+            orderQueryWrapper.ge(Order::getCreatedAt,orderDTO.getStartTime());
+        }
+        if (orderDTO.getEndTime() != null){
+            orderQueryWrapper.lt(Order::getCreatedAt,orderDTO.getEndTime());
+        }
+        orderQueryWrapper.setEntity(order);
         IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),orderQueryWrapper);
         return orderPage.convert(OrderDTO::convertOrderEntity);
     }
@@ -84,6 +103,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(Order::getCreatedAt);
         wrapper.eq(Order::getMchId,mchId);
+        IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(), page.getSize()), wrapper);
+        return orderPage.convert(OrderDTO::convertOrderEntity);
+    }
+
+    @Override
+    public IPage<OrderDTO> findPageByQuery(IPage<OrderDTO> page, Integer mchId, OrderQueryDTO queryDTO) {
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Order::getCreatedAt);
+        wrapper.eq(Order::getMchId,mchId);
+        if (!StringUtils.isEmpty(queryDTO.getOrderNo())){
+            wrapper.eq(Order::getOrderNo,queryDTO.getOrderNo());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getOutOrderNo())){
+            wrapper.eq(Order::getOutOrderNo,queryDTO.getOutOrderNo());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getStatus())){
+            wrapper.eq(Order::getStatus,queryDTO.getStatus());
+        }
         IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(), page.getSize()), wrapper);
         return orderPage.convert(OrderDTO::convertOrderEntity);
     }

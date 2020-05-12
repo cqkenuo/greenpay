@@ -5,6 +5,7 @@ logging:
   level:
     com.github.binarywang.wxpay: fatal
     me.chanjar.weixin: fatal
+    com.esiran.greenpay.common.sign: debug
 
 spring:
   datasource:
@@ -22,7 +23,7 @@ spring:
           enabled: true
 
 web:
-  hostname: http://s7buy.esiran.com
+  hostname: http://api.pay.leyyx.cn
 
 greenpay:
   openapi:

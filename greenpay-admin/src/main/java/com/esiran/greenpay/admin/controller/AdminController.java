@@ -12,17 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping
 public class AdminController extends CURDBaseController{
-    @GetMapping("/home")
+    @GetMapping
     public String index(){
+        return redirect("/home");
+    }
+    @GetMapping("/home")
+    public String home(){
         return "admin/index";
     }
     @GetMapping("/login")
     @PageViewHandleError
     public String login(){
         if (SecurityUtils.getSubject().isAuthenticated()){
-            return redirect("/admin/home");
+            return redirect("/home");
         }
         return "admin/login";
     }
@@ -32,11 +36,11 @@ public class AdminController extends CURDBaseController{
         UsernamePasswordToken token = new UsernamePasswordToken(
                 inputDTO.getUsername(),inputDTO.getPassword());
         SecurityUtils.getSubject().login(token);
-        return redirect("/admin/home");
+        return redirect("/home");
     }
     @PostMapping("/logout")
     public String logout(){
         SecurityUtils.getSubject().logout();
-        return redirect("/admin/login");
+        return redirect("/login");
     }
 }

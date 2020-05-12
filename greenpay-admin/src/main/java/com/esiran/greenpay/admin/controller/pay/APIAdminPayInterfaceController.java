@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/v1/pay/interfaces")
+@RequestMapping("/api/v1/pay/interfaces")
 public class APIAdminPayInterfaceController {
     private IInterfaceService interfaceService;
 

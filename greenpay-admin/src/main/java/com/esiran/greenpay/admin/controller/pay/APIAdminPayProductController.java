@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/v1/pay/products")
+@RequestMapping("/api/v1/pay/products")
 public class APIAdminPayProductController {
     private final IProductService productService;
 

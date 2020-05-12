@@ -17,7 +17,7 @@ public abstract class CURDBaseController {
     }
 
     public final String redirect(String url){
-        return String.format("redirect:%s",url);
+        return String.format("redirect:%s",url.replaceAll("/admin",""));
     }
 
     public final String redirect(String url, Object... args){

@@ -26,7 +26,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/merchant")
+@RequestMapping("/merchant")
 public class AdminMerchantController extends CURDBaseController {
     private static final Gson gson = new GsonBuilder().create();
     private final IMerchantService merchantService;
@@ -46,7 +46,8 @@ public class AdminMerchantController extends CURDBaseController {
             IPassageAccountService passageAccountService,
             IMerchantProductService merchantProductService,
             IMerchantProductPassageService productPassageService,
-            IMerchantAgentPayPassageService merchantAgentPayPassageService, IAgentPayPassageService agentPayPassageService) {
+            IMerchantAgentPayPassageService merchantAgentPayPassageService,
+            IAgentPayPassageService agentPayPassageService) {
         this.merchantService = merchantService;
         this.productService = productService;
         this.typeService = typeService;
@@ -118,7 +119,7 @@ public class AdminMerchantController extends CURDBaseController {
     @PostMapping("/add")
     public String add(@Valid MerchantInputDTO merchant) throws Exception {
         merchantService.addMerchant(merchant);
-        return "redirect:/admin/merchant/list";
+        return redirect("/admin/merchant/list");
     }
 
 

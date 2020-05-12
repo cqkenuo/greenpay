@@ -1,6 +1,8 @@
 package com.esiran.greenpay.admin.controller.order;
 
+import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.merchant.entity.ApiConfigDTO;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
@@ -9,18 +11,21 @@ import com.esiran.greenpay.pay.entity.OrderDetailDTO;
 import com.esiran.greenpay.pay.service.IOrderDetailService;
 import com.esiran.greenpay.pay.service.IOrderService;
 import com.esiran.greenpay.pay.service.impl.OrderNotifyService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 @Controller
-@RequestMapping("/admin/order")
-public class AdminPayOrderController {
+@RequestMapping("/order")
+public class AdminPayOrderController extends CURDBaseController {
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;
 
@@ -37,16 +42,22 @@ public class AdminPayOrderController {
 
     @GetMapping("/list")
     @PageViewHandleError
-    public String list() {
+    public String list(HttpServletRequest request, ModelMap modelMap ) {
+        String qs = request.getQueryString();
+        Map<String,String> qm = MapUtil.httpQueryString2map(qs);
+        String qss = null;
+        if (qm != null){
+            qss = MapUtil.map2httpQuery(qm);
+        }
+        modelMap.put("qs",qss);
         return "admin/order/list";
     }
 
     @PostMapping("/list")
     public String notify(@RequestParam String orderNo, @RequestParam Integer mchId) throws PostResourceException {
-        if (mchId<=0 || StringUtils.isBlank(orderNo)) {
+        if (mchId == null) {
             throw new PostResourceException("商户ID不正确");
         }
-
         OrderDTO order = orderService.getByOrderNo(orderNo);
         if (order == null) {
             throw new PostResourceException("订单不存在");
@@ -61,14 +72,19 @@ public class AdminPayOrderController {
         if (merchant == null) {
             throw new PostResourceException("未查詢到商戶");
         }
-
-        String security = merchant.getApiSecurity();
+        String signType = "md5";
+        String credential = merchant.getApiSecurity();
+        String apiPrivKey = merchant.getPrivateKey();
+        if (apiPrivKey != null && apiPrivKey.length() > 0){
+            signType = "rsa";
+            credential = apiPrivKey;
+        }
         //发送通知
-        boolean b = orderNotifyService.notifyByOrderNo(orderNo, security);
+        boolean b = orderNotifyService.notifyByOrderNo(orderNo, credential,signType);
         if (!b) {
             throw new PostResourceException("通知成功，商户返回值校验失败");
         }
-        return "redirect:/admin/order/list";
+        return redirect("/admin/order/list");
     }
 
     @GetMapping("/list/{orderNo}/detail")

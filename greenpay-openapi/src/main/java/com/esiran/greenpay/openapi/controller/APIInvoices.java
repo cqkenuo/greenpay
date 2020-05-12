@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/v1/invoices")
+@RequestMapping("/v1/invoices")
 public class APIInvoices {
     private final IInvoiceService invoiceService;
     public APIInvoices(IInvoiceService invoiceService) {

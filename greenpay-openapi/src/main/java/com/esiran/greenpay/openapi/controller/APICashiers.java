@@ -46,7 +46,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@RequestMapping("/api/v1/cashiers")
+@RequestMapping("/v1/cashiers")
 public class APICashiers {
     private static final Logger logger = LoggerFactory.getLogger(APICashiers.class);
     private final ICashierService cashierService;

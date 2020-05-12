@@ -433,7 +433,7 @@
             // console.log('mchId',mchId)
             $.ajax({
                 type:'post',
-                url:'/admin/api/v1/merchants/'+mchId+'/pay/account',
+                url:'/api/v1/merchants/'+mchId+'/pay/account',
                 data:params,
                 statusCode: {
                     404: function(data) {
@@ -465,7 +465,7 @@
             console.log(params)
             $.ajax({
                 type: "post",
-                url: "/admin/api/v1/merchants/"+mchId,
+                url: "/api/v1/merchants/"+mchId,
                 data: params,
                 statusCode: {
                     404: function(data) {
@@ -488,7 +488,7 @@
             console.log('重置公钥',data);
             $.ajax({
                 type:'post',
-                url:'/admin/api/v1/merchants/'+mchId+'/mch_pub_key',
+                url:'/api/v1/merchants/'+mchId+'/mch_pub_key',
                 data:data.field.desc,
                 contentType: 'text/plain',
                 statusCode: {
@@ -521,7 +521,7 @@
             }
             $.ajax({
                 type:'post',
-                url:'/admin/api/v1/merchants/'+mchId+'/settle',
+                url:'/api/v1/merchants/'+mchId+'/settle',
                 data:params,
                 statusCode: {
                     404: function(data) {
@@ -552,7 +552,7 @@
             console.log(params)
             $.ajax({
                 type:'post',
-                url:'/admin/api/v1/merchants/'+mchId+'/prepaid/account',
+                url:'/api/v1/merchants/'+mchId+'/prepaid/account',
                 data:params,
                 statusCode: {
                     404: function(data) {
@@ -583,7 +583,7 @@
             };
             $.ajax({
                 type:'post',
-                url:'/admin/api/v1/merchants/'+mchId+'/security',
+                url:'/api/v1/merchants/'+mchId+'/security',
                 data:params,
                 statusCode: {
                     404: function(data) {

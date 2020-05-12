@@ -27,7 +27,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/agentpay/passage")
+@RequestMapping("/agentpay/passage")
 public class AdminAgentPayPassageController extends CURDBaseController {
     private final IAgentPayPassageService passageService;
     private final IAgentPayPassageAccountService passageAccountService;

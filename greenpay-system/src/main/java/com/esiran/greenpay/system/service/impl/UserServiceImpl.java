@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -67,10 +69,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public boolean verifyTOTPPass(Integer userId, String pass) {
+        Pattern pattern = Pattern.compile("[0-9]{6}");
+        Matcher matcher = pattern.matcher(pass);
+        if (!matcher.matches()){
+            throw new IllegalArgumentException("动态密码格式错误");
+        }
         User user = this.getById(userId);
         if (user == null)
             throw new IllegalArgumentException("用户不存在");
         String totpSecretKey = user.getTotpSecretKey();
+
         if (totpSecretKey == null || totpSecretKey.length() == 0)
             throw new IllegalArgumentException("当前用户未开启两步验证码");
         try {

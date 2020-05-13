@@ -1,5 +1,6 @@
 package com.esiran.greenpay.admin.controller.user;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.util.TOTPUtil;
@@ -12,14 +13,13 @@ import com.google.common.io.BaseEncoding;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/user")
@@ -49,17 +49,18 @@ public class AdminUserController extends CURDBaseController {
     @PageViewHandleError
     public String security(HttpServletRequest request, ModelMap modelMap) throws UnsupportedEncodingException {
         User user = theUser();
-        String totpSecretKeySrc = userService.getTOTPSecretKey(user.getId());
         User current = userService.getById(user.getId());
+        String totpSecretKeySrc = userService.getTOTPSecretKey(user.getId());
         String totpSecretKey = null;
         String gaUri = null;
-        if (totpSecretKeySrc != null) {
+        if (totpSecretKeySrc != null && !current.getTotpVerified()) {
             totpSecretKey = BaseEncoding.base32().encode(totpSecretKeySrc.getBytes())
                     .replaceAll("=", "");
             gaUri = TOTPUtil.gaUri(current.getUsername(), totpSecretKey, request.getServerName());
         }
         modelMap.put("totpSecretKey",totpSecretKey);
         modelMap.put("gaUri",gaUri);
+        modelMap.put("totpVerified",current.getTotpVerified());
         return "/admin/user/security";
     }
 
@@ -75,6 +76,27 @@ public class AdminUserController extends CURDBaseController {
     public String restTOTPSecretKey() throws PostResourceException {
         User user = theUser();
         userService.resetTOTPSecretKey(user.getId());
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(User::getTotpVerified,false)
+                .eq(User::getId,user.getId());
+        this.userService.update(updateWrapper);
+        return redirect("/user/security");
+    }
+
+    @RequestMapping(value = "/security",method = RequestMethod.POST, params = {"action=checkTOTPCode"})
+    public String checkTOTPCode(@RequestParam String totpCode) throws PostResourceException {
+        User user = theUser();
+        try {
+            boolean result = userService.verifyTOTPPass(user.getId(),totpCode);
+            if (!result)
+                throw new IllegalArgumentException("校验失败");
+        }catch (Exception e){
+            throw new PostResourceException(e.getMessage());
+        }
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(User::getTotpVerified,true)
+                .eq(User::getId,user.getId());
+        this.userService.update(updateWrapper);
         return redirect("/user/security");
     }
 }

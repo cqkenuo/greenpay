@@ -14,9 +14,12 @@ import com.esiran.greenpay.pay.service.IOrderService;
 import com.esiran.greenpay.pay.service.impl.OrderNotifyService;
 import com.esiran.greenpay.system.entity.User;
 import com.esiran.greenpay.system.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -29,9 +32,9 @@ public class AdminPayOrderController extends CURDBaseController {
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;
     private final IUserService userService;
-
     private final OrderNotifyService orderNotifyService;
     private final IApiConfigService iApiConfigService;
+    private static final Logger logger = LoggerFactory.getLogger(AdminPayOrderController.class);
     public AdminPayOrderController(IOrderService orderService, IOrderDetailService orderDetailService, IUserService userService, OrderNotifyService orderNotifyService, IApiConfigService iApiConfigService) {
         this.orderService = orderService;
         this.orderDetailService = orderDetailService;
@@ -101,6 +104,7 @@ public class AdminPayOrderController extends CURDBaseController {
         }catch (Exception e){
             throw new PostResourceException(e.getMessage());
         }
+        logger.info("处理补单逻辑");
         return redirect("/admin/order/list");
     }
 

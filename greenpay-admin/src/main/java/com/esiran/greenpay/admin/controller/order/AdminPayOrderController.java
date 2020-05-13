@@ -8,33 +8,34 @@ import com.esiran.greenpay.merchant.entity.ApiConfigDTO;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.esiran.greenpay.pay.entity.OrderDTO;
 import com.esiran.greenpay.pay.entity.OrderDetailDTO;
+import com.esiran.greenpay.pay.entity.OrderQueryDTO;
 import com.esiran.greenpay.pay.service.IOrderDetailService;
 import com.esiran.greenpay.pay.service.IOrderService;
 import com.esiran.greenpay.pay.service.impl.OrderNotifyService;
+import com.esiran.greenpay.system.entity.User;
+import com.esiran.greenpay.system.service.IUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/order")
 public class AdminPayOrderController extends CURDBaseController {
     private final IOrderService orderService;
     private final IOrderDetailService orderDetailService;
-
+    private final IUserService userService;
 
     private final OrderNotifyService orderNotifyService;
     private final IApiConfigService iApiConfigService;
-    public AdminPayOrderController(IOrderService orderService, IOrderDetailService orderDetailService, OrderNotifyService orderNotifyService, IApiConfigService iApiConfigService) {
+    public AdminPayOrderController(IOrderService orderService, IOrderDetailService orderDetailService, IUserService userService, OrderNotifyService orderNotifyService, IApiConfigService iApiConfigService) {
         this.orderService = orderService;
         this.orderDetailService = orderDetailService;
+        this.userService = userService;
         this.orderNotifyService = orderNotifyService;
         this.iApiConfigService = iApiConfigService;
     }
@@ -42,7 +43,9 @@ public class AdminPayOrderController extends CURDBaseController {
 
     @GetMapping("/list")
     @PageViewHandleError
-    public String list(HttpServletRequest request, ModelMap modelMap ) {
+    public String list(HttpServletRequest request,
+                       ModelMap modelMap,
+                       OrderQueryDTO orderQueryDTO) {
         String qs = request.getQueryString();
         Map<String,String> qm = MapUtil.httpQueryString2map(qs);
         String qss = null;
@@ -53,7 +56,7 @@ public class AdminPayOrderController extends CURDBaseController {
         return "admin/order/list";
     }
 
-    @PostMapping("/list")
+    @RequestMapping(value = "/list",method = RequestMethod.POST, params = {"action=notify"})
     public String notify(@RequestParam String orderNo, @RequestParam Integer mchId) throws PostResourceException {
         if (mchId == null) {
             throw new PostResourceException("商户ID不正确");
@@ -86,6 +89,26 @@ public class AdminPayOrderController extends CURDBaseController {
         }
         return redirect("/admin/order/list");
     }
+
+
+    @RequestMapping(value = "/list",method = RequestMethod.POST, params = {"action=supply"})
+    public String supply(@RequestParam String orderNo, @RequestParam String supplyPass) throws PostResourceException {
+        System.out.println(String.format("orderNo: %s, supplyPass: %s", orderNo, supplyPass));
+        Pattern pattern = Pattern.compile("[0-9]{6}");
+        Matcher matcher = pattern.matcher(supplyPass);
+        if (!matcher.matches())
+            throw new PostResourceException("动态密码格式校验失败，请输入6位的数字动态密码");
+        User user = theUser();
+        try {
+            boolean result = userService.verifyTOTPPass(user.getId(),supplyPass);
+            if (!result)
+                throw new IllegalArgumentException("动态密码校验失败");
+        }catch (Exception e){
+            throw new PostResourceException(e.getMessage());
+        }
+        return redirect("/admin/order/list");
+    }
+
 
     @GetMapping("/list/{orderNo}/detail")
     public String detail(@PathVariable String orderNo, ModelMap modelMap){

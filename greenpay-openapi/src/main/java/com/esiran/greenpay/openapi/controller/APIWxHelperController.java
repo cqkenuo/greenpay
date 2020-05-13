@@ -40,7 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@RequestMapping("/api/v1/helper/wx")
+@RequestMapping("/v1/helper/wx")
 public class APIWxHelperController {
     private static final Logger logger = LoggerFactory.getLogger(APIWxHelperController.class);
     private static final String PAYLOAD_KEY_PRE = "greenpay:openapi:helper:wx:payload";

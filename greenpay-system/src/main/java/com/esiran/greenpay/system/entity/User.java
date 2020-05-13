@@ -40,6 +40,7 @@ public class User extends BaseMapperEntity {
      * 两步验证安全码
      */
     private String totpSecretKey;
+    private Boolean totpVerified;
     /**
      * 用户邮箱
      */

@@ -93,11 +93,6 @@ public class AdminPayOrderController extends CURDBaseController {
 
     @RequestMapping(value = "/list",method = RequestMethod.POST, params = {"action=supply"})
     public String supply(@RequestParam String orderNo, @RequestParam String supplyPass) throws PostResourceException {
-        System.out.println(String.format("orderNo: %s, supplyPass: %s", orderNo, supplyPass));
-        Pattern pattern = Pattern.compile("[0-9]{6}");
-        Matcher matcher = pattern.matcher(supplyPass);
-        if (!matcher.matches())
-            throw new PostResourceException("动态密码格式校验失败，请输入6位的数字动态密码");
         User user = theUser();
         try {
             boolean result = userService.verifyTOTPPass(user.getId(),supplyPass);

@@ -7,6 +7,8 @@ import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
+import com.esiran.greenpay.system.entity.User;
+import com.esiran.greenpay.system.service.IUserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -24,15 +26,17 @@ import java.util.Map;
 @Controller
 @RequestMapping("/pay/passage")
 public class AdminPayPassageController extends CURDBaseController {
+    private final IUserService userService;
     private final IPassageService passageService;
     private final IInterfaceService interfaceService;
     private final ITypeService typeService;
     private final IPassageAccountService passageAccountService;
     private static final Gson gson = new GsonBuilder().create();
     public AdminPayPassageController(
-            IPassageService passageService,
+            IUserService userService, IPassageService passageService,
             IInterfaceService interfaceService,
             ITypeService typeService, IPassageAccountService passageAccountService) {
+        this.userService = userService;
         this.passageService = passageService;
         this.interfaceService = interfaceService;
         this.typeService = typeService;
@@ -57,8 +61,18 @@ public class AdminPayPassageController extends CURDBaseController {
         return "admin/pay/passage/list";
     }
     @PostMapping(value = "/list")
-    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+    public String listPost(@RequestParam String action, @RequestParam String ids, @RequestParam String supplyPass) throws PostResourceException {
         if (action.equals("del")){
+            User user = theUser();
+            boolean pass = userService.verifyTOTPPass(user.getId(), supplyPass);
+            try {
+                if (!pass) {
+                    throw new IllegalArgumentException("动态密码校验失败");
+                }
+            }catch (Exception e){
+                throw new PostResourceException(e.getMessage());
+            }
+
             List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
             passageService.delByIds(allIds);
         }

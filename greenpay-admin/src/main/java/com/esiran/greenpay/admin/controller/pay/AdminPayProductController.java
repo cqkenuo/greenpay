@@ -7,6 +7,8 @@ import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.service.*;
+import com.esiran.greenpay.system.entity.User;
+import com.esiran.greenpay.system.service.IUserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +26,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/pay/product")
 public class AdminPayProductController extends CURDBaseController {
+    private final IUserService userService;
     private final ITypeService typeService;
     private final IProductService productService;
     private final IPassageService passageService;
@@ -31,10 +34,11 @@ public class AdminPayProductController extends CURDBaseController {
     private final IProductPassageService productPassageService;
     private static final Gson gson = new GsonBuilder().create();
     public AdminPayProductController(
-            ITypeService typeService,
+            IUserService userService, ITypeService typeService,
             IProductService productService,
             IPassageService passageService,
             IPassageAccountService passageAccountService, IProductPassageService productPassageService) {
+        this.userService = userService;
         this.typeService = typeService;
         this.productService = productService;
         this.passageService = passageService;
@@ -60,8 +64,17 @@ public class AdminPayProductController extends CURDBaseController {
         return "admin/pay/product/list";
     }
     @PostMapping(value = "/list")
-    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+    public String listPost(@RequestParam String action, @RequestParam String ids,@RequestParam String supplyPass) throws PostResourceException {
         if (action.equals("del")){
+            User user = theUser();
+            boolean pass = userService.verifyTOTPPass(user.getId(), supplyPass);
+            try {
+                if (!pass) {
+                    throw new IllegalArgumentException("动态密码校验失败");
+                }
+            }catch (Exception e){
+                throw new PostResourceException(e.getMessage());
+            }
             List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
             productService.delByIds(allIds);
         }

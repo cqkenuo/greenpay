@@ -10,6 +10,8 @@ import com.esiran.greenpay.pay.entity.InterfaceInputDTO;
 import com.esiran.greenpay.pay.entity.Type;
 import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.ITypeService;
+import com.esiran.greenpay.system.entity.User;
+import com.esiran.greenpay.system.service.IUserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -27,10 +29,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/pay/interface")
 public class AdminPayInterfaceController extends CURDBaseController {
+    private final IUserService userService;
     private final IInterfaceService interfaceService;
     private final ITypeService typeService;
     private static final Gson gson = new GsonBuilder().create();
-    public AdminPayInterfaceController(IInterfaceService interfaceService, ITypeService typeService) {
+    public AdminPayInterfaceController(IUserService userService, IInterfaceService interfaceService, ITypeService typeService) {
+        this.userService = userService;
         this.interfaceService = interfaceService;
         this.typeService = typeService;
     }
@@ -54,8 +58,18 @@ public class AdminPayInterfaceController extends CURDBaseController {
     }
 
     @PostMapping(value = "/list")
-    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+    public String listPost(@RequestParam String action, @RequestParam String ids,@RequestParam String supplyPass) throws PostResourceException {
         if (action.equals("del")){
+            User user = theUser();
+            boolean pass = userService.verifyTOTPPass(user.getId(), supplyPass);
+            try {
+                if (!pass) {
+                    throw new IllegalArgumentException("动态密码校验失败");
+                }
+            }catch (Exception e){
+                throw new PostResourceException(e.getMessage());
+            }
+
             List<Integer> allIds = gson.fromJson(ids,new TypeToken<List<Integer>>(){}.getType());
             interfaceService.delByIds(allIds);
         }

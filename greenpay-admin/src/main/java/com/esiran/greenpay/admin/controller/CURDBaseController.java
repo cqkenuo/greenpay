@@ -28,4 +28,6 @@ public abstract class CURDBaseController {
         Object principal = SecurityUtils.getSubject().getPrincipal();
         return (User) principal;
     }
+
+
 }

@@ -90,11 +90,15 @@
                     if(res.code == 0){
                         layer.msg(res.msg);
                     }
-                    else
+                    else{
+                        window.location.replace("/order/extract");
                         layer.msg(res.msg);
+                    }
+
                 },
                 error:function (data) {
-                    throw data;
+                    layer.msg(data.responseJSON.message,{icon: 5});
+                    // throw data;
                 }
             });
             return false;

@@ -57,12 +57,15 @@
                             <script type="text/html" id="barDemo">
                                 <a th:href="@{'/pay/interface/list/{{d.id}}/edit'}" class="layui-btn layui-btn-xs">编辑</a>
                                 <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs"
-                                   onclick="document.getElementById('_del_[{{d.id}}]').submit();">
+                                   onclick="checkDynamicPWD('{{d.id}}')">
+<!--                                   onclick="document.getElementById('_del_[{{d.id}}]').submit();">-->
+
                                     删除
                                 </a>
-                                <form style="display: none" id="_del_[{{d.id}}]" method="post" action="">
+                                <form style="display: none" id="del_{{d.id}}" method="post" action="">
                                     <input type="hidden" name="action" value="del">
                                     <input type="hidden" name="ids" value="[{{d.id}}]">
+                                    <input type="hidden" name="supplyPass">
                                 </form>
                             </script>
                         </div>
@@ -78,6 +81,24 @@
     let qs = [[${qs}]];
 </script>
 <script th:inline="none">
+
+    function checkDynamicPWD(id) {
+        let $ = layui.$;
+        layer.prompt({
+            title: '请输入动态密码',
+            formType :0,
+            maxlength:6,
+            move : false
+        },function (pass,index) {
+            if (pass.length<6){
+                alert("最少输入6位密码")
+                return false;
+            }
+            $('input[name="supplyPass"]').val(pass);
+            $(`#del_${id}`).submit();
+            layer.close(index);
+        });
+    }
     !function(){
         let layer = layui.layer
             ,table = layui.table;

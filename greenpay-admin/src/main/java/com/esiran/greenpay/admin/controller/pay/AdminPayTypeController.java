@@ -8,15 +8,17 @@ import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.TypeDTO;
 import com.esiran.greenpay.pay.entity.TypeInputDTO;
 import com.esiran.greenpay.pay.service.ITypeService;
+import com.esiran.greenpay.system.entity.User;
+import com.esiran.greenpay.system.service.IUserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import javafx.geometry.Pos;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -25,9 +27,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/pay/type")
 public class AdminPayTypeController extends CURDBaseController {
+    private final IUserService userService;
     private final ITypeService typeService;
     private static final Gson gson = new GsonBuilder().create();
-    public AdminPayTypeController(ITypeService typeService) {
+    public AdminPayTypeController(IUserService userService, ITypeService typeService) {
+        this.userService = userService;
         this.typeService = typeService;
     }
 
@@ -44,11 +48,20 @@ public class AdminPayTypeController extends CURDBaseController {
     }
 
     @PostMapping(value = "/list")
-    public String listPost(@RequestParam String action, @RequestParam String ids) throws PostResourceException {
+    public String listPost(@RequestParam String action, @RequestParam String ids,@RequestParam String supplyPass) throws PostResourceException {
         if (action.equals("del")){
-            List<Integer> allIds = gson.fromJson(ids,
-                    new TypeToken<List<Integer>>(){}.getType());
-            typeService.delByIds(allIds);
+            User user = theUser();
+            boolean pass = userService.verifyTOTPPass(user.getId(), supplyPass);
+               try {
+                   if (!pass) {
+                       throw new IllegalArgumentException("动态密码校验失败");
+                   }
+               }catch (Exception e){
+                   throw new PostResourceException(e.getMessage());
+               }
+               List<Integer> allIds = gson.fromJson(ids,
+                        new TypeToken<List<Integer>>(){}.getType());
+               typeService.delByIds(allIds);
         }
         return redirect("/admin/pay/type/list");
     }
@@ -59,6 +72,7 @@ public class AdminPayTypeController extends CURDBaseController {
         return "admin/pay/type/add";
     }
     @GetMapping("/list/{payTypeCode}/edit")
+
     @PageViewHandleError
     public String edit(@PathVariable String payTypeCode,
                        HttpSession httpSession,

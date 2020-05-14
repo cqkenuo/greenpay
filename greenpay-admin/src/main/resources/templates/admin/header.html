@@ -18,8 +18,8 @@
                 <span style="margin-right:10px;" th:text="${user.username}"></span>
             </a>
             <dl class="layui-nav-child">
-                <dd><a href="">基本资料</a></dd>
-                <dd><a href="">安全设置</a></dd>
+                <dd><a th:href="@{/user/profile}">基本资料</a></dd>
+                <dd><a th:href="@{/user/security}">安全设置</a></dd>
                 <hr>
                 <dd>
                     <a href="javascript:;" onclick="document.getElementById('_logout').submit();">

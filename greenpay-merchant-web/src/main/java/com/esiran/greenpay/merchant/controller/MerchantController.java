@@ -39,7 +39,10 @@ public class MerchantController extends CURDBaseController{
         this.orderService = orderService;
         this.merchantService = merchantService;
     }
-
+    @GetMapping
+    public String index(){
+        return redirect("/home");
+    }
     @GetMapping("/home")
     public String home(Model model){
         Merchant m = theUser();

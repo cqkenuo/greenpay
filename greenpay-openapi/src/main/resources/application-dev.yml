@@ -10,7 +10,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.3.158:3306/greenpay?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
-    jdbc:mysql://localhost:3306/alipaycreditpay?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
     username: root
     password: ruixiao123
   redis:

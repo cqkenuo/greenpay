@@ -58,7 +58,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<OPenAPISecurityFilter> uploadFilterRegistration() {
         FilterRegistrationBean<OPenAPISecurityFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(oPenAPISecurityFilter);
-        registration.addUrlPatterns("/**");
+        registration.addUrlPatterns("/*");
         registration.setName("OPenAPISecurityFilter");
         registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registration;

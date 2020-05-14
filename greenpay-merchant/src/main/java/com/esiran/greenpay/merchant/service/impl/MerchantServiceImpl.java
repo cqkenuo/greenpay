@@ -485,4 +485,41 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant> i
         homeData.setSuccessMoney(NumberUtil.amountFen2Yuan(successMoney));
         return homeData;
     }
+
+    @Override
+    @Transactional(rollbackFor = {PostResourceException.class,Exception.class})
+    public Boolean delMerchant(Integer mchid) throws PostResourceException {
+
+        //查询到当前商户
+        LambdaQueryWrapper<Merchant> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Merchant::getId, mchid);
+        Merchant merchant = getOne(queryWrapper);
+        if (merchant == null) {
+            throw new PostResourceException("未查询到商户信息");
+        }
+        removeById(merchant.getId());
+
+        //查询并删除API配置信息
+        apiConfigService.removeByMerchantId(mchid);
+
+        //查询商户账户信息并删除
+        payAccountService.removeByMerchantId(mchid);
+
+        //查询预付款账户并删除
+        prepaidAccountService.removeByMerchantId(mchid);
+
+        //查询商户结算账户并删除
+        settleAccountService.removeByMerchantId(mchid);
+
+        //删除商户产品
+        merchantProductService.removeByMerchantId(mchid);
+
+        //删除商户产品通道
+        merchantProductPassageService.removeByMerchantId(mchid);
+
+        //删除商户代理通道
+        mchAgentPayPassageService.removeByMerchantId(mchid);
+
+        return true;
+    }
 }

@@ -167,7 +167,7 @@ public class InvoiceService implements IInvoiceService {
         payOrder.setOrder(order);
         payOrder.setOrderDetail(orderDetail);
         String notifyReceiveUrl = String.format(
-                "%s/api/v1/invoices/%s/callback",
+                "%s/v1/invoices/%s/callback",
                 webHostname,order.getOrderNo());
         payOrder.setNotifyReceiveUrl(notifyReceiveUrl);
         redisDelayQueueClient.sendDelayMessage("order:expire",order.getOrderNo(),20*60*1000);

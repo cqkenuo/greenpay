@@ -16,6 +16,8 @@ import com.esiran.greenpay.system.entity.UserInputVo;
  */
 public interface IUserService extends IService<User> {
     void updateUser(Integer userId, UserInputDTO userInputDTO) throws PostResourceException;
-
-    void updateUserPWD(Integer integer, UserInputVo userInputVo)throws PostResourceException;
+    void updateUserPWD(Integer integer, UserInputVo userInputVo) throws PostResourceException;
+    boolean verifyTOTPPass(Integer userId, String pass);
+    String getTOTPSecretKey(Integer userId);
+    void resetTOTPSecretKey(Integer userId);
 }

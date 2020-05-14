@@ -82,8 +82,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
-    public IPage<ProductDTO> selectPage(IPage<ProductDTO> page, ProductDTO productDTO) {
-        IPage<Product> productPage = this.page(new Page<>(page.getCurrent(),page.getSize()));
+    public IPage<ProductDTO> selectPage(IPage<ProductDTO> page, ProductQueryDTO productDTO) {
+        Product map = modelMapper.map(productDTO, Product.class);
+
+        LambdaQueryWrapper<Product> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.orderByAsc(Product::getId);
+        lambdaQueryWrapper.setEntity(map);
+
+        IPage<Product> productPage = this.page(new Page<>(page.getCurrent(),page.getSize()),lambdaQueryWrapper);
         return productPage.convert(item->modelMapper.map(item,ProductDTO.class));
     }
 

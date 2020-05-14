@@ -17,4 +17,6 @@ public interface IPrepaidAccountService extends IService<PrepaidAccount> {
     PrepaidAccount getByMerchantId(Integer mchId);
     int updateBalance(Integer mchId, Integer availAmount, Integer freezeAmount);
     Integer selectAvailBalance(Integer mchId, Integer amount);
+
+    boolean removeByMerchantId(Integer merchantId);
 }

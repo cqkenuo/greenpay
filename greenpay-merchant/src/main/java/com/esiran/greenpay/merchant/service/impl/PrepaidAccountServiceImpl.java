@@ -1,6 +1,7 @@
 package com.esiran.greenpay.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.esiran.greenpay.merchant.entity.MerchantProductPassage;
 import com.esiran.greenpay.merchant.entity.PayAccount;
 import com.esiran.greenpay.merchant.entity.PayAccountDTO;
 import com.esiran.greenpay.merchant.entity.PrepaidAccount;
@@ -49,5 +50,13 @@ public class PrepaidAccountServiceImpl extends ServiceImpl<PrepaidAccountMapper,
     public Integer selectAvailBalance(Integer mchId, Integer amount) {
         if (mchId == null || amount == null) return null;
         return this.baseMapper.selectAvailBalance(mchId, amount);
+    }
+
+    @Override
+    public boolean removeByMerchantId(Integer merchantId) {
+        LambdaQueryWrapper<PrepaidAccount> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(PrepaidAccount::getMerchantId, merchantId);
+        remove(lambdaQueryWrapper);
+        return true;
     }
 }

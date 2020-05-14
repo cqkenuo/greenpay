@@ -22,4 +22,6 @@ public interface IMerchantProductPassageService extends IService<MerchantProduct
     List<MerchantProductPassage> listByProductId(Integer mchId,Integer productId);
 
     boolean updateById(Integer id, MerchantProductInputDTO productInputDTO) throws PostResourceException, ResourceNotFoundException;
+
+    boolean removeByMerchantId(Integer merchantId);
 }

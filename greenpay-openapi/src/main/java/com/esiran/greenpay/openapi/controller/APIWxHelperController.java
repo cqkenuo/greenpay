@@ -40,7 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@RequestMapping("/api/v1/helper/wx")
+@RequestMapping("/v1/helper/wx")
 public class APIWxHelperController {
     private static final Logger logger = LoggerFactory.getLogger(APIWxHelperController.class);
     private static final String PAYLOAD_KEY_PRE = "greenpay:openapi:helper:wx:payload";
@@ -138,7 +138,7 @@ public class APIWxHelperController {
         config.setSecret(wxMpSecret);
         WxMpService wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(config);
-        String oauthRedirect = String.format("%s/api/v1/helper/wx/callback/code",webHostname);
+        String oauthRedirect = String.format("%s/v1/helper/wx/callback/code",webHostname);
         String state = String.format("payloadId=%s",payloadId);
         String authUrl = wxMpService.oauth2buildAuthorizationUrl(oauthRedirect,
                 WxConsts.OAuth2Scope.SNSAPI_BASE,state);

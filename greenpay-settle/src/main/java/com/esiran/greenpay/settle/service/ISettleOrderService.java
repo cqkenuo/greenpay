@@ -9,6 +9,7 @@ import com.esiran.greenpay.settle.entity.SettleOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.esiran.greenpay.settle.entity.SettleOrderDTO;
 import com.esiran.greenpay.settle.entity.SettleOrderInputDTO;
+import com.esiran.greenpay.settle.entity.SettleOrderQueryDto;
 
 /**
  * <p>
@@ -20,8 +21,8 @@ import com.esiran.greenpay.settle.entity.SettleOrderInputDTO;
  */
 public interface ISettleOrderService extends IService<SettleOrder> {
     IPage<SettleOrderDTO> selectPage(IPage<SettleOrderDTO> page, SettleOrderDTO orderDTO);
-    IPage<SettleOrderDTO> selectPageByAudit(IPage<SettleOrderDTO> page);
-    IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page);
+    IPage<SettleOrderDTO> selectPageByAudit(IPage<SettleOrderDTO> page, SettleOrderQueryDto settleOrderQueryDto);
+    IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page ,SettleOrderQueryDto settleOrderQueryDto);
     IPage<SettleOrderDTO> findPageByMchId(IPage<SettleOrderDTO> Page, Integer mchId);
     IPage<SettleOrderDTO> findPageByQuery(IPage<SettleOrderDTO> Page, Integer mchId, ExtractQueryDTO queryDTO);
     SettleOrderDTO getByOrderNo(String orderNo);

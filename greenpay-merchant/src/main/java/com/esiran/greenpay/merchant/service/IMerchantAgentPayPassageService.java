@@ -20,4 +20,6 @@ public interface IMerchantAgentPayPassageService extends IService<MerchantAgentP
     List<MerchantAgentPayPassage> listAvailableByMchId(Integer mchId);
     MerchantAgentPayPassageDTO getOneDTOByMchId(Integer mchId, Integer passageId);
     void updateByInput(MerchantAgentPayPassageInputDTO inputDTO);
+
+    boolean removeByMerchantId(Integer merchantId);
 }

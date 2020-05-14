@@ -15,17 +15,17 @@
                     <div class="layui-card">
                         <div class="layui-card-header">支付订单</div>
                         <div class="demoTable">
-                            交易订单号：
                             <div class="layui-inline">
-                                <input class="layui-input" name="orderNo" id="orderNo" autocomplete="off">
+                                <input type="text" class="layui-input"name="startTime" id="startTime" placeholder="开始时间" autocomplete="off">
                             </div>
-                            商户订单号：
                             <div class="layui-inline">
-                                <input class="layui-input" name="outOrderNo" id="outOrderNo" autocomplete="off">
+                                <input type="text" class="layui-input"name="endTime" id="endTime" placeholder="结束时间" autocomplete="off">
                             </div>
-                            状态：
                             <div class="layui-inline">
-                                <input class="layui-input" name="status" id="status" autocomplete="off">
+                                <input class="layui-input" name="orderNo" id="orderNo" placeholder="请输入交易订单号" autocomplete="off">
+                            </div>
+                            <div class="layui-inline">
+                                <input class="layui-input" name="outOrderNo" id="outOrderNo" placeholder="请输入商户订单号" autocomplete="off">
                             </div>
                             <button class="layui-btn" data-type="reload">搜索</button>
                         </div>
@@ -81,9 +81,17 @@
 </div>
 <th:block th:replace="merchant/footer::script"/>
 <script th:inline="none">
-    layui.use('table', function(){
-        var table = layui.table;
+    !function(){
+        let layer = layui.layer
+            ,table = layui.table
+            ,laydate = layui.laydate;
         //第一个实例
+        laydate.render({
+            elem: '#startTime' //指定元素
+        });
+        laydate.render({
+            elem: '#endTime' //指定元素
+        });
         table.render({
             elem: '#demo'
             ,url: '/api/v1/orders' //数据接口
@@ -118,8 +126,9 @@
             reload: function(){
                 var orderNo = $('#orderNo');
                 var outOrderNo = $('#outOrderNo');
-                var payProductName = $('#payProductName');
                 var status = $('#status');
+                var startTime = $('#startTime');
+                var endTime = $('#endTime');
 
                 //执行重载
                 table.reload('testReload', {
@@ -131,7 +140,9 @@
                     ,where: {
                         orderNo: orderNo.val(),
                         outOrderNo: outOrderNo.val(),
-                        status: status.val()
+                        status: status.val(),
+                        startTime: startTime.val(),
+                        endTime: endTime.val()
                     }
                 }, 'data');
             }
@@ -140,7 +151,7 @@
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
-    });
+    }();
 </script>
 
 </body>

@@ -9,10 +9,7 @@ import com.esiran.greenpay.common.sign.Md5SignType;
 import com.esiran.greenpay.common.sign.SignType;
 import com.esiran.greenpay.common.sign.SignVerify;
 import com.esiran.greenpay.common.util.MapUtil;
-import com.esiran.greenpay.pay.entity.Order;
-import com.esiran.greenpay.pay.entity.OrderDTO;
-import com.esiran.greenpay.pay.entity.OrderDetail;
-import com.esiran.greenpay.pay.entity.OrderQueryDTO;
+import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.mapper.OrderMapper;
 import com.esiran.greenpay.pay.service.IOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -108,7 +105,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public IPage<OrderDTO> findPageByQuery(IPage<OrderDTO> page, Integer mchId, OrderQueryDTO queryDTO) {
+    public IPage<OrderDTO> findPageByQuery(IPage<OrderDTO> page, Integer mchId, MchOrderQueryDTO queryDTO) {
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(Order::getCreatedAt);
         wrapper.eq(Order::getMchId,mchId);
@@ -120,6 +117,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         if (!StringUtils.isEmpty(queryDTO.getStatus())){
             wrapper.eq(Order::getStatus,queryDTO.getStatus());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getStartTime())){
+            wrapper.ge(Order::getCreatedAt,queryDTO.getStartTime());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getEndTime())){
+            wrapper.lt(Order::getCreatedAt,queryDTO.getEndTime());
         }
         IPage<Order> orderPage = this.page(new Page<>(page.getCurrent(), page.getSize()), wrapper);
         return orderPage.convert(OrderDTO::convertOrderEntity);

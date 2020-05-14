@@ -6,11 +6,15 @@ logging:
   level:
     com.github.binarywang.wxpay: error
     me.chanjar.weixin: error
-    com.esiran.greenpay.pay.mapper: debug
 
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    mode: LEGACYHTML5
+    cache: false
   mvc:
     static-path-pattern: /**
 delay_queue:

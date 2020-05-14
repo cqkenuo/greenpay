@@ -36,7 +36,11 @@ public class User extends BaseMapperEntity {
      * 用户密码
      */
     private String password;
-
+    /**
+     * 两步验证安全码
+     */
+    private String totpSecretKey;
+    private Boolean totpVerified;
     /**
      * 用户邮箱
      */

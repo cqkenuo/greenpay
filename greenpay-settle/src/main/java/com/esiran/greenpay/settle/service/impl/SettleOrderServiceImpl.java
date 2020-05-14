@@ -15,15 +15,21 @@ import com.esiran.greenpay.merchant.entity.SettleAccountDTO;
 import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.esiran.greenpay.merchant.service.ISettleAccountService;
+import com.esiran.greenpay.pay.entity.OrderQueryDTO;
+import com.esiran.greenpay.pay.entity.ExtractQueryDTO;
+import com.esiran.greenpay.pay.entity.Order;
 import com.esiran.greenpay.settle.entity.SettleOrder;
 import com.esiran.greenpay.settle.entity.SettleOrderDTO;
 import com.esiran.greenpay.settle.entity.SettleOrderInputDTO;
+import com.esiran.greenpay.settle.entity.SettleOrderQueryDto;
 import com.esiran.greenpay.settle.mapper.SettleOrderMapper;
 import com.esiran.greenpay.settle.service.ISettleOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -75,7 +81,7 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         return dto;
     }
     @Override
-    public IPage<SettleOrderDTO> selectPage(IPage<SettleOrderDTO> page, SettleOrderDTO orderDTO) {
+    public IPage<SettleOrderDTO> selectPage(IPage<SettleOrderDTO> page, SettleOrderDTO orderDTO ) {
         SettleOrder settleOrder = modelMapper.map(orderDTO,SettleOrder.class);
         LambdaQueryWrapper<SettleOrder> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SettleOrder::getStatus,orderDTO.getStatus());
@@ -85,21 +91,42 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         return orderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
     }
 
+
     @Override
-    public IPage<SettleOrderDTO> selectPageByAudit(IPage<SettleOrderDTO> page) {
+    public IPage<SettleOrderDTO> selectPageByAudit(IPage<SettleOrderDTO> page, SettleOrderQueryDto settleOrderQueryDto) {
         LambdaQueryWrapper<SettleOrder> queryWrapper = new LambdaQueryWrapper<>();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        SettleOrder settleOrder = modelMapper.map(settleOrderQueryDto, SettleOrder.class);
         queryWrapper.ge(SettleOrder::getStatus,-1);
         queryWrapper.lt(SettleOrder::getStatus,2);
         queryWrapper.orderByDesc(SettleOrder::getCreatedAt);
+        if (settleOrderQueryDto.getStartTime() != null) {
+            queryWrapper.ge(SettleOrder::getCreatedAt, settleOrderQueryDto.getStartTime());
+        }
+        if (settleOrderQueryDto.getEndTime() != null) {
+            queryWrapper.lt(SettleOrder::getCreatedAt, settleOrderQueryDto.getEndTime());
+        }
+        queryWrapper.setEntity(settleOrder);
         IPage<SettleOrder> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),queryWrapper);
         return orderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
     }
 
     @Override
-    public IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page) {
+    public IPage<SettleOrderDTO> selectPageByPayable(IPage<SettleOrderDTO> page ,SettleOrderQueryDto settleOrderQueryDto) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        SettleOrder settleOrder = modelMapper.map(settleOrderQueryDto, SettleOrder.class);
         LambdaQueryWrapper<SettleOrder> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.ge(SettleOrder::getStatus,2);
         queryWrapper.orderByDesc(SettleOrder::getCreatedAt);
+
+        if (settleOrderQueryDto.getStartTime() != null) {
+            queryWrapper.ge(SettleOrder::getCreatedAt, settleOrderQueryDto.getStartTime());
+        }
+
+        if (settleOrderQueryDto.getEndTime()!=null) {
+            queryWrapper.le(SettleOrder::getCreatedAt, settleOrderQueryDto.getEndTime());
+        }
+        queryWrapper.setEntity(settleOrder);
         IPage<SettleOrder> orderPage = this.page(new Page<>(page.getCurrent(),page.getSize()),queryWrapper);
         return orderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
     }
@@ -109,6 +136,30 @@ public class SettleOrderServiceImpl extends ServiceImpl<SettleOrderMapper, Settl
         LambdaQueryWrapper<SettleOrder> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(SettleOrder::getCreatedAt);
         wrapper.eq(SettleOrder::getMchId,mchId);
+        IPage<SettleOrder> settleOrderPage = this.page(new Page<>(page.getCurrent(), page.getSize()), wrapper);
+        return settleOrderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
+    }
+
+    @Override
+    public IPage<SettleOrderDTO> findPageByQuery(IPage<SettleOrderDTO> page, Integer mchId, ExtractQueryDTO queryDTO) {
+        LambdaQueryWrapper<SettleOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(SettleOrder::getCreatedAt);
+        wrapper.eq(SettleOrder::getMchId,mchId);
+        if (!StringUtils.isEmpty(queryDTO.getOrderNo())){
+            wrapper.eq(SettleOrder::getOrderNo,queryDTO.getOrderNo());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getAccountName())){
+            wrapper.eq(SettleOrder::getAccountName,queryDTO.getAccountName());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getStatus())){
+            wrapper.eq(SettleOrder::getStatus,queryDTO.getStatus());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getStartTime())){
+            wrapper.ge(SettleOrder::getCreatedAt,queryDTO.getStartTime());
+        }
+        if (!StringUtils.isEmpty(queryDTO.getEndTime())){
+            wrapper.lt(SettleOrder::getCreatedAt,queryDTO.getEndTime());
+        }
         IPage<SettleOrder> settleOrderPage = this.page(new Page<>(page.getCurrent(), page.getSize()), wrapper);
         return settleOrderPage.convert(SettleOrderServiceImpl::convertOrderEntity);
     }

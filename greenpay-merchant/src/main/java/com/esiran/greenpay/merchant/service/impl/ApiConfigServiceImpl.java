@@ -3,6 +3,7 @@ package com.esiran.greenpay.merchant.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.esiran.greenpay.merchant.entity.ApiConfig;
 import com.esiran.greenpay.merchant.entity.ApiConfigDTO;
+import com.esiran.greenpay.merchant.entity.MerchantProductPassage;
 import com.esiran.greenpay.merchant.mapper.ApiConfigMapper;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,5 +33,13 @@ public class ApiConfigServiceImpl extends ServiceImpl<ApiConfigMapper, ApiConfig
         LambdaQueryWrapper<ApiConfig> apiConfigLambdaQueryWrapper = new LambdaQueryWrapper<>();
         apiConfigLambdaQueryWrapper.eq(ApiConfig::getMchId,mchId);
         return this.getOne(apiConfigLambdaQueryWrapper);
+    }
+
+    @Override
+    public boolean removeByMerchantId(Integer merchantId) {
+        LambdaQueryWrapper<ApiConfig> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(ApiConfig::getMchId, merchantId);
+        remove(lambdaQueryWrapper);
+        return true;
     }
 }

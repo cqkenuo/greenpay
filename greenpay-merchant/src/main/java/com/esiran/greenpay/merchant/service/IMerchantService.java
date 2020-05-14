@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassageAccount;
 import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.merchant.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -39,4 +40,6 @@ public interface IMerchantService extends IService<Merchant> {
     MerchantAgentPayPassage schedulerAgentPayPassage(Integer mchId);
     AgentPayPassageAccount schedulerAgentPayPassageAcc(Integer mchId, Integer passageId);
     HomeData homeData(Integer mchId);
+
+    Boolean delMerchant(Integer mchid) throws PostResourceException;
 }

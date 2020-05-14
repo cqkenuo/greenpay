@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/merchant/api/v1")
+@RequestMapping("/api/v1")
 public class ApiMerchantReplaceController {
     private final IReplacepayOrderService replacepayOrderService;
     private final IReplacepayRechargeService replacepayRechargeService;

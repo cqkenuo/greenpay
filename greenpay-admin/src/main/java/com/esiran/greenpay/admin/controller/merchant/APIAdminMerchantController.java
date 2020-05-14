@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/v1/merchants")
+@RequestMapping("/api/v1/merchants")
 @Api(tags = "商户管理")
 public class APIAdminMerchantController {
     private final IMerchantService merchantService;
@@ -91,6 +91,7 @@ public class APIAdminMerchantController {
     public void updateSecurity(@PathVariable String mchId, @RequestParam String password) throws Exception {
         merchantService.updatePasswordById(password,Integer.valueOf(mchId));
     }
+
 
     @ApiOperation("商户结算信息设置")
     @ApiImplicitParams({

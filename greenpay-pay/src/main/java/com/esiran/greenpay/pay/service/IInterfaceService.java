@@ -7,6 +7,7 @@ import com.esiran.greenpay.pay.entity.Interface;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.esiran.greenpay.pay.entity.InterfaceDTO;
 import com.esiran.greenpay.pay.entity.InterfaceInputDTO;
+import com.esiran.greenpay.pay.entity.InterfaceQueryDTO;
 import io.swagger.models.auth.In;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface IInterfaceService extends IService<Interface> {
     Interface getByCode(String code);
     List<Interface> listByPayTypeCode(String payTypeCode);
     InterfaceDTO getDTOByCode(String code);
-    IPage<InterfaceDTO> selectPage(IPage<InterfaceDTO> iPage,InterfaceDTO interfaceDTO);
+    IPage<InterfaceDTO> selectPage(IPage<InterfaceDTO> iPage, InterfaceQueryDTO interfaceDTO);
     int addInterface(InterfaceInputDTO interfaceInputDTO) throws PostResourceException;
     boolean updateById(Integer id, InterfaceInputDTO interfaceInputDTO) throws PostResourceException, ResourceNotFoundException;
     void delByIds(List<Integer> ids) throws PostResourceException;

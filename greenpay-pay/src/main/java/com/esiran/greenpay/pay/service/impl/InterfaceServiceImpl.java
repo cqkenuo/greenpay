@@ -60,8 +60,12 @@ public class InterfaceServiceImpl extends ServiceImpl<InterfaceMapper, Interface
     }
 
     @Override
-    public IPage<InterfaceDTO> selectPage(IPage<InterfaceDTO> page, InterfaceDTO interfaceDTO) {
-        IPage<Interface> interfaceDTOPage = this.page(new Page<>(page.getCurrent(),page.getSize()));
+    public IPage<InterfaceDTO> selectPage(IPage<InterfaceDTO> page, InterfaceQueryDTO interfaceDTO) {
+        Interface map = modelMapper.map(interfaceDTO, Interface.class);
+        LambdaQueryWrapper<Interface> interfaceLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        interfaceLambdaQueryWrapper.orderByAsc(Interface::getId);
+        interfaceLambdaQueryWrapper.setEntity(map);
+        IPage<Interface> interfaceDTOPage = this.page(new Page<>(page.getCurrent(),page.getSize()),interfaceLambdaQueryWrapper);
         return interfaceDTOPage.convert(item->modelMapper.map(item,InterfaceDTO.class));
     }
 

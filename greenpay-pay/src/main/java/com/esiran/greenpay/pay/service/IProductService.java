@@ -20,7 +20,7 @@ public interface IProductService extends IService<Product> {
     Product getByProductCode(String productCode);
     List<ProductDTO> findAllProduct(ProductDTO productDTO);
     List<ProductDTO> findAllProductByPayTypeCode(String payTypeCode);
-    IPage<ProductDTO> selectPage(IPage<ProductDTO> page, ProductDTO productDTO);
+    IPage<ProductDTO> selectPage(IPage<ProductDTO> page, ProductQueryDTO productQueryDTO);
     int add(ProductInputDTO productInputDTO) throws PostResourceException;
     boolean updateById(Integer id, ProductInputDTO productInputDTO) throws PostResourceException, ResourceNotFoundException;
     void delByIds(List<Integer> ids);

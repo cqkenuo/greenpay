@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin/system/menu")
+@RequestMapping("/system/menu")
 public class AdminSystemMenuController {
     @GetMapping("/list")
     public String list(){

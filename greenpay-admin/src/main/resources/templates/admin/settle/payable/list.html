@@ -22,7 +22,51 @@
                         <div class="layui-card-header">应付结算</div>
                         <div class="layui-card-body" style="padding: 0">
                             <div class="admin-table_header">
-                                <div th:replace="admin/compose::admin-table_header_right('请输入结算订单号')">
+                                <div class="admin-table_header_right">
+                                    <form class="layui-form" action="">
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label for="startTime">
+                                                    <input type="text" class="layui-input"
+                                                           id="startTime"
+                                                           name="startTime"
+                                                           placeholder="开始时间"
+                                                           autocomplete="off">
+                                                </label>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label for="endTime">
+                                                    <input type="text" class="layui-input"
+                                                           id="endTime"
+                                                           name="endTime"
+                                                           placeholder="结束时间"
+                                                           autocomplete="off">
+                                                </label>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label for="mchId">
+                                                    <input type="text" class="layui-input"
+                                                           id="mchId"
+                                                           name="mchId"
+                                                           th:value="${#httpServletRequest.getParameter('mchId')}"
+                                                           placeholder="请输入商户ID"
+                                                           autocomplete="off">
+                                                </label>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label for="orderNo">
+                                                    <input type="text" class="layui-input"
+                                                           id="orderNo"
+                                                           name="orderNo"
+                                                           th:value="${#httpServletRequest.getParameter('orderNo')}"
+                                                           placeholder="请输入交易订单号"
+                                                           autocomplete="off">
+                                                </label>
+                                            </div>
+                                            <button type="submit" class="layui-btn">搜索</button>
+                                        </div>
+                                    </form>
+                                    <div style="clear:both;"></div>
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
@@ -64,15 +108,15 @@
                                 <span>{{ d.subject }}</span>
                             </script>
                             <script type="text/html" id="barDemo">
-                                <a th:href="@{'/admin/settle/payable/{{d.orderNo}}/detail'}"
+                                <a th:href="@{'/settle/payable/{{d.orderNo}}/detail'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">查看</a>
-                                <a th:href="@{'/admin/settle/list/{{d.orderNo}}/settlement'}"
+                                <a th:href="@{'/settle/list/{{d.orderNo}}/settlement'}"
                                    class="layui-btn layui-btn-xs layui-btn-primary">结算</a>
                                 <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary"
                                    onclick="document.getElementById('mark_{{d.id}}').submit()">标记结算</a>
                                 <form style="display: none" id="mark_{{d.id}}" method="post" action="">
                                     <input type="hidden" name="action" value="settlement">
-                                    <input type="hidden" name="orderNo" value="{{d.orderNo}}" >
+                                    <input type="hidden" name="orderNo" value="{{d.orderNo}}">
                                 </form>
                             </script>
                         </div>
@@ -84,14 +128,43 @@
     </div>
 </div>
 <th:block th:replace="admin/footer::script"/>
+<script th:inline="javascript">
+    let qs =[[${qs}]];
+    let startTime = [[${#httpServletRequest.getParameter('startTime')}]];
+    let endTime = [[${#httpServletRequest.getParameter('endTime')}]];
+</script>
 <script th:inline="none">
     !function(){
-        let layer = layui.layer
-            ,table = layui.table;
-        //第一个实例
+        let layer = layui.layer,
+        laydate = layui.laydate,
+            table = layui.table;
+        laydate.render({
+            elem: '#startTime',
+            type:   'datetime',
+            value  : function () {
+                if (startTime) {
+                    return startTime;
+                }
+            }()
+        });
+
+        laydate.render({
+            elem:  '#endTime',
+            type:   'datetime',
+            value:  function () {
+                if (endTime) {
+                    return endTime;
+                }
+            }()
+        });
         table.render({
             elem: '#demo'
-            ,url: '/admin/api/v1/settle/payable' //数据接口
+            ,url: function () {
+                if (qs) {
+                    return  `/api/v1/settle/payable?${qs}`
+                }
+                return `/api/v1/settle/payable` //数据接口
+            }()
             ,page: true //开启分页
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {

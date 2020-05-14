@@ -1,16 +1,23 @@
 package com.esiran.greenpay.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.common.util.TOTPUtil;
 import com.esiran.greenpay.system.entity.User;
 import com.esiran.greenpay.system.entity.UserInputDTO;
 import com.esiran.greenpay.system.entity.UserInputVo;
 import com.esiran.greenpay.system.mapper.UserMapper;
 import com.esiran.greenpay.system.service.IUserService;
+import com.google.common.io.BaseEncoding;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -58,6 +65,45 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         updateById(oldUser);
 
 
+    }
+
+    @Override
+    public boolean verifyTOTPPass(Integer userId, String pass) {
+        Pattern pattern = Pattern.compile("[0-9]{6}");
+        Matcher matcher = pattern.matcher(pass);
+        if (!matcher.matches()){
+            throw new IllegalArgumentException("动态密码格式错误");
+        }
+        User user = this.getById(userId);
+        if (user == null)
+            throw new IllegalArgumentException("用户不存在");
+        String totpSecretKey = user.getTotpSecretKey();
+
+        if (totpSecretKey == null || totpSecretKey.length() == 0)
+            throw new IllegalArgumentException("当前用户未开启两步验证码");
+        try {
+            String target = TOTPUtil.nextCode(totpSecretKey,30,"SHA1");
+            return target.equals(pass);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public String getTOTPSecretKey(Integer userId) {
+        User user = getById(userId);
+        if (user == null || user.getTotpSecretKey() == null
+                || user.getTotpSecretKey().length() == 0) return null;
+        return user.getTotpSecretKey();
+    }
+
+    @Override
+    public void resetTOTPSecretKey(Integer userId) {
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        String totpSecretKey = UUID.randomUUID().toString().replaceAll("-","");
+        updateWrapper.set(User::getTotpSecretKey,totpSecretKey);
+        updateWrapper.eq(User::getId,userId);
+        this.update(updateWrapper);
     }
 
 }

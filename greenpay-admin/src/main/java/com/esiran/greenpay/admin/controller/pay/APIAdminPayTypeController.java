@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.pay.entity.Product;
 import com.esiran.greenpay.pay.entity.Type;
+import com.esiran.greenpay.pay.entity.TypeQueryDto;
 import com.esiran.greenpay.pay.service.IProductService;
 import com.esiran.greenpay.pay.service.ITypeService;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/v1/pay/types")
+@RequestMapping("/api/v1/pay/types")
 public class APIAdminPayTypeController {
     private final ITypeService typeService;
     private final IProductService productService;
@@ -24,8 +25,9 @@ public class APIAdminPayTypeController {
     }
 
     @GetMapping
-    public IPage<Type> list(Page<Type> page){
-        return typeService.page(page);
+    public IPage<Type> list(Page<Type> page , TypeQueryDto typeQueryDto){
+
+        return typeService.selectPageByType(page,typeQueryDto);
     }
 
     @GetMapping("/{typeCode}/products")

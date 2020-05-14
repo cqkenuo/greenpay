@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.OrderDetailDTO;
 import com.esiran.greenpay.pay.entity.Type;
@@ -19,6 +20,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/admin/settle")
+@RequestMapping("/settle")
 public class AdminSettleOrderController extends CURDBaseController {
     private final ISettleOrderService orderService;
     private final ISettleConfigService settleConfigService;
@@ -62,7 +64,14 @@ public class AdminSettleOrderController extends CURDBaseController {
 
     @GetMapping("/payable")
     @PageViewHandleError
-    public String list(){
+    public String list(HttpServletRequest request, ModelMap modelMap) {
+
+        String qs = request.getQueryString();
+        Map<String, String> qm = MapUtil.httpQueryString2map(qs);
+        if (qm != null) {
+            String qss  = MapUtil.map2httpQuery(qm);
+            modelMap.put("qs", qss);
+        }
         return "admin/settle/payable/list";
     }
 
@@ -99,8 +108,13 @@ public class AdminSettleOrderController extends CURDBaseController {
 
     @GetMapping("/audit")
     @PageViewHandleError
-    public String audit() {
-
+    public String audit(HttpServletRequest request,ModelMap modelMap) {
+        String qs = request.getQueryString();
+        Map<String, String> qm = MapUtil.httpQueryString2map(qs);
+        if (qm != null) {
+            String qss  = MapUtil.map2httpQuery(qm);
+            modelMap.put("qs", qss);
+        }
         return "admin/settle/audit/list";
 //        return "admin/settle/audit/addTemp";
     }
@@ -117,7 +131,7 @@ public class AdminSettleOrderController extends CURDBaseController {
                 break;
         }
 
-        return "redirect:/admin/settle/audit";
+        return redirect("/admin/settle/audit");
     }
 
     //测试订单提交

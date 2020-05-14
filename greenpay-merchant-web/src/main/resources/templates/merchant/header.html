@@ -17,11 +17,11 @@
                 <span style="margin-right:10px;" th:text="${user.name}"></span>
             </a>
             <dl class="layui-nav-child">
-                <dd th:replace="merchant/side::layui_nav_item('/merchant/user/profile','基础资料')"></dd>
-                <dd th:replace="merchant/side::layui_nav_item('/merchant/user/security','安全设置')"></dd>
+                <dd th:replace="merchant/side::layui_nav_item('/user/profile','基础资料')"></dd>
+                <dd th:replace="merchant/side::layui_nav_item('/user/security','安全设置')"></dd>
                 <hr>
                 <dd>
-                    <form style="display: none" id="_logout" method="post" action="/merchant/logout"></form>
+                    <form style="display: none" id="_logout" method="post" action="/logout"></form>
                     <a href="javascript:;" onclick="document.getElementById('_logout').submit();">
                         退出登录
                     </a>

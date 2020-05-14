@@ -17,4 +17,8 @@ import com.esiran.greenpay.merchant.entity.SettleAccountDTO;
  */
 public interface ISettleAccountService extends IService<SettleAccount> {
     SettleAccountDTO findByMerchantId(Integer mchId);
+
+    SettleAccount findSettleAccountByMerchantId(Integer mchId);
+
+    boolean removeByMerchantId(Integer merchantId);
 }

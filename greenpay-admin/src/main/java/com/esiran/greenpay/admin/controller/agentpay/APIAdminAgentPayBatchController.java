@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/admin/api/v1/agentpay/batch")
+@RequestMapping("/api/v1/agentpay/batch")
 public class APIAdminAgentPayBatchController {
 
     private final IAgentPayBatchService agentPayBatchService;

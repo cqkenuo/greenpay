@@ -19,5 +19,5 @@ delay_queue:
     enabled: false
 
 shiro:
-  loginUrl: /merchant/login
-  successUrl: /merchant/home
+  loginUrl: /login
+  successUrl: /home

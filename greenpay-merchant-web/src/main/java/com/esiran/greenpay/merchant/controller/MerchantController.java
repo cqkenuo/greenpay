@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 @Controller
-@RequestMapping("/merchant")
+@RequestMapping
 public class MerchantController extends CURDBaseController{
 
     private final IPayAccountService payAccountService;
@@ -39,7 +39,10 @@ public class MerchantController extends CURDBaseController{
         this.orderService = orderService;
         this.merchantService = merchantService;
     }
-
+    @GetMapping
+    public String index(){
+        return redirect("/home");
+    }
     @GetMapping("/home")
     public String home(Model model){
         Merchant m = theUser();

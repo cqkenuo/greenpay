@@ -11,11 +11,7 @@ spring:
     active: dev
   mvc:
     static-path-pattern: /**
-  thymeleaf:
-    prefix: classpath:templates/
-    suffix: .html
-    mode: LEGACYHTML5
-    cache: false
+
 delay_queue:
   redis:
     default_key: 'greenpay:delay_queue'

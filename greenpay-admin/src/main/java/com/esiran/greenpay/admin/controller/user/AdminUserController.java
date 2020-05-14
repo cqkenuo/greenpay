@@ -35,7 +35,7 @@ public class AdminUserController extends CURDBaseController {
     public String profile(ModelMap modelMap) {
         User user = theUser();
         modelMap.addAttribute("data", user);
-        return "/admin/user/profile";
+        return "admin/user/profile";
     }
 
     @PostMapping("/profile")
@@ -61,7 +61,7 @@ public class AdminUserController extends CURDBaseController {
         modelMap.put("totpSecretKey",totpSecretKey);
         modelMap.put("gaUri",gaUri);
         modelMap.put("totpVerified",current.getTotpVerified());
-        return "/admin/user/security";
+        return "admin/user/security";
     }
 
 

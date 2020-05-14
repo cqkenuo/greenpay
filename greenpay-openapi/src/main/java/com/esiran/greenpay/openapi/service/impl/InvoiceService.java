@@ -231,10 +231,15 @@ public class InvoiceService implements IInvoiceService {
         Invoice out = modelMapper.map(order,Invoice.class);
         out.setChannel(order.getPayProductCode());
         Map<String,Object> credential = null;
+        Map<String,Object> channelExtra = null;
         if (!Strings.isEmpty(orderDetail.getPayCredential())){
             credential = gson.fromJson(orderDetail.getPayCredential(),new TypeToken<Map<String,Object>>(){}.getType());
         }
+        if (!StringUtils.isEmpty(orderDetail.getUpstreamExtra())){
+            channelExtra = gson.fromJson(orderDetail.getUpstreamExtra(),new TypeToken<Map<String,Object>>(){}.getType());
+        }
         out.setCredential(credential);
+        out.setChannelExtra(channelExtra);
         return out;
     }
 }

@@ -29,5 +29,5 @@ greenpay:
   openapi:
     security:
       sign:
-        enabled: true
+        enabled: false
         allow_types: md5,hmac_md5,rsa

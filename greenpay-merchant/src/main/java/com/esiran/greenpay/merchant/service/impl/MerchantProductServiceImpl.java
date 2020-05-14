@@ -117,4 +117,12 @@ public class MerchantProductServiceImpl extends ServiceImpl<MerchantProductMappe
                 .eq(MerchantProduct::getProductId,productId);
         remove(updateWrapper);
     }
+
+    @Override
+    public void removeByMerchantId(Integer mchId) {
+        LambdaQueryWrapper<MerchantProduct> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(MerchantProduct::getMerchantId, mchId);
+
+        remove(lambdaQueryWrapper);
+    }
 }

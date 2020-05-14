@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.OrderDetailDTO;
 import com.esiran.greenpay.pay.entity.Type;
@@ -19,6 +20,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -62,7 +64,14 @@ public class AdminSettleOrderController extends CURDBaseController {
 
     @GetMapping("/payable")
     @PageViewHandleError
-    public String list(){
+    public String list(HttpServletRequest request, ModelMap modelMap) {
+
+        String qs = request.getQueryString();
+        Map<String, String> qm = MapUtil.httpQueryString2map(qs);
+        if (qm != null) {
+            String qss  = MapUtil.map2httpQuery(qm);
+            modelMap.put("qs", qss);
+        }
         return "admin/settle/payable/list";
     }
 
@@ -94,13 +103,20 @@ public class AdminSettleOrderController extends CURDBaseController {
                 break;
         }
 
-        return redirect("/settle/payable");
+        return "redirect:/admin/settle/payable";
     }
 
     @GetMapping("/audit")
     @PageViewHandleError
-    public String audit() {
+    public String audit(HttpServletRequest request,ModelMap modelMap) {
+        String qs = request.getQueryString();
+        Map<String, String> qm = MapUtil.httpQueryString2map(qs);
+        if (qm != null) {
+            String qss  = MapUtil.map2httpQuery(qm);
+            modelMap.put("qs", qss);
+        }
         return "admin/settle/audit/list";
+//        return "admin/settle/audit/addTemp";
     }
     @PostMapping("/audit")
     public String auditPost(@RequestParam String orderNo,@RequestParam String action) throws PostResourceException {

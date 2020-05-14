@@ -3,6 +3,7 @@ package com.esiran.greenpay.admin.controller.pay;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.TypeDTO;
 import com.esiran.greenpay.pay.entity.TypeInputDTO;
@@ -14,10 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/pay/type")
@@ -30,7 +33,13 @@ public class AdminPayTypeController extends CURDBaseController {
 
     @GetMapping("/list")
     @PageViewHandleError
-    public String list(){
+    public String list(HttpServletRequest request, ModelMap modelMap) {
+        String qs = request.getQueryString();
+        Map<String, String> qm = MapUtil.httpQueryString2map(qs);
+        if (qm != null && qm.size()>0) {
+            String qss = MapUtil.map2httpQuery(qm);
+            modelMap.put("qs", qss);
+        }
         return "admin/pay/type/list";
     }
 

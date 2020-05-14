@@ -20,4 +20,6 @@ public interface IMerchantProductService extends IService<MerchantProduct> {
     MerchantProductDTO getAvailableByProductId(Integer mchId, Integer productId);
     boolean updateById(MerchantProductInputDTO merchantProductInputDTO) throws ResourceNotFoundException, PostResourceException;
     void removeByProductId(Integer merchantId, Integer productId);
+
+    void removeByMerchantId(Integer mchId);
 }

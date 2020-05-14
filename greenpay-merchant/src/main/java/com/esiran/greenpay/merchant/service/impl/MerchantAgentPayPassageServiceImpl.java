@@ -70,4 +70,12 @@ public class MerchantAgentPayPassageServiceImpl extends ServiceImpl<MerchantAgen
         mapp.setUpdatedAt(LocalDateTime.now());
         save(mapp);
     }
+
+    @Override
+    public boolean removeByMerchantId(Integer merchantId) {
+        LambdaQueryWrapper<MerchantAgentPayPassage> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(MerchantAgentPayPassage::getMerchantId, merchantId);
+        remove(lambdaQueryWrapper);
+        return true;
+    }
 }

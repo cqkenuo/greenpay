@@ -15,4 +15,6 @@ import com.esiran.greenpay.merchant.entity.ApiConfigDTO;
 public interface IApiConfigService extends IService<ApiConfig> {
     ApiConfigDTO findByMerchantId(Integer mchId);
     ApiConfig getOneByMerchantId(Integer mchId);
+
+    boolean removeByMerchantId(Integer merchantId);
 }

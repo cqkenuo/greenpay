@@ -33,6 +33,15 @@ public class PayAccountServiceImpl extends ServiceImpl<PayAccountMapper, PayAcco
     }
 
     @Override
+    public PayAccount findPayAccountByMerchantId(Integer mchId) {
+        LambdaQueryWrapper<PayAccount> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(PayAccount::getMerchantId, mchId);
+        PayAccount payAccount = this.getOne(lambdaQueryWrapper);
+        return payAccount;
+    }
+
+
+    @Override
     public void updateAvailBalance(Integer mchId, Integer amount) {
         if (mchId == null || amount == null) return;
         this.baseMapper.updateAvailBalance(mchId,amount);
@@ -50,5 +59,11 @@ public class PayAccountServiceImpl extends ServiceImpl<PayAccountMapper, PayAcco
         return this.baseMapper.updateBalance(mchId,availAmount,freezeAmount);
     }
 
-
+    @Override
+    public boolean removeByMerchantId(Integer merchantId) {
+        LambdaQueryWrapper<PayAccount> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(PayAccount::getMerchantId, merchantId);
+        remove(lambdaQueryWrapper);
+        return true;
+    }
 }

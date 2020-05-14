@@ -92,6 +92,7 @@ public class APIAdminMerchantController {
         merchantService.updatePasswordById(password,Integer.valueOf(mchId));
     }
 
+
     @ApiOperation("商户结算信息设置")
     @ApiImplicitParams({
             @ApiImplicitParam(name="mchId",value="商户ID",required = true),

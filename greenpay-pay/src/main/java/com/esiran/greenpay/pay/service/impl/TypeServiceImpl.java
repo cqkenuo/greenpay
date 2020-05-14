@@ -1,6 +1,7 @@
 package com.esiran.greenpay.pay.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.pay.entity.*;
@@ -8,7 +9,9 @@ import com.esiran.greenpay.pay.mapper.TypeMapper;
 import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.ITypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.http.util.TextUtils;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +65,19 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements IT
     @Override
     public List<Type> listByAgentPayType() {
         return this.listByType(2);
+    }
+
+    @Override
+    public IPage<Type> selectPageByType(IPage<Type> page, TypeQueryDto queryDto) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Type type = modelMapper.map(queryDto, Type.class);
+
+        LambdaQueryWrapper<Type> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.orderByAsc(Type::getId);
+        lambdaQueryWrapper.setEntity(type);
+
+        IPage<Type> typeIPage = this.page(page, lambdaQueryWrapper);
+        return typeIPage;
     }
 
     @Override

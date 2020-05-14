@@ -55,4 +55,11 @@ public class MerchantProductPassageServiceImpl extends ServiceImpl<MerchantProdu
         return false;
     }
 
+    @Override
+    public boolean removeByMerchantId(Integer merchantId) {
+        LambdaQueryWrapper<MerchantProductPassage> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(MerchantProductPassage::getMchId, merchantId);
+        remove(lambdaQueryWrapper);
+        return true;
+    }
 }

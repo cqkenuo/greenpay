@@ -50,8 +50,13 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage> impl
     }
 
     @Override
-    public IPage<PassageDTO> selectPage(IPage<PassageDTO> page, PassageDTO passageDTO) {
-        IPage<Passage> interfaceDTOPage = this.page(new Page<>(page.getCurrent(),page.getSize()));
+    public IPage<PassageDTO> selectPage(IPage<PassageDTO> page, PassageQueryDTO passageQueryDTO) {
+        Passage passage = modelMapper.map(passageQueryDTO,Passage.class);
+        LambdaQueryWrapper<Passage> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(Passage::getId);
+        queryWrapper.setEntity(passage);
+
+        IPage<Passage> interfaceDTOPage = this.page(new Page<>(page.getCurrent(),page.getSize()),queryWrapper);
         return interfaceDTOPage.convert(item->modelMapper.map(item,PassageDTO.class));
     }
 

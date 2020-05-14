@@ -3,6 +3,7 @@ package com.esiran.greenpay.admin.controller.merchant;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.agentpay.entity.AgentPayPassage;
 import com.esiran.greenpay.agentpay.service.IAgentPayPassageService;
+import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.merchant.entity.*;
@@ -16,6 +17,8 @@ import com.esiran.greenpay.pay.service.IPassageAccountService;
 import com.esiran.greenpay.pay.service.IPassageService;
 import com.esiran.greenpay.pay.service.IProductService;
 import com.esiran.greenpay.pay.service.ITypeService;
+import com.esiran.greenpay.system.entity.User;
+import com.esiran.greenpay.system.service.IUserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,7 @@ import java.util.List;
 @RequestMapping("/merchant")
 public class AdminMerchantController extends CURDBaseController {
     private static final Gson gson = new GsonBuilder().create();
+    private final IUserService userService;
     private final IMerchantService merchantService;
     private final IProductService productService;
     private final ITypeService typeService;
@@ -39,7 +43,7 @@ public class AdminMerchantController extends CURDBaseController {
     private final IMerchantAgentPayPassageService merchantAgentPayPassageService;
     private final IAgentPayPassageService agentPayPassageService;
     public AdminMerchantController(
-            IMerchantService merchantService,
+            IUserService userService, IMerchantService merchantService,
             IProductService productService,
             ITypeService typeService,
             IPassageService passageService,
@@ -48,6 +52,7 @@ public class AdminMerchantController extends CURDBaseController {
             IMerchantProductPassageService productPassageService,
             IMerchantAgentPayPassageService merchantAgentPayPassageService,
             IAgentPayPassageService agentPayPassageService) {
+        this.userService = userService;
         this.merchantService = merchantService;
         this.productService = productService;
         this.typeService = typeService;
@@ -60,6 +65,7 @@ public class AdminMerchantController extends CURDBaseController {
     }
 
     @GetMapping("/list")
+    @PageViewHandleError
     public String list(){
         return "admin/merchant/list";
     }
@@ -80,6 +86,8 @@ public class AdminMerchantController extends CURDBaseController {
         modelMap.addAttribute("mchId",mchId);
         return "admin/merchant/agentpay/list";
     }
+
+
 
     @GetMapping("/list/{mchId}/product/list/{productId}/edit")
     @PageViewHandleError
@@ -132,7 +140,7 @@ public class AdminMerchantController extends CURDBaseController {
             ModelMap modelMap) throws Exception {
         Merchant merchant = merchantService.getById(mchId);
         if (merchant == null) throw new ResourceNotFoundException("商户不存在");
-        MerchantAgentPayPassageDTO data = merchantService.selectMchAgentPayPassageByMchId(mchId,passageId);
+        MerchantAgentPayPassageDTO data = merchantService.selectMchAgentPayPassageByMchId(mchId, passageId);
         if (data == null) throw new ResourceNotFoundException("代付通道不存在");
         modelMap.addAttribute("mchId", mchId);
         modelMap.addAttribute("data", data);
@@ -151,4 +159,22 @@ public class AdminMerchantController extends CURDBaseController {
         merchantAgentPayPassageService.updateByInput(dto);
         return redirect("/admin/merchant/list/%s/agentpay/list/%s/edit",mchId,passageId);
     }
+
+    @RequestMapping(value = "/list",method = RequestMethod.POST, params = {"action=supply"})
+    public String supply(@RequestParam Integer mchid, @RequestParam String supplyPass) throws PostResourceException {
+        User user = theUser();
+        try {
+            boolean result = userService.verifyTOTPPass(user.getId(),supplyPass);
+            if (!result)
+                throw new IllegalArgumentException("动态密码校验失败");
+        }catch (Exception e){
+            throw new PostResourceException(e.getMessage());
+        }
+
+         merchantService.delMerchant(mchid);
+
+        return redirect("list");
+    }
+
+
 }

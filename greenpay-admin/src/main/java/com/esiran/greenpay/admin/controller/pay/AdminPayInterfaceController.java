@@ -3,6 +3,7 @@ package com.esiran.greenpay.admin.controller.pay;
 import com.esiran.greenpay.admin.controller.CURDBaseController;
 import com.esiran.greenpay.common.exception.PostResourceException;
 import com.esiran.greenpay.common.exception.ResourceNotFoundException;
+import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.framework.annotation.PageViewHandleError;
 import com.esiran.greenpay.pay.entity.Interface;
 import com.esiran.greenpay.pay.entity.InterfaceInputDTO;
@@ -12,13 +13,16 @@ import com.esiran.greenpay.pay.service.ITypeService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/pay/interface")
@@ -33,7 +37,19 @@ public class AdminPayInterfaceController extends CURDBaseController {
 
     @GetMapping("/list")
     @PageViewHandleError
-    public String list(){
+    public String list(HttpServletRequest httpServletRequest, ModelMap modelMap) {
+        String queryString = httpServletRequest.getQueryString();
+        Map<String, String> qm = MapUtil.httpQueryString2map(queryString);
+        if (qm != null && qm.size()>0) {
+            String s = qm.get("queryData");
+            if (StringUtils.isNumeric(s)){
+                qm.put("id", s);
+            }else {
+                qm.put("interfaceName",s);
+            }
+            String qsall = MapUtil.map2httpQuery(qm);
+            modelMap.put("qs",qsall);
+        }
         return "admin/pay/interface/list";
     }
 

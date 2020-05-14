@@ -12,12 +12,10 @@ import lombok.Data;
  * @since 2020-04-14
  */
 @Data
-public class OrderQueryDTO {
+public class ExtractQueryDTO {
     private String orderNo;
     private String orderSn;
-    private Integer mchId;
-    private String subject;
-    private String outOrderNo;
+    private String accountName;
     private Integer status;
     private String startTime;
     private String endTime;

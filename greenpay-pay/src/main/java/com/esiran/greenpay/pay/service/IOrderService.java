@@ -2,6 +2,7 @@ package com.esiran.greenpay.pay.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.esiran.greenpay.pay.entity.MchOrderQueryDTO;
 import com.esiran.greenpay.pay.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.esiran.greenpay.pay.entity.OrderDTO;
@@ -25,4 +26,5 @@ public interface IOrderService extends IService<Order> {
         List<Order> getByDay(Integer mchId);
         void updateOrderStatus(String orderNo, Integer status);
         IPage<OrderDTO> findPageByMchId(IPage<OrderDTO> page, Integer mchId);
+        IPage<OrderDTO> findPageByQuery(IPage<OrderDTO> page, Integer mchId, MchOrderQueryDTO queryDTO);
 }

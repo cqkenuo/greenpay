@@ -12,7 +12,7 @@
                     <cite>首页</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="merchant/side::layui_nav_item('/merchant/home','数据概览')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/home','数据概览')"></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -21,9 +21,9 @@
                     <cite>交易管理</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="merchant/side::layui_nav_item('/merchant/order/payextract','余额提现')"></dd>
-                    <dd th:replace="merchant/side::layui_nav_item('/merchant/order/list','订单列表')"></dd>
-                    <dd th:replace="merchant/side::layui_nav_item('/merchant/order/extract','提现记录')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/order/payextract','余额提现')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/order/list','订单列表')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/order/extract','提现记录')"></dd>
                 </dl>
             </li>
 <!--            <li class="layui-nav-item">-->
@@ -45,8 +45,8 @@
                     <cite>个人中心</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd th:replace="merchant/side::layui_nav_item('/merchant/user/profile','基础资料')"></dd>
-                    <dd th:replace="merchant/side::layui_nav_item('/merchant/user/security','安全设置')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/user/profile','基础资料')"></dd>
+                    <dd th:replace="merchant/side::layui_nav_item('/user/security','安全设置')"></dd>
 <!--                    <dd th:replace="merchant/side::layui_nav_item('/merchant/user/api','商户API')"></dd>-->
                 </dl>
             </li>

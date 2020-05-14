@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/merchant/order")
+@RequestMapping("/order")
 public class MerchantOrderController extends CURDBaseController {
 
     private final IOrderService orderService;

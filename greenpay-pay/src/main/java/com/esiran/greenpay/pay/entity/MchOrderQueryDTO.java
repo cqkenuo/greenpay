@@ -2,6 +2,8 @@ package com.esiran.greenpay.pay.entity;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 
 /**
  * <p>
@@ -12,11 +14,9 @@ import lombok.Data;
  * @since 2020-04-14
  */
 @Data
-public class OrderQueryDTO {
+public class MchOrderQueryDTO {
     private String orderNo;
     private String orderSn;
-    private Integer mchId;
-    private String subject;
     private String outOrderNo;
     private Integer status;
     private String startTime;

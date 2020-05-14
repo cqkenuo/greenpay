@@ -93,7 +93,7 @@ public class APICashiers {
         PayOrder payOrder = cashierService.createCashierByInput(productCode, inputDTO, merchant);
         if (productCode.equals("wx_jsapi")){
             String timestamp = String.valueOf(System.currentTimeMillis());
-            String redirectUrl = String.format("%s/api/v1/cashiers/pay/wx/order?orderNo=%s",
+            String redirectUrl = String.format("%s/v1/cashiers/pay/wx/order?orderNo=%s",
                     webHostname,payOrder.getOrder().getOrderNo());
             ApiConfig apiConfig = apiConfigService.getOneByMerchantId(merchant.getId());
             Map<String,String> reqMap = new HashMap<>();
@@ -105,7 +105,7 @@ public class APICashiers {
             SignType signType = new Md5SignType(req);
             SignVerify verify = signType.sign(apiConfig.getApiSecurity());
             String sign = verify.getSign();
-            return String.format("redirect:/api/v1/helper/wx/openid?%s&sign=%s",req,sign);
+            return String.format("redirect:/v1/helper/wx/openid?%s&sign=%s",req,sign);
         }
         return null;
     }
@@ -129,7 +129,7 @@ public class APICashiers {
         orderDetail.setUpstreamExtra(upstreamExtraJson);
         orderDetailService.updateById(orderDetail);
         String notifyReceiveUrl = String.format(
-                "%s/api/v1/invoices/%s/callback",
+                "%s/v1/invoices/%s/callback",
                 webHostname,order.getOrderNo());
         PayOrder payOrder = new PayOrder();
         payOrder.setOrder(order);

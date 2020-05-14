@@ -162,7 +162,7 @@
 
         form.on('submit(setmyinfo)',function (data) {
             $.ajax({
-                url:'/merchant/api/v1/updatepassword',
+                url:'/api/v1/updatepassword',
                 method:'post',
                 data:data.field,
                 dataType:'JSON',
@@ -183,7 +183,7 @@
             console.log('重置公钥',data);
             $.ajax({
                 type:'post',
-                url:'/merchant/api/v1/mch_pub_key',
+                url:'/api/v1/mch_pub_key',
                 data:data.field.desc,
                 contentType: 'text/plain',
                 statusCode: {

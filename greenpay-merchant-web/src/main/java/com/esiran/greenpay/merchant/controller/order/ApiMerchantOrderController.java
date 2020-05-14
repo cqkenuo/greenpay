@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/merchant/api/v1")
+@RequestMapping("/api/v1")
 public class ApiMerchantOrderController extends CURDBaseController {
 
 
@@ -44,7 +44,14 @@ public class ApiMerchantOrderController extends CURDBaseController {
             @RequestParam(required = false, defaultValue = "10") Integer size){
         Merchant merchant = theUser();
         return payOrderService.findPageByMchId(new Page<>(current,size),merchant.getId());
-
+    }
+    @PostMapping("/query/orders")
+    public IPage<OrderDTO> qureyOrderList(
+            @RequestParam(required = false,defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            MchOrderQueryDTO orderQueryDTO){
+        Merchant merchant = theUser();
+        return payOrderService.findPageByQuery(new Page<>(current,size),merchant.getId(),orderQueryDTO);
     }
     @GetMapping("/extracts")
     public IPage<SettleOrderDTO> extractList(
@@ -52,6 +59,14 @@ public class ApiMerchantOrderController extends CURDBaseController {
             @RequestParam(required = false, defaultValue = "10") Integer size){
         Merchant merchant = theUser();
         return settleOrderService.findPageByMchId(new Page<>(current,size),merchant.getId());
+    }
+    @PostMapping("/query/extracts")
+    public IPage<SettleOrderDTO> queryExtractList(
+            @RequestParam(required = false,defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            ExtractQueryDTO queryDTO){
+        Merchant merchant = theUser();
+        return settleOrderService.findPageByQuery(new Page<>(current,size),merchant.getId(),queryDTO);
     }
 
     @PostMapping("/payextract")
@@ -73,5 +88,6 @@ public class ApiMerchantOrderController extends CURDBaseController {
         m.put("msg","提交成功");
         return m;
     }
+
 
 }

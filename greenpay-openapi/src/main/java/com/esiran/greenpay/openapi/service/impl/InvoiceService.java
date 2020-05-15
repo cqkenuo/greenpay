@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.*;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +79,7 @@ public class InvoiceService implements IInvoiceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Invoice createInvoiceByInput(InvoiceInputDTO invoiceInputDTO, Merchant merchant) throws Exception {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         PayOrder payOrder = createPretreatmentInvoice(invoiceInputDTO,merchant);
         Order order = payOrder.getOrder();
         OrderDetail orderDetail = payOrder.getOrderDetail();
@@ -104,6 +106,7 @@ public class InvoiceService implements IInvoiceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PayOrder createPretreatmentInvoice(InvoiceInputDTO invoiceInputDTO, Merchant merchant) throws APIException {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Invoice invoice = modelMapper.map(invoiceInputDTO,Invoice.class);
         invoice.setOrderNo(String.valueOf(idWorker.nextId()));
         invoice.setOrderSn(EncryptUtil.baseTimelineCode());
@@ -176,6 +179,7 @@ public class InvoiceService implements IInvoiceService {
 
     @Override
     public String handleInvoiceCallback(HttpServletRequest request, HttpServletResponse response, String orderNo) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Order order = orderService.getOneByOrderNo(orderNo);
         OrderDetail orderDetail = orderDetailService.getOneByOrderNo(orderNo);
         if (order == null || orderDetail == null || order.getStatus() != 1){

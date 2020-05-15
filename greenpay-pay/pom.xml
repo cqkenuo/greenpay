@@ -36,6 +36,10 @@
             <artifactId>okhttp</artifactId>
             <version>4.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.esiran</groupId>
+            <artifactId>greenpay-message</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

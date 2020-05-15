@@ -88,7 +88,7 @@ public class ACPayPlugin implements Plugin<PayOrder> {
             String json = g.toJson(map);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
             Request request = new Request.Builder()
-                    .url("http://localhost:8601/alipayCreditPay/payFromOutside")
+                    .url("http://api.acpay.leyyx.cn/alipayCreditPay/payFromOutside")
                     .post(requestBody)
                     .build();
             try (Response response = okHttpClient.newCall(request).execute()) {

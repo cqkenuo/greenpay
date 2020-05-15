@@ -49,7 +49,7 @@ public class OrderACPayTaskRunner implements DelayQueueTaskRunner {
         String extra = orderDetail.getUpstreamExtra();
         RequestBody selectRequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), extra);
         Request selectRequest = new Request.Builder()
-                .url("http://localhost:8601/alipayCreditPay/selectPayResult")
+                .url("http://api.acpay.leyyx.cn/alipayCreditPay/selectPayResult")
                 .post(selectRequestBody)
                 .build();
         Response selectResponse = null;

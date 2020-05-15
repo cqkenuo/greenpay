@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   admin_web:
-    image: registry.cn-hangzhou.aliyuncs.com/esiran/greenpay-admin-web
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-admin-web
     restart: always
     ports:
       - 8081:8081
@@ -11,7 +11,7 @@ services:
       - mysql
 
   merchant_web:
-    image: registry.cn-hangzhou.aliyuncs.com/esiran/greenpay-merchant-web
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-merchant-web
     restart: always
     ports:
       - 8082:8082
@@ -20,7 +20,7 @@ services:
       - mysql
 
   openapi:
-    image: registry.cn-hangzhou.aliyuncs.com/esiran/greenpay-openapi
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-openapi
     restart: always
     ports:
       - 8083:8083

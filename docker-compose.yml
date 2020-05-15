@@ -3,7 +3,7 @@ version: '3.7'
 services:
   admin_web:
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/esiran/greenpay-admin-web
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-admin-web
     build:
       context: .
       dockerfile: Dockerfile.admin_web
@@ -14,7 +14,7 @@ services:
       - mysql
 
   merchant_web:
-    image: registry.cn-hangzhou.aliyuncs.com/esiran/greenpay-merchant-web
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-merchant-web
     restart: always
     build:
       context: .
@@ -26,7 +26,7 @@ services:
       - mysql
 
   openapi:
-    image: registry.cn-hangzhou.aliyuncs.com/esiran/greenpay-openapi
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-openapi
     restart: always
     build:
       context: .

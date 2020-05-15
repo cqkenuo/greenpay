@@ -55,6 +55,7 @@ public class ShiroConfig {
         chainDefinition.addPathDefinition("/font/**", "anon");
         chainDefinition.addPathDefinition("/layui/**", "anon");
         chainDefinition.addPathDefinition("/simditor/**", "anon");
+        chainDefinition.addPathDefinition("/favicon.ico", "anon");
         chainDefinition.addPathDefinition("/**", "authc");
         return chainDefinition;
     }

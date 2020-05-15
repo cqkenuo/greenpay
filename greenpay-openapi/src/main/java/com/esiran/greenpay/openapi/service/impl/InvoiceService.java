@@ -6,6 +6,7 @@ import com.esiran.greenpay.actuator.Plugin;
 import com.esiran.greenpay.actuator.PluginLoader;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.exception.PostResourceException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.sign.Md5SignType;
 import com.esiran.greenpay.common.sign.SignType;
 import com.esiran.greenpay.common.sign.SignVerify;
@@ -17,13 +18,16 @@ import com.esiran.greenpay.merchant.service.IMerchantService;
 import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.openapi.entity.Invoice;
 import com.esiran.greenpay.openapi.entity.InvoiceInputDTO;
+import com.esiran.greenpay.openapi.entity.InvoiceQueryInputDTO;
 import com.esiran.greenpay.openapi.service.IInvoiceService;
 import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.plugin.PayOrderFlow;
 import com.esiran.greenpay.pay.service.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import okhttp3.*;
+import org.apache.logging.log4j.util.Strings;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
@@ -209,5 +213,37 @@ public class InvoiceService implements IInvoiceService {
             return payOrderFlow.getFailedString();
         }
         return payOrderFlow.getSuccessfulString();
+    }
+
+    @Override
+    public Invoice getOneByQuery(InvoiceQueryInputDTO queryInputDTO) throws ResourceNotFoundException {
+        if (StringUtils.isEmpty(queryInputDTO.getOrderNo()) && StringUtils.isEmpty(queryInputDTO.getOutOrderNo()))
+            throw new IllegalArgumentException("交易流水号与商户订单号不能同时为空");
+        LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if (!StringUtils.isEmpty(queryInputDTO.getOrderNo())){
+            lambdaQueryWrapper.eq(Order::getOrderNo,queryInputDTO.getOrderNo()).eq(Order::getAppId, queryInputDTO.getAppId());
+        }else if(!StringUtils.isEmpty(queryInputDTO.getOutOrderNo())){
+            lambdaQueryWrapper.eq(Order::getOutOrderNo,queryInputDTO.getOutOrderNo()).eq(Order::getAppId, queryInputDTO.getAppId());
+        }
+        Order order = orderService.getOne(lambdaQueryWrapper);
+        if (order == null)
+            throw new ResourceNotFoundException("查询无结果");
+        OrderDetail orderDetail = orderDetailService.getOneByOrderNo(order.getOrderNo());
+        if (orderDetail == null)
+            throw new ResourceNotFoundException("系统错误");
+
+        Invoice out = modelMapper.map(order,Invoice.class);
+        out.setChannel(order.getPayProductCode());
+        Map<String,Object> credential = null;
+        Map<String,Object> channelExtra = null;
+        if (!Strings.isEmpty(orderDetail.getPayCredential())){
+            credential = gson.fromJson(orderDetail.getPayCredential(),new TypeToken<Map<String,Object>>(){}.getType());
+        }
+        if (!StringUtils.isEmpty(orderDetail.getUpstreamExtra())){
+            channelExtra = gson.fromJson(orderDetail.getUpstreamExtra(),new TypeToken<Map<String,Object>>(){}.getType());
+        }
+        out.setCredential(credential);
+        out.setChannelExtra(channelExtra);
+        return out;
     }
 }

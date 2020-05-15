@@ -2,6 +2,7 @@ package com.esiran.greenpay.pay.plugin;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import com.esiran.greenpay.actuator.Plugin;
 import com.esiran.greenpay.actuator.entity.Flow;
 import com.esiran.greenpay.actuator.entity.Task;
@@ -99,6 +100,7 @@ public class ACPayPlugin implements Plugin<PayOrder> {
                 Map<String, Object> objectMap = MapUtil.jsonString2objMap(body);
                 assert objectMap != null;
                 String result = (String) objectMap.get("result");
+                String msg = (String) objectMap.get("msg");
                 if (result.equals("paying")){
                     redisDelayQueueClient.sendDelayMessage("order:acpay",orderDetail.getOrderNo(),5*1000);
                 }else if (result.equals("success")){
@@ -113,6 +115,7 @@ public class ACPayPlugin implements Plugin<PayOrder> {
                             .set(Order::getPaidAt, LocalDateTime.now())
                             .eq(Order::getOrderNo,order.getOrderNo());
                     orderService.update(wrapper);
+                    throw new ApiException(msg);
                 }
 
 //                Map<String,String> authCodemap = new HashMap<>();

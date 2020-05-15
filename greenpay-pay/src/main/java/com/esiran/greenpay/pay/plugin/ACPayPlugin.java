@@ -110,11 +110,6 @@ public class ACPayPlugin implements Plugin<PayOrder> {
                             .eq(Order::getOrderNo,order.getOrderNo());
                     orderService.update(wrapper);
                 }else if (result.equals("fail")){
-                    LambdaUpdateWrapper<Order> wrapper = new LambdaUpdateWrapper<>();
-                    wrapper.set(Order::getStatus,-2)
-                            .set(Order::getPaidAt, LocalDateTime.now())
-                            .eq(Order::getOrderNo,order.getOrderNo());
-                    orderService.update(wrapper);
                     throw new ApiException(msg);
                 }
 

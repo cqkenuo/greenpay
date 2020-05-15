@@ -949,7 +949,7 @@ CREATE TABLE `system_user` (
 
 LOCK TABLES `system_user` WRITE;
 /*!40000 ALTER TABLE `system_user` DISABLE KEYS */;
-INSERT INTO `system_user` VALUES (1,'admin','202cb962ac59075b964b07152d234b70','12@qq.com','2020-04-21 14:38:41','2020-05-11 14:34:37');
+INSERT INTO `system_user` VALUES (1,'admin','202cb962ac59075b964b07152d234b70',NULL,0,'admin@example.com','2020-04-21 14:38:41','2020-05-11 14:34:37');
 /*!40000 ALTER TABLE `system_user` ENABLE KEYS */;
 UNLOCK TABLES;
 

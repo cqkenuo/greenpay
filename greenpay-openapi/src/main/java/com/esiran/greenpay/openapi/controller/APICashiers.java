@@ -16,6 +16,7 @@ import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.openapi.entity.CashierInputDTO;
 import com.esiran.greenpay.openapi.entity.Invoice;
+import com.esiran.greenpay.openapi.entity.QueryDTO;
 import com.esiran.greenpay.openapi.security.OpenAPISecurityUtils;
 import com.esiran.greenpay.openapi.service.ICashierService;
 import com.esiran.greenpay.pay.entity.*;
@@ -260,5 +261,25 @@ public class APICashiers {
         modelMap.put("payAttr",results);
         modelMap.put("wxConfig",wxConfig);
         return "cashier/wx";
+    }
+    @GetMapping("/queryOrderStatus")
+    @ResponseBody
+    public QueryDTO queryOrderStatus(@RequestParam String orderNo){
+        QueryDTO dto = new QueryDTO();
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Order::getOrderNo,orderNo);
+        Order order = orderService.getOne(wrapper);
+        if (order == null) {
+            dto.setCode(1);
+            dto.setMsg("支付订单不存在");
+            return dto;
+        }
+        if (order.getStatus() == 2){
+            dto.setCode(2);
+            dto.setMsg(order.getRedirectUrl());
+//            dto.setMsg("http://www.baidu.com");
+            return dto;
+        }
+        return null;
     }
 }

@@ -125,9 +125,12 @@
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             }
                         }).then(function (response) {
-                            then.fullscreenLoading = false;
-                            console.log('res: ', error);
-                            console.log(response);
+                            then.fullscreenLoading = true;
+                            then.queryOrderStatus(orderNo);
+                            // then.fullscreenLoading = false;
+                            // console.log('res: ', error);
+                            // console.log(response);
+
                         }).catch(function (error) {
                             then.fullscreenLoading = false;
                             const response = error.response;
@@ -142,6 +145,40 @@
                     e.preventDefault();
                 });
             },
+            queryOrderStatus(orderNo){
+                this.fullscreenLoading = true;
+                let timer = setInterval(() => {
+                    axios.get("http://192.168.3.196:8099/v1/cashiers/queryOrderStatus", {
+                        //参数列表
+                        params: {
+                            orderNo: orderNo
+                        },
+                        //请求头配置
+                        // headers:{ token: token }
+                    }).then((res) => {
+                        console.log(res);
+                        if (res.data.code === 2){
+                            this.fullscreenLoading = false;
+                            location.href = res.data.msg;
+                            clearInterval(timer)
+                        }
+                        if (res.data.code === 1){
+                            this.fullscreenLoading = false;
+                            this.$message({
+                                type: 'error',
+                                message: `${res.data.msg}`
+                            });
+                            clearInterval(timer)
+                        }
+
+                        // console.log(res)
+                    }).catch(err => {
+                        this.fullscreenLoading = false;
+                        console.log(err.response)
+                        // alert(err.response.data.message)
+                    })
+                }, 1000)
+            }
         }
     })
 </script>

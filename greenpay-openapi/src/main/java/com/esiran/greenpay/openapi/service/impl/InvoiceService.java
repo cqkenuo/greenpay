@@ -58,8 +58,8 @@ public class InvoiceService implements IInvoiceService {
     private final IProductService productService;
     private final RedisDelayQueueClient redisDelayQueueClient;
     private final PluginLoader pluginLoader;
-//    @Value("${web.hostname:http://localhost}")
-//    private String webHostname;
+    @Value("${greenpay.web.hostname:http://localhost}")
+    private String webHostname;
     public InvoiceService(
             IMerchantService merchantService,
             IOrderService orderService,
@@ -173,12 +173,10 @@ public class InvoiceService implements IInvoiceService {
         PayOrder payOrder = new PayOrder();
         payOrder.setOrder(order);
         payOrder.setOrderDetail(orderDetail);
-
-//        String webHostname = String.format("%s://%s",request.getScheme(),request.getRequestURI());
-//        String notifyReceiveUrl = String.format(
-//                "%s/v1/invoices/%s/callback",
-//                webHostname,order.getOrderNo());
-//        payOrder.setNotifyReceiveUrl(notifyReceiveUrl);
+        String notifyReceiveUrl = String.format(
+                "%s/v1/invoices/%s/callback",
+                webHostname,order.getOrderNo());
+        payOrder.setNotifyReceiveUrl(notifyReceiveUrl);
         redisDelayQueueClient.sendDelayMessage("order:expire",order.getOrderNo(),20*60*1000);
         return payOrder;
     }

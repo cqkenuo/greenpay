@@ -51,6 +51,14 @@
                 method="post"
                 label-width="100px">
                 <el-form-item
+                        label="商品名称"
+                >
+                    <el-input
+                            v-model="form.subject"
+                            disabled>
+                    </el-input>
+                </el-form-item>
+                <el-form-item
                         label="交易流水号"
                 >
                     <el-input
@@ -100,6 +108,7 @@
     let orderNo = [[${order.orderNo}]];
     let amount = [[${order.amountDisplay}]];
     let outOrderNo = [[${order.outOrderNo}]];
+    let subject = [[${order.subject}]];
 </script>
 <script>
     new Vue({
@@ -111,6 +120,7 @@
                     authCode: '',
                     amount: amount,
                     orderNo: orderNo,
+                    subject: subject,
                     outOrderNo: outOrderNo
                 },
                 count: 0,

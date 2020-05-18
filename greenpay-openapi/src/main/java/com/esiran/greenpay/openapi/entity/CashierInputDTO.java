@@ -50,5 +50,5 @@ public class CashierInputDTO extends BaseSignInput {
     /**
      * 回退地址
      */
-    private String returnUrl;
+    private String redirectUrl;
 }

@@ -24,6 +24,7 @@ spring:
 
 web:
   hostname: http://api.pay.leyyx.cn
+#  hostname: http://api.pay.leyyx.cn
 
 greenpay:
   openapi:

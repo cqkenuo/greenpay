@@ -48,8 +48,8 @@ public class APIWxHelperController {
     private final IMerchantService merchantService;
     private final IApiConfigService apiConfigService;
     private final IPayloadService payloadService;
-//    @Value("${web.hostname:http://localhost}")
-//    private String webHostname;
+    @Value("${greenpay.web.hostname:http://localhost}")
+    private String webHostname;
     public APIWxHelperController(
             IMerchantService merchantService,
             IApiConfigService apiConfigService,
@@ -140,7 +140,6 @@ public class APIWxHelperController {
         config.setSecret(wxMpSecret);
         WxMpService wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(config);
-        String webHostname = String.format("%s://%s",request.getScheme(),request.getRequestURI());
         String oauthRedirect = String.format("%s/v1/helper/wx/callback/code",webHostname);
         String state = String.format("payloadId=%s",payloadId);
         String authUrl = wxMpService.oauth2buildAuthorizationUrl(oauthRedirect,

@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -73,7 +74,14 @@ public class ACPayPlugin implements Plugin<PayOrder> {
             if (upMap == null) throw new APIException("请求参数有误","CHANNEL_REQUEST_ERROR");
             String memberId = attrMap.get("memberId");
             String apiClientPrivKey = attrMap.get("apiClientPrivKey");
+            if (StringUtils.isEmpty(apiClientPrivKey)
+                    || StringUtils.isEmpty(apiClientPrivKey)){
+                throw new APIException("支付接口参数有误","CHANNEL_REQUEST_ERROR");
+            }
             String authCode = upMap.get("authCode");
+            if (StringUtils.isEmpty(authCode)){
+                throw new APIException("付款码为不能为空","CHANNEL_REQUEST_ERROR");
+            }
             Map<String,String> map = new HashMap<>();
             map.put("authCode",authCode);
             map.put("orderAmt",String.valueOf(order.getAmount()));
@@ -85,7 +93,6 @@ public class ACPayPlugin implements Plugin<PayOrder> {
             logger.info("sign: {}",sign);
             logger.info("apiPrivKey: {}",apiClientPrivKey);
             logger.info("Request: {}",MapUtil.sortAndSerialize(map));
-//            FormBody formBody = OkHttpUtil.map2fromBody(map);
             String json = g.toJson(map);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
             Request request = new Request.Builder()
@@ -98,7 +105,7 @@ public class ACPayPlugin implements Plugin<PayOrder> {
                 String body = responseBody.string();
                 logger.info("Response body: {}", body);
                 Map<String, Object> objectMap = MapUtil.jsonString2objMap(body);
-                assert objectMap != null;
+                if (objectMap == null) throw new APIException("支付渠道请求失败","CHANNEL_REQUEST_ERROR");
                 String result = (String) objectMap.get("result");
                 String msg = (String) objectMap.get("msg");
                 if (result.equals("paying")){
@@ -110,7 +117,7 @@ public class ACPayPlugin implements Plugin<PayOrder> {
                             .eq(Order::getOrderNo,order.getOrderNo());
                     orderService.update(wrapper);
                 }else if (result.equals("fail")){
-                    throw new ApiException(msg);
+                    throw new APIException(msg,"CHANNEL_REQUEST_ERROR");
                 }
 
 //                Map<String,String> authCodemap = new HashMap<>();

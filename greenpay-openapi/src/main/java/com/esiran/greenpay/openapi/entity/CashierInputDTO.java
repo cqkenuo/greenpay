@@ -32,6 +32,8 @@ public class CashierInputDTO extends BaseSignInput {
      */
     @NotBlank(message = "商品标题不能为空")
     private String subject;
+    @NotBlank(message = "支付渠道不能为空")
+    private String channel;
     /**
      * 商品描述信息
      */

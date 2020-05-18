@@ -1,27 +1,29 @@
 package com.esiran.greenpay.openapi.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.esiran.greenpay.actuator.Plugin;
 import com.esiran.greenpay.actuator.PluginLoader;
-import com.esiran.greenpay.common.sign.Md5SignType;
-import com.esiran.greenpay.common.sign.SignType;
-import com.esiran.greenpay.common.sign.SignVerify;
+import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.sign.*;
 import com.esiran.greenpay.common.util.MapUtil;
 import com.esiran.greenpay.common.util.NumberUtil;
+import com.esiran.greenpay.common.util.SignReqUtil;
+import com.esiran.greenpay.common.util.UrlSafeB64;
 import com.esiran.greenpay.merchant.entity.ApiConfig;
 import com.esiran.greenpay.merchant.entity.Merchant;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
 import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.openapi.entity.CashierInputDTO;
+import com.esiran.greenpay.openapi.entity.Invoice;
 import com.esiran.greenpay.openapi.security.OpenAPISecurityUtils;
 import com.esiran.greenpay.openapi.service.ICashierService;
-import com.esiran.greenpay.pay.entity.Interface;
-import com.esiran.greenpay.pay.entity.Order;
-import com.esiran.greenpay.pay.entity.OrderDetail;
-import com.esiran.greenpay.pay.entity.PayOrder;
+import com.esiran.greenpay.pay.entity.*;
 import com.esiran.greenpay.pay.plugin.PayOrderFlow;
 import com.esiran.greenpay.pay.service.IInterfaceService;
 import com.esiran.greenpay.pay.service.IOrderDetailService;
 import com.esiran.greenpay.pay.service.IOrderService;
+import com.esiran.greenpay.pay.service.IProductService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
@@ -29,11 +31,14 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,8 +62,9 @@ public class APICashiers {
     private final PluginLoader pluginLoader;
     private final RedisDelayQueueClient redisDelayQueueClient;
     private static final Gson gson = new GsonBuilder().create();
-    @Value("${web.hostname:http://localhost}")
+    @Value("${greenpay.web.hostname:http://localhost}")
     private String webHostname;
+    private static final ModelMapper modelMapper = new ModelMapper();
     public APICashiers(
             ICashierService cashierService,
             IApiConfigService apiConfigService,
@@ -79,36 +85,121 @@ public class APICashiers {
     @RequestMapping
     public String create(@Valid CashierInputDTO inputDTO, HttpServletRequest request) throws Exception {
         Merchant merchant = OpenAPISecurityUtils.getSubject();
-        String userAgent = request.getHeader("User-Agent").toLowerCase();
-        Pattern wxBrowserPattern = Pattern.compile("micromessenger");
-        Pattern aliBrowserPattern = Pattern.compile("alipayclient");
-        Matcher wxBrowserMatcher = wxBrowserPattern.matcher(userAgent);
-        Matcher aliBrowserMatcher = aliBrowserPattern.matcher(userAgent);
-        String productCode = "wx_jsapi";
-        if (wxBrowserMatcher.matches()){
-            productCode = "wx_jsapi";
-        }else if(aliBrowserMatcher.matches()){
-            productCode = "ali_jsapi";
-        }
+        String productCode = inputDTO.getChannel();
         PayOrder payOrder = cashierService.createCashierByInput(productCode, inputDTO, merchant);
+        ApiConfig apiConfig = apiConfigService.getOneByMerchantId(merchant.getId());
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        Map<String,String> reqMap = new HashMap<>();
+        reqMap.put("timestamp", timestamp);
+        reqMap.put("signType", "rsa");
+        reqMap.put("apiKey", apiConfig.getApiKey());
         if (productCode.equals("wx_jsapi")){
-            String timestamp = String.valueOf(System.currentTimeMillis());
             String redirectUrl = String.format("%s/v1/cashiers/pay/wx/order?orderNo=%s",
-                    webHostname,payOrder.getOrder().getOrderNo());
-            ApiConfig apiConfig = apiConfigService.getOneByMerchantId(merchant.getId());
-            Map<String,String> reqMap = new HashMap<>();
-            reqMap.put("timestamp",timestamp);
-            reqMap.put("signType","md5");
-            reqMap.put("apiKey",apiConfig.getApiKey());
+                    webHostname, payOrder.getOrder().getOrderNo());
             reqMap.put("redirectUrl",redirectUrl);
             String req = MapUtil.sortAndSerialize(reqMap);
             SignType signType = new Md5SignType(req);
             SignVerify verify = signType.sign(apiConfig.getApiSecurity());
             String sign = verify.getSign();
             return String.format("redirect:/v1/helper/wx/openid?%s&sign=%s",req,sign);
+        }else if(productCode.equals("wx_scan")){
+            reqMap.put("orderNo",payOrder.getOrder().getOrderNo());
+            String req = MapUtil.sortAndSerialize(reqMap);
+            SignType signType = new RSA2SignType(req);
+            String sign = signType.sign2(apiConfig.getPrivateKey());
+            sign = UrlSafeB64.encode(sign);
+            return String.format("redirect:/v1/cashiers/pages?%s&sign=%s",req,sign);
         }
         return null;
     }
+    @GetMapping("/pages")
+    public String cashiersPages(
+            @RequestParam String orderNo,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            ModelMap modelMap){
+        try {
+            SignType signType = SignReqUtil.verifySignParam(request,1200000);
+            String apiKey = request.getParameter("apiKey");
+            String sign = request.getParameter("sign");
+            LambdaQueryWrapper<ApiConfig> queryWrapper = new QueryWrapper<ApiConfig>()
+                    .lambda().eq(ApiConfig::getApiKey,apiKey);
+            ApiConfig apiConfig = apiConfigService.getOne(queryWrapper);
+            if (apiConfig == null){
+                throw new IllegalAccessException("系统错误");
+            }
+            String credential = (signType instanceof RSA2SignType)
+                    ?apiConfig.getPubKey():apiConfig.getApiSecurity();
+            SignVerify signVerify = signType.sign(credential);
+            sign = (signType instanceof RSA2SignType)
+                    ?UrlSafeB64.decode(sign):sign;
+            if (StringUtils.isEmpty(sign) || !signVerify.verify(sign)){
+                throw new IllegalAccessException("签名校验失败");
+            }
+        } catch (Exception e) {
+            response.setStatus(404);
+            return null;
+        }
+        Order order = orderService.getOneByOrderNo(orderNo);
+        if (order == null || order.getStatus() != 1) {
+            response.setStatus(404);
+            return null;
+        }
+        String productCode = order.getPayProductCode();
+        if (productCode == null || productCode.length() == 0) {
+            response.setStatus(404);
+            return null;
+        }
+        modelMap.put("order",order);
+        return String.format("cashier/%s",productCode);
+    }
+    @PostMapping("/pages")
+    @ResponseBody
+    public Invoice cashiersPagesPost(
+            @RequestParam String orderNo,
+            @RequestParam String channelExtra) throws APIException {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Order order = orderService.getOneByOrderNo(orderNo);
+        if (order == null) throw new APIException("订单不存在","RESOURCE_NOT_FOUND");
+        if (order.getStatus() > 1) throw new APIException("订单已完成支付","ORDER_STATUS_PAID");
+        if (order.getStatus() < 1 ) throw new APIException("订单已过期或异常","ORDER_STATUS_ERROR");
+        OrderDetail orderDetail = orderDetailService.getOneByOrderNo(orderNo);
+        if (orderDetail == null ) throw new APIException("系统异常[订单详情不存在]","SYSTEM_ERROR");
+        String productCode = order.getPayProductCode();
+        if (productCode == null || productCode.length() == 0)
+            throw new APIException("系统异常[订单支付渠道不存在]","SYSTEM_ERROR");
+        orderDetail.setUpstreamExtra(channelExtra);
+        orderDetailService.updateById(orderDetail);
+        String notifyReceiveUrl = String.format(
+                "%s/v1/invoices/%s/callback",
+                webHostname,order.getOrderNo());
+        PayOrder payOrder = new PayOrder();
+        payOrder.setOrder(order);
+        payOrder.setOrderDetail(orderDetail);
+        payOrder.setNotifyReceiveUrl(notifyReceiveUrl);
+        Interface interfaces = interfaceService.getById(orderDetail.getPayInterfaceId());
+        Map<String,Object> results;
+        try {
+            Plugin<PayOrder> payOrderPlugin = pluginLoader.loadForClassPath(interfaces.getInterfaceImpl());
+            PayOrderFlow payOrderFlow = new PayOrderFlow(payOrder);
+            payOrderPlugin.apply(payOrderFlow);
+            payOrderFlow.execDependent("create");
+            results = payOrderFlow.getResults();
+            orderDetailService.updatePayCredentialByOrderNo(order.getOrderNo(),results);
+        } catch (Exception e) {
+            if (e instanceof APIException){
+                String code = ((APIException) e).getCode();
+                String message = e.getMessage();
+                throw new APIException(message,code);
+            }
+            throw new APIException(String.format("系统异常[%s]",e.getMessage()),"SYSTEM_ERROR");
+        }
+        Invoice out = modelMapper.map(order,Invoice.class);
+        out.setChannel(order.getPayProductCode());
+        out.setCredential(results);
+        return out;
+    }
+
     @GetMapping("/pay/wx/order")
     public String payOrder(
             @RequestParam String orderNo,

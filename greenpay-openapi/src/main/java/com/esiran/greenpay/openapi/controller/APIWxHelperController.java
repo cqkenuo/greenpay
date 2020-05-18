@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -47,8 +48,8 @@ public class APIWxHelperController {
     private final IMerchantService merchantService;
     private final IApiConfigService apiConfigService;
     private final IPayloadService payloadService;
-    @Value("${web.hostname:http://localhost}")
-    private String webHostname;
+//    @Value("${web.hostname:http://localhost}")
+//    private String webHostname;
     public APIWxHelperController(
             IMerchantService merchantService,
             IApiConfigService apiConfigService,
@@ -121,6 +122,7 @@ public class APIWxHelperController {
 
     @GetMapping("/openid")
     public String openId(
+            HttpServletRequest request,
             @Valid WxOPenIdInputDTO wxOPenIdInputDTO,
             HttpServletResponse response) {
         Merchant merchant = OpenAPISecurityUtils.getSubject();
@@ -138,6 +140,7 @@ public class APIWxHelperController {
         config.setSecret(wxMpSecret);
         WxMpService wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(config);
+        String webHostname = String.format("%s://%s",request.getScheme(),request.getRequestURI());
         String oauthRedirect = String.format("%s/v1/helper/wx/callback/code",webHostname);
         String state = String.format("payloadId=%s",payloadId);
         String authUrl = wxMpService.oauth2buildAuthorizationUrl(oauthRedirect,

@@ -32,7 +32,7 @@ public class CashierService implements ICashierService {
         this.invoiceService = invoiceService;
     }
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public PayOrder createCashierByInput(String productCode, CashierInputDTO inputDTO, Merchant merchant) throws Exception {
         InvoiceInputDTO invoiceInputDTO = modelMapper.map(inputDTO, InvoiceInputDTO.class);
         invoiceInputDTO.setChannel(productCode);

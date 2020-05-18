@@ -22,8 +22,10 @@ spring:
           enabled: true
 
 greenpay:
+  web:
+    hostname: http://localhost
   openapi:
-    enable_sign: true
-
-web:
-  hostname: http://s7buy.esiran.com
+    security:
+      sign:
+        enabled: false
+        allow_types: md5,hmac_md5,rsa

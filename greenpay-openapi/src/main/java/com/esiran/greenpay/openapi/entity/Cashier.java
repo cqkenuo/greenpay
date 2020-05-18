@@ -19,6 +19,7 @@ public class Cashier {
     private Map<String,Object> channelExtra;
     private String clientIp;
     private String notifyUrl;
+    private String redirectUrl;
     private Map<String,Object> credential;
     private Integer status;
     private LocalDateTime createdAt;

@@ -58,4 +58,9 @@ public class InvoiceInputDTO extends BaseSignInput {
 //    @NotBlank(message = "回调地址不能为空")
     private String notifyUrl;
 
+
+    /**
+     * 回退地址
+     */
+    private String redirectUrl;
 }

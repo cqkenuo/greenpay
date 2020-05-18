@@ -59,6 +59,12 @@ public class Invoice {
      * 回调地址
      */
     private String notifyUrl;
+
+
+    /**
+     * 回退地址
+     */
+    private String redirectUrl;
     /**
      * 支付凭证
      */

@@ -48,7 +48,7 @@ public class OPenAPISecurityFilter implements Filter {
                 "/v1/cashiers/pay/wx/order($|/$)",
                 "/v1/invoices/.+?/callback($|/$)",
                 "/v1/cashiers/pages($|/$)",
-                "/v1/cashiers/queryOrderStatus($|/$)",
+                "/v1/cashiers/flow($|/$)",
         };
     }
 

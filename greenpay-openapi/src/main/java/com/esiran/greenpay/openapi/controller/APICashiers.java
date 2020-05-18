@@ -27,6 +27,7 @@ import com.esiran.greenpay.pay.service.IOrderService;
 import com.esiran.greenpay.pay.service.IProductService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.swagger.models.auth.In;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -141,7 +142,7 @@ public class APICashiers {
             response.setStatus(404);
             return null;
         }
-        Order order = orderService.getOneByOrderNo(orderNo);
+        OrderDTO order = orderService.getByOrderNo(orderNo);
         if (order == null || order.getStatus() != 1) {
             response.setStatus(404);
             return null;
@@ -262,24 +263,43 @@ public class APICashiers {
         modelMap.put("wxConfig",wxConfig);
         return "cashier/wx";
     }
-    @GetMapping("/queryOrderStatus")
+    @GetMapping("/flow")
     @ResponseBody
-    public QueryDTO queryOrderStatus(@RequestParam String orderNo){
+    public String queryOrderStatus(@RequestParam String orderNo) throws APIException {
+        String redirectUrl = "";
         QueryDTO dto = new QueryDTO();
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Order::getOrderNo,orderNo);
+        wrapper.eq(Order::getOrderNo, orderNo);
         Order order = orderService.getOne(wrapper);
-        if (order == null) {
-            dto.setCode(1);
-            dto.setMsg("支付订单不存在");
-            return dto;
+        if (order == null || order.getStatus() != 2) {
+            throw new APIException("订单不存在或状态异常", "ORDER_NOT_FOUND", 404);
         }
-        if (order.getStatus() == 2){
-            dto.setCode(2);
-            dto.setMsg(order.getRedirectUrl());
-//            dto.setMsg("http://www.baidu.com");
-            return dto;
+        if (!StringUtils.isEmpty(order.getRedirectUrl())) {
+            ApiConfig apiConfig = apiConfigService.getOneByMerchantId(order.getMchId());
+            if (apiConfig == null) {
+                throw new APIException("系统错误", "SYSTEM_ERROR", 500);
+            }
+            Map<String, String> params = new HashMap<>();
+            params.put("orderNo", order.getOrderNo());
+            params.put("outOrderNo", order.getOutOrderNo());
+            params.put("channel", order.getPayProductCode());
+            params.put("subject", order.getSubject());
+            if (order.getBody() != null) {
+                params.put("body", order.getBody());
+            }
+            params.put("amount", String.valueOf(order.getAmount()));
+            params.put("fee", String.valueOf(order.getFee()));
+            params.put("appId", order.getAppId());
+            params.put("status", String.valueOf(order.getStatus()));
+            params.put("timestamp", String.valueOf(System.currentTimeMillis()));
+            params.put("signType", "rsa");
+            String principal = MapUtil.sortAndSerialize(params);
+            SignType signType = new RSA2SignType(principal);
+            String sign = signType.sign2(apiConfig.getPrivateKey());
+            sign = UrlSafeB64.encode(sign);
+            return String.format("%s?%s&sign=%s",order.getRedirectUrl(),principal,sign);
+
         }
-        return null;
+        return redirectUrl;
     }
 }

@@ -49,7 +49,31 @@
                 action=""
                 target="_blank"
                 method="post"
-                label-width="80px">
+                label-width="100px">
+                <el-form-item
+                        label="交易流水号"
+                >
+                    <el-input
+                            v-model="form.orderNo"
+                            disabled>
+                    </el-input>
+                </el-form-item>
+                <el-form-item
+                        label="交易订单号"
+                >
+                    <el-input
+                            v-model="form.outOrderNo"
+                            disabled>
+                    </el-input>
+                </el-form-item>
+                <el-form-item
+                        label="金额(元)"
+                        >
+                    <el-input
+                            v-model="form.amount"
+                            disabled>
+                    </el-input>
+                </el-form-item>
                 <el-form-item
                     label="付款码"
                     prop="authCode">
@@ -74,6 +98,8 @@
 </div>
 <script th:inline="javascript">
     let orderNo = [[${order.orderNo}]];
+    let amount = [[${order.amountDisplay}]];
+    let outOrderNo = [[${order.outOrderNo}]];
 </script>
 <script>
     new Vue({
@@ -83,7 +109,12 @@
                 fullscreenLoading: false,
                 form: {
                     authCode: '',
+                    amount: amount,
+                    orderNo: orderNo,
+                    outOrderNo: outOrderNo
                 },
+                count: 0,
+                isDoPay: false,
                 rules: {
                     authCode: [
                         {
@@ -105,6 +136,9 @@
                 }
             }
         },
+        mounted: function(){
+            this.queryOrderStatus(orderNo);
+        },
         methods: {
             doPay(e) {
                 this.$refs['payOrderForm'].validate((valid) => {
@@ -125,11 +159,8 @@
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             }
                         }).then(function (response) {
-                            then.fullscreenLoading = true;
-                            then.queryOrderStatus(orderNo);
-                            // then.fullscreenLoading = false;
-                            // console.log('res: ', error);
-                            // console.log(response);
+                            then.isDoPay = true;
+                            then.count = 0;
 
                         }).catch(function (error) {
                             then.fullscreenLoading = false;
@@ -139,16 +170,24 @@
                                 type: 'error',
                                 message: `${message}`
                             });
-                            console.log('eror: ', message);
                         });
                     }
                     e.preventDefault();
                 });
             },
             queryOrderStatus(orderNo){
-                this.fullscreenLoading = true;
+                // this.fullscreenLoading = true;
+
+                let then = this;
                 let timer = setInterval(() => {
-                    axios.get("http://192.168.3.196:8099/v1/cashiers/queryOrderStatus", {
+                    if (then.count++ >= 180 && then.isDoPay ){
+                        this.fullscreenLoading = false;
+                        alert("查询结果超时");
+                        clearInterval(timer);
+                        window.close();
+                        return;
+                    }
+                    axios.get("/v1/cashiers/flow", {
                         //参数列表
                         params: {
                             orderNo: orderNo
@@ -157,25 +196,13 @@
                         // headers:{ token: token }
                     }).then((res) => {
                         console.log(res);
-                        if (res.data.code === 2){
-                            this.fullscreenLoading = false;
-                            location.href = res.data.msg;
-                            clearInterval(timer)
+                        if (res.data === ""){
+                            window.close();
                         }
-                        if (res.data.code === 1){
-                            this.fullscreenLoading = false;
-                            this.$message({
-                                type: 'error',
-                                message: `${res.data.msg}`
-                            });
-                            clearInterval(timer)
-                        }
-
-                        // console.log(res)
-                    }).catch(err => {
                         this.fullscreenLoading = false;
-                        console.log(err.response)
-                        // alert(err.response.data.message)
+                        clearInterval(timer);
+                        location.replace(res.data);
+                        // console.log(res)
                     })
                 }, 1000)
             }

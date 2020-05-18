@@ -22,6 +22,8 @@ delay_queue:
     enabled: false
 
 greenpay:
+  web:
+    hostname: http://localhost
   openapi:
     security:
       sign:

@@ -22,10 +22,10 @@ spring:
         content:
           enabled: true
 
-web:
-  hostname: http://s7buy.esiran.com
 
 greenpay:
+  web:
+    hostname: http://s7buy.esiran.com
   openapi:
     security:
       sign:

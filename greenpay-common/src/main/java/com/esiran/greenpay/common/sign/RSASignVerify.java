@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import java.nio.charset.StandardCharsets;
 
 public class RSASignVerify implements SignVerify{
-    private String sign;
-    private String publicKey;
+    private final String sign;
+    private final String publicKey;
     private static final Logger logger = LoggerFactory.getLogger(SignVerify.class);
     public RSASignVerify(String sign, String publicKey) {
         this.sign = sign;
@@ -19,5 +19,10 @@ public class RSASignVerify implements SignVerify{
     public boolean verify(String target){
         logger.debug("Verify rsa sign target: {}, public: {}",target,publicKey);
         return RSAUtil.verify(sign.getBytes(StandardCharsets.UTF_8),publicKey,target);
+    }
+
+    @Override
+    public String getSign() {
+        return sign;
     }
 }

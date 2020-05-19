@@ -69,12 +69,14 @@ public class OpenApiTest {
         params.put("timestamp",String.valueOf(timestamp));
         params.put("signType","rsa");
         String privateKey = getPrivateKey();
-        String principal = MapUtil.sortAndSerialize(params,null);
+//        String principal = MapUtil.sortAndSerialize(params,null);
+        String principal = "amount=100&appId=123465&channel=wx_scan&fee=0&orderNo=1262632517463314432&outOrderNo=20200519063342258195&signType=rsa&status=3&subject=测试订单&timestamp=1589875172984";
         System.out.println(String.format("principal: %s", principal));
         byte[] data = principal.getBytes(StandardCharsets.UTF_8);
         String sign = RSAUtil.sign(data,privateKey);
-        System.out.println(String.format("sign: %s", sign));
         sign = UrlSafeB64.encode(sign);
+        System.out.println(String.format("sign: %s", sign));
+//        String vSign = UrlSafeB64.decode("iH5pMXMbwLcxugIUr6CL9DtGVsGw8N4XdRmwLsPVwSiZHL7zrTP1quWueOMPi1CBoBQiW9wP0t5lVeQqgGn9QqD03367*qGYuBxtfY7MZB3s9G-AkdOZzUps9XzJ0R1my2WR176iM0v5AoxrJblgeRroIjos0ZfSfuNWDfUYXihfsk33X4eJkhDaTj6PXx1qhcAOi75WYwRf1FYUIFouC9lqBRjCSIoTapPmZSeykcLBokGMuUiJmqcC-avQVRmFoejrHbCe7mVWxcJzc0M6Blby1iKLkvRrYjnrQcTxG1Fis7KF8-gxB9BJiHcbmeYyNudsGXzxOfFBjRszXgwHvw..");
         String vSign = UrlSafeB64.decode(sign);
         String publicKey = getPublicKey();
         boolean pass = RSAUtil.verify(data,publicKey,vSign);

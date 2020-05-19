@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.17, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: greenpay
+-- Host: localhost    Database: greenpay
 -- ------------------------------------------------------
--- Server version	8.0.19
+-- Server version	8.0.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,145 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `agentpay_batch`
+--
+
+DROP TABLE IF EXISTS `agentpay_batch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `agentpay_batch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `batch_no` varchar(32) NOT NULL COMMENT '交易批次号',
+  `out_batch_no` varchar(32) NOT NULL COMMENT '商户交易批次号',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `total_amount` int(11) NOT NULL DEFAULT '0' COMMENT '总金额（单位：分）',
+  `total_count` int(11) NOT NULL DEFAULT '0' COMMENT '总笔数',
+  `notify_url` varchar(255) DEFAULT NULL COMMENT '订单回调地址',
+  `extra` varchar(255) DEFAULT NULL COMMENT '扩展参数',
+  `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
+  `agentpay_passage_id` int(11) NOT NULL COMMENT '代付通道ID',
+  `agentpay_passage_acc_id` int(11) NOT NULL COMMENT '代付通道账户ID',
+  `pay_interface_id` int(11) NOT NULL COMMENT '支付接口ID',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单状态（1：待处理，2：处理中，3：处理成功，4：部分成功，-1：处理失败）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付批次';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agentpay_batch`
+--
+
+LOCK TABLES `agentpay_batch` WRITE;
+/*!40000 ALTER TABLE `agentpay_batch` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agentpay_batch` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `agentpay_order`
+--
+
+DROP TABLE IF EXISTS `agentpay_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `agentpay_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_no` varchar(32) NOT NULL COMMENT '订单号',
+  `order_sn` varchar(32) NOT NULL COMMENT '订单流水号',
+  `out_order_no` varchar(32) NOT NULL COMMENT '商户订单号',
+  `batch_no` varchar(32) DEFAULT NULL COMMENT '代付批次号',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `amount` int(11) NOT NULL DEFAULT '0' COMMENT '订单金额（单位：分）',
+  `fee` int(11) NOT NULL DEFAULT '0' COMMENT '订单手续费（单位：分）',
+  `account_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1：对私，2：对公',
+  `account_name` varchar(32) NOT NULL COMMENT '账户名',
+  `account_number` varchar(32) NOT NULL COMMENT '账户号',
+  `bank_name` varchar(32) NOT NULL COMMENT '开户行',
+  `bank_number` varchar(32) NOT NULL COMMENT '联行号',
+  `notify_url` varchar(255) DEFAULT NULL COMMENT '订单回调地址',
+  `extra` varchar(255) DEFAULT NULL COMMENT '扩展参数',
+  `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
+  `agentpay_passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `agentpay_passage_name` varchar(32) NOT NULL COMMENT '代付通道名称',
+  `agentpay_passage_acc_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `pay_interface_id` int(11) NOT NULL COMMENT '支付接口ID',
+  `pay_interface_attr` varchar(255) NOT NULL COMMENT '支付接口参数',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单状态（1：待处理，2：处理中，3：处理成功，-1：处理失败）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付订单表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agentpay_order`
+--
+
+LOCK TABLES `agentpay_order` WRITE;
+/*!40000 ALTER TABLE `agentpay_order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agentpay_order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `agentpay_passage`
+--
+
+DROP TABLE IF EXISTS `agentpay_passage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `agentpay_passage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `passage_name` varchar(32) NOT NULL COMMENT '代付通道名称',
+  `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
+  `interface_code` varchar(32) NOT NULL COMMENT '支付接口编码',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付通道';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agentpay_passage`
+--
+
+LOCK TABLES `agentpay_passage` WRITE;
+/*!40000 ALTER TABLE `agentpay_passage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agentpay_passage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `agentpay_passage_account`
+--
+
+DROP TABLE IF EXISTS `agentpay_passage_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `agentpay_passage_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
+  `passage_id` int(11) NOT NULL COMMENT '代付通道ID',
+  `account_name` varchar(32) NOT NULL COMMENT '通道账户名称',
+  `interface_attr` varchar(255) DEFAULT NULL COMMENT '通道接口参数',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT '轮询权重',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付通道账户';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `agentpay_passage_account`
+--
+
+LOCK TABLES `agentpay_passage_account` WRITE;
+/*!40000 ALTER TABLE `agentpay_passage_account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `agentpay_passage_account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `merchant`
 --
 
@@ -23,7 +162,7 @@ DROP TABLE IF EXISTS `merchant`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '商户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商户ID',
   `username` varchar(32) NOT NULL COMMENT '用户名',
   `name` varchar(32) NOT NULL COMMENT '商户名称',
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '电子邮箱',
@@ -33,7 +172,7 @@ CREATE TABLE `merchant` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,8 +181,39 @@ CREATE TABLE `merchant` (
 
 LOCK TABLES `merchant` WRITE;
 /*!40000 ALTER TABLE `merchant` DISABLE KEYS */;
-INSERT INTO `merchant` (`id`, `username`, `name`, `email`, `phone`, `password`, `status`, `created_at`, `updated_at`) VALUES (2,'user1','user1','','','abc',1,'2020-04-14 00:44:57','2020-04-14 00:44:57');
 /*!40000 ALTER TABLE `merchant` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `merchant_agentpay_passage`
+--
+
+DROP TABLE IF EXISTS `merchant_agentpay_passage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `merchant_agentpay_passage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
+  `passage_id` int(11) NOT NULL COMMENT '通道ID',
+  `passage_name` varchar(32) NOT NULL COMMENT '通道名称',
+  `fee_type` int(11) NOT NULL DEFAULT '1' COMMENT '手续费类型（1：百分比收费，2：固定收费，3：百分比加固定收费）',
+  `fee_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '通道费率',
+  `fee_amount` int(11) NOT NULL DEFAULT '0' COMMENT '固定费用（单位：分）',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT '轮询权重',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户代付通道';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `merchant_agentpay_passage`
+--
+
+LOCK TABLES `merchant_agentpay_passage` WRITE;
+/*!40000 ALTER TABLE `merchant_agentpay_passage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `merchant_agentpay_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -54,16 +224,17 @@ DROP TABLE IF EXISTS `merchant_api_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_api_config` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `mch_id` int NOT NULL COMMENT '商户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
   `api_key` varchar(32) NOT NULL COMMENT '商户APIKEY',
   `api_security` varchar(32) NOT NULL COMMENT '商户API_SECURITY',
+  `private_key` varchar(2048) DEFAULT NULL COMMENT '平台私钥',
   `pub_key` varchar(512) DEFAULT NULL COMMENT '平台公钥',
   `mch_pub_key` varchar(512) DEFAULT NULL COMMENT '商户公钥',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户密钥';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户密钥';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +243,6 @@ CREATE TABLE `merchant_api_config` (
 
 LOCK TABLES `merchant_api_config` WRITE;
 /*!40000 ALTER TABLE `merchant_api_config` DISABLE KEYS */;
-INSERT INTO `merchant_api_config` (`id`, `mch_id`, `api_key`, `api_security`, `pub_key`, `mch_pub_key`, `created_at`, `updated_at`) VALUES (1,2,'abc','abc',NULL,'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwNmE+3KTqhGn2WLz0GGhZajXE1ot2yli8yHbtAQBNRZMQB8mpEk7oDp4F08lklCkF18X5weCMMSKgDiiPAwLE98fSuORoYSwtCDFkt8ojFAQfkZVyZF9f0ffNaZacFodU1NTJC6OY2/SdyKa6E8IzljLZGotU1bMa75kwjJGG92MjBlLgn6FcGstmzYS/0ezHUyv53BmOvmH2mCoY1dAvmqAlK5LVUWeYAh8QW0OxOib1BZAXUxQqOa0fL9Ubzvi0eCZvaGrmqSdfQixQ6EdTgP8AqfT0eX00Nlp6vt4S6wUEmy/a7Xxezh8JJAzacMHFa27JYtBOtDe3/DNR0BD8QIDAQAB','2020-04-15 22:07:22','2020-04-15 22:07:22');
 /*!40000 ALTER TABLE `merchant_api_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,10 +254,10 @@ DROP TABLE IF EXISTS `merchant_pay_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_pay_account` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '商户支付账户ID',
-  `merchant_id` int NOT NULL COMMENT '商户ID',
-  `avail_balance` int NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
-  `freeze_balance` int NOT NULL DEFAULT '0' COMMENT '冻结余额（分）',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商户支付账户ID',
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
+  `avail_balance` int(11) NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
+  `freeze_balance` int(11) NOT NULL DEFAULT '0' COMMENT '冻结余额（分）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -111,10 +281,10 @@ DROP TABLE IF EXISTS `merchant_prepaid_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_prepaid_account` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '账户ID',
-  `merchant_id` int NOT NULL COMMENT '商户ID',
-  `avail_balance` int NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
-  `freeze_balance` int NOT NULL DEFAULT '0' COMMENT '冻结金额（分）',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '账户ID',
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
+  `avail_balance` int(11) NOT NULL DEFAULT '0' COMMENT '可用余额（分）',
+  `freeze_balance` int(11) NOT NULL DEFAULT '0' COMMENT '冻结金额（分）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -138,16 +308,22 @@ DROP TABLE IF EXISTS `merchant_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `merchant_product` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '商户产品ID',
-  `merchant_id` int NOT NULL COMMENT '商户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商户产品ID',
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `product_id` int DEFAULT NULL COMMENT '产品ID',
-  `rate` decimal(10,3) NOT NULL DEFAULT '0.000' COMMENT '通道费率',
+  `product_id` int(11) DEFAULT NULL COMMENT '产品ID',
+  `product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
+  `product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
+  `product_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付产品类型（1：收款，2：充值）',
+  `interface_mode` tinyint(1) NOT NULL DEFAULT '1' COMMENT '接口模式（1:单独，2：轮训）',
+  `rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '通道费率',
+  `default_passage_id` int(11) DEFAULT NULL COMMENT '默认通道ID',
+  `default_passage_acc_id` int(11) DEFAULT NULL COMMENT '默认通道账号ID',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,8 +332,93 @@ CREATE TABLE `merchant_product` (
 
 LOCK TABLES `merchant_product` WRITE;
 /*!40000 ALTER TABLE `merchant_product` DISABLE KEYS */;
-INSERT INTO `merchant_product` (`id`, `merchant_id`, `pay_type_code`, `product_id`, `rate`, `status`, `created_at`, `updated_at`) VALUES (2,2,'wx_jsapi',2,0.024,1,'2020-04-14 02:09:44','2020-04-14 02:09:44');
 /*!40000 ALTER TABLE `merchant_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `merchant_product_passage`
+--
+
+DROP TABLE IF EXISTS `merchant_product_passage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `merchant_product_passage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `product_id` int(11) NOT NULL COMMENT '产品ID',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `widget` int(11) NOT NULL DEFAULT '0' COMMENT '权重',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户产品通道';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `merchant_product_passage`
+--
+
+LOCK TABLES `merchant_product_passage` WRITE;
+/*!40000 ALTER TABLE `merchant_product_passage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `merchant_product_passage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `merchant_settle_account`
+--
+
+DROP TABLE IF EXISTS `merchant_settle_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `merchant_settle_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `merchant_id` int(11) NOT NULL COMMENT '商户ID',
+  `settle_fee_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算收费类型（1：百分比收费，2：固定收费）',
+  `settle_fee_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '结算费率（百分比）',
+  `settle_fee_amount` int(11) NOT NULL DEFAULT '0' COMMENT '结算费用（单位，分）',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户结算账户';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `merchant_settle_account`
+--
+
+LOCK TABLES `merchant_settle_account` WRITE;
+/*!40000 ALTER TABLE `merchant_settle_account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `merchant_settle_account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pay_extract`
+--
+
+DROP TABLE IF EXISTS `pay_extract`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pay_extract` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `extract_no` varchar(32) NOT NULL COMMENT '订单编号',
+  `mch_id` int(11) NOT NULL COMMENT '商户id',
+  `amount` int(11) NOT NULL COMMENT '提现金额',
+  `status` int(11) NOT NULL COMMENT '提现状态 0 待审核 ，1提现成功，-1提现失败',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `end_at` datetime DEFAULT NULL COMMENT '结束时间',
+  `updated_at` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户提现记录表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pay_extract`
+--
+
+LOCK TABLES `pay_extract` WRITE;
+/*!40000 ALTER TABLE `pay_extract` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pay_extract` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -168,19 +429,19 @@ DROP TABLE IF EXISTS `pay_interface`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_interface` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付接口ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付接口ID',
   `interface_code` varchar(32) NOT NULL COMMENT '支付接口编码',
   `interface_name` varchar(32) NOT NULL COMMENT '支付接口名称',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '接口调用方式（1：实现类调用，2：插件调用，3：脚本调用）',
-  `interface_impl` varchar(32) DEFAULT NULL COMMENT '实现类类名',
+  `interface_impl` varchar(255) DEFAULT NULL COMMENT '实现类类名',
   `interface_plugin` varchar(32) DEFAULT NULL COMMENT '插件名称',
   `interface_script` varchar(255) DEFAULT NULL COMMENT '脚本内容',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付接口';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +450,6 @@ CREATE TABLE `pay_interface` (
 
 LOCK TABLES `pay_interface` WRITE;
 /*!40000 ALTER TABLE `pay_interface` DISABLE KEYS */;
-INSERT INTO `pay_interface` (`id`, `interface_code`, `interface_name`, `pay_type_code`, `interface_type`, `interface_impl`, `interface_plugin`, `interface_script`, `status`, `created_at`, `updated_at`) VALUES (2,'wx_jsapi','微信JSAPI官方','wx_jsapi',1,NULL,NULL,NULL,1,'2020-04-14 02:05:00','2020-04-14 02:05:00');
 /*!40000 ALTER TABLE `pay_interface` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,25 +461,29 @@ DROP TABLE IF EXISTS `pay_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_order` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_no` varchar(32) NOT NULL COMMENT '订单编号',
   `order_sn` varchar(32) NOT NULL COMMENT '交易流水号',
-  `mch_id` int NOT NULL COMMENT '商户ID',
-  `app_id` int NOT NULL COMMENT '应用ID',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `app_id` varchar(32) NOT NULL COMMENT '应用ID',
   `subject` varchar(32) NOT NULL COMMENT '商品标题',
   `out_order_no` varchar(32) NOT NULL COMMENT '商户订单号',
-  `amount` int NOT NULL COMMENT '订单金额（单位：分）',
+  `amount` int(11) NOT NULL COMMENT '订单金额（单位：分）',
   `body` varchar(64) DEFAULT NULL COMMENT '商品描述',
-  `client_ip` int NOT NULL DEFAULT '0' COMMENT '客户端IP',
+  `client_ip` int(11) NOT NULL DEFAULT '0' COMMENT '客户端IP',
   `notify_url` varchar(255) DEFAULT NULL COMMENT '回调地址',
   `redirect_url` varchar(255) DEFAULT NULL COMMENT '跳转地址',
-  `status` tinyint(1) NOT NULL COMMENT '订单状态（0：待付款，2：已支付，3：订单完成，-1：交易取消，-2：交易失败）',
+  `fee` int(11) NOT NULL DEFAULT '0' COMMENT '订单手续费（单位：分）',
+  `pay_product_id` int(11) NOT NULL COMMENT '支付产品ID',
+  `pay_product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
+  `pay_product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
+  `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待付款，2：已支付，3：订单完成，-1：交易取消，-2：交易失败）',
   `paid_at` datetime DEFAULT NULL COMMENT '支付时间',
   `expired_at` datetime DEFAULT NULL COMMENT '过期时间',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付订单';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +492,6 @@ CREATE TABLE `pay_order` (
 
 LOCK TABLES `pay_order` WRITE;
 /*!40000 ALTER TABLE `pay_order` DISABLE KEYS */;
-INSERT INTO `pay_order` (`id`, `order_no`, `order_sn`, `mch_id`, `app_id`, `subject`, `out_order_no`, `amount`, `body`, `client_ip`, `notify_url`, `redirect_url`, `status`, `paid_at`, `expired_at`, `created_at`, `updated_at`) VALUES (2,'1249942871872770048','202004140209381280292',2,123456,'abc','123456',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38'),(3,'1249943048562020352','202004140210202537008',2,1234567,'abc','123456',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20'),(4,'1249943081101430784','202004140210280110581',2,1234567,'abc','1234576',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28'),(5,'1249965518975275008','202004140339376183456',2,1234567,'abc','12345776',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38'),(6,'1249966907960987648','202004140345087778932',2,1234567,'abc','123457786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09'),(7,'1249967549395898368','202004140347417071605',2,1234567,'abc','1234757786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42'),(8,'1249968387975680000','202004140351016404322',2,1234567,'abc','12347572786',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02'),(11,'1249973459761631232','202004140411108494707',2,1234567,'abc','123475727186',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11'),(13,'1250458836519751680','202004161219536850645',2,123456,'123484','12346546',1,NULL,0,NULL,NULL,0,NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54');
 /*!40000 ALTER TABLE `pay_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,20 +503,21 @@ DROP TABLE IF EXISTS `pay_order_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_order_detail` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_no` varchar(32) NOT NULL COMMENT '订单编号',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
-  `pay_product_id` int NOT NULL COMMENT '支付产品ID',
-  `pay_passage_id` int NOT NULL COMMENT '支付通道ID',
-  `pay_passage_acc_id` int NOT NULL COMMENT '支付通道子账户ID',
-  `pay_interface_id` int NOT NULL COMMENT '支付接口ID',
-  `pay_interface_params` varchar(64) NOT NULL COMMENT '支付接口请求参数',
+  `pay_product_id` int(11) NOT NULL COMMENT '支付产品ID',
+  `pay_passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `pay_passage_acc_id` int(11) NOT NULL COMMENT '支付通道子账户ID',
+  `pay_interface_id` int(11) NOT NULL COMMENT '支付接口ID',
+  `pay_interface_attr` varchar(4096) NOT NULL COMMENT '支付接口参数',
   `upstream_order_no` varchar(64) DEFAULT NULL COMMENT '上游订单编号',
+  `pay_credential` varchar(4096) DEFAULT NULL COMMENT '支付凭证',
   `upstream_extra` varchar(64) DEFAULT NULL COMMENT '上游扩展参数',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单详情';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单详情';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +526,6 @@ CREATE TABLE `pay_order_detail` (
 
 LOCK TABLES `pay_order_detail` WRITE;
 /*!40000 ALTER TABLE `pay_order_detail` DISABLE KEYS */;
-INSERT INTO `pay_order_detail` (`id`, `order_no`, `pay_type_code`, `pay_product_id`, `pay_passage_id`, `pay_passage_acc_id`, `pay_interface_id`, `pay_interface_params`, `upstream_order_no`, `upstream_extra`, `created_at`, `updated_at`) VALUES (1,'1249942871872770048','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:09:38','2020-04-14 14:09:38'),(2,'1249943048562020352','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:20','2020-04-14 14:10:20'),(3,'1249943081101430784','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 14:10:28','2020-04-14 14:10:28'),(4,'1249965518975275008','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:39:38','2020-04-14 15:39:38'),(5,'1249966907960987648','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:45:09','2020-04-14 15:45:09'),(6,'1249967549395898368','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:47:42','2020-04-14 15:47:42'),(7,'1249968387975680000','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 15:51:02','2020-04-14 15:51:02'),(10,'1249973459761631232','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-14 16:11:11','2020-04-14 16:11:11'),(12,'1250458836519751680','wx_jsapi',2,2,2,2,'{}',NULL,NULL,'2020-04-16 00:19:54','2020-04-16 00:19:54');
 /*!40000 ALTER TABLE `pay_order_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +537,7 @@ DROP TABLE IF EXISTS `pay_passage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_passage` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付通道ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付通道ID',
   `passage_name` varchar(32) NOT NULL COMMENT '支付通道名称',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_code` varchar(32) NOT NULL COMMENT '支付接口编码',
@@ -282,7 +545,7 @@ CREATE TABLE `pay_passage` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +554,6 @@ CREATE TABLE `pay_passage` (
 
 LOCK TABLES `pay_passage` WRITE;
 /*!40000 ALTER TABLE `pay_passage` DISABLE KEYS */;
-INSERT INTO `pay_passage` (`id`, `passage_name`, `pay_type_code`, `interface_code`, `status`, `created_at`, `updated_at`) VALUES (2,'微信JSAPI官方通道','wx_jsapi','wx_jsapi',1,'2020-04-14 02:06:20','2020-04-14 02:06:20');
 /*!40000 ALTER TABLE `pay_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,15 +565,17 @@ DROP TABLE IF EXISTS `pay_passage_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_passage_account` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付通道账户ID',
-  `passage_id` int NOT NULL COMMENT '支付通道ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付通道账户ID',
+  `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
   `account_name` varchar(32) NOT NULL COMMENT '通道账户名称',
-  `interface_attr` varchar(255) NOT NULL COMMENT '通道接口参数',
+  `interface_attr` varchar(4096) DEFAULT NULL COMMENT '通道接口参数',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT '轮询权重',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道账户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付通道账户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,7 +584,6 @@ CREATE TABLE `pay_passage_account` (
 
 LOCK TABLES `pay_passage_account` WRITE;
 /*!40000 ALTER TABLE `pay_passage_account` DISABLE KEYS */;
-INSERT INTO `pay_passage_account` (`id`, `passage_id`, `account_name`, `interface_attr`, `status`, `created_at`, `updated_at`) VALUES (2,2,'忆思然网络科技有限公司','{}',1,'2020-04-14 02:07:28','2020-04-14 02:07:28');
 /*!40000 ALTER TABLE `pay_passage_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,18 +595,19 @@ DROP TABLE IF EXISTS `pay_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_product` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '支付产品ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付产品ID',
   `product_name` varchar(32) NOT NULL COMMENT '支付产品名称',
   `product_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付产品类型（1：收款，2：充值）',
+  `product_code` varchar(32) NOT NULL COMMENT '支付产品编码',
   `pay_type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `interface_mode` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付接口模式（1：单独，2：轮询）',
-  `default_passage_id` int NOT NULL COMMENT '默认通道ID',
-  `default_passage_acc_id` int NOT NULL COMMENT '默认通道账户ID',
+  `default_passage_id` int(11) DEFAULT NULL COMMENT '默认通道ID',
+  `default_passage_acc_id` int(11) DEFAULT NULL COMMENT '默认通道账户ID',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付产品';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付产品';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -352,8 +616,34 @@ CREATE TABLE `pay_product` (
 
 LOCK TABLES `pay_product` WRITE;
 /*!40000 ALTER TABLE `pay_product` DISABLE KEYS */;
-INSERT INTO `pay_product` (`id`, `product_name`, `product_type`, `pay_type_code`, `interface_mode`, `default_passage_id`, `default_passage_acc_id`, `status`, `created_at`, `updated_at`) VALUES (2,'微信JSAPI_忆思然通道',0,'wx_jsapi',1,2,2,1,'2020-04-14 02:08:38','2020-04-14 02:08:38');
 /*!40000 ALTER TABLE `pay_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pay_product_passage`
+--
+
+DROP TABLE IF EXISTS `pay_product_passage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pay_product_passage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `product_id` int(11) NOT NULL COMMENT '产品ID',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `widget` int(11) NOT NULL DEFAULT '0' COMMENT '权重',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付产品通道子账户';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pay_product_passage`
+--
+
+LOCK TABLES `pay_product_passage` WRITE;
+/*!40000 ALTER TABLE `pay_product_passage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pay_product_passage` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -364,10 +654,10 @@ DROP TABLE IF EXISTS `pay_product_passage_acc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_product_passage_acc` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `product_id` int NOT NULL COMMENT '产品ID',
-  `passage_id` int NOT NULL COMMENT '支付通道ID',
-  `acc_id` int NOT NULL COMMENT '子账户ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `product_id` int(11) NOT NULL COMMENT '产品ID',
+  `passage_id` int(11) NOT NULL COMMENT '支付通道ID',
+  `acc_id` int(11) NOT NULL COMMENT '子账户ID',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -391,7 +681,7 @@ DROP TABLE IF EXISTS `pay_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pay_type` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '类型ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '类型ID',
   `type_code` varchar(32) NOT NULL COMMENT '支付类型编码',
   `type_name` varchar(32) NOT NULL COMMENT '支付类型名称',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类别(1：支付，2，代付)',
@@ -399,7 +689,7 @@ CREATE TABLE `pay_type` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付类型';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -408,8 +698,144 @@ CREATE TABLE `pay_type` (
 
 LOCK TABLES `pay_type` WRITE;
 /*!40000 ALTER TABLE `pay_type` DISABLE KEYS */;
-INSERT INTO `pay_type` (`id`, `type_code`, `type_name`, `type`, `status`, `created_at`, `updated_at`) VALUES (2,'wx_jsapi','微信JSAPI',1,0,'2020-04-14 01:54:17','2020-04-14 01:54:17');
 /*!40000 ALTER TABLE `pay_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `replacepay_order`
+--
+
+DROP TABLE IF EXISTS `replacepay_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `replacepay_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `replace_id` varchar(255) NOT NULL COMMENT '代付订单id',
+  `mch_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商户id',
+  `bank_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '银行账号名',
+  `account_number` bigint(20) NOT NULL COMMENT '银行账号',
+  `replace_money` bigint(20) NOT NULL COMMENT '代付金额',
+  `status` int(11) NOT NULL COMMENT '订单状态 0 待审核 1 审核通过 -1 审核失败',
+  `created_at` datetime NOT NULL COMMENT '订单创建时间',
+  `end_at` datetime DEFAULT NULL COMMENT '订单结束时间',
+  `updated_at` datetime NOT NULL COMMENT '订单更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='代付订单表\r\n';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `replacepay_order`
+--
+
+LOCK TABLES `replacepay_order` WRITE;
+/*!40000 ALTER TABLE `replacepay_order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `replacepay_order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `replacepay_recharge`
+--
+
+DROP TABLE IF EXISTS `replacepay_recharge`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `replacepay_recharge` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `recharge_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '代付充值id',
+  `mch_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商户id',
+  `recharge_money` bigint(20) NOT NULL COMMENT '充值金额',
+  `status` int(11) NOT NULL COMMENT '充值订单状态 0 待审核 1 充值成功 -1 未充值',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `end_time` datetime DEFAULT NULL COMMENT '结束时间',
+  `updated_at` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户充值订单表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `replacepay_recharge`
+--
+
+LOCK TABLES `replacepay_recharge` WRITE;
+/*!40000 ALTER TABLE `replacepay_recharge` DISABLE KEYS */;
+/*!40000 ALTER TABLE `replacepay_recharge` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `settle_config`
+--
+
+DROP TABLE IF EXISTS `settle_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `settle_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0：关闭，1：开启）',
+  `audit_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '审核状态（0：关闭，1：开启）',
+  `settle_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算类型（1：人工结算，2：自动结算）',
+  `amount_limit_min` int(11) NOT NULL DEFAULT '0' COMMENT '金额限制（最小值，单位：分）',
+  `amount_limit_max` int(11) NOT NULL DEFAULT '0' COMMENT '金额限制（最大值，单位：分）',
+  `day_amount_limit_max` int(11) NOT NULL DEFAULT '0' COMMENT '每日金额最大值（单位：分）',
+  `settle_fee_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算费率类型（1：比例收费，2：固定收费，3：比例收费+固定收费）',
+  `settle_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '结算比例（百分比）',
+  `settle_fee` int(11) NOT NULL DEFAULT '0' COMMENT '固定费率（单位：分）',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='结算设置';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `settle_config`
+--
+
+LOCK TABLES `settle_config` WRITE;
+/*!40000 ALTER TABLE `settle_config` DISABLE KEYS */;
+INSERT INTO `settle_config` VALUES (1,0,1,2,1000,0,0,1,0.00,0,'2020-04-27 22:55:13','2020-04-27 22:55:13');
+/*!40000 ALTER TABLE `settle_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `settle_order`
+--
+
+DROP TABLE IF EXISTS `settle_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `settle_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_no` varchar(32) NOT NULL COMMENT '结算订单号',
+  `order_sn` varchar(32) NOT NULL COMMENT '结算流水号',
+  `mch_id` int(11) NOT NULL COMMENT '商户ID',
+  `settle_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算类型（1：人工结算，2：自动结算）',
+  `amount` int(11) NOT NULL DEFAULT '0' COMMENT '订单金额（单位：分）',
+  `fee` int(11) NOT NULL DEFAULT '0' COMMENT '结算手续费（单位：分）',
+  `settle_amount` int(11) NOT NULL DEFAULT '0' COMMENT '结算金额（单位：分）',
+  `account_name` varchar(32) NOT NULL COMMENT '结算账户名',
+  `account_number` varchar(32) NOT NULL COMMENT '结算账号',
+  `bank_name` varchar(32) NOT NULL COMMENT '开户行名称',
+  `bank_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '银行联行号',
+  `bank_address` varchar(64) DEFAULT NULL COMMENT '开户行地址（或支行名称）',
+  `pay_type_code` varchar(32) DEFAULT NULL COMMENT '支付类型编码',
+  `agentpay_passage_id` int(11) DEFAULT NULL COMMENT '代付通道ID',
+  `agentpay_passage_acc_id` int(11) DEFAULT NULL COMMENT '代付通道账户ID',
+  `pay_interface_id` int(11) DEFAULT NULL COMMENT '支付接口ID',
+  `pay_interface_attr` varchar(255) DEFAULT NULL COMMENT '支付接口参数',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态（1：待审核，2：待处理，3：处理中，4：已结算，-1：已驳回，-2：结算失败）',
+  `settled_at` datetime DEFAULT NULL COMMENT '结算时间',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商户结算订单';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `settle_order`
+--
+
+LOCK TABLES `settle_order` WRITE;
+/*!40000 ALTER TABLE `settle_order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `settle_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -420,14 +846,14 @@ DROP TABLE IF EXISTS `system_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_menu` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单标题',
   `mark` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单标识',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '菜单类型（1:目录,2:菜单,3:按钮）',
   `icon` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '目录图标',
   `path` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '菜单路由',
-  `parent_id` int DEFAULT NULL COMMENT '上级菜单ID',
-  `sorts` int NOT NULL DEFAULT '0' COMMENT '排序权重',
+  `parent_id` int(11) DEFAULT NULL COMMENT '上级菜单ID',
+  `sorts` int(11) NOT NULL DEFAULT '0' COMMENT '排序权重',
   `extra` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -452,7 +878,7 @@ DROP TABLE IF EXISTS `system_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_role` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
   `role_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色编码',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -478,9 +904,9 @@ DROP TABLE IF EXISTS `system_role_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_role_menu` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `role_id` int NOT NULL COMMENT '角色ID',
-  `menu_id` int NOT NULL COMMENT '菜单ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
+  `menu_id` int(11) NOT NULL COMMENT '菜单ID',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -504,15 +930,17 @@ DROP TABLE IF EXISTS `system_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_user` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
   `password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户密码',
+  `totp_secret_key` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL comment '两步验证安全码',
+  `totp_verified` tinyint(1) NOT NULL DEFAULT '1' comment '两部验证是否验证（0：否，1，是）',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户邮箱',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username_uindex` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统用户';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统用户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -521,6 +949,7 @@ CREATE TABLE `system_user` (
 
 LOCK TABLES `system_user` WRITE;
 /*!40000 ALTER TABLE `system_user` DISABLE KEYS */;
+INSERT INTO `system_user` VALUES (1,'admin','202cb962ac59075b964b07152d234b70',NULL,0,'admin@example.com','2020-04-21 14:38:41','2020-05-11 14:34:37');
 /*!40000 ALTER TABLE `system_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,9 +961,9 @@ DROP TABLE IF EXISTS `system_user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_user_role` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL COMMENT '用户ID',
-  `role_id` int NOT NULL COMMENT '角色ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -559,4 +988,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-16  5:54:28
+-- Dump completed on 2020-05-11 19:52:10

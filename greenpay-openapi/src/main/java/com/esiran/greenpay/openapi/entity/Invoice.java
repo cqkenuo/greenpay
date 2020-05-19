@@ -27,9 +27,13 @@ public class Invoice {
      */
     private String outOrderNo;
     /**
-     * 订单金额（单位：分），必须大于0
+     * 订单金额（单位：分）
      */
     private Integer amount;
+    /**
+     * 订单手续费（单位：分）
+     */
+    private Integer fee;
     /**
      * 支付渠道
      */
@@ -55,15 +59,24 @@ public class Invoice {
      * 回调地址
      */
     private String notifyUrl;
+
+
+    /**
+     * 回退地址
+     */
+    private String redirectUrl;
+    /**
+     * 支付凭证
+     */
+    private Map<String,Object> credential;
     /**
      * 状态
      */
-    private String status;
+    private Integer status;
     /**
      * 创建时间
      */
     private LocalDateTime createdAt;
-
     /**
      * 支付时间
      */

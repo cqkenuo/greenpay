@@ -34,4 +34,22 @@
         <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
     </div>
 </div>
+<div th:fragment="login-error_view">
+    <div class="error-card" th:style="${_errors==null}?'display:none;':'margin-bottom: 15px;'">
+        <div>
+            <blockquote class="layui-elem-quote"
+                        style="color: #b30000; padding: 0; padding-left: 15px;"
+                        th:each="error:${_errors}"
+                        th:text="${error}">
+            </blockquote>
+        </div>
+    </div>
+</div>
+<footer class="admin-footer" th:fragment="admin-footer">
+    <div class="admin-footer_content">
+        <div class="admin-footer_copyright">
+            Copyright © 2020 <a href="/">greenpay.com</a>
+        </div>
+    </div>
+</footer>
 </html>

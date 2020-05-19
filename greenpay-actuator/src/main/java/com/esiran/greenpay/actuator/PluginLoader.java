@@ -1,13 +1,18 @@
 package com.esiran.greenpay.actuator;
 
 
-import java.lang.reflect.Type;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PluginLoader {
-    public static <T> Plugin<T> loadForClassPath(String classPath) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Class<T> pluginClass = (Class<T>) ClassLoader.getSystemClassLoader().loadClass(classPath);
-        Type type = pluginClass.getSuperclass();
-        Plugin<T> t = (Plugin<T>) pluginClass.newInstance();
-        return t;
+    private final ApplicationContext applicationContext;
+
+    public PluginLoader(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+    @SuppressWarnings("unchecked")
+    public <T> Plugin<T> loadForClassPath(String classPath) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        return (Plugin<T>) applicationContext.getBean(classPath,Plugin.class);
     }
 }

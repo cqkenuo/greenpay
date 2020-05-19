@@ -43,7 +43,7 @@ public class Order extends BaseMapperEntity {
     /**
      * 应用ID
      */
-    private Integer appId;
+    private String appId;
 
     /**
      * 商品标题
@@ -60,6 +60,7 @@ public class Order extends BaseMapperEntity {
      */
     private Integer amount;
 
+    private Integer fee;
     /**
      * 商品描述
      */
@@ -85,6 +86,10 @@ public class Order extends BaseMapperEntity {
      */
     private Integer status;
 
+    private Integer payProductId;
+    private String payProductCode;
+    private String payProductName;
+    private LocalDateTime expiredAt;
     /**
      * 支付时间
      */

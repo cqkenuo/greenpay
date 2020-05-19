@@ -13,4 +13,9 @@ public class Md5SignType extends SignTypeAbs{
                 EncryptUtil.md5(this.getPrincipal().concat(credential))
         );
     }
+
+    @Override
+    public String sign2(String credential) {
+        return EncryptUtil.md5(this.getPrincipal().concat(credential));
+    }
 }

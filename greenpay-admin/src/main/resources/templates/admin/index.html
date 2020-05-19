@@ -62,6 +62,7 @@
                     </div>
 
                 </div>
+                <footer th:replace="admin/compose::admin-footer"></footer>
             </div>
         </div>
         <div class="layadmin-body-shade" layadmin-event="shade"></div>
@@ -78,15 +79,34 @@
                 top: '5%',
                 bottom: '10%'
             },
+            legend: {
+              data: ['收单数','成交单数','成交总额']
+            },
             xAxis: {
                 type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Sun', 'Sun', 'Sun', 'Sun', 'Sun']
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
             },
             yAxis: {
                 type: 'value'
             },
             series: [{
-                data: [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320],
+                name: '收单数',
+                data: [600, 860, 100, 450, 934, 600, 860],
+                type: 'line',
+                radius: '100%'
+            },{
+                name: '',
+                data: [860, 100, 600, 860, 1290, 860, 934],
+                type: 'line',
+                radius: '100%'
+            },{
+                name: '收单数',
+                data: [100, 860, 600, 400, 450, 480, 860],
+                type: 'line',
+                radius: '100%'
+            },{
+                name: '收单数',
+                data: [600, 932, 450, 934, 1290, 450, 820],
                 type: 'line',
                 radius: '100%'
             }]
@@ -98,7 +118,7 @@
     !function(){
         let layer = layui.layer
             ,form = layui.form;
-        layer.msg('Hello World');
+        // layer.msg('Hello World');
     }();
 </script>
 

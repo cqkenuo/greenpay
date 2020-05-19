@@ -12,9 +12,9 @@
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
                 <div th:replace="admin/compose::layui-breadcrumb('商户管理','添加商户')"></div>
-                <div class="layui-card error-card" th:style="${errors==null}?'display:none;':''">
+                <div class="layui-card error-card" th:style="${_errors==null}?'display:none;':''">
                     <div class="layui-card-body">
-                        <blockquote class="layui-elem-quote" th:each="error:${errors}" th:text="${error.message}"></blockquote>
+                        <blockquote class="layui-elem-quote" th:each="error:${_errors}" th:text="${error}"></blockquote>
                     </div>
                 </div>
                 <div class="layui-fluid">
@@ -54,9 +54,9 @@
                                         <div class="layui-form-item">
                                             <label for="password" class="layui-form-label">登录密码：</label>
                                             <div class="layui-input-block">
+                                                <input type="hidden" name="password" >
                                                 <input type="password" class="layui-input"
-                                                       name="password" id="password"
-                                                       autocomplete="off"
+                                                       id="password" autocomplete="off"
                                                        placeholder="请设置登录密码">
                                             </div>
                                         </div>
@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="layui-form-item">
                                             <div class="layui-input-block">
-                                                <button type="submit" class="layui-btn">立即提交</button>
+                                                <button type="submit" class="layui-btn" lay-submit="" lay-filter="sub">立即提交</button>
                                             </div>
                                         </div>
                                     </form>
@@ -84,10 +84,22 @@
     </div>
 </div>
 <th:block th:replace="admin/footer::script"/>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.13.0/js/md5.min.js"></script>
 <script th:inline="none">
     !function(){
         let layer = layui.layer
-            ,table = layui.table;
+            ,$ = layui.jquery
+            ,form = layui.form;
+        form.on('submit(sub)', function(data){
+            let passwordText = $("#password").val();
+            let passwordVal = '';
+            if (passwordText.length !== 0){
+                passwordVal = md5(passwordText);
+            }
+            console.log(passwordVal);
+            $("input[name='password']").val(passwordVal);
+            return true;
+        });
     }();
 </script>
 

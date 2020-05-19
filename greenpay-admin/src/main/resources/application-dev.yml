@@ -1,11 +1,11 @@
 server:
-  port: 8091
+  port: 8097
 
 logging:
   level:
     com.github.binarywang.wxpay: error
     me.chanjar.weixin: error
-
+    com.esiran.greenpay.common.sign: debug
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,15 +16,8 @@ spring:
     port: 6379
     host: 192.168.3.158
     password: ruixiao123
-
-greenpay:
-  openapi:
-    enable_sign: false
-
-wechat:
-  app_id: wx2aeda339f56138bf
-  app_secret: 731787f51247a33c4ff210cd613dd780
-  mch_id: 1519342911
-  mch_key: 2624eedd356624bc7a662c29ceb0a20e
-  cert_path: classpath:/keystory/wxpay/apiclient_cert.p12
-
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true

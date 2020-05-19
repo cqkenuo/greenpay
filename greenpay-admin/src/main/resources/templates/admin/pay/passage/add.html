@@ -12,20 +12,25 @@
         <div class="layui-body">
             <div class="layadmin-tabsbody-item layui-show">
                 <div th:replace="admin/compose::layui-breadcrumb('支付配置','支付通道')"></div>
+                <div class="layui-card error-card" th:style="${_errors==null}?'display:none;':''">
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote" th:each="error:${_errors}" th:text="${error}"></blockquote>
+                    </div>
+                </div>
                 <div class="layui-fluid">
                     <div class="layui-card">
                         <div class="layui-card-header">添加支付通道</div>
                         <div class="layui-card-body">
-                            <form class="layui-form" action="">
+                            <form class="layui-form" action="" method="post">
                                 <div class="layui-form-item">
                                     <label for="payTypeCode" class="layui-form-label">支付类型：</label>
                                     <div class="layui-input-block">
                                         <select name="payTypeCode" id="payTypeCode">
-                                            <option value="">无</option>
-                                            <option value="wx_jsapi">微信JS_API</option>
-                                            <option value="ali_jsapi">支付宝JS_API</option>
-                                            <option value="wx_native">微信扫码支付</option>
-                                            <option value="ali_native">支付宝扫码支付</option>
+                                            <option value="" selected>无</option>
+                                            <option th:each="type:${availableTypes}"
+                                                    th:text="${type.typeName}"
+                                                    th:value="${type.typeCode}">
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -33,11 +38,11 @@
                                     <label for="interfaceCode" class="layui-form-label">支付接口：</label>
                                     <div class="layui-input-block">
                                         <select name="interfaceCode" id="interfaceCode">
-                                            <option value="">无</option>
-                                            <option value="wx_jsapi">微信JS_API【官方】</option>
-                                            <option value="ali_jsapi">支付宝JS_API【官方】</option>
-                                            <option value="wx_native">微信扫码支付【官方】</option>
-                                            <option value="ali_native">支付宝扫码支付【官方】</option>
+                                            <option value="" selected>无</option>
+                                            <option th:each="ins:${availableInters}"
+                                                    th:text="${ins.interfaceName}"
+                                                    th:value="${ins.interfaceCode}">
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -54,12 +59,12 @@
                                     <label for="status" class="layui-form-label">状态：</label>
                                     <div class="layui-input-block">
                                         <input id="status" type="radio" name="status" value="0" title="关闭" checked>
-                                        <input type="radio" name="status" value="2" title="开启">
+                                        <input type="radio" name="status" value="1" title="开启">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                                        <button type="submit" class="layui-btn">提交</button>
                                     </div>
                                 </div>
                             </form>

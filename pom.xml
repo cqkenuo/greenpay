@@ -17,8 +17,11 @@
         <module>greenpay-system</module>
         <module>greenpay-openapi</module>
         <module>greenpay-actuator</module>
+        <module>greenpay-merchant-web</module>
         <module>greenpay-message</module>
-
+        <module>greenpay-settle</module>
+        <module>greenpay-agentpay</module>
+        <module>greenpay-framework</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -29,6 +32,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
         <greenpay.version>1.0-SNAPSHOT</greenpay.version>
         <mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
         <freemarker.version>2.3.30</freemarker.version>
@@ -42,6 +46,8 @@
         <modelmapper.version>2.3.0</modelmapper.version>
         <junit.version>4.12</junit.version>
         <swagger2.version>2.9.2</swagger2.version>
+        <shiro.version>1.5.2</shiro.version>
+        <guava.version>29.0-jre</guava.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -52,7 +58,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-content</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
@@ -100,7 +110,29 @@
             </dependency>
             <dependency>
                 <groupId>com.esiran</groupId>
+                <artifactId>greenpay-merchant-web</artifactId>
+                <version>${greenpay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.esiran</groupId>
                 <artifactId>greenpay-actuator</artifactId>
+                <version>${greenpay.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.esiran</groupId>
+                <artifactId>greenpay-settle</artifactId>
+                <version>${greenpay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.esiran</groupId>
+                <artifactId>greenpay-agentpay</artifactId>
+                <version>${greenpay.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.esiran</groupId>
+                <artifactId>greenpay-framework</artifactId>
                 <version>${greenpay.version}</version>
             </dependency>
             <dependency>
@@ -114,7 +146,11 @@
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring-boot-starter</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -199,6 +235,11 @@
                 <groupId>org.modelmapper</groupId>
                 <artifactId>modelmapper</artifactId>
                 <version>${modelmapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

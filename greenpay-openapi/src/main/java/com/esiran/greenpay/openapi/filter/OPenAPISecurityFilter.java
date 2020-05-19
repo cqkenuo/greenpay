@@ -26,18 +26,33 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class OPenAPISecurityFilter implements Filter {
     private final static Gson gson = new Gson();
     private final IMerchantService merchantService;
     private final IApiConfigService apiConfigService;
-    @Value("${greenpay.openapi.enable_sign:false}")
-    private boolean enableSign;
+    @Value("${greenpay.openapi.security.sign.enabled:false}")
+    private boolean verifySignEnabled;
+    @Value("#{'${greenpay.openapi.security.sign.allow_types:}'.split(',')}")
+    private List<String> allowSignTypes;
+    private final String[] allowedPaths;
     @Autowired
     public OPenAPISecurityFilter(IMerchantService merchantService, IApiConfigService apiConfigService) {
         this.merchantService = merchantService;
         this.apiConfigService = apiConfigService;
+        allowedPaths = new String[]{
+                "/v1/helper/wx/callback/code($|/$)",
+                "/v1/cashiers/pay/wx/order($|/$)",
+                "/v1/invoices/.+?/callback($|/$)",
+                "/v1/cashiers/pages($|/$)",
+                "/v1/cashiers/flow($|/$)",
+                "/v1/cashiers/flow($|/$)",
+                "/.+?\\.css$",
+                "/.+?\\.png$",
+        };
     }
 
     @Override
@@ -56,11 +71,27 @@ public class OPenAPISecurityFilter implements Filter {
         pw.flush();
         pw.close();
     }
+
+    private boolean checkAllowedPaths(String url){
+        for (String path : allowedPaths){
+            Pattern pattern = Pattern.compile(path);
+            Matcher matcher = pattern.matcher(url);
+            if (matcher.matches()){
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-
+        servletRequest.setCharacterEncoding("UTF-8");
+        String url = httpServletRequest.getRequestURI();
+        if (checkAllowedPaths(url)){
+            filterChain.doFilter(httpServletRequest, servletResponse);
+            return;
+        }
         try {
             verifyRequisiteParam(httpServletRequest);
             verifySign(httpServletRequest);
@@ -102,7 +133,7 @@ public class OPenAPISecurityFilter implements Filter {
         long timestamp = Long.parseLong(timestampStr);
         long currentTimestamp = System.currentTimeMillis();
         long timeDiff = currentTimestamp - timestamp;
-        if (timeDiff > 180000)
+        if (timeDiff > 600000 )
             throw new APIException("请求已过期，或超时","INVALID_REQUEST",400);
     }
 
@@ -112,9 +143,12 @@ public class OPenAPISecurityFilter implements Filter {
         if (StringUtils.isEmpty(signTypeStr))
             throw new APIException("无效的签名方式","INVALID_REQUEST_SIGN_TYPE",400);
         String principal = MapUtil.sortAndSerialize(params,new String[]{"sign"});
+        if (!allowSignTypes.contains(signTypeStr)){
+            throw new APIException("无效的签名方式","INVALID_REQUEST_SIGN_TYPE",400);
+        }
         SignType signType = signTypeStr.equals("md5") ? new Md5SignType(principal)
                 : signTypeStr.equals("hmac_md5") ? new HMACMD5SignType(principal)
-                : signTypeStr.equals("rsa") ? new RSASignType(principal) :null;
+                : signTypeStr.equals("rsa") ? new RSA2SignType(principal) :null;
         if (signType == null)
             throw new APIException("无效的签名方式","INVALID_REQUEST_SIGN_TYPE",400);
         String apiKey = request.getParameter("apiKey");
@@ -130,7 +164,7 @@ public class OPenAPISecurityFilter implements Filter {
             throw new APIException("无效的 API_KEY","INVALID_API_KEY",400);
         SignVerify signVerify;
         String sign;
-        if (signType instanceof RSASignType){
+        if (signType instanceof RSA2SignType){
             signVerify = signType.sign(apiConfig.getMchPubKey());
             sign = request.getParameter("sign");
             sign = UrlSafeB64.decode(sign);
@@ -140,8 +174,9 @@ public class OPenAPISecurityFilter implements Filter {
         }
         if (StringUtils.isEmpty(sign))
             throw new APIException("签名内容不能为空","INVALID_REQUEST",400);
-//        if (!(signVerify.verify(sign) || enableSign))
-//            throw new APIException("签名校验失败","INVALID_SIGN",400);
+        if (verifySignEnabled && !signVerify.verify(sign)) {
+            throw new APIException("签名校验失败","INVALID_SIGN",400);
+        }
         OpenAPISecurityUtils.setSubject(merchant);
     }
 

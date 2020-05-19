@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 
 import com.esiran.greenpay.common.entity.BaseMapperEntity;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -24,7 +25,7 @@ import lombok.experimental.Accessors;
 public class PassageAccount  extends BaseMapperEntity {
 
     private static final long serialVersionUID = 1L;
-
+    private String payTypeCode;
     /**
      * 支付通道ID
      */
@@ -39,7 +40,10 @@ public class PassageAccount  extends BaseMapperEntity {
      * 通道接口参数
      */
     private String interfaceAttr;
-
+    /**
+     * 轮训权重
+     */
+    private Integer weight;
     /**
      * 状态（0：关闭，1：开启）
      */

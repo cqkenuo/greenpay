@@ -32,7 +32,7 @@ public class InvoiceInputDTO extends BaseSignInput {
     /**
      * 支付渠道
      */
-    @NotBlank(message = "支付渠道不能为空")
+    @NotNull(message = "支付渠道不能为空")
     private String channel;
 
     /**
@@ -43,7 +43,7 @@ public class InvoiceInputDTO extends BaseSignInput {
     /**
      * 渠道额外参数
      */
-    private Map<String,Object> channelExtra;
+    private String channelExtra;
     /**
      * 商品描述信息
      */
@@ -58,4 +58,9 @@ public class InvoiceInputDTO extends BaseSignInput {
 //    @NotBlank(message = "回调地址不能为空")
     private String notifyUrl;
 
+
+    /**
+     * 回退地址
+     */
+    private String redirectUrl;
 }

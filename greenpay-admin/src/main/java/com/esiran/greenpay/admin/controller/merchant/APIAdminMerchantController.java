@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.esiran.greenpay.common.entity.APIException;
+import com.esiran.greenpay.common.exception.ResourceNotFoundException;
 import com.esiran.greenpay.common.util.RSAUtil;
 import com.esiran.greenpay.merchant.entity.*;
 import com.esiran.greenpay.merchant.service.IApiConfigService;
@@ -15,12 +17,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/v1/merchants")
+@RequestMapping("/api/v1/merchants")
 @Api(tags = "商户管理")
 public class APIAdminMerchantController {
     private final IMerchantService merchantService;
@@ -46,31 +51,102 @@ public class APIAdminMerchantController {
     @ApiOperation("查询指定商户的支付产品列表")
     @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
     @GetMapping("/{mchId}/products")
-    public List<MerchantProductDTO> product(@PathVariable Integer mchId) throws APIException {
+    public List<MerchantProductDTO> product(@PathVariable Integer mchId) throws APIException, ResourceNotFoundException {
         return merchantService.selectMchProductById(mchId);
     }
 
 
-
-    @PostMapping("/add")
-    public String add(){
-        return "admin/merchant/add";
+    @ApiOperation("查询指定商户的代付通道列表")
+    @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
+    @GetMapping("/{mchId}/agent_pay_passages")
+    public List<MerchantAgentPayPassageDTO> agentPayPassage(@PathVariable Integer mchId) throws APIException, ResourceNotFoundException {
+        Merchant mch = merchantService.getById(mchId);
+        if (mch == null) throw new ResourceNotFoundException("商户不存在");
+        return merchantService.listMchAgentPayPassageByMchId(mchId);
     }
 
-    @PostMapping(value = "/{merchantId}/mch_pub_key",produces = "text/plain")
-    public void publicKey(@PathVariable String merchantId, @RequestBody String content) throws Exception {
+
+    @ApiOperation("修改商户的支付产品")
+    @ApiImplicitParam(name="mchId", value="商户ID", dataType="int", required=true, paramType="path")
+    @PostMapping(value = "/{mchId}/products")
+    public void updateProduct(@PathVariable String mchId, @Valid MerchantProductInputDTO dto) throws Exception {
+        merchantService.updateMerchantProduct(dto,Integer.valueOf(mchId));
+    }
+
+    @ApiOperation("修改商户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+    })
+    @PostMapping(value = "/{mchId}")
+    public void updateUserInfo(@PathVariable String mchId, @Valid MerchantUpdateDTO merchantDTO) throws Exception {
+        merchantService.updateMerchantInfoById(merchantDTO,Integer.valueOf(mchId));
+    }
+
+    @ApiOperation("修改商户安全信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+            @ApiImplicitParam(name="password",value="重置密码",required = true),
+    })
+    @PostMapping(value = "/{mchId}/security")
+    public void updateSecurity(@PathVariable String mchId, @RequestParam String password) throws Exception {
+        merchantService.updatePasswordById(password,Integer.valueOf(mchId));
+    }
+
+
+    @ApiOperation("商户结算信息设置")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+    })
+    @PostMapping(value = "/{mchId}/settle")
+    public void updateSettleInfo(@PathVariable String mchId, SettleAccountDTO settleAccountDTO) throws Exception {
+        merchantService.updateSettleById(settleAccountDTO,Integer.valueOf(mchId));
+    }
+
+    @ApiOperation("修改支付账户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+            @ApiImplicitParam(name="action",value="变更方式",required = true),
+            @ApiImplicitParam(name="type",value="变更类型",required = true),
+            @ApiImplicitParam(name="amount",value="变更金额",required = true),
+    })
+    @PostMapping(value = "/{mchId}/pay/account")
+    public void payAccount(@PathVariable String mchId,
+                           @RequestParam Integer action,
+                           @RequestParam Integer type,
+                           @RequestParam Double amount) throws Exception {
+        merchantService.updateAccountBalance(1,Integer.valueOf(mchId),amount,type,action);
+    }
+    @ApiOperation("修改预付款账户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+            @ApiImplicitParam(name="action",value="变更方式",required = true),
+            @ApiImplicitParam(name="type",value="变更类型",required = true),
+            @ApiImplicitParam(name="amount",value="变更金额",required = true),
+    })
+    @PostMapping(value = "/{mchId}/prepaid/account")
+    public void prepaidAccount(@PathVariable String mchId,
+                           @RequestParam Integer action,
+                           @RequestParam Integer type,
+                           @RequestParam Double amount) throws Exception {
+        merchantService.updateAccountBalance(2,Integer.valueOf(mchId),amount,type,action);
+    }
+
+
+    @PostMapping(value = "/{mchId}/mch_pub_key",produces = "text/plain")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="mchId",value="商户ID",required = true),
+    })
+    @ApiOperation("上传商户公钥")
+    public void publicKey(@PathVariable String mchId, @RequestBody String content) throws Exception {
         LambdaQueryWrapper<ApiConfig> queryWrapper = new QueryWrapper<ApiConfig>()
-                .lambda().eq(ApiConfig::getMchId,merchantId);
+                .lambda().eq(ApiConfig::getMchId,mchId);
         ApiConfig apiConfig = apiConfigService.getOne(queryWrapper);
         if (apiConfig == null) throw new Exception("商户不存在");
         String publicKey = RSAUtil.resolvePublicKey(content);
+
         LambdaUpdateWrapper<ApiConfig> updateWrapper = new UpdateWrapper<ApiConfig>().lambda();
         updateWrapper.set(ApiConfig::getMchPubKey,publicKey)
-                .eq(ApiConfig::getMchId,merchantId);
+                .eq(ApiConfig::getMchId,mchId);
         apiConfigService.update(updateWrapper);
     }
-
-
-
-
 }

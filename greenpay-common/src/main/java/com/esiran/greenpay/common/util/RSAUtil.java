@@ -17,9 +17,10 @@ import java.util.stream.Collectors;
 
 public class RSAUtil {
     private static final String KEY_ALGORITHM = "rsa";
-    private static final int DEFAULT_KEY_SIZE = 1024;
+    private static final int DEFAULT_KEY_SIZE = 2048;
     public static final String SIGNATURE_ALGORITHM_MD5_WITH_RSA = "MD5withRSA";
     public static final String SIGNATURE_ALGORITHM_SHA256_WITH_RSA = "SHA256WithRSA";
+    public static final String SIGNATURE_ALGORITHM_SHA1_WITH_RSA = "SHA1WithRSA";
 
     public static final String PEM_FILE_PUBLIC_PKCS1_BEGIN = "-----BEGIN PUBLIC KEY-----";
     public static final String PEM_FILE_PUBLIC_PKCS1_END = "-----END PUBLIC KEY-----";
@@ -53,6 +54,18 @@ public class RSAUtil {
         return resolveContentBody(content,PEM_FILE_PRIVATE_PKCS8_BEGIN,PEM_FILE_PRIVATE_PKCS8_END);
     }
 
+    public static String formatKeyPem(String beginLine, String key,String endLine){
+        if (key == null || key.length() == 0) return null;
+        byte[] bs = key.getBytes();
+        StringBuilder sb = new StringBuilder();
+        sb.append(beginLine).append("\r\n");
+        for (int i=0; i<bs.length;i++){
+            char c = (char) bs[i];
+            sb.append(i%64 == 0 && i > 0?"\r\n":"").append(c);
+        }
+        sb.append("\r\n").append(endLine);
+        return sb.toString();
+    }
     /**
      * 生成 1024 长度的密钥对
      * @return 密钥对
@@ -150,9 +163,10 @@ public class RSAUtil {
             // 因为签名的时候输出为 BASE64 编码格式，所以需要解码
             return signature.verify(Base64.getDecoder().decode(sign));
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | SignatureException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            return false;
         }
-        return false;
+//        return false;
     }
 
     /**

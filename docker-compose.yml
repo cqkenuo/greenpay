@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+  admin_web:
+    restart: always
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-admin-web
+    build:
+      context: .
+      dockerfile: Dockerfile.admin_web
+    ports:
+      - 9081:8081
+    depends_on:
+      - redis
+      - mysql
+
+  merchant_web:
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-merchant-web
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.merchant_web
+    ports:
+      - 9082:8082
+    depends_on:
+      - redis
+      - mysql
+
+  openapi:
+    image: registry.cn-hongkong.aliyuncs.com/esiran/greenpay-openapi
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.openapi
+    ports:
+      - 9083:8083
+    depends_on:
+      - redis
+      - mysql
+
+  mysql:
+    restart: always
+    image: mysql:8
+    ports:
+      - 4306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=greenpay
+      - MYSQL_DATABASE=greenpay
+      - MYSQL_USER=greenpay
+      - MYSQL_PASSWORD=greenpay
+      - TZ=Asia/Shanghai
+    command:
+      --default_authentication_plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    restart: always
+    image: redis
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mysql_data: {}
+  redis_data: {}

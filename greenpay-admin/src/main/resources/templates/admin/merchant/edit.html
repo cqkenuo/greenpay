@@ -20,12 +20,12 @@
                                     <div class="layui-card">
                                         <div class="layui-card-header">基本信息</div>
                                         <div class="layui-card-body">
-                                            <form class="layui-form" action="">
+                                            <form class="layui-form" method="post">
                                                 <div class="layui-row layui-form-item">
                                                     <label for="username" class="layui-form-label">用户名：</label>
                                                     <div class="layui-input-block">
                                                         <input type="text" class="layui-input"
-                                                               name="username" id="username"
+                                                               id="username" readonly
                                                                th:value="${merchant.username}"
                                                                autocomplete="off"
                                                                placeholder="请输入用户名">
@@ -54,13 +54,14 @@
                                                 <div class="layui-form-item">
                                                     <label for="status" class="layui-form-label">状态：</label>
                                                     <div class="layui-input-block">
-                                                        <input id="status" type="radio" name="status" value="0" title="关闭" checked>
-                                                        <input type="radio" name="status" value="1" title="开启">
+                                                        <input id="status" type="radio" name="status" value="0" title="关闭" th:checked="${merchant.status == false}">
+                                                        <input type="radio" name="status" value="1" title="开启" th:checked="${merchant.status == true}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block">
-                                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">保存修改</button>
+                                                        <input type="hidden" name="method" value="updateUserInfo">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="updateUserInfo">保存修改</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -101,8 +102,8 @@
                                                         变更方式：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="payAccount-action_up" type="radio" name="action" value="0" title="增加" checked>
-                                                        <input type="radio" name="action" value="1" title="扣减">
+                                                        <input id="payAccount-action_up" type="radio" name="action" value="1" title="增加" checked>
+                                                        <input type="radio" name="action" value="2" title="扣减">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -112,8 +113,8 @@
                                                         变更类型：
                                                     </label>
                                                     <div class="layui-input-block"  style="margin-left: 150px;">
-                                                        <input id="payAccount-type_avail" type="radio" name="type" value="0" title="可用余额" checked>
-                                                        <input type="radio" name="type" value="1" title="冻结金额">
+                                                        <input id="payAccount-type_avail" type="radio" name="type" value="1" title="可用余额" checked>
+                                                        <input type="radio" name="type" value="2" title="冻结金额">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -128,7 +129,7 @@
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="hidden" name="method" value="upPayBalance">
-                                                        <button type="submit" class="layui-btn">确认提交</button>
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="upPayBalance">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -169,19 +170,19 @@
                                                         变更方式：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="prepaidAccout-action_up" type="radio" name="action" value="0" title="增加" checked>
-                                                        <input type="radio" name="action" value="1" title="扣减">
+                                                        <input id="prepaidAccout-action_up" type="radio" name="action" value="1" title="增加" checked>
+                                                        <input type="radio" name="action" value="2" title="扣减">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <label  style="width: 120px"
-                                                            for="prepaidAccout-type_avail"
+                                                            for="prepaidAccount-type_avail"
                                                             class="layui-form-label">
                                                         变更类型：
                                                     </label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="prepaidAccout-type_avail" type="radio" name="type" value="0" title="可用余额" checked>
-                                                        <input type="radio" name="type" value="1" title="冻结金额">
+                                                        <input id="prepaidAccount-type_avail" type="radio" name="type" value="1" title="可用余额" checked>
+                                                        <input type="radio" name="type" value="2" title="冻结金额">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
@@ -196,7 +197,7 @@
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="hidden" name="method" value="upPrepaidBalance">
-                                                        <button type="submit" class="layui-btn">确认提交</button>
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="upPrepaidBalance">确认提交</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -211,33 +212,71 @@
                                         <div class="layui-card-body">
                                             <form class="layui-form" action="">
                                                 <div class="layui-form-item">
-                                                    <label for="settle" class="layui-form-label" style="width: 120px">结算手续费类型：</label>
+                                                    <label for="settleFeeType_1" class="layui-form-label" style="width: 120px">结算手续费类型：</label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <input id="settle" type="radio" name="settle" value="1" title="百分比收费" checked>
-                                                        <input type="radio" name="settle" value="2" title="固定收费">
+                                                        <input id="settleFeeType_1"
+                                                               type="radio"
+                                                               name="settleFeeType"
+                                                               value="1"
+                                                               title="百分比收费"
+                                                               th:checked="${merchant.settleAccount.settleFeeType == 1}">
+                                                        <input type="radio"
+                                                               name="settleFeeType"
+                                                               value="2"
+                                                               title="固定收费"
+                                                               th:checked="${merchant.settleAccount.settleFeeType == 2}">
+                                                        <input type="radio"
+                                                               name="settleFeeType"
+                                                               value="3"
+                                                               title="百分比加固定收费"
+                                                               th:checked="${merchant.settleAccount.settleFeeType == 3}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
-                                                    <label for="mbsxf" class="layui-form-label" style="width: 120px">每笔手续费：</label>
+                                                    <label for="settleFeeRate" class="layui-form-label" style="width: 120px">结算手续费比例：</label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
-                                                               name="mbsxf" id="mbsxf"
+                                                               name="settleFeeRate" id="settleFeeRate"
                                                                autocomplete="off"
-                                                               placeholder="请输入每笔手续费">
+                                                               th:value="${merchant.settleAccount.settleFeeRate}"
+                                                               placeholder="请输入结算手续费比例，百分比换小数。百分比收费模式">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
-                                                    <label for="sxfbl" class="layui-form-label" style="width: 120px">结算手续费比例：</label>
+                                                    <label for="settleFeeAmount" class="layui-form-label" style="width: 120px">每笔手续费：</label>
                                                     <div class="layui-input-block" style="margin-left: 150px;">
                                                         <input type="number" class="layui-input"
-                                                               name="sxfbl" id="sxfbl"
+                                                               name="settleFeeAmount" id="settleFeeAmount"
                                                                autocomplete="off"
-                                                               placeholder="请再次输入登录密码">
+                                                               th:value="${merchant.settleAccount.settleFeeAmount}"
+                                                               placeholder="请输入结算手续费（元），保留两位小数。固定收费模式">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label  style="width: 120px"
+                                                            for="settle-status_enable"
+                                                            class="layui-form-label">
+                                                        结算状态：
+                                                    </label>
+                                                    <div class="layui-input-block" style="margin-left: 150px;">
+                                                        <input id="settle-status_enable"
+                                                               type="radio"
+                                                               name="settleStatus"
+                                                               value="0"
+                                                               title="关闭"
+                                                               th:checked="${merchant.settleAccount.status == false}">
+                                                        <input type="radio"
+                                                               name="settleStatus"
+                                                               value="1"
+                                                               title="开启"
+                                                               th:checked="${merchant.settleAccount.status == true}">
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item" style="width: 120px">
                                                     <div class="layui-input-block" style="margin-left: 150px;">
-                                                        <button type="submit" class="layui-btn">立即提交</button>
+                                                        <input type="hidden" name="method" value="settleMent">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="settleMent">立即提交</button>
+<!--                                                        <button type="submit" class="layui-btn">立即提交</button>-->
                                                     </div>
                                                 </div>
                                             </form>
@@ -280,7 +319,9 @@
                                                     <fieldset class="layui-elem-field">
                                                         <legend>平台私钥</legend>
                                                         <div class="layui-field-box">
-                                                            <textarea style="height: 130px" readonly class="layui-textarea" th:text="${merchant.apiConfig.privateKeyVal}"></textarea>
+                                                            <textarea style="height: 200px"
+                                                                      readonly class="layui-textarea"
+                                                                      th:text="${merchant.apiConfig.privateKeyVal}"></textarea>
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -288,7 +329,10 @@
                                                     <fieldset class="layui-elem-field">
                                                         <legend>平台公钥</legend>
                                                         <div class="layui-field-box">
-                                                            <textarea style="height: 130px" readonly class="layui-textarea" th:text="${merchant.apiConfig.pubKeyVal}"></textarea>
+                                                            <textarea style="height: 200px"
+                                                                      readonly
+                                                                      class="layui-textarea"
+                                                                      th:text="${merchant.apiConfig.pubKeyVal}"></textarea>
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -308,11 +352,14 @@
                                                     <form class="layui-form">
                                                         <div class="layui-form-item">
                                                             <textarea name="desc"
+                                                                      style="height: 150px"
                                                                       placeholder="请输入内容"
+                                                                      th:text="${merchant.apiConfig.mchPubKeyVal}"
                                                                       class="layui-textarea"></textarea>
                                                         </div>
                                                         <div>
-                                                            <button style="width: 100%" type="submit" class="layui-btn">重置公钥</button>
+                                                            <input type="hidden" name="method" value="publicKey">
+                                                            <button style="width: 100%" type="submit" class="layui-btn" lay-submit lay-filter="publicKey">重置公钥</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -338,7 +385,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
-                                                    <label for="passwordConfirm" class="layui-form-label">确认密码：</label>
+                                                    <label for="passwordConfirm" class="layui-form-label" >确认密码：</label>
                                                     <div class="layui-input-block">
                                                         <input type="password" class="layui-input"
                                                                name="passwordConfirm" id="passwordConfirm"
@@ -348,7 +395,8 @@
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <div class="layui-input-block">
-                                                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">重置密码</button>
+                                                        <input type="hidden" name="method" value="resetPassword">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="resetPassword">重置密码</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -366,19 +414,194 @@
 </div>
 <th:block th:replace="admin/footer::script"/>
 <script th:inline="javascript">
+</script>
+<script th:inline="javascript">
     !function(){
         let layer = layui.layer
-            ,form = layui.form;
-        form.on('submit(upPrepaidBalance)', function(data){
-            console.log('增加支付账户余额');
-            console.log(data);
+            ,form = layui.form
+            ,$ = layui.jquery;
+        let mchId = parseInt(location.pathname.split('/')[3]);
+        // 支付账户
+        form.on('submit(upPayBalance)', function(data){
+            console.log('修改支付账户');
+            // console.log(data);
+            let params = {
+                action:data.field.action,
+                type:data.field.type,
+                amount:data.field.amount,
+                mchId:mchId
+            }
+            // console.log(params)
+            // console.log('mchId',mchId)
+            $.ajax({
+                type:'post',
+                url:'/api/v1/merchants/'+mchId+'/pay/account',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
             return false;
         });
+
+        // 修改用户资料
+        form.on('submit(updateUserInfo)', function(data){
+            console.log('修改用户资料');
+            // console.log(data);
+            let params = {
+                email:data.field.email,
+                mchId:mchId,
+                name:data.field.merchantName,
+                status:parseInt(data.field.status),
+                username:data.form[0].value
+            }
+            console.log(params)
+            $.ajax({
+                type: "post",
+                url: "/api/v1/merchants/"+mchId,
+                data: params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            });
+            return false;
+        });
+
+        // 重置公钥
+        form.on('submit(publicKey)', function(data){
+            console.log('重置公钥',data);
+            $.ajax({
+                type:'post',
+                url:'/api/v1/merchants/'+mchId+'/mch_pub_key',
+                data:data.field.desc,
+                contentType: 'text/plain',
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+
+
+            return false;
+        });
+
+        form.on('submit(settleMent)',function (data) {
+            console.log('结算设置');
+            // console.log(data);
+            let params = {
+                mchId:mchId,
+                settleFeeAmount:data.field.settleFeeAmount,//结算费用
+                settleFeeType:data.field.settleFeeType,//结算手续费类型
+                status:data.field.settleStatus,//结算状态
+                settleFeeRate:data.field.settleFeeRate
+            }
+            $.ajax({
+                type:'post',
+                url:'/api/v1/merchants/'+mchId+'/settle',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+            return false;
+        })
+
+        // 预充值账户
         form.on('submit(upPrepaidBalance)', function(data){
             console.log('增加预充值账户余额');
-            console.log(data);
+            // console.log(data);
+            let params = {
+                action:data.field.action,
+                amount:data.field.amount,
+                type:data.field.type,
+                mchId:mchId
+            };
+            console.log(params)
+            $.ajax({
+                type:'post',
+                url:'/api/v1/merchants/'+mchId+'/prepaid/account',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
             return false;
         });
+        // 重置密码
+        form.on('submit(resetPassword)',function (data) {
+            console.log('重置密码');
+            // console.log(data)
+            if (data.field.password !== data.field.passwordConfirm) {
+                layer.alert("两次输入的密码不一致");
+                return false;
+            }
+            let params = {
+                mchId:mchId,
+                password:data.field.password
+            };
+            $.ajax({
+                type:'post',
+                url:'/api/v1/merchants/'+mchId+'/security',
+                data:params,
+                statusCode: {
+                    404: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },400: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },500: function(data) {
+                        layer.msg(data.responseJSON.message, {icon: 5});
+                    },
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+            return false;
+        })
     }();
 </script>
 

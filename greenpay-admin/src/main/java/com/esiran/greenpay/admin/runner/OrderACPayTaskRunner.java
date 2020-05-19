@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -45,6 +46,7 @@ public class OrderACPayTaskRunner implements DelayQueueTaskRunner {
 
     @Override
     public void exec(String content) {
+        Order order = orderService.getOneByOrderNo(content);
         OrderDetail orderDetail = orderDetailService.getOneByOrderNo(content);
         String extra = orderDetail.getUpstreamExtra();
         RequestBody selectRequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), extra);
@@ -79,6 +81,11 @@ public class OrderACPayTaskRunner implements DelayQueueTaskRunner {
                 orderService.update(wrapper);
                 logger.info("Response Redisacpay orderNo: {}", content);
                 logger.info("Response Redisacpay payStatus: {}", payStatus);
+                Map<String,String> messagePayload = new HashMap<>();
+                messagePayload.put("orderNo", order.getOrderNo());
+                messagePayload.put("mchId", String.valueOf(order.getMchId()));
+                messagePayload.put("count", "1");
+                redisDelayQueueClient.sendDelayMessage("order:notify",g.toJson(messagePayload),0);
             }else if (payStatus.equals("notPay") || payStatus.equals("fail") || payStatus.equals("abnormal")){
                 LambdaUpdateWrapper<Order> wrapper = new LambdaUpdateWrapper<>();
                 wrapper.set(Order::getStatus,-2)

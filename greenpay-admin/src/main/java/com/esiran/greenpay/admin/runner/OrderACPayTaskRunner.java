@@ -2,6 +2,7 @@ package com.esiran.greenpay.admin.runner;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.esiran.greenpay.common.util.MapUtil;
+import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.esiran.greenpay.message.delayqueue.DelayQueueTaskRunner;
 import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.pay.entity.Order;
@@ -28,10 +29,12 @@ public class OrderACPayTaskRunner implements DelayQueueTaskRunner {
     private final Gson g = new Gson();
     private final IOrderDetailService orderDetailService;
     private final RedisDelayQueueClient redisDelayQueueClient;
-    public OrderACPayTaskRunner(IOrderService orderService, IOrderDetailService orderDetailService, RedisDelayQueueClient redisDelayQueueClient) {
+    private final IPayAccountService payAccountService;
+    public OrderACPayTaskRunner(IOrderService orderService, IOrderDetailService orderDetailService, RedisDelayQueueClient redisDelayQueueClient, IPayAccountService payAccountService) {
         this.orderService = orderService;
         this.orderDetailService = orderDetailService;
         this.redisDelayQueueClient = redisDelayQueueClient;
+        this.payAccountService = payAccountService;
     }
 
     static {
@@ -48,6 +51,7 @@ public class OrderACPayTaskRunner implements DelayQueueTaskRunner {
         OrderDetail orderDetail = orderDetailService.getOneByOrderNo(content);
         String extra = orderDetail.getUpstreamExtra();
         RequestBody selectRequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), extra);
+        Order order = orderService.getOneByOrderNo(content);
         Request selectRequest = new Request.Builder()
                 .url("http://api.acpay.leyyx.cn/alipayCreditPay/selectPayResult")
                 .post(selectRequestBody)
@@ -77,6 +81,7 @@ public class OrderACPayTaskRunner implements DelayQueueTaskRunner {
                         .set(Order::getPaidAt, LocalDateTime.now())
                         .eq(Order::getOrderNo,content);
                 orderService.update(wrapper);
+                payAccountService.updateAvailBalance(order.getMchId(),-order.getAmount());
                 logger.info("Response Redisacpay orderNo: {}", content);
                 logger.info("Response Redisacpay payStatus: {}", payStatus);
             }else if (payStatus.equals("notPay") || payStatus.equals("fail") || payStatus.equals("abnormal")){

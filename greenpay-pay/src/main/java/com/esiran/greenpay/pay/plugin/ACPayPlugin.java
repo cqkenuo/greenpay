@@ -9,10 +9,13 @@ import com.esiran.greenpay.actuator.entity.Task;
 import com.esiran.greenpay.common.entity.APIException;
 import com.esiran.greenpay.common.sign.Md5SignType;
 import com.esiran.greenpay.common.util.MapUtil;
+import com.esiran.greenpay.merchant.service.IMerchantService;
+import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.pay.entity.Order;
 import com.esiran.greenpay.pay.entity.OrderDetail;
 import com.esiran.greenpay.pay.entity.PayOrder;
+import com.esiran.greenpay.pay.service.IMerchantPrepaidAccountService;
 import com.esiran.greenpay.pay.service.IOrderService;
 import com.google.gson.Gson;
 import okhttp3.*;
@@ -33,6 +36,8 @@ public class ACPayPlugin implements Plugin<PayOrder> {
     private static final OkHttpClient okHttpClient;
     private static RedisDelayQueueClient redisDelayQueueClient;
     private static IOrderService orderService;
+    private static IMerchantService merchantService;
+    private static IPayAccountService payAccountService;
     private static final Logger logger = LoggerFactory.getLogger(UpacpQrJKPlugin.class);
     static {
         okHttpClient = new OkHttpClient.Builder()
@@ -45,6 +50,7 @@ public class ACPayPlugin implements Plugin<PayOrder> {
     public ACPayPlugin(RedisDelayQueueClient redisDelayQueueClient, IOrderService orderService) {
         this.redisDelayQueueClient = redisDelayQueueClient;
         this.orderService = orderService;
+        this.payAccountService = payAccountService;
     }
 
     private static final class CreateOrderTask implements Task<PayOrder>{
@@ -116,6 +122,7 @@ public class ACPayPlugin implements Plugin<PayOrder> {
                             .set(Order::getPaidAt, LocalDateTime.now())
                             .eq(Order::getOrderNo,order.getOrderNo());
                     orderService.update(wrapper);
+                    payAccountService.updateAvailBalance(order.getMchId(),-order.getAmount());
                 }else if (result.equals("fail")){
                     throw new APIException(msg,"CHANNEL_REQUEST_ERROR");
                 }

@@ -22,6 +22,7 @@ public class RSA2SignType extends SignTypeAbs {
         if (getPrincipal() == null || getPrincipal().length() == 0) return null;
         byte[] principalBytes = getPrincipal().getBytes(StandardCharsets.UTF_8);
         String sign = RSAUtil.sign(principalBytes,credential);
+        logger.debug("credential With Rsa2: {}", credential);
         logger.debug("Sign With Rsa2: {}", sign);
         return sign;
     }

@@ -49,6 +49,9 @@ public class OPenAPISecurityFilter implements Filter {
                 "/v1/invoices/.+?/callback($|/$)",
                 "/v1/cashiers/pages($|/$)",
                 "/v1/cashiers/flow($|/$)",
+                "/v1/cashiers/flow($|/$)",
+                "/.+?\\.css$",
+                "/.+?\\.png$",
         };
     }
 

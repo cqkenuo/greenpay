@@ -2,6 +2,7 @@ package com.esiran.greenpay.admin.runner;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.esiran.greenpay.common.util.MapUtil;
+import com.esiran.greenpay.merchant.service.IPayAccountService;
 import com.esiran.greenpay.message.delayqueue.DelayQueueTaskRunner;
 import com.esiran.greenpay.message.delayqueue.impl.RedisDelayQueueClient;
 import com.esiran.greenpay.pay.entity.Order;
@@ -29,10 +30,12 @@ public class OrderACPayTaskRunner implements DelayQueueTaskRunner {
     private final Gson g = new Gson();
     private final IOrderDetailService orderDetailService;
     private final RedisDelayQueueClient redisDelayQueueClient;
-    public OrderACPayTaskRunner(IOrderService orderService, IOrderDetailService orderDetailService, RedisDelayQueueClient redisDelayQueueClient) {
+    private final IPayAccountService payAccountService;
+    public OrderACPayTaskRunner(IOrderService orderService, IOrderDetailService orderDetailService, RedisDelayQueueClient redisDelayQueueClient, IPayAccountService payAccountService) {
         this.orderService = orderService;
         this.orderDetailService = orderDetailService;
         this.redisDelayQueueClient = redisDelayQueueClient;
+        this.payAccountService = payAccountService;
     }
 
     static {

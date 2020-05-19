@@ -94,6 +94,7 @@ public class OrderNotifyService implements IOrderNotifyService {
         String sign = signType.sign2(credential);
         sign = UrlSafeB64.encode(sign);
         params.put("sign",sign);
+        System.out.println(sign);
         FormBody formBody = buildFormBody4map(params);
         if (formBody == null)
             throw new PostResourceException("未知错误，无法执行回调");

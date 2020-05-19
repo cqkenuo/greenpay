@@ -40,10 +40,6 @@
             <groupId>com.esiran</groupId>
             <artifactId>greenpay-message</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.esiran</groupId>
-            <artifactId>greenpay-merchant</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

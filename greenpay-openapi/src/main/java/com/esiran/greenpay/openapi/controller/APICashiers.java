@@ -271,7 +271,7 @@ public class APICashiers {
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Order::getOrderNo, orderNo);
         Order order = orderService.getOne(wrapper);
-        if (order == null || order.getStatus() != 2) {
+        if (order == null || !(order.getStatus() == 2 || order.getStatus() == 3)) {
             throw new APIException("订单不存在或状态异常", "ORDER_NOT_FOUND", 404);
         }
         if (!StringUtils.isEmpty(order.getRedirectUrl())) {

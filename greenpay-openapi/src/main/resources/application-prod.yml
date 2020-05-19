@@ -22,13 +22,11 @@ spring:
         content:
           enabled: true
 
-web:
-  hostname: http://api.pay.leyyx.cn
-#  hostname: http://api.pay.leyyx.cn
-
 greenpay:
+  web:
+    hostname: http://api.pay.leyyx.cn
   openapi:
     security:
       sign:
         enabled: true
-        allow_types: md5,rsa
+        allow_types: rsa,md5

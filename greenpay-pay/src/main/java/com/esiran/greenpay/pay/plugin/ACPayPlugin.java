@@ -122,7 +122,11 @@ public class ACPayPlugin implements Plugin<PayOrder> {
                             .set(Order::getPaidAt, LocalDateTime.now())
                             .eq(Order::getOrderNo,order.getOrderNo());
                     orderService.update(wrapper);
-                    payAccountService.updateAvailBalance(order.getMchId(),-order.getAmount());
+                    Map<String,String> messagePayload = new HashMap<>();
+                    messagePayload.put("orderNo", order.getOrderNo());
+                    messagePayload.put("mchId", String.valueOf(order.getMchId()));
+                    messagePayload.put("count", "1");
+                    redisDelayQueueClient.sendDelayMessage("order:notify",g.toJson(messagePayload),0);
                 }else if (result.equals("fail")){
                     throw new APIException(msg,"CHANNEL_REQUEST_ERROR");
                 }

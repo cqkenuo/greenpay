@@ -83,12 +83,16 @@ public class APICashiers {
         this.pluginLoader = pluginLoader;
         this.redisDelayQueueClient = redisDelayQueueClient;
     }
-    @RequestMapping("/qr")
-    public String createQr(@Valid CashierInputDTO inputDTO) throws Exception {
+    @RequestMapping("/qr/pages")
+    public String createQrPage(@Valid CashierInputDTO inputDTO) throws Exception {
         Merchant merchant = OpenAPISecurityUtils.getSubject();
         String productCode = inputDTO.getChannel();
         PayOrder payOrder = cashierService.createCashierByInput(productCode, inputDTO, merchant);
         return null;
+    }
+    @GetMapping("/qr/proxy/{orderNo}")
+    public String qrProxy(@PathVariable String orderNo){
+
     }
     @RequestMapping
     public String create(@Valid CashierInputDTO inputDTO, HttpServletRequest request) throws Exception {
@@ -120,6 +124,7 @@ public class APICashiers {
         }
         return null;
     }
+
     @GetMapping("/pages")
     public String cashiersPages(
             @RequestParam String orderNo,

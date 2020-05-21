@@ -92,7 +92,7 @@ public class APICashiers {
     }
     @GetMapping("/qr/proxy/{orderNo}")
     public String qrProxy(@PathVariable String orderNo){
-
+        return "";
     }
     @RequestMapping
     public String create(@Valid CashierInputDTO inputDTO, HttpServletRequest request) throws Exception {
